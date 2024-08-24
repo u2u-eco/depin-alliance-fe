@@ -1,0 +1,100 @@
+/* Start Mixin */
+@mixin breakpointminmax($sizemin, $sizemax) {
+  @media (min-width: $sizemin + px) and (max-width: $sizemax + px) {
+    @content;
+  }
+}
+
+@mixin breakpoint($size) {
+  @media only screen and (max-width: $size + px) {
+    @content;
+  }
+}
+
+@mixin min-breakpoint($size) {
+  @media only screen and (min-width: $size + px) {
+    @content;
+  }
+}
+
+@mixin line-clamp($number) {
+  display: -webkit-box;
+  -webkit-line-clamp: $number;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+@mixin width-item($item, $space) {
+  width: calc((100% - ($item - 1) * $space) / $item);
+}
+@mixin height-item($item, $space) {
+  height: calc((100% - ($item - 1) * $space) / $item);
+}
+
+@mixin text-gradient($background) {
+  display: inline-block;
+  background: $background;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0,-100%,0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes boatAnimate {
+  0%, 100% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(10px, -10px);
+  }
+  50% {
+    transform: translate(20px, 0);
+  }
+  75% {
+    transform: translate(10px, 5px);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    transform:translate(100%)
+  }
+}
+
+@keyframes textAnimate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--item-width) * var(--item)));
+  }
+}
+@keyframes scrollingX {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(1 * var(--item-width) * var(--item)));
+  }
+}
+/* End Mixin */
