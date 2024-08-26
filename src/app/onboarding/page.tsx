@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
+import { AnimatePresence, motion } from 'framer-motion'
+import Loading from '../components/loading'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',
@@ -28,71 +30,90 @@ const Onboarding = () => {
   }
 
   useEffect(() => {
+    console.log(type);
+    
     if(type === ONBOARDING_TYPE.SPLASH) {
-      setTimeout(() => setType(ONBOARDING_TYPE.START), 300)
+      setTimeout(() => setType(ONBOARDING_TYPE.START), 3000)
     }
     if(type === ONBOARDING_TYPE.LOADING) {
-      setTimeout(() => setType(ONBOARDING_TYPE.DEVICE), 1000)
+      setTimeout(() => setType(ONBOARDING_TYPE.DEVICE), 3000)
     }
   }, [type])
 
   return (
-    <div className="onboarding section">
-      <div className="container-custom">
-        <div className="relative flex items-center justify-center h-full">
-          {type === ONBOARDING_TYPE.SPLASH ? (
-            <div>
-              <img src="/assets/images/logo.svg" alt="Logo" />
-            </div>
-          ) : (
-            <>
-              <div>
+    <AnimatePresence mode="wait">
+      {type === ONBOARDING_TYPE.SPLASH ? (
+        <Loading/>
+      ) : (
+        <div className="onboarding section">
+          <div className="absolute top-0 left-0 right-0 w-full h-full z-[-1]">
+            <img src={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png`} srcSet={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background@2x.png 2x`} alt="" />
+          </div>
+          <div className="container-custom !py-6">
+            <motion.div className="h-full"
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <div className="pb-20">
+                <div>
+                  <img className="h-9 mx-auto" src="/assets/images/logo.svg" alt="" />
+                </div>
+                {/* Image */}
                 {type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
-                  <div className={`mx-auto ${type === ONBOARDING_TYPE.DEVICE ? '' : 'max-w-[285px]'}`}>
-                    <img className="mx-auto" src="/assets/images/computer.png" srcSet="/assets/images/computer.png 1x, /assets/images/computer@2x.png 2x" alt="Computer" />
+                  <div>
+                    <img className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[325px] my-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-20 mb-4 max-h-[300px]' : 'max-h-[260px] mt-12 mb-4'}`} src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding-info'}.png`} srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding-info'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding-info'}@2x.png 2x`} alt="Computer" />
                   </div>
                 ) : (
-                  <div className="relative">
-                    <img className="mx-auto" src="/assets/images/frame.svg" alt="Frame" />
-                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center flex-col space-y-4">
-                      <img className="size-[56px] mx-auto" src="/assets/images/icons/icon-star-circle.svg" alt="Icon Star" />
-                      <div className="font-geist font-bold text-white text-3xl">5,000</div>
+                  <div className="relative mt-28 mb-10">
+                    <img className="mx-auto" src="/assets/images/onboarding-scholarship.svg" alt="Onboarding Scholarship" />
+                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center -space-x-2">
+                      <div className="font-geist font-bold text-white text-[40px] text-point">+5,000</div>
+                      <img className="size-[64px]" src="/assets/images/point.png" alt="Icon Star" />
                     </div>
                   </div>
                 )}
-                <div className="text-center mt-10 mb-6 space-y-1 max-w-[285px] mx-auto">
-                  <div className="font-airnt font-bold text-xl text-white leading-[calc(32/20)] tracking-[1px] uppercase">
-                    {type === ONBOARDING_TYPE.START ? 'contribute and earn rewards'
-                      : type === ONBOARDING_TYPE.LOADING ? (<><span>BIP...</span><span className="animate-[textAnimate_1.25s_ease-in_0.5s_infinite]">BIP</span><span className="animate-[textAnimate_1.25s_ease-in_0.75s_infinite]">...</span></>)
-                      : type === ONBOARDING_TYPE.DEVICE ? 'Device Info'
-                      : 'newbie reward'
-                    }
+                {/* Content */}
+                <div className="text-center mb-6 space-y-3">
+                  <div className="flex items-center justify-center space-x-6 max-w-[320px] mx-auto">
+                    <div className="size-1.5 min-w-1.5 bg-green-800"></div>
+                    <div className="font-airnt font-medium text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
+                      {type === ONBOARDING_TYPE.START ? 'contribute and earn rewards'
+                        : type === ONBOARDING_TYPE.LOADING ? 'getting info...'
+                        : type === ONBOARDING_TYPE.DEVICE ? 'Device Info'
+                        : 'newbie reward'
+                      }
+                    </div>
+                    <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                   </div>
-                  <div className="font-mona text-base text-gray-400">
+                  <div className="text-base text-body font-geist leading-[20px]">
                     {type === ONBOARDING_TYPE.START ? 'Become a node contributor to build a decentralized world.'
                       : type === ONBOARDING_TYPE.LOADING ? (<><p>We’re getting your device information.</p><p>Please wait...</p></>)
-                      : type === ONBOARDING_TYPE.DEVICE ? (<><p>This is your device information.</p><p>Use it to contribute and upgrade for more rewards</p></>)
-                      : (<><p>You’ve received your first reward.</p><p>Please use it wisely or you’ll get trouble</p></>)
+                      : type === ONBOARDING_TYPE.DEVICE ? 'This is your device information. Use it to contribute and upgrade for more rewards'
+                      : (<><p>You’ve received your first reward!</p><p>Let’s go!!!</p></>)
                     }
                   </div>
                 </div>
+                {/* Configuration */}
                 {type === ONBOARDING_TYPE.DEVICE && (
                   <Card/>
                 )}
               </div>
               {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.DEVICE || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
-                <div className="absolute bottom-0 left-0 right-0">
-                  <button className="btn btn-primary" onClick={() => {handleOnboarding(type), type === ONBOARDING_TYPE.SCHOLARSHIP && router.push('/home')}}>
-                    <span>{type === ONBOARDING_TYPE.START ? 'get started' : type === ONBOARDING_TYPE.DEVICE ? 'got it' : 'claim reward'}</span>
-                    <span>{type === ONBOARDING_TYPE.START ? 'get started' : type === ONBOARDING_TYPE.DEVICE ? 'got it' : 'claim reward'}</span>
+                <div className="absolute bottom-0 left-0 right-0 p-4 max-[479px]:p-3">
+                  <button className="btn" onClick={() => {handleOnboarding(type), type === ONBOARDING_TYPE.SCHOLARSHIP && router.push('/home')}}>
+                    <div className="btn-border"></div>
+                    <div className="btn-primary">{type === ONBOARDING_TYPE.START ? 'get started' : type === ONBOARDING_TYPE.DEVICE ? 'Next' : 'claim reward'}</div>
+                    <div className="btn-border"></div>
                   </button>
                 </div>
               )}
-            </>
-          )}
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   )
 }
 

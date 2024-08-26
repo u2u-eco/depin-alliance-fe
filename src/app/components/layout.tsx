@@ -1,23 +1,18 @@
 "use client"
 
 import { NextUIProvider } from '@nextui-org/react'
-import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
+import CustomNavbar from './custom-navbar'
+import { usePathname } from 'next/navigation'
 
 export default function Layout({ children }: any) {
+  const pathName = usePathname()
+
   return (
     <div className="wrapper">
       <NextUIProvider>
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ y: 25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -25, opacity: 0 }}
-            transition={{ duration: 0.35 }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        {children}
+        {pathName !== '/' && <CustomNavbar/>}
       </NextUIProvider>
     </div>
   )

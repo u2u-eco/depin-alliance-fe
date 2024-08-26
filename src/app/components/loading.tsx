@@ -1,0 +1,27 @@
+"use client"
+
+import { AnimatePresence } from 'framer-motion'
+import React from 'react'
+
+const Loading = () => {
+  return (
+    <AnimatePresence mode="wait">
+      <div className="loading section">
+        <div className="relative">
+          <img className="mx-auto" src="/assets/images/loading-background.png" srcSet="/assets/images/loading-background.png 1x, /assets/images/loading-background@2x.png 2x" alt="Loading Background" />
+          <div className="absolute top-[120px] left-0 right-0">
+            <img className="mx-auto" src="/assets/images/logo.svg" alt="Logo" />
+          </div>
+          <div className="absolute bottom-[100px] left-0 right-0 text-center space-y-4">
+            <span className="font-geist text-body">Logging to your account, please wait...</span>
+            <div className="relative h-1 w-full max-w-[320px] mx-auto rounded bg-gray-850">
+              <div className="absolute left-0 top-0 h-full w-[2%] bg-gradient rounded animate-[progress_5s_infinite_cubic-bezier(0,0,0,0.99)]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </AnimatePresence>
+  )
+}
+
+export default Loading
