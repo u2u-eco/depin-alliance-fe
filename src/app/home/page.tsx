@@ -33,7 +33,7 @@ export default function HomePage() {
     if(type === HOME_TYPE.MINING) {
       setTimeout(() => setType(HOME_TYPE.CLAIM), 1000)
     }
-  }, [])
+  }, [type])
 
   return (
     <>

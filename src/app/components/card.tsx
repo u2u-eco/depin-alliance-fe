@@ -1,5 +1,9 @@
 import React from 'react'
 
+interface CardProps {
+  shadow?: boolean
+}
+
 const listInfo = [
   { id: 1, title: 'cpu', content: 'Intel Core i3', number: '' },
   { id: 2, title: 'gpu', content: 'RTX', number: '3060' },
@@ -7,11 +11,11 @@ const listInfo = [
   { id: 4, title: 'storage', content: '', number: '128' },
 ]
 
-const Card = () => {
+const Card = ({ shadow }: CardProps) => {
   return (
     <div className="card">
       <div className="card__background">
-        <img src="/assets/images/configuration-background.svg" alt="Configuration Background" />
+        <img src={`/assets/images/configuration-background${shadow ? '-shadow' : ''}.svg`} alt="Configuration Background" />
       </div>
       <div className="card__list space-y-2">
         {listInfo.map(item => (

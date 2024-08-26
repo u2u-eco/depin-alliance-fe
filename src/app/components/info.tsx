@@ -25,11 +25,19 @@ const Info = () => {
             </div>
             <div className="space-y-2.5">
               <div className="text-white text-base font-semibold">Long Nhong</div>
-              <div className="flex items-center space-x-1">
-                {/* <img className="size-4" src="/assets/images/icons/icon-star-circle.svg" alt="Icon Start" /> */}
-                <span className="font-geist text-yellow">LV. 1</span>
-                <img className="size-6" src="/assets/images/icons/icon-chevron-right-yellow.svg" alt="Icon Chevron" />
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  <span className="font-geist text-yellow">LV. 1</span>
+                  <img className="size-6" src="/assets/images/icons/icon-chevron-right-green.svg" alt="Icon Chevron" />
+                </div>
+                <div className="w-[1px] h-5 bg-white/10"></div>
+                <div className="flex items-center space-x-1">
+                  <img className="size-5" src="/assets/images/icons/icon-thunder.svg" alt="Icon Thunder" />
+                  <span className="font-geist text-yellow">10</span>
+                  <img className="size-6" src="/assets/images/icons/icon-chevron-right-green.svg" alt="Icon Chevron" />
+                </div>
               </div>
+
             </div>
           </div>
           <div className="cursor-pointer p-2 m-2" onClick={onOpen}>

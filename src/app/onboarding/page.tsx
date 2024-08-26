@@ -47,7 +47,7 @@ const Onboarding = () => {
       ) : (
         <div className="onboarding section">
           <div className="absolute top-0 left-0 right-0 w-full h-full z-[-1]">
-            <img src={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png`} srcSet={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background@2x.png 2x`} alt="" />
+            <img className="mx-auto min-[480px]:w-full min-[480px]:object-cover min-[480px]:h-full" src={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png`} srcSet={`/assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP ? '-scholarship' : ''}-background@2x.png 2x`} alt="" />
           </div>
           <div className="container-custom !py-6">
             <motion.div className="h-full"
@@ -97,7 +97,7 @@ const Onboarding = () => {
                 </div>
                 {/* Configuration */}
                 {type === ONBOARDING_TYPE.DEVICE && (
-                  <Card/>
+                  <Card shadow={true}/>
                 )}
               </div>
               {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.DEVICE || type === ONBOARDING_TYPE.SCHOLARSHIP) && (

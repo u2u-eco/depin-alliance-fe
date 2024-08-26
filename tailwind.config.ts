@@ -58,7 +58,8 @@ const config = {
         'title': '#F4F5F7',
       },
       backgroundImage: {
-        'gradient': 'linear-gradient(to right, #00FF90, #F4FD36)'
+        'gradient': 'linear-gradient(to right, #00FF90, #F4FD36)',
+        'navbar': 'linear-gradient(to top, rgba(0, 51, 29, 0), rgba(0, 51, 29, 1))'
       },
       fontFamily: {
         'airnt': "var(--ff-airnt)",
