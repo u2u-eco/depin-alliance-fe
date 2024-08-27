@@ -1,9 +1,8 @@
 "use client"
 
-import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
-import Info from '../components/info'
 import CustomList from '../components/custom-list'
+import CustomPage from '../components/custom-page'
 
 const listMission = [
   { id: 1, title: 'DAILY BONUS', list: [
@@ -24,35 +23,21 @@ const listMission = [
 export default function MissionPage() {
   return (
     <>
-      <AnimatePresence mode="wait">
-      <div className="misison section before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]">
-          <div className="container-custom">
-            <motion.div
-              initial={{ y: 25, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -25, opacity: 0 }}
-              transition={{ duration: 0.35 }}
-            >
-              <Info/>
-              <div className="mt-8 w-full max-w-[480px] mx-auto">
-                <div>
-                  <img src="/assets/images/mission-image.png" srcSet="/assets/images/mission-image.png 1x, /assets/images/mission-image@2x.png 2x" alt="Mission Image" />
-                </div>
-                <div>
-                  {listMission.map((item: any) => (
-                    <CustomList
-                      type="mission"
-                      title={item.title}
-                      data={item.list}
-                      key={item.id}
-                    />
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
+      <CustomPage>
+        <div>
+          <img className="mx-auto" src="/assets/images/mission-image.png" srcSet="/assets/images/mission-image.png 1x, /assets/images/mission-image@2x.png 2x" alt="Mission Image" />
         </div>
-      </AnimatePresence>
+        <div>
+          {listMission.map((item: any) => (
+            <CustomList
+              type="mission"
+              title={item.title}
+              data={item.list}
+              key={item.id}
+            />
+          ))}
+        </div>
+      </CustomPage>
     </>
   )
 }

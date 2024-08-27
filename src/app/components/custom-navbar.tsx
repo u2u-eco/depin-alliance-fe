@@ -16,7 +16,7 @@ const CustomNavbar = () => {
   const pathName = usePathname()
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-20">
+    <div className="relative z-20 mt-auto">
       <div className="relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:opacity-20 before:w-full before:h-2.5 before:bg-[linear-gradient(to_bottom,rgba(0,51,29,00),rgba(0,51,29,1))]">
         <img className="mx-auto" src="/assets/images/navbar-frame.svg" alt="Navbar Frame" />
       </div>

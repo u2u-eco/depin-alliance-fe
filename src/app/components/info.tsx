@@ -40,7 +40,7 @@ const Info = () => {
             <div className="space-y-2.5">
               <div className="text-white text-base font-semibold min-h-5">{userInfo?.username}</div>
               <div className="flex items-center space-x-4">
-                <Link href="/home/ranking" className="flex items-center space-x-1">
+                <Link href="/ranking" className="flex items-center space-x-1">
                   <span className="font-geist text-yellow-500">LV. {userInfo.level}</span>
                   <img
                     className="size-6"
@@ -74,11 +74,11 @@ const Info = () => {
           </div>
         </div>
         {pathName !== '/home' && (
-          <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center">
+          <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center space-x-1">
             <p className="font-geist uppercase text-white tracking-[-1px]">TP:</p>
-            <div className="flex items-center">
+            <div className="flex items-center space-x-1">
               <img
-                className="size-7"
+                className="size-5"
                 src="/assets/images/point.png"
                 srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                 alt="Point"

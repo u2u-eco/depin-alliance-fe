@@ -62,11 +62,11 @@ export default function HomePage() {
                 </div>
               )} */}
               {/* Point */}
-              <div className="-mt-2">
+              <div className="-mt-2 space-y-2">
                 <div className="text-center text-white uppercase font-geist">total point</div>
-                <div className="flex items-center justify-center -space-x-1.5">
+                <div className="flex items-center justify-center space-x-2">
                   <img
-                    className="size-16"
+                    className="size-9"
                     src="/assets/images/point.png"
                     srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                     alt="Point"

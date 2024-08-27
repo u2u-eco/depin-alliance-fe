@@ -16,7 +16,7 @@ export default function Layout({ children }: any) {
         <ReduxProvider>
           <NextUIProvider>
             {children}
-            {pathName !== '/' && <CustomNavbar />}
+            {/* {pathName !== '/' && <CustomNavbar />} */}
           </NextUIProvider>
         </ReduxProvider>
       </TelegramProvider>
