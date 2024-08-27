@@ -16,6 +16,7 @@ export default function Mining() {
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
   const refInterval = useRef<any>()
+  const refButton = useRef<any>(null)
   const dispatch = useAppDispatch()
 
   const addPrefix = (number: number) => {
@@ -101,13 +102,27 @@ export default function Mining() {
         handleMining()
         break
       case HOME_TYPE.MINING:
-        handleClaim()
+        setType(HOME_TYPE.CLAIM)
         break
       case HOME_TYPE.CLAIM:
-        console.log(111)
+        handleClaim()
         break
     }
   }
+
+  useEffect(() => {
+    const handleOutSideClick = (event: any) => {
+      if (!refButton.current?.contains(event.target)) {
+        setType(HOME_TYPE.MINING)
+      }
+    }
+
+    window.addEventListener('mousedown', handleOutSideClick)
+
+    return () => {
+      window.removeEventListener('mousedown', handleOutSideClick)
+    }
+  }, [refButton])
 
   useEffect(() => {
     if (userInfo.timeStartMining) {
@@ -119,8 +134,8 @@ export default function Mining() {
   }, [userInfo])
 
   return (
-    <div className="mt-8">
-      <button className="btn" onClick={() => handleClick(type)}>
+    <div className="mt-8 ">
+      <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ? (
           <div className="btn-default flex items-center justify-between">
