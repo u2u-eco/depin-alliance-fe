@@ -39,7 +39,7 @@ export default function UpgradePage() {
   return (
     <>
       <AnimatePresence mode="wait">
-        <div className="upgrade section before:content-[''] before:absolute before:top-[50%] before:left-[-90%] before:size-[400px] before:opacity-30 before:bg-gradient before:blur-[100px] before:translate-y-[-50%] before:z-[-1]">
+        <div className="upgrade section before:content-[''] before:absolute before:top-[50%] before:left-[-320px] before:size-[400px] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1]">
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}
@@ -50,11 +50,11 @@ export default function UpgradePage() {
               <Info/>
               <div className="mt-10 w-fit mx-auto">
                 <div className="flex items-center space-x-4">
-                  <div className="relative " onClick={() => setActiveType(UPGRADE_TYPE.DEVICE)}>
+                  <div className="relative cursor-pointer" onClick={() => setActiveType(UPGRADE_TYPE.DEVICE)}>
                     <img className="mx-auto" src={`/assets/images/upgrade/upgrade-tab${activeType === UPGRADE_TYPE.DEVICE ? '-active' : ''}.svg`} alt="Upgrade Tab" />
                     <div className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.DEVICE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}>Device</div>
                   </div>
-                  <div className="relative" onClick={() => setActiveType(UPGRADE_TYPE.SKILL)}>
+                  <div className="relative cursor-pointer" onClick={() => setActiveType(UPGRADE_TYPE.SKILL)}>
                     <img className="mx-auto" src={`/assets/images/upgrade/upgrade-tab${activeType === UPGRADE_TYPE.SKILL ? '-active' : ''}.svg`} alt="Upgrade Tab" />
                     <div className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.SKILL ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}>Skill</div>
                   </div>

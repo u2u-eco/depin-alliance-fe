@@ -1,4 +1,5 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 interface InfoProps {
@@ -6,6 +7,7 @@ interface InfoProps {
 }
 
 const Info = () => {
+  const pathName = usePathname()
   const {isOpen, onOpen, onOpenChange} = useDisclosure()
 
   return (
@@ -44,13 +46,15 @@ const Info = () => {
             <img className="size-6" src="/assets/images/icons/icon-settings.svg" alt="Icon Settings" />
           </div>
         </div>
-        <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center">
-          <p className="font-geist uppercase text-white tracking-[-1px]">TP:</p>
-          <div className="flex items-center">
-            <img className="size-7" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" />
-            <div className="text-point font-geist text-base font-bold">5,000</div>
+        {pathName !== '/home' && (
+          <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center">
+            <p className="font-geist uppercase text-white tracking-[-1px]">TP:</p>
+            <div className="flex items-center">
+              <img className="size-7" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" />
+              <div className="text-point font-geist text-base font-bold">5,000</div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <Modal
         isOpen={isOpen}
