@@ -8,17 +8,11 @@ import CustomList from '../components/custom-list'
 import { getDevicesByType } from '../services/devices'
 import { IDeviceTypeItem } from '../interfaces/i.devices'
 import { useAppSelector } from '../hooks/useToolkit'
+import { UPGRADE_TAB } from '../constants'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
   SKILL: 'skill'
-}
-
-export const UPGRADE_TAB = {
-  RAM: 'RAM',
-  CPU: 'CPU',
-  GPU: 'GPU',
-  STORAGE: 'STORAGE'
 }
 
 const listSkill = [
