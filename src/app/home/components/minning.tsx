@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks/useToolkit'
-import { getUserInfo, mining } from '@/app/services/user'
+import { claim, getUserInfo, mining } from '@/app/services/user'
 import { setUserInfo } from '@/app/stores/slices/common'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
@@ -16,6 +16,7 @@ export default function Mining() {
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
   const refInterval = useRef<any>()
+  const refButton = useRef<any>(null)
   const dispatch = useAppDispatch()
 
   const addPrefix = (number: number) => {
@@ -50,7 +51,7 @@ export default function Mining() {
       setTimeCountdown(listTime)
 
       // If the count down is finished, write some text
-      if (distance < 0) {
+      if (distance <= 0) {
         clearInterval(refInterval.current)
         setTimeCountdown([])
         setType(HOME_TYPE.CLAIM)
@@ -61,12 +62,16 @@ export default function Mining() {
   const calculatorMining = () => {
     clearInterval(refInterval.current)
     const miningPowerPerSecond = userInfo.miningPower / 3600
-    const remainingTimeByHour = userInfo.maximumPower / userInfo.miningPower
-    const timeEnd = dayjs(userInfo.timeStartMining * 1000).add(remainingTimeByHour, 'hours')
+    const remainingTimeBySecond = userInfo.pointUnClaimed
+      ? userInfo.maximumPower - userInfo.pointUnClaimed
+      : userInfo.maximumPower
+    const timeEnd = dayjs(userInfo.timeStartMining * 1000)
+      .add(remainingTimeBySecond, 'second')
+      .valueOf()
     const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
-    const currentPoint = timeMining * miningPowerPerSecond
+    const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
     setMiningCount(currentPoint)
-    interval(timeEnd.valueOf(), currentPoint, miningPowerPerSecond)
+    interval(timeEnd, currentPoint, miningPowerPerSecond)
   }
 
   const updateUserInfo = async () => {
@@ -84,16 +89,40 @@ export default function Mining() {
     }
   }
 
+  const handleClaim = async () => {
+    const res = await claim()
+    if (res.status) {
+      updateUserInfo()
+    }
+  }
+
   const handleClick = (type: any) => {
     switch (type) {
       case HOME_TYPE.START:
         handleMining()
         break
+      case HOME_TYPE.MINING:
+        setType(HOME_TYPE.CLAIM)
+        break
       case HOME_TYPE.CLAIM:
-        console.log(111)
+        handleClaim()
         break
     }
   }
+
+  useEffect(() => {
+    const handleOutSideClick = (event: any) => {
+      if (!refButton.current?.contains(event.target)) {
+        setType(HOME_TYPE.MINING)
+      }
+    }
+
+    window.addEventListener('mousedown', handleOutSideClick)
+
+    return () => {
+      window.removeEventListener('mousedown', handleOutSideClick)
+    }
+  }, [refButton])
 
   useEffect(() => {
     if (userInfo.timeStartMining) {
@@ -105,8 +134,8 @@ export default function Mining() {
   }, [userInfo])
 
   return (
-    <div className="mt-8">
-      <button className="btn" onClick={() => handleClick(type)}>
+    <div className="mt-8 ">
+      <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ? (
           <div className="btn-default flex items-center justify-between">
@@ -115,7 +144,7 @@ export default function Mining() {
               <div className="flex items-center space-x-1">
                 <img className="size-6" src="/assets/images/point-color.svg" alt="Point" />
                 <p className="font-geist text-primary text-[18px] font-semibold">
-                  {miningCount ? formatNumber(miningCount, 0, 2) : 0}
+                  {miningCount ? formatNumber(miningCount, 0, 0) : 0}
                 </p>
               </div>
             </div>
