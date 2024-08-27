@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 import { useAppSelector } from '../hooks/useToolkit'
 import { formatNumber } from '../helper/common'
+import Link from 'next/link'
 
 interface InfoProps {
   click: () => void
@@ -37,16 +38,16 @@ const Info = () => {
               </div>
             </div>
             <div className="space-y-2.5">
-              <div className="text-white text-base font-semibold">{userInfo?.username}</div>
+              <div className="text-white text-base font-semibold min-h-5">{userInfo?.username}</div>
               <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
+                <Link href="/home/ranking" className="flex items-center space-x-1">
                   <span className="font-geist text-yellow-500">LV. {userInfo.level}</span>
                   <img
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
                   />
-                </div>
+                </Link>
                 <div className="w-[1px] h-5 bg-white/10"></div>
                 <div className="flex items-center space-x-1">
                   <img

@@ -53,7 +53,7 @@ export default function UpgradePage() {
   return (
     <>
       <AnimatePresence mode="wait">
-        <div className="upgrade section before:content-[''] before:absolute before:top-[50%] before:left-[-320px] before:size-[400px] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1]">
+        <div className="upgrade section before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]">
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}

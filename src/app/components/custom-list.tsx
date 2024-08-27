@@ -20,8 +20,9 @@ const CustomList = ({ type, title, data }: ListProps) => {
         <CustomItem
           type={item.type}
           title={`${item.type} ${item.name}`}
-          image={item.image || item.type?.toLowerCase()}
+          image={item.image || `upgrade/upgrade-${item.type?.toLowerCase()}`}
           icon={item.icon}
+          rank={item.rank}
           done={item.done}
           key={item.code}
         >
@@ -38,7 +39,7 @@ const CustomList = ({ type, title, data }: ListProps) => {
                   srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                   alt="Point"
                 />
-                <p className="text-primary font-geist font-semibold">+{item.miningPower}</p>
+                <p className="text-primary font-geist font-semibold">{type !== 'ranking' && '+' } {item.miningPower}</p>
               </div>
               {item.available ||
                 (item.complete && (
