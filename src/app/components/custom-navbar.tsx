@@ -6,7 +6,7 @@ import React from 'react'
 
 const listMenu = [
   { id: 1, link: '/upgrade', title: 'upgrade' },
-  { id: 2, link: '/', title: 'mission' },
+  { id: 2, link: '/mission', title: 'mission' },
   { id: 3, link: '/home', title: 'contribute' },
   { id: 4, link: '/', title: 'invite' },
   { id: 5, link: '/', title: 'league' },

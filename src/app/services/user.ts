@@ -18,3 +18,11 @@ export const detectDeviceInfo = () => {
 export const claimRewardNewUser = () => {
   return https.get('/users/claim-reward-new-user')
 }
+
+export const claim = () => {
+  return https.get('/users/claim')
+}
+
+export const mining = () => {
+  return https.get('users/mining')
+}
