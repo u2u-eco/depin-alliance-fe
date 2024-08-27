@@ -52,14 +52,26 @@ const config = {
           800: '#00663A',
           900: '#00331D',
         },
+        'yellow': {
+          100: '#FDFFD7',
+          200: '#FBFEAF',
+          300: '#F8FE86',
+          400: '#F6FD5E',
+          500: '#F4FD36',
+          600: '#C3CA2B',
+          700: '#929820',
+          800: '#626516',
+          900: '#31330B',
+        },
         'white-50': '#ffffff80',
-        'yellow': 'var(--yellow)',
         'body': '#9D9FAF',
         'title': '#F4F5F7',
       },
       backgroundImage: {
         'gradient': 'linear-gradient(to right, #00FF90, #F4FD36)',
-        'navbar': 'linear-gradient(to top, rgba(0, 51, 29, 0), rgba(0, 51, 29, 1))'
+        'navbar': 'linear-gradient(to top, rgba(0, 51, 29, 0), rgba(0, 51, 29, 1))',
+        'item-green': 'linear-gradient(to right, rgba(0, 255, 144, 0.5), rgba(0, 255, 144, 0.1))',
+        'item-yellow': 'linear-gradient(to right, rgba(244, 253, 54, 0.5), rgba(244, 253, 54, 0.1))',
       },
       fontFamily: {
         'airnt': "var(--ff-airnt)",
