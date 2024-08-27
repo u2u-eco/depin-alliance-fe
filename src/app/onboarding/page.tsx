@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
-import { detectDeviceInfo } from '../services/user'
+import { claim, detectDeviceInfo } from '../services/user'
 import { useDispatch } from 'react-redux'
 import { setDevice } from '../stores/slices/common'
 import { useAppSelector } from '../hooks/useToolkit'
@@ -38,6 +38,13 @@ const Onboarding = () => {
     }
   }
 
+  const handleClaim = async () => {
+    const res = await claim()
+    if (res.status) {
+      redirect('/home')
+    }
+  }
+
   const handleOnboarding = (type: any) => {
     switch (type) {
       case ONBOARDING_TYPE.START:
@@ -46,6 +53,9 @@ const Onboarding = () => {
         break
       case ONBOARDING_TYPE.DEVICE:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        break
+      case ONBOARDING_TYPE.SCHOLARSHIP:
+        handleClaim()
         break
     }
   }
@@ -61,6 +71,8 @@ const Onboarding = () => {
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
         break
+      case CURRENT_STATUS.CLAIMED:
+        redirect('/home')
     }
   }, [currentStatus, token])
 

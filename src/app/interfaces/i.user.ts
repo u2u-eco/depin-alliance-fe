@@ -60,7 +60,8 @@ export type IUserInfo = {
 
 export enum CURRENT_STATUS {
   DETECTED_DEVICE_INFO = 'DETECTED_DEVICE_INFO',
-  STARTED = 'STARTED'
+  STARTED = 'STARTED',
+  CLAIMED = 'CLAIMED'
 }
 
 export type IDeviceItem = {
