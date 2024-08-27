@@ -6,6 +6,12 @@ import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
+import { detectDeviceInfo } from '../services/user'
+import { useDispatch } from 'react-redux'
+import { setDevice } from '../stores/slices/common'
+import { useAppSelector } from '../hooks/useToolkit'
+import { CURRENT_STATUS } from '../interfaces/i.user'
+import NewbieReward from './components/NewbieReward'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',
@@ -17,11 +23,25 @@ const ONBOARDING_TYPE = {
 
 const Onboarding = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
+  const { currentStatus, token } = useAppSelector((state) => state.common)
   const [type, setType] = useState(ONBOARDING_TYPE.SPLASH)
+  const _getDeviceInfo = async () => {
+    try {
+      const res = await detectDeviceInfo()
+      if (res.status) {
+        dispatch(setDevice({ info: res.data }))
+        setType(ONBOARDING_TYPE.DEVICE)
+      }
+    } catch (ex) {
+      setType(ONBOARDING_TYPE.SCHOLARSHIP)
+    }
+  }
 
   const handleOnboarding = (type: any) => {
     switch (type) {
       case ONBOARDING_TYPE.START:
+        _getDeviceInfo()
         setType(ONBOARDING_TYPE.LOADING)
         break
       case ONBOARDING_TYPE.DEVICE:
@@ -31,15 +51,18 @@ const Onboarding = () => {
   }
 
   useEffect(() => {
-    console.log(type)
-
-    if (type === ONBOARDING_TYPE.SPLASH) {
-      setTimeout(() => setType(ONBOARDING_TYPE.START), 3000)
+    switch (currentStatus) {
+      case CURRENT_STATUS.STARTED:
+        setType(ONBOARDING_TYPE.SPLASH)
+        if (token) {
+          setType(ONBOARDING_TYPE.START)
+        }
+        break
+      case CURRENT_STATUS.DETECTED_DEVICE_INFO:
+        setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        break
     }
-    if (type === ONBOARDING_TYPE.LOADING) {
-      setTimeout(() => setType(ONBOARDING_TYPE.DEVICE), 3000)
-    }
-  }, [type])
+  }, [currentStatus, token])
 
   return (
     <AnimatePresence mode="wait">
@@ -79,19 +102,7 @@ const Onboarding = () => {
                     />
                   </div>
                 ) : (
-                  <div className="relative mt-28 mb-10">
-                    <img
-                      className="mx-auto"
-                      src="/assets/images/onboarding-scholarship.svg"
-                      alt="Onboarding Scholarship"
-                    />
-                    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center -space-x-2">
-                      <div className="font-geist font-bold text-white text-[40px] text-point">
-                        +5,000
-                      </div>
-                      <img className="size-[64px]" src="/assets/images/point.png" alt="Icon Star" />
-                    </div>
-                  </div>
+                  <NewbieReward />
                 )}
                 {/* Content */}
                 <div className="text-center mb-6 space-y-3">
