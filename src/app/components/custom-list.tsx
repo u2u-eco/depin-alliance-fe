@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 import CustomItem from './custom-item'
-import { UPGRADE_TAB } from '../upgrade/page'
 
 interface ListProps {
   type: string
