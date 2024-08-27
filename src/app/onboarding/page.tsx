@@ -71,6 +71,7 @@ const Onboarding = () => {
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
         break
+      case CURRENT_STATUS.MINING:
       case CURRENT_STATUS.CLAIMED:
         redirect('/home')
     }
