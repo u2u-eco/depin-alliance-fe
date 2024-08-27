@@ -34,7 +34,7 @@ export default function MissionPage() {
               transition={{ duration: 0.35 }}
             >
               <Info/>
-              <div className="mt-8 w-fit mx-auto">
+              <div className="mt-8 w-full max-w-[480px] mx-auto">
                 <div>
                   <img src="/assets/images/mission-image.png" srcSet="/assets/images/mission-image.png 1x, /assets/images/mission-image@2x.png 2x" alt="Mission Image" />
                 </div>

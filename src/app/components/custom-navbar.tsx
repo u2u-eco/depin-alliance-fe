@@ -8,8 +8,8 @@ const listMenu = [
   { id: 1, link: '/upgrade', title: 'upgrade' },
   { id: 2, link: '/mission', title: 'mission' },
   { id: 3, link: '/home', title: 'contribute' },
-  { id: 4, link: '/', title: 'invite' },
-  { id: 5, link: '/', title: 'league' },
+  { id: 4, link: '/invite', title: 'invite' },
+  { id: 5, link: '/coming-soon', title: 'league' },
 ]
 
 const CustomNavbar = () => {

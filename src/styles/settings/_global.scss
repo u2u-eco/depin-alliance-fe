@@ -140,7 +140,7 @@ button {
   font-weight: 600;
   line-height: 20px;
   width: 100%;
-  background: var(--black);
+  // background: var(--black);
   .btn-border {
     position: absolute;
     left: 0;
@@ -183,6 +183,7 @@ button {
     padding: 14px 20px;
     width: 100%;
     transition: all 0.6s ease-out;
+    text-align: center;
   }
   .btn-default {
     background: rgba(255, 255, 255, 0.08);
