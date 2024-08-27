@@ -7,9 +7,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Info from '../components/info'
 import { getUserInfo } from '../services/user'
 import { useAppDispatch, useAppSelector } from '../hooks/useToolkit'
-import { setUserInfo } from '../stores/slices/common'
+import { setDevice, setUserInfo } from '../stores/slices/common'
 import { formatNumber } from '../helper/common'
 import Mining from './components/minning'
+import { getUserDevice } from '../services/devices'
 
 export default function HomePage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -23,9 +24,17 @@ export default function HomePage() {
     }
   }
 
+  const _getUserDevice = async () => {
+    const res = await getUserDevice()
+    if (res.status) {
+      dispatch(setDevice({ info: res.data }))
+    }
+  }
+
   useEffect(() => {
     if (token) {
       _getUserInfo()
+      _getUserDevice()
     }
   }, [token])
 
