@@ -1,31 +1,29 @@
-import React from 'react'
+/* eslint-disable @next/next/no-img-element */
 
+import { useAppSelector } from '../hooks/useToolkit'
 interface CardProps {
   shadow?: boolean
 }
 
-const listInfo = [
-  { id: 1, title: 'cpu', content: 'Intel Core i3', number: '' },
-  { id: 2, title: 'gpu', content: 'RTX', number: '3060' },
-  { id: 3, title: 'ram', content: '', number: '8' },
-  { id: 4, title: 'storage', content: '', number: '128' },
-]
-
 const Card = ({ shadow }: CardProps) => {
+  const { deviceInfo } = useAppSelector((state) => state.common)
   return (
     <div className="card">
       <div className="card__background">
-        <img src={`/assets/images/configuration-background${shadow ? '-shadow' : ''}.svg`} alt="Configuration Background" />
+        <img
+          src={`/assets/images/configuration-background${shadow ? '-shadow' : ''}.svg`}
+          alt="Configuration Background"
+        />
       </div>
       <div className="card__list space-y-2">
-        {listInfo.map(item => (
-          <div className="flex items-center justify-between text-base leading-[20px] font-geist" key={item.id}>
-            <div className="uppercase text-green-700">{item.title}</div>
+        {deviceInfo.map((item, index) => (
+          <div
+            className="flex items-center justify-between text-base leading-[20px] font-geist"
+            key={index}
+          >
+            <div className="uppercase text-green-700">{item.type}</div>
             <div className="flex items-center space-x-1 text-title">
-              <p>{item.content} <span>{item.number}</span></p>
-              {(item.title !== 'cpu' && item.title !== 'gpu') && (
-                <span>{item.title === 'profit' ? '/ hour' : 'GB'}</span>
-              )}
+              <p>{item.name}</p>
             </div>
           </div>
         ))}

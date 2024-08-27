@@ -38,3 +38,33 @@ export type ITwitter = {
   default_profile_image: boolean
   listed_count: number
 }
+
+export type IUserAuthReq = {
+  initData: string
+}
+
+export type IUserInfo = {
+  username: string
+  status: string
+  miningPower: number
+  maximumPower: number
+  point: number
+  pointUnClaimed: number
+  xp: number
+  avatar: null | string
+  level: number
+  lastLoginTime: number
+  timeStartMining: number
+  lastCheckin: number
+}
+
+export enum CURRENT_STATUS {
+  DETECTED_DEVICE_INFO = 'DETECTED_DEVICE_INFO',
+  STARTED = 'STARTED'
+}
+
+export type IDeviceItem = {
+  type: string
+  name: string
+  point: number
+}
