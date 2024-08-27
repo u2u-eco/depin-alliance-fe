@@ -1,4 +1,5 @@
-"use client"
+/* eslint-disable @next/next/no-img-element */
+'use client'
 
 import { AnimatePresence } from 'framer-motion'
 import React from 'react'
@@ -8,7 +9,12 @@ const Loading = () => {
     <AnimatePresence mode="wait">
       <div className="loading section">
         <div className="relative">
-          <img className="mx-auto" src="/assets/images/loading-background.png" srcSet="/assets/images/loading-background.png 1x, /assets/images/loading-background@2x.png 2x" alt="Loading Background" />
+          <img
+            className="mx-auto"
+            src="/assets/images/loading-background.png"
+            srcSet="/assets/images/loading-background.png 1x, /assets/images/loading-background@2x.png 2x"
+            alt="Loading Background"
+          />
           <div className="absolute top-[120px] left-0 right-0">
             <img className="mx-auto" src="/assets/images/logo.svg" alt="Logo" />
           </div>
