@@ -10,16 +10,12 @@ import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { UPGRADE_TAB } from '@/constants'
+import { useUserInfo } from '@/hooks/useUserInfo'
 
 export default function HomePage() {
-  const { token, userInfo, setUserInfo, setDevice } = useCommonStore()
+  const { token, userInfo, setDevice } = useCommonStore()
 
-  const _getUserInfo = async () => {
-    const res = await getUserInfo()
-    if (res.status) {
-      setUserInfo({ info: res.data })
-    }
-  }
+  useUserInfo()
 
   const _getUserDevice = async () => {
     const res = await getUserDevice()
@@ -68,7 +64,6 @@ export default function HomePage() {
 
   useEffect(() => {
     if (token) {
-      _getUserInfo()
       _getUserDevice()
     }
   }, [token])

@@ -44,4 +44,5 @@ export interface IWebApp {
     isActive: boolean
   }
   HapticFeedback: unknown
+  shareToStory: (url: string) => void
 }

@@ -126,6 +126,7 @@ export default function Mining() {
 
   useEffect(() => {
     if (userInfo?.timeStartMining) {
+      console.log('🚀 ~ useEffect ~ userInfo:', userInfo)
       setType(HOME_TYPE.MINING)
       calculatorMining()
     } else {
