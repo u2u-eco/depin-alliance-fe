@@ -872,6 +872,7 @@ button {
 }
 
 .btn {
+  font-family: var(--ff-mona);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -887,6 +888,9 @@ button {
 }
 .btn.error .btn-border::before, .btn.error .btn-border::after {
   border-color: var(--red);
+}
+.btn.inactive .btn-border::before, .btn.inactive .btn-border::after, .btn.default .btn-border::before, .btn.default .btn-border::after {
+  border-color: theme("colors.green.100");
 }
 .btn .btn-border {
   position: absolute;
@@ -923,35 +927,38 @@ button {
 .btn .btn-border:last-child::before, .btn .btn-border:last-child::after {
   border-bottom-width: 1px;
 }
-.btn .btn-primary {
+.btn .btn-primary, .btn .btn-error, .btn .btn-default, .btn .btn-inactive {
   margin: 4px;
-  background: var(--gradient);
-  color: var(--dark-green);
   padding: 14px 20px;
   width: 100%;
   transition: all 0.6s ease-out;
   text-align: center;
 }
-.btn .btn-default {
+.btn .btn-primary {
+  background: var(--gradient);
+  color: var(--dark-green);
+  box-shadow: 0 0 24px rgba(123, 255, 99, 0.35);
+}
+.btn .btn-default, .btn .btn-inactive {
   background: rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(16px);
           backdrop-filter: blur(16px);
-  padding: 12px 12px;
-  margin: 4px;
-  width: 100%;
+  color: var(--white);
+}
+.btn .btn-inactive {
+  color: theme("colors.inactive");
 }
 .btn .btn-error {
-  margin: 4px;
   background: theme("backgroundImage.gradient-error");
   color: var(--white);
-  padding: 14px 20px;
-  width: 100%;
-  transition: all 0.6s ease-out;
-  text-align: center;
+  box-shadow: 0 0 24px rgba(229, 57, 53, 0.35);
 }
 .btn:hover .btn-primary {
   box-shadow: 0 0 24px rgba(123, 255, 99, 0.6);
   background: var(--primary);
+}
+.btn:hover .btn-error {
+  box-shadow: 0 0 24px rgba(229, 57, 53, 0.6);
 }
 
 .text-point {

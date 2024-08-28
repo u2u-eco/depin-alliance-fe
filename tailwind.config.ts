@@ -13,8 +13,9 @@ const config = {
   ],
   theme: {
     screens: {
-      '2xs': '375px',
-      'xs': '425px',
+      'xs': '375px',
+      '2xs': '425px',
+      '3xs': '480px',
       'sm': '576px',
       'md': '768px',
       'lg': '992px',
