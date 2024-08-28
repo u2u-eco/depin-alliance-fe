@@ -1,5 +1,5 @@
-import { formatNumber } from '@/app/helper/common'
-import { claimRewardNewUser } from '@/app/services/user'
+import { formatNumber } from '@/helper/common'
+import { claimRewardNewUser } from '@/services/user'
 import { useEffect, useState } from 'react'
 
 export default function NewbieReward() {

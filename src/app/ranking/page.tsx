@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import CustomList from '@/app/components/custom-list'
 import CustomPage from '@/app/components/custom-page'
 import { useQuery } from '@tanstack/react-query'
-import { getRanking } from '../services/user'
+import { getRanking } from '../../services/user'
 import Image from 'next/image'
 
 const RANKING_TYPE = {
@@ -29,8 +29,8 @@ const listSkill = [
 
 export default function RankingPage() {
   const [activeType, setActiveType] = useState(RANKING_TYPE.ENGINER)
-  const { data } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
-  console.log('🚀 ~ RankingPage ~ data:', data)
+  const { data: listRanking } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
+  console.log('🚀 ~ RankingPage ~ listRanking:', listRanking)
   return (
     <CustomPage>
       <div className="relative flex items-center justify-center space-x-4">
@@ -115,7 +115,12 @@ export default function RankingPage() {
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.35 }}
           >
-            <CustomList type="ranking" data={listEnginer} />
+            <CustomList
+              type="ranking"
+              data={listRanking?.data?.ranking}
+              titleItemKey={'username'}
+              imageItemKey={'avatar'}
+            />
           </motion.div>
         ) : (
           <motion.div

@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
-import { INIT_DATA } from '@/app/constants'
-import { userAuth } from '@/app/services/user'
-import https from '@/app/constants/https'
-import { useTelegram } from '@/app/hooks/useTelegram'
-import useCommonStore from './stores/commonStore'
+import { INIT_DATA } from '@/constants'
+import { userAuth } from '@/services/user'
+import https from '@/constants/https'
+import { useTelegram } from '@/hooks/useTelegram'
+import useCommonStore from '@/stores/commonStore'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const { token, setToken, setCurrentStatus } = useCommonStore((state) => state)

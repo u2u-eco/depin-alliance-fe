@@ -4,7 +4,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import React from 'react'
 import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
-import TelegramProvider from '../contexts/telegram.context'
+import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function Layout({ children }: any) {

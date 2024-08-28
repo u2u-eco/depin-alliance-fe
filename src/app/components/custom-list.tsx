@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { ReactNode } from 'react'
 import CustomItem from './custom-item'
 
@@ -5,9 +6,11 @@ interface ListProps {
   type: string
   title?: string
   data: any
+  titleItemKey?: string
+  imageItemKey?: string
 }
 
-const CustomList = ({ type, title, data }: ListProps) => {
+const CustomList = ({ type, title, data, titleItemKey, imageItemKey }: ListProps) => {
   return (
     <div className="flex flex-col space-y-4">
       {title && (
@@ -18,8 +21,12 @@ const CustomList = ({ type, title, data }: ListProps) => {
       {data?.map((item: any, index: number) => (
         <CustomItem
           type={type}
-          title={item.title || `${item.type} ${item.name}`}
-          image={item.image || `upgrade/upgrade-${item.type?.toLowerCase()}`}
+          title={(titleItemKey && item[titleItemKey]) || item.title || `${item.type} ${item.name}`}
+          image={
+            (imageItemKey && item[imageItemKey]) ||
+            item.image ||
+            `upgrade/upgrade-${item.type?.toLowerCase()}`
+          }
           icon={item.icon}
           rank={index + 1}
           done={item.done}

@@ -1,9 +1,9 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import { formatNumber } from '../helper/common'
+import { formatNumber } from '../../helper/common'
 import Link from 'next/link'
-import useCommonStore from '../stores/commonStore'
+import useCommonStore from '@/stores/commonStore'
 
 interface InfoProps {
   click: () => void

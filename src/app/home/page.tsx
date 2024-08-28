@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { getUserInfo } from '../services/user'
-import { formatNumber } from '../helper/common'
+import { getUserInfo } from '../../services/user'
+import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
-import { getUserDevice } from '../services/devices'
+import { getUserDevice } from '../../services/devices'
 import CustomPage from '../components/custom-page'
-import useCommonStore from '../stores/commonStore'
+import useCommonStore from '@/stores/commonStore'
 
 export default function HomePage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
