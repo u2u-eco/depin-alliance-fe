@@ -25,7 +25,7 @@ export default function Mining() {
   }
   const interval = (timeEnd: number, currentPoint: number, miningPowerPerSecond: number) => {
     let miningCount = currentPoint
-    refInterval.current = setInterval(function () {
+    const update = () => {
       // Get today's date and time
       miningCount += miningPowerPerSecond
       setMiningCount(miningCount)
@@ -54,7 +54,9 @@ export default function Mining() {
         setTimeCountdown([])
         setType(HOME_TYPE.CLAIM)
       }
-    }, 1000)
+    }
+    update()
+    refInterval.current = setInterval(update, 1000)
   }
 
   const calculatorMining = () => {
@@ -67,6 +69,7 @@ export default function Mining() {
       const timeEnd = dayjs(userInfo.timeStartMining * 1000)
         .add(remainingTimeBySecond, 'second')
         .valueOf()
+
       const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
       setMiningCount(currentPoint)
@@ -126,7 +129,6 @@ export default function Mining() {
 
   useEffect(() => {
     if (userInfo?.timeStartMining) {
-      console.log('🚀 ~ useEffect ~ userInfo:', userInfo)
       setType(HOME_TYPE.MINING)
       calculatorMining()
     } else {
