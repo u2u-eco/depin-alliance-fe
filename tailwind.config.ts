@@ -64,6 +64,8 @@ const config = {
           900: '#31330B',
         },
         'white-50': '#ffffff80',
+        'success': '#00FF90',
+        'error': '#E53935',
         'body': '#9D9FAF',
         'title': '#F4F5F7',
       },

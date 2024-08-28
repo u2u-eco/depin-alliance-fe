@@ -45,7 +45,7 @@
 
 
 body {
-  font-family: var(--ff-geist);
+  font-family: theme('fontFamily.geist');
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
@@ -220,6 +220,12 @@ button {
 .text-point {
   text-shadow: 0 0 8px rgba(0, 255, 144, 0.45);
   background: linear-gradient(to right, #FFFFFF, #00FF90);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient {
+  background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

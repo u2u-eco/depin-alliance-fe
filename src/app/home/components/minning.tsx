@@ -1,8 +1,8 @@
-import { claim, getUserInfo, mining } from '@/app/services/user'
+import { claim, getUserInfo, mining } from '@/services/user'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
-import { formatNumber } from '@/app/helper/common'
-import useCommonStore from '@/app/stores/commonStore'
+import { formatNumber } from '@/helper/common'
+import useCommonStore from '@/stores/commonStore'
 
 const HOME_TYPE = {
   START: 'start',

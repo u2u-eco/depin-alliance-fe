@@ -1,14 +1,17 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
-import { Tab, Tabs } from '@nextui-org/react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import CustomList from '../components/custom-list'
-import { getDevicesByType } from '../services/devices'
-import { IDeviceTypeItem } from '../interfaces/i.devices'
-import { UPGRADE_TAB } from '../constants'
+import { addDeviceItem, getDevicesByType } from '../../services/devices'
+import { IDeviceItemAddParam, IDeviceTypeItem } from '../../interfaces/i.devices'
+import { UPGRADE_TAB } from '../../constants'
 import CustomPage from '../components/custom-page'
-import useCommonStore from '../stores/commonStore'
+import useCommonStore from '@/stores/commonStore'
+import CustomModal from '../components/custom-modal'
+import UpgradeModal from './components/upgrade-modal'
+import { toast } from 'sonner'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -16,13 +19,15 @@ const UPGRADE_TYPE = {
 }
 
 const listSkill = [
-  { id: 1, title: 'Programing', level: '12', image: 'skill-programing' },
-  { id: 2, title: 'Design', level: '12', image: 'skill-design' },
-  { id: 3, title: 'Marketing', level: '12', image: 'skill-marketing' },
-  { id: 4, title: 'Social Networking', level: '12', image: 'skill-social' }
+  { id: 1, title: 'Programing', level: '12', image: 'upgrade/upgrade-skill-programing' },
+  { id: 2, title: 'Design', level: '12', image: 'upgrade/upgrade-skill-design' },
+  { id: 3, title: 'Marketing', level: '12', image: 'upgrade/upgrade-skill-marketing' },
+  { id: 4, title: 'Social Networking', level: '12', image: 'upgrade/upgrade-skill-social' }
 ]
 
 export default function UpgradePage() {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const currentItem = useRef<any>()
   const [activeType, setActiveType] = useState(UPGRADE_TYPE.DEVICE)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
   const token = useCommonStore((state) => state.token)
@@ -36,6 +41,19 @@ export default function UpgradePage() {
 
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
+  }
+
+  const handleClickItem = (item: IDeviceTypeItem) => {
+    currentItem.current = item
+    onOpen()
+  }
+
+  const buy = async (data: IDeviceItemAddParam) => {
+    const res = await addDeviceItem(data)
+    if (res.status) {
+      toast.success('Buy successfully!')
+      onClose()
+    }
   }
 
   useEffect(() => {
@@ -104,7 +122,7 @@ export default function UpgradePage() {
                 exit={{ y: -25, opacity: 0 }}
                 transition={{ duration: 0.35 }}
               >
-                <CustomList type="device" data={listDevice} />
+                <CustomList type="device" data={listDevice} onClickItem={handleClickItem} />
               </motion.div>
             </div>
           ) : (
@@ -119,6 +137,19 @@ export default function UpgradePage() {
           )}
         </div>
       </CustomPage>
+      <CustomModal
+        title={activeType === UPGRADE_TYPE.DEVICE ? 'DEVICE' : 'SKILL'}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+      >
+        <UpgradeModal
+          activeType={activeType}
+          UPGRADE_TYPE={UPGRADE_TYPE}
+          item={currentItem.current}
+          handleAction={buy}
+        />
+      </CustomModal>
     </>
   )
 }
