@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
-import { claim, detectDeviceInfo } from '../services/user'
-import { CURRENT_STATUS } from '../interfaces/i.user'
+import { claim, detectDeviceInfo } from '../../services/user'
+import { CURRENT_STATUS } from '../../interfaces/i.user'
 import NewbieReward from './components/NewbieReward'
-import useCommonStore from '../stores/commonStore'
+import useCommonStore from '@/stores/commonStore'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',

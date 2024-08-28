@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { CURRENT_STATUS, IDeviceItem, IUserInfo } from '../interfaces/i.user'
+import { CURRENT_STATUS, IDeviceItem, IUserInfo } from '@/interfaces/i.user'
 
 interface CommonState {
   isOpenPopup: boolean

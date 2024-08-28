@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import useCommonStore from '../stores/commonStore'
+import useCommonStore from '@/stores/commonStore'
 interface CardProps {
   shadow?: boolean
 }

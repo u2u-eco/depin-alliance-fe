@@ -1,4 +1,4 @@
-import { ITelegramUser, IWebApp } from '@/app/interfaces/i.telegram'
+import { ITelegramUser, IWebApp } from '@/interfaces/i.telegram'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
 export interface ITelegramContext {

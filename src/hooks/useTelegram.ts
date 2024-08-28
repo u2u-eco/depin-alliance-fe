@@ -1,4 +1,4 @@
-import { TelegramContextValue } from '@/app/contexts/telegram.context'
+import { TelegramContextValue } from '@/contexts/telegram.context'
 import { useContext } from 'react'
 
 export const useTelegram = () => {
