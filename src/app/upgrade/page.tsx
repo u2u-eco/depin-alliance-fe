@@ -2,14 +2,13 @@
 
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
-import Info from '../components/info'
 import { Tab, Tabs } from '@nextui-org/react'
 import CustomList from '../components/custom-list'
 import { getDevicesByType } from '../services/devices'
 import { IDeviceTypeItem } from '../interfaces/i.devices'
-import { useAppSelector } from '../hooks/useToolkit'
 import { UPGRADE_TAB } from '../constants'
 import CustomPage from '../components/custom-page'
+import useCommonStore from '../stores/commonStore'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -26,7 +25,7 @@ const listSkill = [
 export default function UpgradePage() {
   const [activeType, setActiveType] = useState(UPGRADE_TYPE.DEVICE)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
-  const { token } = useAppSelector((state) => state.common)
+  const token = useCommonStore((state) => state.token)
   const [listDevice, setListDevice] = useState<Array<IDeviceTypeItem>>([])
   const getListDevice = async () => {
     const res = await getDevicesByType(activeTab)

@@ -1,9 +1,8 @@
-import { useAppDispatch, useAppSelector } from '@/app/hooks/useToolkit'
 import { claim, getUserInfo, mining } from '@/app/services/user'
-import { setUserInfo } from '@/app/stores/slices/common'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/app/helper/common'
+import useCommonStore from '@/app/stores/commonStore'
 
 const HOME_TYPE = {
   START: 'start',
@@ -12,12 +11,11 @@ const HOME_TYPE = {
 }
 export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
-  const { userInfo } = useAppSelector((state) => state.common)
+  const { userInfo, setUserInfo } = useCommonStore()
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
   const refInterval = useRef<any>()
   const refButton = useRef<any>(null)
-  const dispatch = useAppDispatch()
 
   const addPrefix = (number: number) => {
     if (number >= 10) {
@@ -60,24 +58,26 @@ export default function Mining() {
   }
 
   const calculatorMining = () => {
-    clearInterval(refInterval.current)
-    const miningPowerPerSecond = userInfo.miningPower / 3600
-    const remainingTimeBySecond = userInfo.pointUnClaimed
-      ? userInfo.maximumPower - userInfo.pointUnClaimed
-      : userInfo.maximumPower
-    const timeEnd = dayjs(userInfo.timeStartMining * 1000)
-      .add(remainingTimeBySecond, 'second')
-      .valueOf()
-    const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
-    const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
-    setMiningCount(currentPoint)
-    interval(timeEnd, currentPoint, miningPowerPerSecond)
+    if (userInfo) {
+      clearInterval(refInterval.current)
+      const miningPowerPerSecond = userInfo.miningPower / 3600
+      const remainingTimeBySecond = userInfo.pointUnClaimed
+        ? userInfo.maximumPower - userInfo.pointUnClaimed
+        : userInfo.maximumPower
+      const timeEnd = dayjs(userInfo.timeStartMining * 1000)
+        .add(remainingTimeBySecond, 'second')
+        .valueOf()
+      const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
+      const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
+      setMiningCount(currentPoint)
+      interval(timeEnd, currentPoint, miningPowerPerSecond)
+    }
   }
 
   const updateUserInfo = async () => {
     const res = await getUserInfo()
     if (res.status) {
-      dispatch(setUserInfo({ info: res.data }))
+      setUserInfo({ info: res.data })
     }
   }
 
@@ -125,7 +125,7 @@ export default function Mining() {
   }, [refButton])
 
   useEffect(() => {
-    if (userInfo.timeStartMining) {
+    if (userInfo?.timeStartMining) {
       setType(HOME_TYPE.MINING)
       calculatorMining()
     } else {

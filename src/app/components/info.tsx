@@ -1,9 +1,9 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import { useAppSelector } from '../hooks/useToolkit'
 import { formatNumber } from '../helper/common'
 import Link from 'next/link'
+import useCommonStore from '../stores/commonStore'
 
 interface InfoProps {
   click: () => void
@@ -12,7 +12,7 @@ interface InfoProps {
 const Info = () => {
   const pathName = usePathname()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { userInfo } = useAppSelector((state) => state.common)
+  const userInfo = useCommonStore((state) => state.userInfo)
   return (
     <>
       <div className="relative w-fit mx-auto">
@@ -41,7 +41,7 @@ const Info = () => {
               <div className="text-white text-base font-semibold min-h-5">{userInfo?.username}</div>
               <div className="flex items-center space-x-4">
                 <Link href="/ranking" className="flex items-center space-x-1">
-                  <span className="font-geist text-yellow-500">LV. {userInfo.level}</span>
+                  <span className="font-geist text-yellow-500">LV. {userInfo?.level}</span>
                   <img
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
@@ -55,7 +55,7 @@ const Info = () => {
                     src="/assets/images/icons/icon-thunder.svg"
                     alt="Icon Thunder"
                   />
-                  <span className="font-geist text-yellow-500">{userInfo.miningPower}</span>
+                  <span className="font-geist text-yellow-500">{userInfo?.miningPower}</span>
                   <img
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
@@ -74,23 +74,25 @@ const Info = () => {
           </div>
         </div>
 
-          <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center space-x-1">
-            <p className="font-geist uppercase text-white tracking-[-1px]">{pathName !== '/home' ? 'TP:' : 'total point'}</p>
-            {pathName !== '/home' && (
-                <div className="flex items-center space-x-1">
-                  <img
-                    className="size-5"
-                    src="/assets/images/point.png"
-                    srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                    alt="Point"
-                  />
-                  <div className="text-point font-geist text-base font-bold">
-                    {' '}
-                    {userInfo.point ? formatNumber(userInfo.point, 0, 0) : 0}
-                  </div>
-                </div>
-            )}
-          </div>
+        <div className="absolute left-[50%] bottom-[-15px] translate-x-[-50%] flex items-center space-x-1">
+          <p className="font-geist uppercase text-white tracking-[-1px]">
+            {pathName !== '/home' ? 'TP:' : 'total point'}
+          </p>
+          {pathName !== '/home' && (
+            <div className="flex items-center space-x-1">
+              <img
+                className="size-5"
+                src="/assets/images/point.png"
+                srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                alt="Point"
+              />
+              <div className="text-point font-geist text-base font-bold">
+                {' '}
+                {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

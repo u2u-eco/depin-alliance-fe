@@ -5,7 +5,6 @@ import React from 'react'
 import CustomNavbar from './custom-navbar'
 import { usePathname } from 'next/navigation'
 import TelegramProvider from '../contexts/telegram.context'
-import ReduxProvider from '../contexts/redux.context'
 
 export default function Layout({ children }: any) {
   const pathName = usePathname()
@@ -13,12 +12,10 @@ export default function Layout({ children }: any) {
   return (
     <div className="wrapper">
       <TelegramProvider>
-        <ReduxProvider>
-          <NextUIProvider>
-            {children}
-            {/* {pathName !== '/' && <CustomNavbar />} */}
-          </NextUIProvider>
-        </ReduxProvider>
+        <NextUIProvider>
+          {children}
+          {/* {pathName !== '/' && <CustomNavbar />} */}
+        </NextUIProvider>
       </TelegramProvider>
     </div>
   )
