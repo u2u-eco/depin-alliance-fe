@@ -15,13 +15,13 @@ const CustomList = ({ type, title, data }: ListProps) => {
           {title}
         </div>
       )}
-      {data?.map((item: any) => (
+      {data?.map((item: any, index: number) => (
         <CustomItem
           type={item.type}
           title={item.title || `${item.type} ${item.name}`}
           image={item.image || `upgrade/upgrade-${item.type?.toLowerCase()}`}
           icon={item.icon}
-          rank={item.rank}
+          rank={index}
           done={item.done}
           key={item.code}
         >

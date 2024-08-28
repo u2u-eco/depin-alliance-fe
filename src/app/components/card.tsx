@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { useAppSelector } from '../hooks/useToolkit'
+import useCommonStore from '../stores/commonStore'
 interface CardProps {
   shadow?: boolean
 }
 
 const Card = ({ shadow }: CardProps) => {
-  const { deviceInfo } = useAppSelector((state) => state.common)
+  const deviceInfo = useCommonStore((state) => state.deviceInfo)
   return (
     <div className="card">
       <div className="card__background">

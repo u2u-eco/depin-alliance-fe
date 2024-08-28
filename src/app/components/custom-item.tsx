@@ -6,7 +6,7 @@ interface ItemProps {
   image?: string
   icon?: string
   done?: boolean
-  rank?: string
+  rank?: number
   title: string
   children: ReactNode
 }
@@ -14,7 +14,7 @@ interface ItemProps {
 const CustomItem = ({ type, image, icon, done, rank, title, children }: ItemProps) => {
   return (
     <div
-      className={`relative before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between ${type === 'mission' ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900') : type === 'ranking' ? `${rank === '1' ? 'before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]' : rank === '2' ? 'before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]' : rank === '3' ? 'before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]' : 'before:bg-item-green after:border-b-green-900 after:border-r-green-900'} before:opacity-50` : 'before:opacity-20 before:bg-item-green after:border-b-green-900 after:border-r-green-900'}`}
+      className={`relative before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between ${type === 'mission' ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900') : type === 'ranking' ? `${rank === 1 ? 'before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]' : rank === 2 ? 'before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]' : rank === 3 ? 'before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]' : 'before:bg-item-green after:border-b-green-900 after:border-r-green-900'} before:opacity-50` : 'before:opacity-20 before:bg-item-green after:border-b-green-900 after:border-r-green-900'}`}
     >
       <div className="flex items-center space-x-4">
         <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
@@ -39,7 +39,7 @@ const CustomItem = ({ type, image, icon, done, rank, title, children }: ItemProp
             <img src="/assets/images/icons/icon-double-arrow-up-gradient.svg" alt="" />
           </div>
         ) : type === 'ranking' ? (
-          rank === '1' || rank === '2' || rank === '3' ? (
+          rank === 1 || rank === 2 || rank === 3 ? (
             <img
               className="size-[60px]"
               src={`/assets/images/ranking/rank-0${rank}.png`}

@@ -7,11 +7,9 @@ import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
 import { claim, detectDeviceInfo } from '../services/user'
-import { useDispatch } from 'react-redux'
-import { setDevice } from '../stores/slices/common'
-import { useAppSelector } from '../hooks/useToolkit'
 import { CURRENT_STATUS } from '../interfaces/i.user'
 import NewbieReward from './components/NewbieReward'
+import useCommonStore from '../stores/commonStore'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',
@@ -23,14 +21,14 @@ const ONBOARDING_TYPE = {
 
 const Onboarding = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const { currentStatus, token } = useAppSelector((state) => state.common)
+  const setDevice = useCommonStore((state) => state.setDevice)
+  const { currentStatus, token } = useCommonStore()
   const [type, setType] = useState(ONBOARDING_TYPE.SPLASH)
   const _getDeviceInfo = async () => {
     try {
       const res = await detectDeviceInfo()
       if (res.status) {
-        dispatch(setDevice({ info: res.data }))
+        setDevice({ info: res.data })
         setType(ONBOARDING_TYPE.DEVICE)
       }
     } catch (ex) {
