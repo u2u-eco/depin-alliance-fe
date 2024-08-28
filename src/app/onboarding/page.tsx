@@ -154,7 +154,7 @@ const Onboarding = () => {
               {(type === ONBOARDING_TYPE.START ||
                 type === ONBOARDING_TYPE.DEVICE ||
                 type === ONBOARDING_TYPE.SCHOLARSHIP) && (
-                <div className="absolute bottom-0 left-0 right-0 p-4 max-[479px]:p-3">
+                <div className="absolute bottom-0 left-0 right-0 p-4 max-3xs:p-3">
                   <button
                     className="btn"
                     onClick={() => {

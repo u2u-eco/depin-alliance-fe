@@ -19,7 +19,7 @@ const CustomModal = ({ title, children, isOpen, onOpen, onOpenChange }: ModalPro
       placement="bottom"
       hideCloseButton
       classNames={{
-        base: "max-w-full m-0 rounded-none bg-[linear-gradient(to_top,#000000,#002012)] py-10 px-4 border-t-[0.5px] border-t-green-600 [clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)]",
+        base: "max-w-full m-0 rounded-none bg-green-600 before:content-[''] before:bottom-0 before:absolute before:left-0 before:size-full before:z-[-1] before:bg-[linear-gradient(to_top,#000000,#002012)] py-10 px-4 border-t-[0.5px] border-t-green-600 [clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] before:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)]",
         backdrop: "bg-black/30 backdrop-blur-[8px]"
       }}
     >

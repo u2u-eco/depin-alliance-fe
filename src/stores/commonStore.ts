@@ -19,7 +19,7 @@ const useCommonStore = create<CommonState>((set) => ({
   userInfo: null,
   deviceInfo: [],
   currentStatus: CURRENT_STATUS.STARTED,
-  setToken: ({ token }) => set(() => ({ token })),
+  setToken: ({ token }) => set({ token }),
   setUserInfo: ({ info }) => set({ userInfo: info }),
   setDevice: ({ info }) => set({ deviceInfo: info }),
   setCurrentStatus: ({ status }) => set({ currentStatus: status })

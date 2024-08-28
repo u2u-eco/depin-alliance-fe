@@ -20,7 +20,8 @@ export default function Mining() {
 
   const calculatorMining = () => {
     if (userInfo) {
-      clearInterval(refInterval.current)
+      // clearInterval(refInterval.current)
+      workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
       const miningPowerPerSecond = userInfo.miningPower / 3600
       const remainingTimeBySecond = userInfo.pointUnClaimed
         ? userInfo.maximumPower - userInfo.pointUnClaimed
@@ -34,6 +35,7 @@ export default function Mining() {
       setMiningCount(currentPoint)
       workerRef.current?.postMessage(
         JSON.stringify({
+          type: 'COUNTDOWN',
           timeEnd,
           currentPoint,
           miningPowerPerSecond
