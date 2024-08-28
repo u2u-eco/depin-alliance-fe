@@ -7,6 +7,7 @@ import CustomPage from '@/app/components/custom-page'
 import { useQuery } from '@tanstack/react-query'
 import { getRanking } from '../../services/user'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const RANKING_TYPE = {
   ENGINER: 'enginer',
@@ -28,14 +29,18 @@ const listSkill = [
 ]
 
 export default function RankingPage() {
+  const router = useRouter()
   const [activeType, setActiveType] = useState(RANKING_TYPE.ENGINER)
   const { data: listRanking } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
-  console.log('🚀 ~ RankingPage ~ listRanking:', listRanking)
+  const handleBack = () => {
+    router.back()
+  }
   return (
     <CustomPage>
       <div className="relative flex items-center justify-center space-x-4">
         <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer">
           <Image
+            onClick={handleBack}
             width={0}
             height={0}
             style={{ width: '100%', height: 'auto' }}

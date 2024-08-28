@@ -6,3 +6,10 @@ export interface IDeviceTypeItem {
   price: number
   image: string | null
 }
+
+export interface IDeviceItemAddParam {
+  code: string
+  isBuy: boolean
+  number: number
+  index: number
+}
