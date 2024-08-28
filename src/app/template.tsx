@@ -8,7 +8,7 @@ import { useTelegram } from '@/app/hooks/useTelegram'
 import useCommonStore from './stores/commonStore'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
-  const { setToken, setCurrentStatus } = useCommonStore((state) => state)
+  const { token, setToken, setCurrentStatus } = useCommonStore((state) => state)
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
 
@@ -27,10 +27,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (initData) {
+    if (initData && !token) {
       login(initData)
     }
-  }, [initData])
+  }, [initData, token])
 
   return <>{children}</>
 }
