@@ -41,34 +41,45 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Build, tag, and push image to Amazon ECR
+    - name: Build Image
       id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        DEV_ECR_REGISTRY: ${{ secrets.DEV_ECR_REGISTRY }}
       run: |
         cp .env .prod.env
         cp .prod.env .env.production
-
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
-  
+
         echo "Build a docker container and push it to ECR" 
-        echo "Image: $ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA"
-        docker build --build-arg GIT_COMMIT=$GITHUB_SHA --build-arg GIT_TAG=${GITHUB_REF#refs/*/} --build-arg COMPILED_AT=$(date +'%Y-%m-%dT%H:%M:%S') -f ${{ vars.DOCKERFILE_PATH }} -t $ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA .
+        echo "Image: $DEV_ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA"
+        docker build --build-arg GIT_COMMIT=$GITHUB_SHA --build-arg GIT_TAG=${GITHUB_REF#refs/*/} --build-arg COMPILED_AT=$(date +'%Y-%m-%dT%H:%M:%S') -f ${{ vars.DOCKERFILE_PATH }} -t $DEV_ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA -t $DEV_ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/} .
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Push image to Amazon ECR
+      id: push-image
+      env:
+        DEV_ECR_REGISTRY: ${{ secrets.DEV_ECR_REGISTRY }}
+      run: |
+        SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
 
         echo "Pushing image to ECR..."
-        docker push $ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA
+        docker push $DEV_ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}
+        docker push $DEV_ECR_REGISTRY/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA
 
-  update-image:
-    name: update-image
+  deploy:
+    name: deploy
     needs: build
-    runs-on: k8s-prod
-    environment: production
+    runs-on: k8s-develop
+    environment: staging
 
     steps:
     - uses: actions/checkout@v4
-      name: Checkout K8S Deployment Manifest repo
+      name: Check out code repo K8S Deployment Manifest
       with:
-        repository: ${{ secrets.K8S_MANIFEST_REPO_PROD }}
+        repository: ${{ secrets.K8S_MANIFEST_REPO_DEV }}
         token: ${{ secrets.CI_PUSH_TOKEN }}
 
     - name: Setup Kustomize
@@ -87,20 +98,8 @@ jobs:
         echo "Update newimage with kustomize"
         SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
 
-        cd ${{ vars.KUSTOMIZE_PROJECT_PATH }}/production
-        kustomize edit set image ${{ secrets.PROD_ECR_REGISTRY }}/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA
+        cd ${{ vars.KUSTOMIZE_PROJECT_PATH }}/staging
+        kustomize edit set image ${{ secrets.DEV_ECR_REGISTRY }}/${{ vars.U2U_SERVICE_NAME }}:${GITHUB_REF#refs/*/}-$SHORT_SHA
         cat kustomization.yaml
         git commit -am "[${{ github.repository }}] $GITHUB_ACTOR - $GITHUB_COMMIT_MESSAGE" || true
         git push -u origin master
-
-  deploy:
-    name: deploy
-    needs: update-image
-    runs-on: u2u-prod
-    environment: production
-
-    steps:
-    - name: Sync ArgoCD App
-      run: |
-        argocd login --insecure ${{ secrets.ARGOCD_SERVER }} --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
-        argocd --server ${{ secrets.ARGOCD_SERVER }} --insecure app sync ${{ vars.ARGOCD_APP_PRODUCTION }}
