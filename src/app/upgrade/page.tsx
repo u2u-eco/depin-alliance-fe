@@ -11,6 +11,7 @@ import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
 import UpgradeModal from './components/upgrade-modal'
+import { toast } from 'sonner'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -50,6 +51,7 @@ export default function UpgradePage() {
   const buy = async (data: IDeviceItemAddParam) => {
     const res = await addDeviceItem(data)
     if (res.status) {
+      toast.success('Buy successfully!')
       onClose()
     }
   }

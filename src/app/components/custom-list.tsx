@@ -23,7 +23,7 @@ const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem
         </div>
       )}
       {data?.map((item: any, index: number) => (
-        <div onClick={() => handleClickItem(item)}>
+        <div onClick={() => handleClickItem(item)} key={index}>
           <CustomItem
             type={type}
             title={
@@ -53,7 +53,8 @@ const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem
                     alt="Point"
                   />
                   <p className="text-primary font-geist font-semibold">
-                    {type !== 'ranking' && '+'} {item.miningPower}
+                    {type !== 'ranking' && '+'}
+                    {item.miningPower}
                   </p>
                 </div>
                 {item.available ||

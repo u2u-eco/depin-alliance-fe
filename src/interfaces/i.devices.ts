@@ -9,7 +9,6 @@ export interface IDeviceTypeItem {
 
 export interface IDeviceItemAddParam {
   code: string
-  isBuy: boolean
   number: number
   index: number
 }

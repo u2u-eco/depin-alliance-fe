@@ -22,7 +22,7 @@ const Card = ({ shadow }: CardProps) => {
             key={index}
           >
             <div className="uppercase text-green-700">{item.type}</div>
-            <div className="flex items-center space-x-1 text-title">
+            <div className="flex items-center space-x-1 text-title max-w-[75%] overflow-hidden whitespace-nowrap text-ellipsis">
               <p>{item.name}</p>
             </div>
           </div>

@@ -1,18 +1,17 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Card from '../components/card'
-import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { getUserInfo } from '../../services/user'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
 import { getUserDevice } from '../../services/devices'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
+import { IDeviceTypeItem } from '@/interfaces/i.devices'
+import { UPGRADE_TAB } from '@/constants'
 
 export default function HomePage() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { token, userInfo, setUserInfo, setDevice } = useCommonStore()
 
   const _getUserInfo = async () => {
@@ -25,7 +24,45 @@ export default function HomePage() {
   const _getUserDevice = async () => {
     const res = await getUserDevice()
     if (res.status) {
-      setDevice({ info: res.data })
+      let listInfo: any = {}
+      let listByType: any = {}
+
+      res.data.forEach((item: IDeviceTypeItem) => {
+        if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
+          if (!listInfo[item.type]) {
+            listInfo[item.type] = item
+          } else {
+            listInfo[item.type].name =
+              `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
+          }
+        } else {
+          if (!listByType[item.type]?.[item.code]) {
+            if (!listByType[item.type]) {
+              listByType[item.type] = {}
+            }
+            if (!listByType[item.type][item.code]) {
+              listByType[item.type][item.code] = {
+                ...item,
+                value: 1
+              }
+            }
+          } else {
+            if (listByType[item.type][item.code]) {
+              listByType[item.type][item.code].value += 1
+            }
+          }
+        }
+      })
+      console.log(listByType)
+      const listCPU_GPU = Object.keys(listByType).map((key) => {
+        let newItem = { type: key, name: '' }
+        Object.keys(listByType[key]).map((key2, index) => {
+          newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
+        })
+        return newItem
+      })
+      const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
+      setDevice({ info: [...listCPU_GPU, ...newData] })
     }
   }
 
