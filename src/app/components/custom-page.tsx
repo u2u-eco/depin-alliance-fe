@@ -11,7 +11,7 @@ const CustomPage = ({children}: Pageprops) => {
   return (
     <AnimatePresence mode="wait">
       <div className="section">
-        <div className="h-full overflow-y-auto flex flex-col">
+        <div className="h-full overflow-y-auto flex flex-col hide-scrollbar ">
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}

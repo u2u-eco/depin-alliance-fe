@@ -17,11 +17,11 @@ const CustomList = ({ type, title, data }: ListProps) => {
       )}
       {data?.map((item: any, index: number) => (
         <CustomItem
-          type={item.type}
+          type={type}
           title={item.title || `${item.type} ${item.name}`}
           image={item.image || `upgrade/upgrade-${item.type?.toLowerCase()}`}
           icon={item.icon}
-          rank={index}
+          rank={index + 1}
           done={item.done}
           key={item.code}
         >
