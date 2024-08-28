@@ -36,7 +36,11 @@ export default function RankingPage() {
     router.back()
   }
   return (
-    <CustomPage>
+    <CustomPage
+      classNames={{
+        wrapper: "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
+      }}
+    >
       <div className="relative flex items-center justify-center space-x-4">
         <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer">
           <Image

@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { AnimatePresence } from 'framer-motion'
 import React from 'react'
 
 const Loading = () => {
   return (
-    <AnimatePresence mode="wait">
+    <>
       <div className="loading section">
         <div className="relative h-full">
           <img
@@ -26,7 +25,7 @@ const Loading = () => {
           </div>
         </div>
       </div>
-    </AnimatePresence>
+    </>
   )
 }
 

@@ -2,15 +2,26 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { ReactNode, useEffect } from 'react'
 import Info from './info'
 import CustomNavbar from './custom-navbar'
+import type { ClassValue } from "clsx";
+import { cn } from "@/lib/utils";
+import { usePathname } from 'next/navigation';
 
 interface Pageprops {
   children: ReactNode
+  classNames?: {
+    wrapper?: ClassValue
+  }
 }
 
-const CustomPage = ({ children }: Pageprops) => {
+const CustomPage = ({ children, classNames }: Pageprops) => {
+  const pathName = usePathname()
+
   return (
     <AnimatePresence mode="wait">
-      <div className="section">
+      <div className={cn(
+        "section",
+        classNames?.wrapper
+      )}>
         <div className="h-full overflow-y-auto flex flex-col hide-scrollbar ">
           <div className="container-custom">
             <motion.div
@@ -23,7 +34,7 @@ const CustomPage = ({ children }: Pageprops) => {
               <div className="my-10 max-w-[480px] mx-auto">{children}</div>
             </motion.div>
           </div>
-          <CustomNavbar />
+          {(pathName !== '/inventory' && pathName !== '/ranking') && <CustomNavbar />}
         </div>
       </div>
     </AnimatePresence>

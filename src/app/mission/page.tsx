@@ -23,7 +23,11 @@ const listMission = [
 export default function MissionPage() {
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper: "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]"
+        }}
+      >
         <div>
           <img className="mx-auto" src="/assets/images/mission-image.png" srcSet="/assets/images/mission-image.png 1x, /assets/images/mission-image@2x.png 2x" alt="Mission Image" />
         </div>
