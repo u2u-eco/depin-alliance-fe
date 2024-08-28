@@ -40,14 +40,14 @@ const Info = () => {
             <div className="space-y-2.5">
               <div className="text-white text-base font-semibold min-h-5">{userInfo?.username}</div>
               <div className="flex items-center space-x-4">
-                <Link href="/ranking" className="flex items-center space-x-1">
+                <div className="flex items-center space-x-1">
                   <span className="font-geist text-yellow-500">LV. {userInfo?.level}</span>
                   <img
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
                   />
-                </Link>
+                </div>
                 <div className="w-[1px] h-5 bg-white/10"></div>
                 <div className="flex items-center space-x-1">
                   <img
@@ -65,12 +65,21 @@ const Info = () => {
               </div>
             </div>
           </div>
-          <div className="cursor-pointer p-2 m-2" onClick={onOpen}>
-            <img
-              className="size-6"
-              src="/assets/images/icons/icon-settings.svg"
-              alt="Icon Settings"
-            />
+          <div className="flex items-center space-x-4 mr-3">
+            <Link href="/ranking" className="p-1">
+              <img
+                className="size-6"
+                src="/assets/images/icons/icon-ranking-green.svg"
+                alt="Icon Ranking"
+              />
+            </Link>
+            <div className="cursor-pointer p-1" onClick={onOpen}>
+              <img
+                className="size-6"
+                src="/assets/images/icons/icon-settings-green.svg"
+                alt="Icon Settings"
+              />
+            </div>
           </div>
         </div>
 
