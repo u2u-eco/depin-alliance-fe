@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import CustomList from '../components/custom-list'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
+import { useTelegram } from '@/hooks/useTelegram'
 
 const listFriend = {
   title: 'FRIEND LIST',
@@ -15,6 +16,11 @@ const listFriend = {
 }
 
 export default function InvitePage() {
+  const { webApp } = useTelegram()
+
+  const handleShare = () => {
+    webApp?.shareToStory('https://dogx.io/assets/images/layouts/giveaway.jpg')
+  }
   return (
     <>
       <CustomPage>
@@ -49,7 +55,7 @@ export default function InvitePage() {
                 Earn 10,000 points each for the first 5 friends
               </div>
               <div className="flex items-center space-x-4">
-                <div className="btn">
+                <div className="btn" onClick={handleShare}>
                   <div className="btn-border"></div>
                   {/* href={`https://t.me/share/url?url=${uriCopy}?start=${user?.code}&text=Hello! Welcome to Depin Alliance`} */}
                   <div className="btn-primary">INVITE FRIEND</div>
