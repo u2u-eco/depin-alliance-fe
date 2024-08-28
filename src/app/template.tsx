@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
-import { INIT_DATA, TOKEN } from '@/app/constants'
+import { INIT_DATA } from '@/app/constants'
 import { userAuth } from '@/app/services/user'
 import { useAppDispatch } from '@/app/hooks/useToolkit'
 import { setCurrentStatus, setToken } from '@/app/stores/slices/common'
@@ -22,7 +22,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
       dispatch(setCurrentStatus({ status: res.data.currentStatus }))
       dispatch(setToken({ token: res.data?.accessToken }))
-      localStorage.setItem(TOKEN, res.data?.accessToken)
+      // localStorage.setItem(TOKEN, res.data?.accessToken)
     }
   }
 
