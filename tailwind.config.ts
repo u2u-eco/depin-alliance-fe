@@ -69,8 +69,13 @@ const config = {
       },
       backgroundImage: {
         'gradient': 'linear-gradient(to right, #00FF90, #F4FD36)',
+        'gradient-green': 'linear-gradient(315deg, #000 21%, #00331D 50%, #000 80%)',
+        'gradient-yellow': 'linear-gradient(315deg, #000 22%, #31330B 44%, #000 73%)',
         'navbar': 'linear-gradient(to top, rgba(0, 51, 29, 0), rgba(0, 51, 29, 1))',
+        'item-blue': 'linear-gradient(to right, rgba(0, 163, 255, 0.5), rgba(0, 163, 255, 0.1))',
         'item-green': 'linear-gradient(to right, rgba(0, 255, 144, 0.5), rgba(0, 255, 144, 0.1))',
+        'item-orange': 'linear-gradient(to right, rgba(255, 168, 0, 0.5), rgba(255, 168, 0, 0.1))',
+        'item-purple': 'linear-gradient(to right, rgba(186, 58, 255, 0.5), rgba(186, 58, 255, 0.1))',
         'item-yellow': 'linear-gradient(to right, rgba(244, 253, 54, 0.5), rgba(244, 253, 54, 0.1))',
       },
       fontFamily: {

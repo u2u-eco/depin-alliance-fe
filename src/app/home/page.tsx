@@ -1,39 +1,42 @@
-"use client"
+'use client'
 
 import React, { useEffect, useState } from 'react'
 import Card from '../components/card'
-import { useRouter } from 'next/navigation'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Info from '../components/info'
-
-const HOME_TYPE = {
-  START: 'start',
-  MINING: 'mining',
-  CLAIM: 'claim'
-}
+import { getUserInfo } from '../services/user'
+import { useAppDispatch, useAppSelector } from '../hooks/useToolkit'
+import { setDevice, setUserInfo } from '../stores/slices/common'
+import { formatNumber } from '../helper/common'
+import Mining from './components/minning'
+import { getUserDevice } from '../services/devices'
 
 export default function HomePage() {
-  const router = useRouter()
-  const [type, setType] = useState(HOME_TYPE.START)
-  const {isOpen, onOpen, onOpenChange} = useDisclosure()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { token, userInfo } = useAppSelector((state) => state.common)
+  const dispatch = useAppDispatch()
 
-  const handleClick = (type: any) => {
-    switch(type) {
-      case HOME_TYPE.START:
-        setType(HOME_TYPE.MINING)
-        break
-      case HOME_TYPE.CLAIM:
-        console.log(111);
-        break
+  const _getUserInfo = async () => {
+    const res = await getUserInfo()
+    if (res.status) {
+      dispatch(setUserInfo({ info: res.data }))
+    }
+  }
+
+  const _getUserDevice = async () => {
+    const res = await getUserDevice()
+    if (res.status) {
+      dispatch(setDevice({ info: res.data }))
     }
   }
 
   useEffect(() => {
-    if(type === HOME_TYPE.MINING) {
-      setTimeout(() => setType(HOME_TYPE.CLAIM), 1000)
+    if (token) {
+      _getUserInfo()
+      _getUserDevice()
     }
-  }, [type])
+  }, [token])
 
   return (
     <>
@@ -46,7 +49,7 @@ export default function HomePage() {
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <Info/>
+              <Info />
               {/* Level */}
               {/* {type !== HOME_TYPE.MINING && (
                 <div className="mt-1 bg-gray-900 mx-3 flex items-center justify-between py-2 px-4">
@@ -62,55 +65,36 @@ export default function HomePage() {
               <div className="-mt-2">
                 <div className="text-center text-white uppercase font-geist">total point</div>
                 <div className="flex items-center justify-center -space-x-1.5">
-                  <img className="size-16" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" />
-                  <p className="text-white font-geist font-bold text-3xl text-point">500,000</p>
+                  <img
+                    className="size-16"
+                    src="/assets/images/point.png"
+                    srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                    alt="Point"
+                  />
+                  <p className="text-white font-geist font-bold text-3xl text-point">
+                    {userInfo.point ? formatNumber(userInfo.point, 0, 0) : 0}
+                  </p>
                 </div>
                 <div className="mt-1">
                   <img className="mx-auto h-240px" src="/assets/images/actor.png" alt="Actor" />
                 </div>
               </div>
               {/* Button */}
-              <div className="mt-8">
-                <button className="btn" onClick={() => handleClick(type)}>
-                  <div className="btn-border"></div>
-                  {type === HOME_TYPE.MINING ? (
-                    <div className="btn-default flex items-center justify-between">
-                      <div className="flex items-center space-x-3 text-white uppercase text-base font-bold">
-                        <div>Mining</div>
-                        <div className="flex items-center space-x-1">
-                          <img className="size-6" src="/assets/images/point-color.svg" alt="Point" />
-                          <p className="font-geist text-primary text-[18px] font-semibold">2,142</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center text-base font-geist font-semibold text-title">
-                        <p className="size-[28px] flex items-center justify-center bg-white/10">03</p>
-                        <span>:</span>
-                        <p className="size-[28px] flex items-center justify-center bg-white/10">12</p>
-                        <span>:</span>
-                        <p className="size-[28px] flex items-center justify-center bg-white/10">14</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="btn-primary">{type === HOME_TYPE.START ? 'START CONTRIBUTING' : 'CLAIM NOW'}</div>
-                  )}
-                  <div className="btn-border"></div>
-                </button>
-              </div>
+              <Mining />
               {/* Info */}
               <div className="mt-6">
-                <Card/>
+                <Card />
               </div>
             </motion.div>
           </div>
         </div>
       </AnimatePresence>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <div>
-            <div className="font-airnt font-bold text-xl tracking-[1px] text-white text-center">avatar</div>
+            <div className="font-airnt font-bold text-xl tracking-[1px] text-white text-center">
+              avatar
+            </div>
           </div>
         </ModalContent>
       </Modal>

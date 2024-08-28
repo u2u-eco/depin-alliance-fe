@@ -8,9 +8,9 @@ const Loading = () => {
   return (
     <AnimatePresence mode="wait">
       <div className="loading section">
-        <div className="relative">
+        <div className="relative h-full">
           <img
-            className="mx-auto"
+            className="mx-auto h-full object-cover"
             src="/assets/images/loading-background.png"
             srcSet="/assets/images/loading-background.png 1x, /assets/images/loading-background@2x.png 2x"
             alt="Loading Background"
