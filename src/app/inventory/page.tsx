@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -18,7 +18,7 @@ const listHardware = [
   { id: 3, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
   { id: 4, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
   { id: 5, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 6, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
+  { id: 6, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' }
 ]
 
 export default function InventoryPage() {
@@ -29,7 +29,8 @@ export default function InventoryPage() {
   return (
     <CustomPage
       classNames={{
-        wrapper: "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
+        wrapper:
+          "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
       }}
     >
       <div className="relative flex items-center justify-center space-x-4">
@@ -98,27 +99,51 @@ export default function InventoryPage() {
                 />
                 <div className="absolute top-0 left-0 right-0 w-full h-full px-5 py-4 space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="text-gradient font-mona text-xl font-semibold uppercase">RAM</div>
+                    <div className="text-gradient font-mona text-xl font-semibold uppercase">
+                      RAM
+                    </div>
                     <div className="flex items-center space-x-1">
-                      <img className="size-6" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" />
-                      <div className="text-base text-green-500">1,000<span className="text-body">/hour</span></div>
+                      <img
+                        className="size-6"
+                        src="/assets/images/point.png"
+                        srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                        alt="Point"
+                      />
+                      <div className="text-base text-green-500">
+                        1,000<span className="text-body">/hour</span>
+                      </div>
                     </div>
                   </div>
                   <div className="flex space-x-5">
                     <div className="flex-1 p-[14px] bg-white/10 [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_22px)]">
                       <div className="flex items-center space-x-4">
-                        <img className="size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]" src="/assets/images/upgrade/upgrade-ram-2gb.png" alt="" />
+                        <img
+                          className="size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]"
+                          src="/assets/images/upgrade/upgrade-ram-2gb.png"
+                          alt=""
+                        />
                         <div className="space-y-2">
-                          <p className="font-mona text-base font-semibold text-white leading-[20px]">RAM 2GB</p>
+                          <p className="font-mona text-base font-semibold text-white leading-[20px]">
+                            RAM 2GB
+                          </p>
                           <div className="flex items-center space-x-1">
-                            <img src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" className="size-4" />
+                            <img
+                              src="/assets/images/point.png"
+                              srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                              alt="Point"
+                              className="size-4"
+                            />
                             <p className="text-green-500 font-semibold">+100/h</p>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="size-[100px] cursor-pointer bg-white/10 flex items-center justify-center [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_22px),calc(100%_-_22px)_100%,0_100%,0_22px)]">
-                      <img className="size-8" src="/assets/images/icons/icon-plus-white.svg" alt="Icon Plus" />
+                      <img
+                        className="size-8"
+                        src="/assets/images/icons/icon-plus-white.svg"
+                        alt="Icon Plus"
+                      />
                     </div>
                   </div>
                 </div>
@@ -150,10 +175,22 @@ export default function InventoryPage() {
             >
               <div className="grid grid-cols-3 gap-4">
                 {listHardware.map((item: any) => (
-                  <div className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}>
-                    <div className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] p-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`} onClick={() => setActiveItem(item.id)}>
-                      <img className="size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]" src={`/assets/images/${item.image}.png`} alt="" />
-                      <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">{item.title}</p>
+                  <div
+                    key={item.id}
+                    className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
+                  >
+                    <div
+                      className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] p-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                      onClick={() => setActiveItem(item.id)}
+                    >
+                      <img
+                        className="size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                        src={`/assets/images/${item.image}.png`}
+                        alt=""
+                      />
+                      <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+                        {item.title}
+                      </p>
                       <p className="text-green-500">x{item.number}</p>
                     </div>
                   </div>
