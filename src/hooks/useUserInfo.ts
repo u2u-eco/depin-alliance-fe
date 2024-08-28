@@ -1,4 +1,4 @@
-import { getUserInfo } from '@/services/user'
+import { getUserInfo, mining } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { useQuery } from '@tanstack/react-query'
 
@@ -7,6 +7,7 @@ export const useUserInfo = () => {
   return useQuery({
     queryKey: ['fetchUserInfo'],
     queryFn: async () => {
+      mining()
       const res = await getUserInfo()
       if (res.status) {
         setUserInfo({ info: res.data })
@@ -19,6 +20,6 @@ export const useUserInfo = () => {
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    refetchInterval: 15000
+    refetchInterval: 30000
   })
 }

@@ -7,3 +7,11 @@ export const UPGRADE_TAB = {
   GPU: 'GPU',
   STORAGE: 'STORAGE'
 }
+
+export const QUERY_CONFIG = {
+  retry: 3,
+  retryDelay: 3000,
+  refetchOnMount: true,
+  refetchOnReconnect: false,
+  refetchOnWindowFocus: false
+}

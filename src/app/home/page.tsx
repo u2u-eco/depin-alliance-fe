@@ -49,7 +49,6 @@ export default function HomePage() {
           }
         }
       })
-      console.log(listByType)
       const listCPU_GPU = Object.keys(listByType).map((key) => {
         let newItem = { type: key, name: '' }
         Object.keys(listByType[key]).map((key2, index) => {

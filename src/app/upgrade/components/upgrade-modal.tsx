@@ -35,7 +35,7 @@ export default function UpgradeModal({
   const totalAmount = amount * item.price
   return (
     <div>
-      <div className="font-geist text-body text-base tracking-[-1px] text-center">
+      <div className=" text-body text-base tracking-[-1px] text-center">
         {activeType === UPGRADE_TYPE.DEVICE ? (
           <p>Are you sure you want to buy more RAM?</p>
         ) : (

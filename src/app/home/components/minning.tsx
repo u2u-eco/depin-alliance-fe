@@ -16,46 +16,7 @@ export default function Mining() {
   const [miningCount, setMiningCount] = useState<number>(0)
   const refInterval = useRef<any>()
   const refButton = useRef<any>(null)
-
-  const addPrefix = (number: number) => {
-    if (number >= 10) {
-      return number
-    }
-    return `0${number}`
-  }
-  const interval = (timeEnd: number, currentPoint: number, miningPowerPerSecond: number) => {
-    let miningCount = currentPoint
-    refInterval.current = setInterval(function () {
-      // Get today's date and time
-      miningCount += miningPowerPerSecond
-      setMiningCount(miningCount)
-
-      var now = new Date().getTime()
-
-      // Find the distance between now and the count down date
-      var distance = timeEnd - now
-
-      // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000)
-
-      // Display the result in the element with id="demo"
-      const listTime = [addPrefix(hours), addPrefix(minutes), addPrefix(seconds)]
-      if (days > 0) {
-        listTime.unshift(addPrefix(days))
-      }
-      setTimeCountdown(listTime)
-
-      // If the count down is finished, write some text
-      if (distance <= 0) {
-        clearInterval(refInterval.current)
-        setTimeCountdown([])
-        setType(HOME_TYPE.CLAIM)
-      }
-    }, 1000)
-  }
+  const workerRef = useRef<Worker>()
 
   const calculatorMining = () => {
     if (userInfo) {
@@ -67,10 +28,17 @@ export default function Mining() {
       const timeEnd = dayjs(userInfo.timeStartMining * 1000)
         .add(remainingTimeBySecond, 'second')
         .valueOf()
+
       const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
       setMiningCount(currentPoint)
-      interval(timeEnd, currentPoint, miningPowerPerSecond)
+      workerRef.current?.postMessage(
+        JSON.stringify({
+          timeEnd,
+          currentPoint,
+          miningPowerPerSecond
+        })
+      )
     }
   }
 
@@ -125,8 +93,30 @@ export default function Mining() {
   }, [refButton])
 
   useEffect(() => {
+    workerRef.current = new Worker(new URL('@/worker.ts', import.meta.url))
+    workerRef.current.onmessage = (event: MessageEvent<any>) => {
+      const message = JSON.parse(event.data)
+      const type = message.type
+      switch (type) {
+        case 'MINING_VALUE':
+          setMiningCount(message.value)
+          break
+        case 'TIME':
+          setTimeCountdown(message.value)
+          break
+        case 'RESET':
+          setTimeCountdown([])
+          setType(HOME_TYPE.CLAIM)
+          break
+      }
+    }
+    return () => {
+      workerRef.current?.terminate()
+    }
+  }, [])
+
+  useEffect(() => {
     if (userInfo?.timeStartMining) {
-      console.log('🚀 ~ useEffect ~ userInfo:', userInfo)
       setType(HOME_TYPE.MINING)
       calculatorMining()
     } else {

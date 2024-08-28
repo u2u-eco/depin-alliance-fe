@@ -45,15 +45,15 @@ const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
             ) : (
               <div className="flex items-center space-x-4">
-                <div className="flex items-center">
+                <div className="flex items-center space-x-1">
                   <img
-                    className="size-7"
+                    className="size-4"
                     src="/assets/images/point.png"
                     srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                     alt="Point"
                   />
                   <p className="text-primary font-geist font-semibold">
-                    {type !== 'ranking' && '+'}
+                    {(type !== 'ranking' && item.miningPower) && '+'}
                     {item.miningPower}
                   </p>
                 </div>
