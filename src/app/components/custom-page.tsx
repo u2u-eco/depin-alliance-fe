@@ -34,7 +34,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
               <div className="my-10 max-w-[480px] mx-auto">{children}</div>
             </motion.div>
           </div>
-          {(pathName !== '/inventory' && pathName !== '/ranking') && <CustomNavbar />}
+          {(pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting') && <CustomNavbar />}
         </div>
       </div>
     </AnimatePresence>
