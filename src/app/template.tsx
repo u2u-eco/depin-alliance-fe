@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { INIT_DATA } from '@/constants'
 import { userAuth } from '@/services/user'
 import https from '@/constants/https'
@@ -8,6 +8,7 @@ import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
+  const isProgressLogin = useRef<boolean>(false)
   const { token, setToken, setCurrentStatus } = useCommonStore((state) => state)
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
@@ -16,6 +17,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }, [webApp?.initData])
 
   const login = async (initData: string) => {
+    isProgressLogin.current = true
     const res = await userAuth({ initData })
     if (res.status) {
       https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
@@ -24,10 +26,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
       // localStorage.setItem(TOKEN, res.data?.accessToken)
     }
+    isProgressLogin.current = false
   }
 
   useEffect(() => {
-    if (initData && !token) {
+    if (initData && !token && !isProgressLogin.current) {
       login(initData)
     }
   }, [initData, token])

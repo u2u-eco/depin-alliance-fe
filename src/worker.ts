@@ -7,6 +7,10 @@ const addPrefix = (number: number) => {
 let refInterval: any = 0
 addEventListener('message', (event: any) => {
   const data = JSON.parse(event.data)
+  if (data.type === 'CLEAR') {
+    clearInterval(refInterval)
+    return
+  }
   const { timeEnd, currentPoint, miningPowerPerSecond } = data
   let miningCount = currentPoint
   const update = () => {

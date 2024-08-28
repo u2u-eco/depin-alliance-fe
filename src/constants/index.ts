@@ -15,3 +15,9 @@ export const QUERY_CONFIG = {
   refetchOnReconnect: false,
   refetchOnWindowFocus: false
 }
+
+export const LIST_TYPE = {
+  MISSION: 'mission',
+  SKILL: 'skill',
+  RANKING: 'ranking'
+}

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { ReactNode } from 'react'
 import CustomItem from './custom-item'
+import { LIST_TYPE } from '@/constants'
 
 interface ListProps {
   type: string
@@ -8,12 +9,24 @@ interface ListProps {
   data: any
   titleItemKey?: string
   imageItemKey?: string
+  pointKey?: string
   onClickItem?: (item: any) => void
 }
 
-const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem }: ListProps) => {
+const CustomList = ({
+  type,
+  title,
+  data,
+  titleItemKey,
+  imageItemKey,
+  pointKey,
+  onClickItem
+}: ListProps) => {
   const handleClickItem = (item: any) => {
     onClickItem && onClickItem(item)
+  }
+  const isDone = (item: any) => {
+    return type === LIST_TYPE.MISSION ? item.status === 'CLAIMED' : item.status
   }
   return (
     <div className="flex flex-col space-y-4">
@@ -36,10 +49,10 @@ const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem
             }
             icon={item.icon}
             rank={index + 1}
-            done={item.done}
+            done={isDone(item)}
             key={item.code}
           >
-            {type === 'skill' ? (
+            {type === LIST_TYPE.SKILL ? (
               <div className="text-yellow-600 font-geist leading-[16px]">LV. {item.level}</div>
             ) : item.text ? (
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
@@ -53,8 +66,8 @@ const CustomList = ({ type, title, data, titleItemKey, imageItemKey, onClickItem
                     alt="Point"
                   />
                   <p className="text-primary font-geist font-semibold">
-                    {(type !== 'ranking' && item.miningPower) && '+'}
-                    {item.miningPower}
+                    {type !== 'ranking' && item.miningPower && '+'}
+                    {(pointKey && item[pointKey]) || item.miningPower}
                   </p>
                 </div>
                 {item.available ||

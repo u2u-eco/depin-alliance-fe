@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { LIST_TYPE } from '@/constants'
 import React, { ReactNode } from 'react'
 
 interface ItemProps {
@@ -35,11 +36,11 @@ const CustomItem = ({ type, image, icon, done, rank, title, children }: ItemProp
         </div>
       </div>
       <div className="mr-3">
-        {type === 'skill' ? (
+        {type === LIST_TYPE.SKILL ? (
           <div className="size-8 overflow-hidden">
             <img src="/assets/images/icons/icon-double-arrow-up-gradient.svg" alt="" />
           </div>
-        ) : type === 'ranking' ? (
+        ) : type === LIST_TYPE.RANKING ? (
           rank === 1 || rank === 2 || rank === 3 ? (
             <img
               className="size-[60px]"
