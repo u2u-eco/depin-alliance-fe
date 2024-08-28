@@ -29,7 +29,7 @@ const CustomModal = ({ title, children, isOpen, onOpen, onOpenChange }: ModalPro
             <div className="absolute top-6 right-4 cursor-pointer" onClick={onClose}>
               <img className="size-6" src="/assets/images/icons/icon-close.svg" alt="Icon Close" />
             </div>
-            <div className="flex items-center justify-center space-x-4">
+            <div className="flex items-center justify-center space-x-4 mb-3">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-2xl tracking-[1px] text-title text-center leading-[28px]">{title}</div>
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>

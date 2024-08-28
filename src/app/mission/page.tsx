@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import CustomList from '../components/custom-list'
 import CustomPage from '../components/custom-page'
+import { useDisclosure } from '@nextui-org/react'
+import CustomModal from '../components/custom-modal'
 
 const listMission = [
   { id: 2, title: 'OKX PARTNER', list: [
@@ -19,6 +21,7 @@ const listMission = [
 
 export default function MissionPage() {
   const [statusItem, setStatusItem] = useState('done')
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
   return (
     <>
@@ -54,6 +57,38 @@ export default function MissionPage() {
             />
           ))}
         </div>
+        <div onClick={onOpen}>dasda</div>
+        <CustomModal
+          title={'Daily Check-in'}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onOpenChange={onOpenChange}
+        >
+          <div>
+          <div className=" text-body text-base tracking-[-1px] text-center">
+            <p>
+              Claim Point Now!
+            </p>
+          </div>
+          <div className="my-8 space-x-4 flex items-center justify-center">
+            <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[90px] flex items-center justify-center">
+              <img className="size-10" src="/assets/images/icons/icon-calendar-gradient.svg" alt="" />
+            </div>
+            <div className="space-y-2">
+              <p className=" text-title font-semibold">REWARD:</p>
+              <div className="flex items-center space-x-2">
+                <img className="size-6" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Point" />
+                <p className="text-green-500">100</p>
+              </div>
+            </div>
+          </div>
+          <div className="btn">
+            <div className="btn-border"></div>
+            <div className="btn-primary">Claim Now</div>
+            <div className="btn-border"></div>
+          </div>
+          </div>
+        </CustomModal>
       </CustomPage>
     </>
   )
