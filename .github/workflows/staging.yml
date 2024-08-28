@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build
     runs-on: k8s-prod
-    environment: production
+    environment: staging
 
     steps:
     - name: Checkout
