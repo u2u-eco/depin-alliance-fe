@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import useCommonStore from '@/stores/commonStore'
+import Link from 'next/link'
 interface CardProps {
   shadow?: boolean
 }
@@ -8,7 +9,7 @@ interface CardProps {
 const Card = ({ shadow }: CardProps) => {
   const deviceInfo = useCommonStore((state) => state.deviceInfo)
   return (
-    <div className="card">
+    <Link href="/inventory" className="card block">
       <div className="card__background">
         <img
           src={`/assets/images/configuration-background${shadow ? '-shadow' : ''}.svg`}
@@ -28,7 +29,7 @@ const Card = ({ shadow }: CardProps) => {
           </div>
         ))}
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -15,7 +15,7 @@ export default function ListMission() {
   const currentItem = useRef<any>()
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
-  const token = useCommonStore(useShallow((state) => state.token))
+  const { token, getUserInfo } = useCommonStore(useShallow((state) => state))
   const { data: listMission, refetch } = useQuery({
     queryKey: ['fetchListMission'],
     queryFn: getListMission,
@@ -48,6 +48,7 @@ export default function ListMission() {
     if (res.status) {
       toast.success('Mission is completed')
       refetch()
+      getUserInfo()
       onClose()
     }
   }
@@ -76,6 +77,7 @@ export default function ListMission() {
             pointKey="point"
             key={item.id}
             onClickItem={handleClick}
+            imageItemKey="image"
           />
         </React.Fragment>
       ))}

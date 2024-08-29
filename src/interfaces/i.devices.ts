@@ -12,3 +12,16 @@ export interface IDeviceItemAddParam {
   number: number
   index: number
 }
+
+export interface IUserDeviceItem {
+  index: number
+  name: string
+  slotCpuMax: number
+  slotCpuUsed: number
+  slotGpuMax: number
+  slotGpuUsed: number
+  slotRamMax: number
+  slotRamUsed: number
+  slotStorageMax: number
+  slotStorageUsed: number
+}
