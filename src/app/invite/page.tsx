@@ -6,6 +6,7 @@ import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import useCommonStore from '@/stores/commonStore'
 import { TELE_URI } from '@/constants'
+import { toast } from 'sonner'
 
 const listFriend = {
   title: 'FRIEND LIST',
@@ -18,7 +19,14 @@ const listFriend = {
 
 export default function InvitePage() {
   const { userInfo } = useCommonStore()
-
+  const handleCopy = () => {
+    if (userInfo) {
+      navigator.clipboard.writeText(
+        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=Hello! Welcome to Depin Alliance`
+      )
+      toast.success('Copied!')
+    }
+  }
   const handleShare = () => {
     if (userInfo) {
       window.open(
@@ -68,7 +76,7 @@ export default function InvitePage() {
                   <div className="btn-primary">INVITE FRIEND</div>
                   <div className="btn-border"></div>
                 </div>
-                <div className="btn w-fit">
+                <div className="btn w-fit" onClick={handleCopy}>
                   <div className="btn-border"></div>
                   <div className="btn-default !p-2">
                     <Image
