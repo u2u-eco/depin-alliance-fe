@@ -11,6 +11,7 @@ import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import { UPGRADE_TAB } from '@/constants'
 import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
+import { useTelegram } from '@/hooks/useTelegram'
 
 const listAvatar = [
   { id: 1, image: '1' },
@@ -26,10 +27,13 @@ const listAvatar = [
 
 export default function HomePage() {
   const { token, userInfo, setDevice } = useCommonStore()
-
-  const [avatarActive, setAvatarActive] = useState()
+  const { webApp } = useTelegram()
 
   useUserInfo()
+
+  const handleShare = () => {
+    webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
+  }
 
   const _getListDevice = async () => {
     const listDevice: any = await getListDevice()
@@ -108,7 +112,7 @@ export default function HomePage() {
               {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
             </p>
           </div>
-          <div className="mt-1 cursor-pointer">
+          <div className="mt-1 cursor-pointer" onClick={handleShare}>
             <Image
               className="mx-auto h-240px"
               width={0}
