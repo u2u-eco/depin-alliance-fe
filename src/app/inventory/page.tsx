@@ -7,6 +7,7 @@ import CustomPage from '../components/custom-page'
 import { Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import { UPGRADE_TAB } from '../../constants'
 import CustomModal from '../components/custom-modal'
+import { useRouter } from 'next/navigation'
 
 const INVENTORY_TYPE = {
   BUILD: 'build',
@@ -23,12 +24,15 @@ const listHardware = [
 ]
 
 export default function InventoryPage() {
+  const router = useRouter()
   const [activeType, setActiveType] = useState(INVENTORY_TYPE.BUILD)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
   const [activeItem, setActiveItem] = useState()
   const [action, setAction] = useState('full')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-
+  const handleBack = () => {
+    router.back()
+  }
   return (
     <>
       <CustomPage
@@ -40,6 +44,7 @@ export default function InventoryPage() {
         <div className="relative flex items-center justify-center space-x-4">
           <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer">
             <Image
+              onClick={handleBack}
               width={0}
               height={0}
               style={{ width: '100%', height: 'auto' }}

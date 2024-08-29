@@ -73,13 +73,13 @@ const Info = () => {
                 alt="Icon Ranking"
               />
             </Link>
-            <div className="cursor-pointer p-1" onClick={onOpen}>
+            <Link href="/setting" className="p-1">
               <img
                 className="size-6"
                 src="/assets/images/icons/icon-settings-green.svg"
                 alt="Icon Settings"
               />
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -103,15 +103,6 @@ const Info = () => {
           )}
         </div>
       </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          <div>
-            <div className="font-airnt font-bold text-xl tracking-[1px] text-white text-center">
-              avatar
-            </div>
-          </div>
-        </ModalContent>
-      </Modal>
     </>
   )
 }
