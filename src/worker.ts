@@ -11,7 +11,7 @@ addEventListener('message', (event: any) => {
     clearInterval(refInterval)
     return
   }
-  const { timeEnd, currentPoint, miningPowerPerSecond } = data
+  const { timeEnd, currentPoint, miningPowerPerSecond, max } = data
   let miningCount = currentPoint
   const update = () => {
     // Get today's date and time
@@ -20,7 +20,7 @@ addEventListener('message', (event: any) => {
     postMessage(
       JSON.stringify({
         type: 'MINING_VALUE',
-        value: miningCount
+        value: miningCount >= max ? max : miningCount
       })
     )
 
@@ -49,7 +49,7 @@ addEventListener('message', (event: any) => {
     // setTimeCountdown(listTime)
 
     // If the count down is finished, write some text
-    if (distance <= 0) {
+    if (distance <= 0 || miningCount >= max) {
       clearInterval(refInterval)
       postMessage(
         JSON.stringify({

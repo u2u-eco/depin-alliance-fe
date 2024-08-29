@@ -2,6 +2,7 @@
 import React, { ReactNode } from 'react'
 import CustomItem from './custom-item'
 import { LIST_TYPE } from '@/constants'
+import { formatNumber } from '@/helper/common'
 
 interface ListProps {
   type: string
@@ -65,8 +66,8 @@ const CustomList = ({
                     alt="Point"
                   />
                   <p className="text-primary font-geist font-semibold">
-                    {type !== 'ranking' && item.miningPower && '+'}
-                    {(pointKey && item[pointKey]) || item.miningPower}
+                    {item.miningPower && '+'}
+                    {(pointKey ? formatNumber(item[pointKey], 0, 0) : '') || item.miningPower}
                   </p>
                 </div>
                 {item.available ||

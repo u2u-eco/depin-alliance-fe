@@ -1,33 +1,53 @@
-"use client"
+'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import CustomList from '../components/custom-list'
 import { Input, useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
-import CustomInput from '../components/custom-input'
+import { useQuery } from '@tanstack/react-query'
+import { getListLeague } from '@/services/league'
+import useCommonStore from '@/stores/commonStore'
+import CustomButton from '../components/button'
+import CreateLeague from './components/create-league'
+import JoinLeague from './components/join-league'
+import { ILeagueItem } from '@/interfaces/i.league'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
-  CREATE: 'create',
+  CREATE: 'create'
 }
 
-const listLeague = {
-  title: 'All Leagues',
-  data: [
-    { id: 1, image: '/league/league-01', title: 'Migos Drip Clan', point: '100/h' },
-    { id: 1, image: '/league/league-02', title: 'RedDog Clan', point: '100/h' },
-    { id: 1, image: '/league/league-03', title: 'Black Rhinos', point: '100/h' },
-    { id: 1, image: '/league/league-04', title: 'Space Cartel', point: '100/h' },
-  ]
-}
+// const listLeague = {
+//   title: 'All Leagues',
+//   data: [
+//     { id: 1, image: '/league/league-01', title: 'Migos Drip Clan', point: '100/h' },
+//     { id: 1, image: '/league/league-02', title: 'RedDog Clan', point: '100/h' },
+//     { id: 1, image: '/league/league-03', title: 'Black Rhinos', point: '100/h' },
+//     { id: 1, image: '/league/league-04', title: 'Space Cartel', point: '100/h' }
+//   ]
+// }
 
 export default function LeaguePage() {
+  const { token } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(LEAGUE_TYPE.CREATE)
+  const currentItem = useRef<ILeagueItem | null>(null)
+  const { data: listLeague, refetch } = useQuery({
+    queryKey: ['fetchListLeague'],
+    queryFn: () => getListLeague({ page: 1 }),
+    enabled: Boolean(token)
+  })
 
-  const handleClickItem = () => {
+  const handleCreateLeague = () => {
+    setType(LEAGUE_TYPE.CREATE)
+    onOpen()
+  }
+
+  const handleClickItem = (item: any) => {
+    currentItem.current = item
+    setType(LEAGUE_TYPE.JOIN)
     onOpen()
   }
 
@@ -64,15 +84,18 @@ export default function LeaguePage() {
               <div className="mt-2 mb-6 text-center text-body font-geist tracking-[-1px]">
                 Let’s join the League or create a new League to contribute together!
               </div>
-              <div className="btn">
-                <div className="btn-border"></div>
-                <div className="btn-primary">CREATE LEAGUE</div>
-                <div className="btn-border"></div>
-              </div>
+              <CustomButton title="CREATE LEAGUE" onAction={handleCreateLeague} />
             </div>
           </div>
         </div>
-        <CustomList type="league" title={listLeague.title} data={listLeague.data} onClickItem={handleClickItem} />
+        <CustomList
+          type="league"
+          title="All Leagues"
+          data={listLeague?.data}
+          titleItemKey="name"
+          pointKey="totalMining"
+          onClickItem={handleClickItem}
+        />
       </CustomPage>
       <CustomModal
         title={type === LEAGUE_TYPE.JOIN ? 'Join LEAGUE' : 'CREATE LEAGUE'}
@@ -82,52 +105,10 @@ export default function LeaguePage() {
       >
         <div>
           {type === LEAGUE_TYPE.JOIN ? (
-            <>
-              <div className=" text-body text-base tracking-[-1px] text-center">
-                <p>Are you sure you want to join this League?</p>
-              </div>
-              <div className="my-10 flex items-center justify-center space-x-5">
-                <div className="p-[1px] bg-white [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)] size-[110px] flex items-center justify-center">
-                  <img
-                    className="w-full h-full [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)]"
-                    src="/assets/images/league/league-01.png"
-                    srcSet="/assets/images/league/league-01.png 1x. /assets/images/league/league-01@2x.png 2x"
-                    alt=""
-                  />
-                </div>
-                <div className="space-y-3">
-                  <p className=" text-title font-semibold text-2xl font-mona leading-[30px]">Space Cartel</p>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-7"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt="Point"
-                    />
-                    <span className="text-primary font-semibold text-lg">100/h</span>
-                  </div>
-                </div>
-              </div>
-            </>
+            <JoinLeague item={currentItem.current} onClose={onClose} />
           ) : (
-            <div className="mt-14 mb-10 space-y-6">
-              <CustomInput
-                label="League Name:"
-                placeholder="Enter your league's name..."
-              />
-              <CustomInput
-                label="Invite Link:"
-                placeholder="https://t.me/DePIN-Alliance"
-                isDisabled
-                copy
-              />
-            </div>
+            <CreateLeague onClose={onClose} refreshList={refetch} />
           )}
-          <div className="btn">
-            <div className="btn-border"></div>
-            <div className="btn-primary">JOIN LEAGUE</div>
-            <div className="btn-border"></div>
-          </div>
         </div>
       </CustomModal>
     </>

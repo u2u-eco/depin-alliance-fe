@@ -14,7 +14,6 @@ export default function Mining() {
   const { userInfo, setUserInfo } = useCommonStore()
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
-  const refInterval = useRef<any>()
   const refButton = useRef<any>(null)
   const workerRef = useRef<Worker>()
 
@@ -38,7 +37,8 @@ export default function Mining() {
           type: 'COUNTDOWN',
           timeEnd,
           currentPoint,
-          miningPowerPerSecond
+          miningPowerPerSecond,
+          max: userInfo.maximumPower
         })
       )
     }
