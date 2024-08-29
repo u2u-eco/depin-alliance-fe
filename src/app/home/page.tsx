@@ -85,30 +85,34 @@ export default function HomePage() {
 
   return (
     <>
-      <CustomPage
-        classNames={{
-          wrapper: "before:content-[''] before:absolute before:top-0 before-left-0 before-right-0 before:w-full before:h-full before:z-[-1] before:bg-[url(/assets/images/onboarding-background.png)] before:bg-no-repeat before:bg-center"
-        }}
-      >
+      <CustomPage>
         {/* Point */}
-        <div className="">
+        <div className="relative">
+          <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
+            <img className="mx-auto" src="/assets/images/home-frame.svg" alt="Frame" />
+          </div>
           <div className="flex items-center justify-center space-x-2">
-            <Image
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="size-9"
-              src="/assets/images/point@2x.png"
-              // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-              alt="Point"
-            />
+            <div className="relative">
+              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-8 rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_12px_rgba(0,255,144,0.45)] z-[-1]">
+                <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
+              </div>
+              <Image
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="size-9"
+                src="/assets/images/point@2x.png"
+                // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                alt="Point"
+              />
+            </div>
             <p className="text-white font-geist font-bold text-3xl text-point">
               {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
             </p>
           </div>
-          <div className="mt-1 cursor-pointer" onClick={handleShare}>
+          <div className="mt-4 w-fit mx-auto cursor-pointer" onClick={handleShare}>
             <Image
-              className="mx-auto max-w-[240px]"
+              className="mx-auto max-w-[240px] min-w-[240px] min-h-[260px]"
               width={0}
               height={240}
               sizes="100vw"

@@ -22,9 +22,9 @@ export default function NewbieReward() {
         src="/assets/images/onboarding-scholarship.svg"
         alt="Onboarding Scholarship"
       />
-      <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center -space-x-2">
+      <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center space-x-2">
         <div className="font-geist font-bold text-white text-[40px] text-point">{`${reward > 0 ? '+' : ''}${formatNumber(reward, 0, 0)}`}</div>
-        <img className="size-[64px]" src="/assets/images/point.png" alt="Icon Star" />
+        <img className="size-[42px]" src="/assets/images/point.png" srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x" alt="Icon Star" />
       </div>
     </div>
   )
