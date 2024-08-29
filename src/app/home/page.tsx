@@ -72,23 +72,16 @@ export default function HomePage() {
       })
       const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
       setDevice({
-        info: [
-          {
-            type: 'Profit',
-            name: `${userInfo?.miningPower ? formatNumber(userInfo?.miningPower, 0, 0) : 0}/h`
-          },
-          ...listCPU_GPU,
-          ...newData
-        ]
+        info: [...listCPU_GPU, ...newData]
       })
     }
   }
 
   useEffect(() => {
-    if (token && userInfo) {
+    if (token) {
       _getListDevice()
     }
-  }, [token, userInfo])
+  }, [token])
 
   return (
     <>
