@@ -24,7 +24,7 @@ export default function Mining() {
       workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
       const miningPowerPerSecond = userInfo.miningPower / 3600
       const remainingTimeBySecond = userInfo.pointUnClaimed
-        ? userInfo.maximumPower - userInfo.pointUnClaimed
+        ? (userInfo.maximumPower - userInfo.pointUnClaimed) / miningPowerPerSecond
         : userInfo.maximumPower
       const timeEnd = dayjs(userInfo.timeStartMining * 1000)
         .add(remainingTimeBySecond, 'second')
