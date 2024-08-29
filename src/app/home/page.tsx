@@ -13,18 +13,6 @@ import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
 import { useTelegram } from '@/hooks/useTelegram'
 
-const listAvatar = [
-  { id: 1, image: '1' },
-  { id: 2, image: '2' },
-  { id: 3, image: '3' },
-  { id: 4, image: '4' },
-  { id: 5, image: '5' },
-  { id: 6, image: '6' },
-  { id: 7, image: '3' },
-  { id: 8, image: '1' },
-  { id: 9, image: '2' }
-]
-
 export default function HomePage() {
   const { token, userInfo, setDevice } = useCommonStore()
   const { webApp } = useTelegram()
@@ -83,15 +71,24 @@ export default function HomePage() {
         return newItem
       })
       const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
-      setDevice({ info: [...listCPU_GPU, ...newData] })
+      setDevice({
+        info: [
+          {
+            type: 'Profit',
+            name: `${userInfo?.miningPower ? formatNumber(userInfo?.miningPower, 0, 0) : 0}/h`
+          },
+          ...listCPU_GPU,
+          ...newData
+        ]
+      })
     }
   }
 
   useEffect(() => {
-    if (token) {
+    if (token && userInfo) {
       _getListDevice()
     }
-  }, [token])
+  }, [token, userInfo])
 
   return (
     <>

@@ -25,7 +25,7 @@ export default function Mining() {
       const miningPowerPerSecond = userInfo.miningPower / 3600
       const remainingTimeBySecond = userInfo.pointUnClaimed
         ? (userInfo.maximumPower - userInfo.pointUnClaimed) / miningPowerPerSecond
-        : userInfo.maximumPower
+        : userInfo.maximumPower / miningPowerPerSecond
       const timeEnd = dayjs(userInfo.timeStartMining * 1000)
         .add(remainingTimeBySecond, 'second')
         .valueOf()
