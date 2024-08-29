@@ -44,6 +44,7 @@ export type IUserAuthReq = {
 }
 
 export type IUserInfo = {
+  code: string
   username: string
   status: string
   miningPower: number

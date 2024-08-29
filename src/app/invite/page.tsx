@@ -20,10 +20,12 @@ export default function InvitePage() {
   const { userInfo } = useCommonStore()
 
   const handleShare = () => {
-    window.open(
-      `https://t.me/share/url?url=${TELE_URI}?start=${userInfo?.code}&text=Hello! Welcome to Depin Alliance`,
-      '_self'
-    )
+    if (userInfo) {
+      window.open(
+        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=Hello! Welcome to Depin Alliance`,
+        '_self'
+      )
+    }
     // webApp?.shareToStory('https://dogx.io/assets/images/layouts/giveaway.jpg')
   }
   return (
