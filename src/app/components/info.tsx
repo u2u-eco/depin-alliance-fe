@@ -65,8 +65,8 @@ const Info = () => {
           alt="Info Background"
         />
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center justify-between">
-          <div className="flex items-center space-x-3" onClick={handleOpen}>
-            <div className="relative">
+          <div className="flex items-center space-x-3">
+            <div className="relative" onClick={handleOpen}>
               <div className="[clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)] bg-gray-800 size-16">
                 <Image
                   className="size-16 [clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)]"
