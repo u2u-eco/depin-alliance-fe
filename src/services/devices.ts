@@ -1,8 +1,8 @@
 import { IDeviceItemAddParam } from '@/interfaces/i.devices'
 import https from '../constants/https'
 
-export const getUserDevice = () => {
-  return https.get('/devices/user-device-item')
+export const getUserDevice = (index: number) => {
+  return https.get(`/devices/user-device-item?index=${index}`)
 }
 
 export const getDevicesByType = (type: string) => {
@@ -10,5 +10,9 @@ export const getDevicesByType = (type: string) => {
 }
 
 export const addDeviceItem = (data: IDeviceItemAddParam) => {
-  return https.post('devices/add-item', data)
+  return https.post('/devices/add-item', data)
+}
+
+export const getListDevice = () => {
+  return https.get('/devices/user-device')
 }

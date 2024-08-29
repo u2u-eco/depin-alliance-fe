@@ -4,6 +4,7 @@ import React from 'react'
 import { formatNumber } from '../../helper/common'
 import Link from 'next/link'
 import useCommonStore from '@/stores/commonStore'
+import Image from 'next/image'
 
 interface InfoProps {
   click: () => void
@@ -16,24 +17,36 @@ const Info = () => {
   return (
     <>
       <div className="relative w-fit mx-auto">
-        <img className="mx-auto" src="/assets/images/info-background.svg" alt="Info Background" />
+        <Image
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: '100%', height: 'auto' }}
+          className="mx-auto"
+          src="/assets/images/info-background.svg"
+          alt="Info Background"
+        />
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="relative">
               <div className="[clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)] bg-gray-800 size-16">
-                <img
+                <Image
                   className="size-16 [clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)]"
-                  src="/assets/images/avatar.png"
-                  srcSet="/assets/images/avatar.png 1x, /assets/images/avatar@2x.png 2x"
+                  src={userInfo?.avatar || '/assets/images/avatar.png'}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
                   alt="Avatar"
                 />
               </div>
               <div className="cursor-pointer absolute bottom-0 right-0 size-6">
                 <div className="border-[12px] border-r-yellow-500 border-b-yellow-500 border-l-transparent border-t-transparent"></div>
-                <img
+                <Image
                   className="absolute right-0.5 bottom-0.5 !size-2.5"
                   src="/assets/images/icons/icon-photo-edit.svg"
                   alt="Icon Photo Edit"
+                  width={0}
+                  height={0}
                 />
               </div>
             </div>
@@ -42,24 +55,30 @@ const Info = () => {
               <div className="flex items-center space-x-4">
                 <Link href="/ranking" className="flex items-center space-x-1 cursor-pointer">
                   <span className="font-geist text-yellow-500">LV. {userInfo?.level}</span>
-                  <img
+                  <Image
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
+                    width={0}
+                    height={0}
                   />
                 </Link>
                 <div className="w-[1px] h-5 bg-white/10"></div>
                 <div className="flex items-center space-x-1">
-                  <img
+                  <Image
                     className="size-5"
                     src="/assets/images/icons/icon-thunder.svg"
                     alt="Icon Thunder"
+                    height={0}
+                    width={0}
                   />
                   <span className="font-geist text-yellow-500">{userInfo?.miningPower}</span>
-                  <img
+                  <Image
                     className="size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
+                    width={0}
+                    height={0}
                   />
                 </div>
               </div>
@@ -67,17 +86,21 @@ const Info = () => {
           </div>
           <div className="flex items-center space-x-4 mr-3">
             <Link href="/inventory" className="p-1">
-              <img
+              <Image
                 className="size-6"
                 src="/assets/images/icons/icon-inventory-green.svg"
                 alt="Icon Ranking"
+                width={0}
+                height={0}
               />
             </Link>
             <Link href="/setting" className="p-1">
-              <img
+              <Image
                 className="size-6"
                 src="/assets/images/icons/icon-settings-green.svg"
                 alt="Icon Settings"
+                width={0}
+                height={0}
               />
             </Link>
           </div>
@@ -89,11 +112,13 @@ const Info = () => {
           </p>
           {pathName !== '/home' && (
             <div className="flex items-center space-x-1">
-              <img
+              <Image
                 className="size-5"
-                src="/assets/images/point.png"
-                srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                src="/assets/images/point@2x.png"
+                // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                 alt="Point"
+                width={0}
+                height={0}
               />
               <div className="text-point font-geist text-base font-bold">
                 {' '}

@@ -9,7 +9,7 @@ import useCommonStore from '@/stores/commonStore'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const isProgressLogin = useRef<boolean>(false)
-  const { token, setToken, setCurrentStatus } = useCommonStore((state) => state)
+  const { token, setToken, setCurrentStatus, getUserInfo } = useCommonStore((state) => state)
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
 
@@ -23,7 +23,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
       setCurrentStatus({ status: res.data.currentStatus })
       setToken({ token: res.data?.accessToken })
-
+      getUserInfo()
       // localStorage.setItem(TOKEN, res.data?.accessToken)
     }
     isProgressLogin.current = false

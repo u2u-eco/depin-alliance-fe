@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 dayjs.extend(utc)
 
 export default function DailyCheckIn() {
-  const { token } = useCommonStore()
+  const { token, getUserInfo } = useCommonStore()
   const currentItem = useRef<any>()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { data: listDaily, refetch } = useQuery({
@@ -36,6 +36,7 @@ export default function DailyCheckIn() {
     if (res.status) {
       toast.success('Mission is completed')
       refetch()
+      getUserInfo()
       onClose()
     }
   }
