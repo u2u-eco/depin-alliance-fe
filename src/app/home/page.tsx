@@ -121,7 +121,7 @@ export default function HomePage() {
             {listAvatar.map((item: any) => (
               <div key={item.id} className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-6 before:border-[12px] before:border-transparent before:transition-all ${avatarActive == item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}>
                 <div className={`min-h-[120px] [clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] p-[1px] transition-all cursor-pointer ${avatarActive === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)]' : ''}`} onClick={() => setAvatarActive(item.id)}>
-                  <img className="[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)]" src={`/assets/images/avatar-0${item.image}.png`} srcSet={`/assets/images/avatar-0${item.image}.png 1x, /assets/images/avatar-0${item.image}@2x.png 2x`} alt="" />
+                  <img className="[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] mx-auto" src={`/assets/images/avatar/avatar-0${item.image}.png`} srcSet={`/assets/images/avatar/avatar-0${item.image}.png 1x, /assets/images/avatar/avatar-0${item.image}@2x.png 2x`} alt="" />
                 </div>
               </div>
             ))}
