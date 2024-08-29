@@ -24,9 +24,19 @@ export const claim = () => {
 }
 
 export const mining = () => {
-  return https.get('users/mining')
+  return https.get('/users/mining')
 }
 
 export const getRanking = () => {
-  return https.get('users/ranking-engineer')
+  return https.get('/users/ranking-engineer')
+}
+
+export const getListAvatar = () => {
+  return https.get('/users/avatar')
+}
+
+export const updateAvatar = (avatar: string) => {
+  return https.post('/users/avatar', {
+    avatar
+  })
 }

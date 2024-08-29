@@ -10,8 +10,8 @@ import useCommonStore from '@/stores/commonStore'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import { UPGRADE_TAB } from '@/constants'
 import { useUserInfo } from '@/hooks/useUserInfo'
-import CustomModal from '../components/custom-modal'
-import { useDisclosure } from '@nextui-org/react'
+import Image from 'next/image'
+import { useTelegram } from '@/hooks/useTelegram'
 
 const listAvatar = [
   { id: 1, image: '1' },
@@ -27,10 +27,13 @@ const listAvatar = [
 
 export default function HomePage() {
   const { token, userInfo, setDevice } = useCommonStore()
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [avatarActive, setAvatarActive] = useState()
+  const { webApp } = useTelegram()
 
   useUserInfo()
+
+  const handleShare = () => {
+    webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
+  }
 
   const _getListDevice = async () => {
     const listDevice: any = await getListDevice()
@@ -96,18 +99,29 @@ export default function HomePage() {
         {/* Point */}
         <div className="">
           <div className="flex items-center justify-center space-x-2">
-            <img
+            <Image
+              width={0}
+              height={0}
+              sizes="100vw"
               className="size-9"
-              src="/assets/images/point.png"
-              srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+              src="/assets/images/point@2x.png"
+              // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
               alt="Point"
             />
             <p className="text-white font-geist font-bold text-3xl text-point">
               {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
             </p>
           </div>
-          <div className="mt-1 cursor-pointer" onClick={onOpen}>
-            <img className="mx-auto h-240px" src="/assets/images/actor.png" alt="Actor" />
+          <div className="mt-1 cursor-pointer" onClick={handleShare}>
+            <Image
+              className="mx-auto h-240px"
+              width={0}
+              height={240}
+              sizes="100vw"
+              style={{ width: '100%' }}
+              src="/assets/images/actor.png"
+              alt="Actor"
+            />
           </div>
         </div>
         {/* Button */}
@@ -117,35 +131,6 @@ export default function HomePage() {
           <Card />
         </div>
       </CustomPage>
-      <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
-        <div>
-          <div className="mt-6 mb-12 grid grid-cols-3 gap-4">
-            {listAvatar.map((item: any) => (
-              <div
-                key={item.id}
-                className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-6 before:border-[12px] before:border-transparent before:transition-all ${avatarActive == item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-              >
-                <div
-                  className={`min-h-[120px] [clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] p-[1px] transition-all cursor-pointer ${avatarActive === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)]' : ''}`}
-                  onClick={() => setAvatarActive(item.id)}
-                >
-                  <img
-                    className="[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] mx-auto"
-                    src={`/assets/images/avatar/avatar-0${item.image}.png`}
-                    srcSet={`/assets/images/avatar/avatar-0${item.image}.png 1x, /assets/images/avatar/avatar-0${item.image}@2x.png 2x`}
-                    alt=""
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="btn">
-            <div className="btn-border"></div>
-            <div className="btn-primary">Equip Avatar</div>
-            <div className="btn-border"></div>
-          </div>
-        </div>
-      </CustomModal>
     </>
   )
 }
