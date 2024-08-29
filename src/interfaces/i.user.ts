@@ -71,3 +71,9 @@ export type IDeviceItem = {
   name: string
   point: number
 }
+
+export interface IFriendItem {
+  avatar: string
+  pointRef: number
+  username: string
+}

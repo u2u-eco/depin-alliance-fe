@@ -7,23 +7,29 @@ import Image from 'next/image'
 import useCommonStore from '@/stores/commonStore'
 import { TELE_URI } from '@/constants'
 import { toast } from 'sonner'
+import { useQuery } from '@tanstack/react-query'
+import { getUserFriend } from '@/services/user'
 
-const listFriend = {
-  title: 'FRIEND LIST',
-  data: [
-    { id: 1, image: 'user-01', title: 'DojaDoja26', point: '5,000' },
-    { id: 2, image: 'user-02', title: 'Tornando L', point: '5,000' },
-    { id: 3, image: 'user-03', title: 'Artisian', point: '5,000' }
-  ]
-}
+// const listFriend = {
+//   title: 'FRIEND LIST',
+//   data: [
+//     { id: 1, image: 'user-01', title: 'DojaDoja26', point: '5,000' },
+//     { id: 2, image: 'user-02', title: 'Tornando L', point: '5,000' },
+//     { id: 3, image: 'user-03', title: 'Artisian', point: '5,000' }
+//   ]
+// }
 
 export default function InvitePage() {
-  const { userInfo } = useCommonStore()
+  const { userInfo, token } = useCommonStore()
+  const { data: listFriend } = useQuery({
+    queryKey: ['fetchListFriend'],
+    queryFn: () => getUserFriend(),
+    enabled: Boolean(token)
+  })
+
   const handleCopy = () => {
     if (userInfo) {
-      navigator.clipboard.writeText(
-        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=Hello! Welcome to Depin Alliance`
-      )
+      navigator.clipboard.writeText(`${TELE_URI}?start=${userInfo.code}`)
       toast.success('Copied!')
     }
   }
@@ -94,7 +100,14 @@ export default function InvitePage() {
             </div>
           </div>
         </div>
-        <CustomList type="invite" title={listFriend.title} data={listFriend.data} />
+        <CustomList
+          type="invite"
+          title="FRIEND LIST"
+          data={listFriend?.data}
+          titleItemKey="username"
+          pointKey="pointRef"
+          imageItemKey="avatar"
+        />
       </CustomPage>
     </>
   )

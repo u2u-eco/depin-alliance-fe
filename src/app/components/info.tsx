@@ -61,15 +61,16 @@ const Info = () => {
           sizes="100vw"
           style={{ width: '100%', height: 'auto' }}
           className="mx-auto"
-          src="/assets/images/info-background.svg"
-          alt="Info Background"
+          src="/assets/images/info-frame.svg"
+          alt="Info Frame"
         />
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="relative" onClick={handleOpen}>
-              <div className="[clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)] bg-gray-800 size-16">
+              <div className="absolute top-[-1px] left-[-1px] size-2 border-4 border-transparent border-t-green-700 border-l-green-700"></div>
+              <div className="bg-gray-800 size-16">
                 <Image
-                  className="size-16 [clip-path:_polygon(8px_0%,100%_0%,100%_100%,0_100%,0_8px)]"
+                  className="size-16"
                   src={userInfo?.avatar || '/assets/images/avatar.png'}
                   width={0}
                   height={0}
@@ -157,15 +158,20 @@ const Info = () => {
           </p>
           {pathName !== '/home' && (
             <div className="flex items-center space-x-1">
-              <Image
-                className="size-5"
-                src="/assets/images/point@2x.png"
-                // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                alt="Point"
-                sizes="100vw"
-                width={0}
-                height={0}
-              />
+              <div className="relative">
+                <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-4 rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_8px_rgba(0,255,144,0.45)] z-[-1]">
+                  <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
+                </div>
+                <Image
+                  className="size-5"
+                  src="/assets/images/point@2x.png"
+                  // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                  alt="Point"
+                  sizes="100vw"
+                  width={0}
+                  height={0}
+                />
+              </div>
               <div className="text-point font-geist text-base font-bold">
                 {' '}
                 {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
