@@ -48,7 +48,6 @@ const CustomList = ({
               `upgrade/upgrade-${item.type?.toLowerCase()}`
             }
             icon={item.icon}
-            rank={index + 1}
             done={isDone(item)}
             key={item.code}
           >
