@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import CustomList from '../components/custom-list'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
-import { useTelegram } from '@/hooks/useTelegram'
+import useCommonStore from '@/stores/commonStore'
+import { TELE_URI } from '@/constants'
 
 const listFriend = {
   title: 'FRIEND LIST',
@@ -16,10 +17,14 @@ const listFriend = {
 }
 
 export default function InvitePage() {
-  const { webApp } = useTelegram()
+  const { userInfo } = useCommonStore()
 
   const handleShare = () => {
-    webApp?.shareToStory('https://dogx.io/assets/images/layouts/giveaway.jpg')
+    window.open(
+      `https://t.me/share/url?url=${TELE_URI}?start=${userInfo?.code}&text=Hello! Welcome to Depin Alliance`,
+      '_self'
+    )
+    // webApp?.shareToStory('https://dogx.io/assets/images/layouts/giveaway.jpg')
   }
   return (
     <>
