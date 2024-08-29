@@ -1,4 +1,4 @@
-import { claim, getUserInfo, mining } from '@/services/user'
+import { claim, getUserInfo, startContributing } from '@/services/user'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/helper/common'
@@ -52,7 +52,7 @@ export default function Mining() {
   }
 
   const handleMining = async () => {
-    const res = await mining()
+    const res = await startContributing()
     if (res.status) {
       setType(HOME_TYPE.MINING)
       updateUserInfo()

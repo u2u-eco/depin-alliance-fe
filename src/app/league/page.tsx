@@ -1,44 +1,44 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import CustomList from '../components/custom-list'
-import { Input, useDisclosure } from '@nextui-org/react'
+import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
 import { useQuery } from '@tanstack/react-query'
-import { getListLeague } from '@/services/league'
+import { getListLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import CustomButton from '../components/button'
 import CreateLeague from './components/create-league'
 import JoinLeague from './components/join-league'
 import { ILeagueItem } from '@/interfaces/i.league'
+import { useRouter } from 'next/navigation'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
   CREATE: 'create'
 }
 
-// const listLeague = {
-//   title: 'All Leagues',
-//   data: [
-//     { id: 1, image: '/league/league-01', title: 'Migos Drip Clan', point: '100/h' },
-//     { id: 1, image: '/league/league-02', title: 'RedDog Clan', point: '100/h' },
-//     { id: 1, image: '/league/league-03', title: 'Black Rhinos', point: '100/h' },
-//     { id: 1, image: '/league/league-04', title: 'Space Cartel', point: '100/h' }
-//   ]
-// }
-
 export default function LeaguePage() {
-  const { token } = useCommonStore()
+  const { token, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(LEAGUE_TYPE.CREATE)
+  const router = useRouter()
   const currentItem = useRef<ILeagueItem | null>(null)
   const { data: listLeague, refetch } = useQuery({
     queryKey: ['fetchListLeague'],
     queryFn: () => getListLeague({ page: 1 }),
     enabled: Boolean(token)
   })
+
+  const getUserLeague = async () => {
+    const res = await userLeague()
+    if (res.status && res.data) {
+      setCurrentLeague({ league: res.data })
+      router.push('/league/in-league')
+    }
+  }
 
   const handleCreateLeague = () => {
     setType(LEAGUE_TYPE.CREATE)
@@ -50,6 +50,12 @@ export default function LeaguePage() {
     setType(LEAGUE_TYPE.JOIN)
     onOpen()
   }
+
+  useEffect(() => {
+    if (token) {
+      getUserLeague()
+    }
+  }, [token])
 
   return (
     <>
@@ -97,6 +103,7 @@ export default function LeaguePage() {
           onClickItem={handleClickItem}
         />
       </CustomPage>
+
       <CustomModal
         title={type === LEAGUE_TYPE.JOIN ? 'Join LEAGUE' : 'CREATE LEAGUE'}
         isOpen={isOpen}
@@ -105,9 +112,9 @@ export default function LeaguePage() {
       >
         <div>
           {type === LEAGUE_TYPE.JOIN ? (
-            <JoinLeague item={currentItem.current} onClose={onClose} />
+            <JoinLeague item={currentItem.current} onClose={onClose} joinCb={getUserLeague} />
           ) : (
-            <CreateLeague onClose={onClose} refreshList={refetch} />
+            <CreateLeague onClose={onClose} />
           )}
         </div>
       </CustomModal>
