@@ -88,8 +88,10 @@ const Info = () => {
                 />
               </div>
             </div>
-            <div className="space-y-2.5">
-              <div className="text-white text-base font-semibold min-h-5">{userInfo?.username}</div>
+            <div className="space-y-1">
+              <div className="text-white text-base font-semibold min-h-5 leading-[20px]">
+                {userInfo?.username}
+              </div>
               <div className="flex items-center space-x-4">
                 <Link href="/ranking" className="flex items-center space-x-1 cursor-pointer">
                   <span className="font-geist text-yellow-500">LV. {userInfo?.level}</span>
@@ -136,7 +138,7 @@ const Info = () => {
                 height={0}
               />
             </Link>
-            <Link href="/setting" className="p-1">
+            <div className="p-1">
               <Image
                 className="size-6"
                 src="/assets/images/icons/icon-settings-green.svg"
@@ -145,7 +147,7 @@ const Info = () => {
                 width={0}
                 height={0}
               />
-            </Link>
+            </div>
           </div>
         </div>
 
@@ -177,7 +179,7 @@ const Info = () => {
           <div className="mt-6 mb-12 grid grid-cols-3 gap-4">
             {listImage.map((item: any) => (
               <div
-                key={item.id}
+                key={item}
                 className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-6 before:border-[12px] before:border-transparent before:transition-all ${selectedImage == item ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
               >
                 <div

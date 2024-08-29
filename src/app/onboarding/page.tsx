@@ -149,7 +149,7 @@ const Onboarding = () => {
                   </div>
                 </div>
                 {/* Configuration */}
-                {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />}
+                {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
               </div>
               {(type === ONBOARDING_TYPE.START ||
                 type === ONBOARDING_TYPE.DEVICE ||
