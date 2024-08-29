@@ -44,3 +44,9 @@ export const updateAvatar = (avatar: string) => {
     avatar
   })
 }
+
+export const getUserFriend = (params?: { page: number; size: number }) => {
+  return https.get('/users/friend', {
+    params
+  })
+}
