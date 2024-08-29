@@ -19,11 +19,10 @@ const CustomInput = ({ isDisabled, label, placeholder, copy, onValueChange }: In
         placeholder={placeholder}
         onValueChange={onValueChange}
         classNames={{
-          base: 'data-[has-label=true]:mt-10',
-          label: 'group-data-[filled-within=true]:text-body',
-          inputWrapper:
-            'rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10',
-          input: 'group-data-[has-value=true]:text-body placeholder:text-inactive'
+          base: "data-[has-label=true]:mt-10 opacity-100",
+          label: "group-data-[filled-within=true]:text-body",
+          inputWrapper: "rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10",
+          input: "text-body group-data-[has-value=true]:text-body placeholder:text-inactive"
         }}
       />
       {copy && (
