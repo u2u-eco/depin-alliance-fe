@@ -10,7 +10,7 @@ const listMenu = [
   { id: 2, link: '/mission', title: 'mission' },
   { id: 3, link: '/home', title: 'contribute' },
   { id: 4, link: '/invite', title: 'invite' },
-  { id: 5, link: '/coming-soon', title: 'league' }
+  { id: 5, link: '/league', title: 'league' }
 ]
 
 const CustomNavbar = () => {

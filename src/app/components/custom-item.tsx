@@ -82,7 +82,7 @@ const CustomItem = ({ type, image, icon, done, rank, title, children }: ItemProp
           <div className="cursor-pointer">
             <img
               className="size-8"
-              src={`/assets/images/icons/icon-${type === 'mission' ? (done ? 'check-circle-green' : 'open-link-yellow') : type === 'invite' ? 'user-add-gradient' : 'plus-gradient'}.svg`}
+              src={`/assets/images/icons/icon-${type === 'mission' ? (done ? 'check-circle-green' : 'open-link-yellow') : type === 'invite' ? 'user-add-gradient' : type === 'league' ? 'open-link-gradient' : 'plus-gradient'}.svg`}
               alt=""
             />
           </div>

@@ -61,9 +61,9 @@ export default function InvitePage() {
             <div className="px-4 py-6">
               <div className="flex items-center justify-center space-x-4">
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                <a className="text-title font-airnt font-medium text-xl leading-[24px] text-center uppercase tracking-[1px]">
+                <p className="text-title font-airnt font-medium text-xl leading-[24px] text-center uppercase tracking-[1px]">
                   Invite friends and earn more rewards
-                </a>
+                </p>
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
               <div className="mt-2 mb-6 text-center text-body font-geist tracking-[-1px]">
