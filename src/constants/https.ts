@@ -23,14 +23,14 @@ https.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    if (response.status === 200) {
+    if (response.status === 200 && response.data.status === 'success') {
       return {
         ...response.data,
         data: response.data.data,
         status: true
       }
     }
-    return { ...response, status: false }
+    return { data: response.data.data, status: false }
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger

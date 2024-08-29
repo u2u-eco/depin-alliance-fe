@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { formatNumber } from '@/helper/common'
-import { IDeviceItem } from '@/interfaces/i.user'
 import useCommonStore from '@/stores/commonStore'
 import Link from 'next/link'
 interface CardProps {

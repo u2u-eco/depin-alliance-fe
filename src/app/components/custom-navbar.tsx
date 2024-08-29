@@ -1,21 +1,21 @@
 'use client'
 
+import useCommonStore from '@/stores/commonStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
-const listMenu = [
-  { id: 1, link: '/upgrade', title: 'upgrade' },
-  { id: 2, link: '/mission', title: 'mission' },
-  { id: 3, link: '/home', title: 'contribute' },
-  { id: 4, link: '/invite', title: 'invite' },
-  { id: 5, link: '/league', title: 'league' }
-]
-
 const CustomNavbar = () => {
   const pathName = usePathname()
-
+  const currentLeague = useCommonStore((state) => state.currentLeague)
+  const listMenu = [
+    { id: 1, link: '/upgrade', title: 'upgrade' },
+    { id: 2, link: '/mission', title: 'mission' },
+    { id: 3, link: '/home', title: 'contribute' },
+    { id: 4, link: '/invite', title: 'invite' },
+    { id: 5, link: currentLeague?.code ? '/league/in-league' : '/league', title: 'league' }
+  ]
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -55,7 +55,7 @@ const CustomNavbar = () => {
                 />
               )}
               <p
-                className={`text-xs font-geist uppercase tracking-[-1px] ${(pathName === item.link || item.id === 3) ? 'text-navbar-gradient' : 'text-green-800/80'}`}
+                className={`text-xs font-geist uppercase tracking-[-1px] ${pathName === item.link || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
               >
                 {item.title}
               </p>

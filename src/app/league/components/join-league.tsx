@@ -6,12 +6,14 @@ import Image from 'next/image'
 interface IJoinLeague {
   item: ILeagueItem | null
   onClose: () => void
+  joinCb: () => void
 }
-export default function JoinLeague({ item, onClose }: IJoinLeague) {
+export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
   const handleJoin = async () => {
     if (item?.code) {
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
+        joinCb()
         onClose()
       }
     }

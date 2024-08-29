@@ -85,7 +85,11 @@ export default function HomePage() {
 
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper: "before:content-[''] before:absolute before:top-0 before-left-0 before-right-0 before:w-full before:h-full before:z-[-1] before:bg-[url(/assets/images/onboarding-background.png)] before:bg-no-repeat before:bg-center"
+        }}
+      >
         {/* Point */}
         <div className="">
           <div className="flex items-center justify-center space-x-2">
@@ -104,7 +108,7 @@ export default function HomePage() {
           </div>
           <div className="mt-1 cursor-pointer" onClick={handleShare}>
             <Image
-              className="mx-auto h-240px"
+              className="mx-auto max-w-[240px]"
               width={0}
               height={240}
               sizes="100vw"

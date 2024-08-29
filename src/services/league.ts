@@ -20,3 +20,19 @@ export const createLeague = (formData: any) => {
 export const joinLeague = (id: string) => {
   return https.get(`/league/join/${id}`)
 }
+
+export const userLeague = () => {
+  return https.get('/league/user-league')
+}
+
+export const validateNameLeague = (formData: any) => {
+  return https.post('/league/validate-name', formData, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  })
+}
+
+export const leaveLeague = () => {
+  return https.get('/league/leave')
+}

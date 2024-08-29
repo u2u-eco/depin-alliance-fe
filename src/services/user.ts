@@ -19,6 +19,10 @@ export const claimRewardNewUser = () => {
   return https.get('/users/claim-reward-new-user')
 }
 
+export const startContributing = () => {
+  return https.get('/users/start-contributing')
+}
+
 export const claim = () => {
   return https.get('/users/claim')
 }
