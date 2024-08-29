@@ -35,10 +35,24 @@ export default function RankingPage() {
   const handleBack = () => {
     router.back()
   }
+
+  const getBgByRank = (index: number) => {
+    switch (index) {
+      case 0:
+        return 'before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
+      case 1:
+        return 'before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
+      case 2:
+        return 'before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
+      default:
+        return 'before:bg-item-green after:border-b-green-900 after:border-r-green-900'
+    }
+  }
   return (
     <CustomPage
       classNames={{
-        wrapper: "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
+        wrapper:
+          "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
       }}
     >
       <div className="relative flex items-center justify-center space-x-4">
@@ -124,12 +138,65 @@ export default function RankingPage() {
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.35 }}
           >
-            <CustomList
+            {/* <CustomList
               type="ranking"
               data={listRanking?.data?.ranking}
               titleItemKey={'username'}
               imageItemKey={'avatar'}
-            />
+            /> */}
+            <div className="flex flex-col space-y-4">
+              {listRanking?.data.ranking?.map((item: any, index: number) => (
+                <div key={index}>
+                  <div
+                    className={`relative before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between ${getBgByRank(index)}`}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                        <Image
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          style={{ width: '100%' }}
+                          src={item.avatar}
+                          alt=""
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <div className="text-white font-mona text-lg font-semibold leading-[22px]">
+                          {item.username}
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-1">
+                            <img
+                              className="size-4"
+                              src="/assets/images/point.png"
+                              srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                              alt="Point"
+                            />
+                            <p className="text-primary font-geist font-semibold">
+                              {item.miningPower}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mr-3">
+                      {[0, 1, 2].indexOf(index) === -1 ? (
+                        <div className="text-white font-geist text-lg size-[60px] flex items-center justify-center">
+                          #{index + 1}
+                        </div>
+                      ) : (
+                        <img
+                          className="size-[60px]"
+                          src={`/assets/images/ranking/rank-0${index + 1}.png`}
+                          alt="Rank"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         ) : (
           <motion.div
