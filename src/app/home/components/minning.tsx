@@ -130,12 +130,16 @@ export default function Mining() {
     <div className="mt-8 ">
       <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
         <div className="btn-border"></div>
-        {type === HOME_TYPE.START ? (
+        {type === HOME_TYPE.MINING ? (
           <div className="btn-default flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-2 xs:space-x-3 text-white uppercase text-[15px] xs:text-base font-bold">
               <div>Mining</div>
               <div className="flex items-center space-x-1">
-                <img className="size-5 xs:size-6" src="/assets/images/point-color.svg" alt="Point" />
+                <img
+                  className="size-5 xs:size-6"
+                  src="/assets/images/point-color.svg"
+                  alt="Point"
+                />
                 <p className="font-geist text-primary min-[355px]:text-base xs:text-[18px] font-semibold">
                   {miningCount ? formatNumber(miningCount, 0, 0) : 0}
                 </p>
