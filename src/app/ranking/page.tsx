@@ -15,23 +15,9 @@ const RANKING_TYPE = {
   ALLIANCE: 'alliance'
 }
 
-const listEnginer = [
-  { id: 1, title: 'Tornando L', point: '10,000/h', image: 'user-01', rank: '1' },
-  { id: 2, title: 'Tornando L', point: '10,000/h', image: 'user-02', rank: '2' },
-  { id: 3, title: 'Tornando L', point: '10,000/h', image: 'user-03', rank: '3' },
-  { id: 4, title: 'Tornando L', point: '10,000/h', image: 'user-01', rank: '4' }
-]
-
-const listSkill = [
-  { id: 1, title: 'Programing', level: '12', image: 'upgrade/upgrade-skill-programing' },
-  { id: 2, title: 'Design', level: '12', image: 'upgrade/upgrade-skill-design' },
-  { id: 3, title: 'Marketing', level: '12', image: 'upgrade/upgrade-skill-marketing' },
-  { id: 4, title: 'Social Networking', level: '12', image: 'upgrade/upgrade-skill-social' }
-]
-
 export default function RankingPage() {
   const router = useRouter()
-  const [activeType, setActiveType] = useState(RANKING_TYPE.ENGINER)
+  // const [activeType, setActiveType] = useState(RANKING_TYPE.ENGINER)
   const { data: listRanking } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
   const handleBack = () => {
     router.back()
@@ -80,8 +66,12 @@ export default function RankingPage() {
             <div className="flex items-center justify-center space-x-4 min-[355px]:space-x-6 xs:space-x-8 2xs:space-x-10">
               <div className="w-4 xs:w-6 2xs:w-[30px] h-[1px] bg-yellow-800"></div>
               <div className="space-y-1 text-center">
-                <p className="uppercase text-[13px] xs:text-sm font-semibold leading-[16px] text-yellow-600">LAST UPDATE</p>
-                <div className="text-white xs:text-[15px] 2xs:text-base font-normal leading-[20px] whitespace-nowrap">29/08/2024 - 14:14:41</div>
+                <p className="uppercase text-[13px] xs:text-sm font-semibold leading-[16px] text-yellow-600">
+                  LAST UPDATE
+                </p>
+                <div className="text-white xs:text-[15px] 2xs:text-base font-normal leading-[20px] whitespace-nowrap">
+                  29/08/2024 - 14:14:41
+                </div>
               </div>
               <div className="w-4 xs:w-6 2xs:w-[30px] h-[1px] bg-yellow-800"></div>
             </div>
@@ -104,7 +94,10 @@ export default function RankingPage() {
           /> */}
           <div className="flex flex-col space-y-4">
             {listRanking?.data.ranking?.map((item: any, index: number) => (
-              <div className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${getBgByRank(index)}`} key={index}>
+              <div
+                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.data.currentRank > 3 ? getBgByRank(9999) : getBgByRank(index)}`}
+                key={index}
+              >
                 <div
                   className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${getBgByRank(index)}`}
                 >
@@ -122,7 +115,7 @@ export default function RankingPage() {
                     <div className="space-y-2 xs:space-y-3">
                       <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px]">
                         {item.username}
-                    </div>
+                      </div>
                       <div className="flex items-center space-x-1">
                         <img
                           className="size-4"
@@ -131,7 +124,7 @@ export default function RankingPage() {
                           alt="Point"
                         />
                         <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-                          {item.miningPower}
+                          {item.miningPower && formatNumber(item.miningPower, 0, 0)}
                         </p>
                       </div>
                     </div>
