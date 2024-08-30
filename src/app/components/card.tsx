@@ -23,10 +23,10 @@ const Card = ({ shadow }: CardProps) => {
           alt="Configuration Background"
         />
       </div>
-      <div className="card__list space-y-2">
+      <div className="card__list space-y-1.5 min-[355px]:space-y-2">
         {listInfo.map((item, index) => (
           <div
-            className="flex items-center justify-between text-base leading-[20px] font-geist"
+            className="flex items-center justify-between xs:text-[15px] 2xs:text-base leading-[calc(20/16)] 2xs:leading-[20px] font-geist"
             key={index}
           >
             <div className="uppercase text-green-700">{item.type}</div>

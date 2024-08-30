@@ -68,9 +68,9 @@ const Info = () => {
           <div className="flex items-center space-x-3">
             <div className="relative" onClick={handleOpen}>
               <div className="absolute top-[-1px] left-[-1px] size-2 border-4 border-transparent border-t-green-700 border-l-green-700"></div>
-              <div className="bg-gray-800 size-16">
+              <div className="bg-gray-800 size-12 min-[354px]:size-[52px] xs:size-14 min-[400px]:size-[60px] 2xs:size-16">
                 <Image
-                  className="size-16"
+                  className="size-12 min-[354px]:size-[52px] xs:size-14 min-[400px]:size-[60px]  2xs:size-16"
                   src={userInfo?.avatar || '/assets/images/avatar.png'}
                   width={0}
                   height={0}
@@ -78,10 +78,10 @@ const Info = () => {
                   alt="Avatar"
                 />
               </div>
-              <div className="cursor-pointer absolute bottom-0 right-0 size-6">
-                <div className="border-[12px] border-r-yellow-500 border-b-yellow-500 border-l-transparent border-t-transparent"></div>
+              <div className="cursor-pointer absolute bottom-0 right-0 size-5 xs:size-6">
+                <div className="border-[10px] xs:border-[12px] border-r-yellow-500 border-b-yellow-500 border-l-transparent border-t-transparent"></div>
                 <Image
-                  className="absolute right-0.5 bottom-0.5 !size-2.5"
+                  className="absolute right-[1px] xs:right-0.5 bottom-[1px] xs:bottom-0.5 !size-2.5"
                   src="/assets/images/icons/icon-photo-edit.svg"
                   alt="Icon Photo Edit"
                   width={0}
@@ -89,15 +89,15 @@ const Info = () => {
                 />
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="text-white text-base font-semibold min-h-5 leading-[20px]">
+            <div className="space-y-0.5 min-[400px]:space-y-1">
+              <div className="text-white text-[15px] xs:text-base font-semibold min-h-5 leading-[20px]">
                 {userInfo?.username}
               </div>
-              <div className="flex items-center space-x-4">
-                <Link href="/ranking" className="flex items-center space-x-1 cursor-pointer">
-                  <span className="font-geist text-yellow-500">LV. {userInfo?.level}</span>
+              <div className="flex items-center space-x-2 min-[400px]:space-x-3 2xs:space-x-4">
+                <Link href="/ranking" className="flex items-center min-[400px]:space-x-1 cursor-pointer">
+                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">LV. {userInfo?.level}</span>
                   <Image
-                    className="size-6"
+                    className="size-5 xs:size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
                     width={0}
@@ -106,18 +106,18 @@ const Info = () => {
                   />
                 </Link>
                 <div className="w-[1px] h-5 bg-white/10"></div>
-                <div className="flex items-center space-x-1">
+                <div className="flex items-center space-x-0.5 min-[400px]:space-x-1">
                   <Image
-                    className="size-5"
+                    className="size-4 min-[400px]:size-[18px] 2xs:size-5"
                     src="/assets/images/icons/icon-thunder.svg"
                     alt="Icon Thunder"
                     height={0}
                     sizes="100vw"
                     width={0}
                   />
-                  <span className="font-geist text-yellow-500">{userInfo?.xp}</span>
+                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">{userInfo?.xp}</span>
                   <Image
-                    className="size-6"
+                    className="size-5 xs:size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
                     alt="Icon Chevron"
                     sizes="100vw"
@@ -128,10 +128,10 @@ const Info = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-4 mr-3">
+          <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 mr-2 2xs:mr-3">
             <Link href="/inventory" className="p-1">
               <Image
-                className="size-6"
+                className="size-5 min-[400px]:size-6"
                 src="/assets/images/icons/icon-inventory-green.svg"
                 alt="Icon Ranking"
                 sizes="100vw"
@@ -141,7 +141,7 @@ const Info = () => {
             </Link>
             <div className="p-1">
               <Image
-                className="size-6"
+                className="size-5 min-[400px]:size-6"
                 src="/assets/images/icons/icon-settings-green.svg"
                 alt="Icon Settings"
                 sizes="100vw"

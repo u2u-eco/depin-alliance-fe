@@ -143,6 +143,9 @@ button {
   line-height: 20px;
   width: 100%;
   // background: var(--black);
+  @include breakpoint(374) {
+    font-size: 15px;
+  }
   &.error {
     .btn-border {
       &::before, &::after {
@@ -198,6 +201,9 @@ button {
     width: 100%;
     transition: all 0.6s ease-out;
     text-align: center;
+    @include breakpoint(374) {
+      padding: 12px 20px;
+    }
   }
   .btn-primary {
     background: var(--gradient);
