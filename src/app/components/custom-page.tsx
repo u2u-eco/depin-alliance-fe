@@ -15,11 +15,14 @@ interface Pageprops {
 
 const CustomPage = ({ children, classNames }: Pageprops) => {
   const pathName = usePathname()
-
+  const isShowSidebar =
+    pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting'
   return (
     <AnimatePresence mode="wait">
       <div className={cn('section', classNames?.wrapper)}>
-        <div className="h-full overflow-y-auto flex flex-col hide-scrollbar">
+        <div
+          className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
+        >
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}
@@ -31,9 +34,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
               <div className="my-10 max-w-[480px] mx-auto ">{children}</div>
             </motion.div>
           </div>
-          {pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting' && (
-            <CustomNavbar />
-          )}
+          {isShowSidebar && <CustomNavbar />}
         </div>
       </div>
     </AnimatePresence>

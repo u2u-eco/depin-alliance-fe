@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import useCommonStore from '@/stores/commonStore'
@@ -19,7 +20,7 @@ const CustomNavbar = () => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className="relative z-20 mt-auto"
+        className="absolute bottom-0 z-20 mt-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
