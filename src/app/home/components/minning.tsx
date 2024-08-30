@@ -128,7 +128,7 @@ export default function Mining() {
 
   return (
     <div className="mt-8 ">
-      <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
+      <button className="btn min-h-[65px]" onClick={() => handleClick(type)} ref={refButton}>
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ? (
           <div className="btn-default flex items-center justify-between">

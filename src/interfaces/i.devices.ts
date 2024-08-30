@@ -10,7 +10,6 @@ export interface IDeviceTypeItem {
 export interface IDeviceItemAddParam {
   code: string
   number: number
-  index: number
 }
 
 export interface IUserDeviceItem {
