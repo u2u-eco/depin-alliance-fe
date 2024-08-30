@@ -1,19 +1,22 @@
-import CustomModal from '@/app/components/custom-modal'
 import { formatNumber } from '@/helper/common'
-import { IDeviceItemAddParam, IDeviceTypeItem } from '@/interfaces/i.devices'
-import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { IDeviceItemAddParam } from '@/interfaces/i.devices'
+import React, { useEffect, useRef, useState } from 'react'
 interface IUpgradeModal {
   activeType: string
   UPGRADE_TYPE: any
-  item: IDeviceTypeItem
+  item: any
+  refInterval: any
   handleAction: (data: IDeviceItemAddParam) => void
 }
 export default function UpgradeModal({
   activeType,
   UPGRADE_TYPE,
   item,
+  refInterval,
   handleAction
 }: IUpgradeModal) {
+  const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [amount, updateAmount] = useState<number>(1)
   const handleUpdateAmount = (value: number) => {
     if (value < 0 && amount + value < 1) {
@@ -28,8 +31,53 @@ export default function UpgradeModal({
         code: item.code,
         number: amount
       })
+    } else {
+      handleAction(item.skillId)
+      clearInterval(refInterval.current)
     }
   }
+
+  const addPrefix = (number: number) => {
+    if (number >= 10) {
+      return number
+    }
+    return `0${number}`
+  }
+  const countdown = (timeEnd: number) => {
+    const interval = () => {
+      var now = new Date().getTime()
+
+      // Find the distance between now and the count down date
+      var distance = timeEnd - now
+
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24))
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+      // Display the result in the element with id="demo"
+      const listTime = [addPrefix(hours), addPrefix(minutes), addPrefix(seconds)]
+
+      if (days > 0) {
+        listTime.unshift(addPrefix(days))
+      }
+      if (distance <= 0) {
+        clearInterval(refInterval.current)
+        setTimeCountdown([])
+      }
+      setTimeCountdown(listTime)
+    }
+    clearInterval(refInterval.current)
+    interval()
+    refInterval.current = setInterval(interval, 1000)
+  }
+
+  useEffect(() => {
+    if (item.timeWaiting) {
+      countdown(item.timeWaiting)
+    }
+  }, [])
 
   const totalAmount = amount * item.price
   return (
@@ -39,7 +87,7 @@ export default function UpgradeModal({
           <p>Are you sure you want to buy more RAM?</p>
         ) : (
           <p>
-            Are you sure you want to level up <span className="text-gradient">“Programing”</span>?
+            Are you sure you want to level up <span className="text-gradient">“{item.name}”</span>?
           </p>
         )}
       </div>
@@ -57,7 +105,7 @@ export default function UpgradeModal({
               {/* 8 <span className="text-xs font-normal text-white-50">Available</span> */}
             </p>
           ) : (
-            <p className="font-geist font-semibold text-yellow-600">LV. 12</p>
+            <p className="font-geist font-semibold text-yellow-600">LV. {item.levelCurrent}</p>
           )}
         </div>
       </div>
@@ -76,7 +124,7 @@ export default function UpgradeModal({
                 alt="Point"
               />
               <div className="text-lg font-semibold text-primary">
-                {formatNumber(item.miningPower, 0, 0)}/h
+                {item.miningPower ? `${formatNumber(item.miningPower, 0, 0)}/h` : ''}
               </div>
             </div>
           </div>
@@ -103,15 +151,30 @@ export default function UpgradeModal({
             ) : (
               <div className="flex items-center space-x-1">
                 <p className="text-lg font-semibold text-green-700">
-                  LV. <span className="text-green-300 -ml-2">11</span>
+                  LV. <span className="text-green-300 -ml-2">{item.levelCurrent}</span>
                 </p>
-                <img
-                  className="size-6"
-                  src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
-                  alt="Icon Double Arrow"
-                />
+                <div className="w-[20px] overflow-hidden mr-[2px]">
+                  <motion.div
+                    initial={{ x: -6 }}
+                    animate={{ x: 20 }}
+                    transition={{ repeat: Infinity, duration: 1.6 }}
+                  >
+                    <div className="flex">
+                      <img
+                        className="size-6"
+                        src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
+                        alt="Icon Double Arrow"
+                      />
+                      <img
+                        className="size-6"
+                        src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
+                        alt="Icon Double Arrow"
+                      />
+                    </div>
+                  </motion.div>
+                </div>
                 <p className="text-lg font-semibold text-green-700">
-                  LV. <span className="text-green-300 -ml-2">12</span>
+                  LV. <span className="text-green-300 -ml-2">{item.levelUpgrade}</span>
                 </p>
               </div>
             )}
@@ -119,24 +182,48 @@ export default function UpgradeModal({
         </div>
       </div>
       <div className="btn mt-6">
-        <div className="btn-border"></div>
-        <div className="btn-primary">
-          <div className="flex items-center justify-center space-x-4" onClick={handleClick}>
-            <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
-            <div className="w-[30px] h-[1px] bg-green-800"></div>
-            <div className="flex items-center space-x-1">
-              <img
-                className="size-5"
-                src={`/assets/images/icons/icon-${activeType === UPGRADE_TYPE.DEVICE ? 'point' : 'thunder'}-dark.svg`}
-                alt="Point"
-              />
-              <p className="font-geist text-base font-semibold text-green-900">
-                {formatNumber(totalAmount, 0, 0)}
-              </p>
+        {activeType === UPGRADE_TYPE.SKILL && item.timeWaiting && timeCountdown.length > 0 ? (
+          <div className="btn-default flex items-center justify-center !py-2.5 !px-3">
+            <div className="min-h-6 xs:min-h-[28px]">
+              {timeCountdown.length === 0 ? null : (
+                <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-title">
+                  {timeCountdown.map((item: any, index) => (
+                    <React.Fragment key={index}>
+                      <p className="size-6 xs:size-[28px] flex items-center justify-center bg-white/10">
+                        {item}
+                      </p>
+                      {index === timeCountdown.length - 1 ? null : <span>:</span>}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </div>
-        <div className="btn-border"></div>
+        ) : (
+          <>
+            <div className="btn-border"></div>
+            <div className="btn-primary">
+              <div className="flex items-center justify-center space-x-4" onClick={handleClick}>
+                <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
+
+                <div className="w-[30px] h-[1px] bg-green-800"></div>
+                <div className="flex items-center space-x-1">
+                  <img
+                    className="size-5"
+                    src={`/assets/images/icons/icon-${activeType === UPGRADE_TYPE.DEVICE ? 'point' : 'thunder'}-dark.svg`}
+                    alt="Point"
+                  />
+                  <p className="font-geist text-base font-semibold text-green-900">
+                    {activeType === UPGRADE_TYPE.DEVICE
+                      ? formatNumber(totalAmount, 0, 0)
+                      : item.feeUpgrade}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="btn-border"></div>
+          </>
+        )}
       </div>
     </div>
   )

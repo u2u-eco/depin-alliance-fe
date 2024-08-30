@@ -53,7 +53,7 @@ export default function InventoryPage() {
             />
           </div>
           <div className="size-1.5 bg-green-800"></div>
-          <div className="text-title font-airnt font-medium text-2xl">INVENTORY</div>
+          <div className="text-title font-airnt font-medium text-xl xs:text-2xl">INVENTORY</div>
           <div className="size-1.5 bg-green-800"></div>
         </div>
         {/* Tab */}

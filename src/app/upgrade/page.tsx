@@ -12,8 +12,9 @@ import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
 import UpgradeModal from './components/upgrade-modal'
 import { toast } from 'sonner'
-import { getSkills } from '@/services/user'
+import { getSkillInfo, getSkills, updateSkill } from '@/services/user'
 import { ISkillItem } from '@/interfaces/i.user'
+import { MESSAGES } from '@/constants/messages'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -30,6 +31,7 @@ const listSkill = [
 export default function UpgradePage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const currentItem = useRef<any>()
+  const refInterval = useRef<any>()
   const [activeType, setActiveType] = useState(UPGRADE_TYPE.DEVICE)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
@@ -44,7 +46,6 @@ export default function UpgradePage() {
 
   const _getSkills = async () => {
     const res = await getSkills()
-    console.log('🚀 ~ const_getSkills= ~ res:', res)
     if (res.status) {
       setListSkill(res.data.skill)
     }
@@ -59,13 +60,23 @@ export default function UpgradePage() {
     if (tab === UPGRADE_TYPE.DEVICE) {
       getDevicesByType(activeTab)
     } else {
-      getSkills()
+      _getSkills()
     }
   }
 
-  const handleClickItem = (item: IDeviceTypeItem) => {
-    currentItem.current = item
-    onOpen()
+  const handleClickItem = async (item: any) => {
+    if (activeType === UPGRADE_TYPE.SKILL) {
+      const res = await getSkillInfo(item.skillId)
+      let infoSkill = {}
+      if (res.status) {
+        infoSkill = res.data
+      }
+      currentItem.current = { ...item, ...infoSkill }
+      onOpen()
+    } else {
+      currentItem.current = item
+      onOpen()
+    }
   }
 
   const buy = async (data: IDeviceItemAddParam) => {
@@ -80,12 +91,38 @@ export default function UpgradePage() {
     }
   }
 
+  const handleUpdateSkill = async (skillId: number) => {
+    const res: any = await updateSkill(skillId)
+    if (res.status) {
+      toast.success('Level Up successfully!')
+      _getSkills()
+      onClose()
+    } else {
+      if (res.message) {
+        toast.error(MESSAGES[res.message] || res.message)
+      }
+    }
+  }
+
+  const handleModalAction = (data: any) => {
+    if (activeType === UPGRADE_TYPE.DEVICE) {
+      buy(data)
+    } else {
+      handleUpdateSkill(data)
+    }
+  }
+
   useEffect(() => {
     if (token) {
       getListDevice()
     }
   }, [activeTab, token])
 
+  useEffect(() => {
+    if (!isOpen) {
+      clearInterval(refInterval.current)
+    }
+  }, [isOpen])
   return (
     <>
       <CustomPage
@@ -94,7 +131,7 @@ export default function UpgradePage() {
             "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
         }}
       >
-        <div className="flex items-center justify-center space-x-4">
+        <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
           <div
             className="relative cursor-pointer"
             onClick={() => handleSelectTab(UPGRADE_TYPE.DEVICE)}
@@ -105,7 +142,7 @@ export default function UpgradePage() {
               alt="Upgrade Tab"
             />
             <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.DEVICE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.DEVICE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
             >
               Device
             </div>
@@ -120,7 +157,7 @@ export default function UpgradePage() {
               alt="Upgrade Tab"
             />
             <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.SKILL ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === UPGRADE_TYPE.SKILL ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
             >
               Skill
             </div>
@@ -161,7 +198,13 @@ export default function UpgradePage() {
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <CustomList type="skill" data={listSkill} />
+              <CustomList
+                type="skill"
+                data={listSkill}
+                titleItemKey="name"
+                levelKey="levelCurrent"
+                onClickItem={handleClickItem}
+              />
             </motion.div>
           )}
         </div>
@@ -176,7 +219,8 @@ export default function UpgradePage() {
           activeType={activeType}
           UPGRADE_TYPE={UPGRADE_TYPE}
           item={currentItem.current}
-          handleAction={buy}
+          refInterval={refInterval}
+          handleAction={handleModalAction}
         />
       </CustomModal>
     </>

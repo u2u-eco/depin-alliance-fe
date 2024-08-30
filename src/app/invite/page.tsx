@@ -64,29 +64,29 @@ export default function InvitePage() {
               // srcSet="/assets/images/invite/invite-image.png 1x, /assets/images/invite/invite-image@2x.png 2x"
               alt="Invite Image"
             />
-            <div className="px-4 py-6">
-              <div className="flex items-center justify-center space-x-4">
+            <div className="px-3 xs:px-4 py-3 xs:py-4 min-[400px]:py-5 2xs:py-6">
+              <div className="flex items-center justify-between min-[400px]:justify-center space-x-1 min-[400px]:space-x-3 2xs:space-x-4">
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                <p className="text-title font-airnt font-medium text-xl leading-[24px] text-center uppercase tracking-[1px]">
+                <p className="text-title font-airnt font-medium text-[15px] min-[355px]:text-base xs:text-lg 2xs:text-xl leading-[20px] 2xs:leading-[24px] text-center uppercase tracking-[1px]">
                   Invite friends and earn more rewards
                 </p>
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
-              <div className="mt-2 mb-6 text-center text-body font-geist tracking-[-1px]">
+              <div className="mt-2 mb-2 min-[344px]:mb-3 xs:mb-4 min-[400px]:mb-5 2xs:mb-6 text-center text-body text-xs min-[400px]:text-[13px] 2xs:text-sm font-geist tracking-[-1px]">
                 Earn 10,000 points each for the first 5 friends
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3 xs:space-x-4">
                 <div className="btn" onClick={handleShare}>
                   <div className="btn-border"></div>
                   {/* href={`https://t.me/share/url?url=${uriCopy}?start=${user?.code}&text=Hello! Welcome to Depin Alliance`} */}
-                  <div className="btn-primary">INVITE FRIEND</div>
+                  <div className="btn-primary max-[399px]:!py-3 max-[354px]:text-sm max-[354px]:!py-2">INVITE FRIEND</div>
                   <div className="btn-border"></div>
                 </div>
                 <div className="btn w-fit" onClick={handleCopy}>
                   <div className="btn-border"></div>
                   <div className="btn-default !p-2">
                     <Image
-                      className="size-8 min-w-8"
+                      className="size-8 max-[399px]:size-7 max-[354px]:size-5 min-w-8 max-[399px]:min-w-7 max-[354px]:min-w-5"
                       src="/assets/images/icons/icon-copy-gradient.svg"
                       alt="Icon Copy"
                       width={0}

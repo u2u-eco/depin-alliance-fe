@@ -48,6 +48,7 @@ export type IUserInfo = {
   username: string
   status: string
   miningPower: number
+  pointSkill: number
   maximumPower: number
   point: number
   pointUnClaimed: number

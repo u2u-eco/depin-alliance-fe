@@ -54,3 +54,13 @@ export const getUserFriend = (params?: { page: number; size: number }) => {
 export const getSkills = () => {
   return https.get('/users/skills')
 }
+
+export const getSkillInfo = (id: number) => {
+  return https.get(`/users/skills/${id}/next-level`)
+}
+
+export const updateSkill = (id: number) => {
+  return https.post(`/users/upgrade-skill`, {
+    skillId: id
+  })
+}
