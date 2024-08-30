@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Card from '../components/card'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
@@ -11,17 +11,15 @@ import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import { UPGRADE_TAB } from '@/constants'
 import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
-import { useTelegram } from '@/hooks/useTelegram'
 
 export default function HomePage() {
   const { token, userInfo, setDevice } = useCommonStore()
-  const { webApp } = useTelegram()
 
   useUserInfo()
 
-  const handleShare = () => {
-    webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
-  }
+  // const handleShare = () => {
+  //   webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
+  // }
 
   const _getListDevice = async () => {
     const listDevice: any = await getListDevice()
@@ -110,7 +108,7 @@ export default function HomePage() {
               {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
             </p>
           </div>
-          <div className="mt-4 w-fit mx-auto cursor-pointer" onClick={handleShare}>
+          <div className="mt-4 w-fit mx-auto cursor-pointer">
             <Image
               className="mx-auto max-w-[200px] min-w-[200px] xs:max-w-[240px] xs:min-w-[240px] xs:min-h-[260px]"
               width={0}
