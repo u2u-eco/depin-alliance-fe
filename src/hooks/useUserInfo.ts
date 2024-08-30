@@ -3,7 +3,7 @@ import useCommonStore from '@/stores/commonStore'
 import { useQuery } from '@tanstack/react-query'
 
 export const useUserInfo = () => {
-  const { setUserInfo, token } = useCommonStore()
+  const { setUserInfo, token, userInfo } = useCommonStore()
   return useQuery({
     queryKey: ['fetchUserInfo'],
     queryFn: async () => {
@@ -14,7 +14,7 @@ export const useUserInfo = () => {
       }
       return res.data
     },
-    enabled: Boolean(token),
+    enabled: Boolean(token) && Boolean(userInfo?.timeStartMining),
     retry: 3,
     retryDelay: 3000,
     refetchOnMount: true,
