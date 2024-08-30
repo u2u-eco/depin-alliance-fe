@@ -12,6 +12,7 @@ interface ListProps {
   imageItemKey?: string
   pointKey?: string
   levelKey?: string
+  imageDefault?: string
   onClickItem?: (item: any) => void
 }
 
@@ -22,6 +23,7 @@ const CustomList = ({
   titleItemKey,
   imageItemKey,
   pointKey,
+  imageDefault,
   levelKey,
   onClickItem
 }: ListProps) => {
@@ -46,6 +48,7 @@ const CustomList = ({
               (titleItemKey && item[titleItemKey]) || item.title || `${item.type} ${item.name}`
             }
             image={
+              imageDefault ||
               (imageItemKey && item[imageItemKey]) ||
               item.image ||
               `upgrade/upgrade-${item.type?.toLowerCase()}`
