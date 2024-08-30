@@ -40,13 +40,15 @@ export default function RankingPage() {
   const getBgByRank = (index: number) => {
     switch (index) {
       case 0:
-        return 'before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
+        return 'bg-[#BA3AFF] before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
       case 1:
-        return 'before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
+        return 'bg-[#00A3FF] before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
       case 2:
-        return 'before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
+        return 'bg-[#FFA800] before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
+      case 99999:
+        return 'bg-green-500 before:bg-item-green after:border-b-green-500 after:border-r-green-500'
       default:
-        return 'before:bg-item-green after:border-b-green-900 after:border-r-green-900'
+        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900'
     }
   }
   return (
@@ -71,148 +73,89 @@ export default function RankingPage() {
         <div className="text-title font-airnt font-medium text-2xl">RANKING</div>
         <div className="size-1.5 bg-green-800"></div>
       </div>
-      <div className="relative mt-6">
-        <Image
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: '100%', height: 'auto' }}
-          src="/assets/images/ranking/ranking-image.png"
-          // srcSet="/assets/images/ranking/ranking-image.png 1x, /assets/images/ranking/ranking-image@2x.png 2x"
-          alt="Ranking Image"
-        />
-        <div className="absolute bottom-0 left-[50%] translate-x-[-50%] space-y-2 text-center">
-          <div className="text-title font-airnt font-medium text-xl leading-[24px] tracking-[1px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)]">
-            Diamond
-          </div>
-          <div className="flex items-center justify-center space-x-2">
-            <div className="relative">
-              <img
-                className="size-7"
-                src="/assets/images/point.png"
-                srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                alt="Point"
-              />
-            </div>
-            <p className="text-primary font-geist text-lg font-semibold">5,000/10,000</p>
-          </div>
-        </div>
-      </div>
-      {/* Tab */}
-      <div className="flex items-center justify-center space-x-4 mt-8">
-        <div
-          className="relative cursor-pointer"
-          onClick={() => setActiveType(RANKING_TYPE.ENGINER)}
-        >
-          <img
-            className="mx-auto"
-            src={`/assets/images/upgrade/upgrade-tab${activeType === RANKING_TYPE.ENGINER ? '-active' : ''}.svg`}
-            alt="Upgrade Tab"
-          />
-          <div
-            className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === RANKING_TYPE.ENGINER ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
-          >
-            Enginer
-          </div>
-        </div>
-        <div
-          className="relative cursor-pointer"
-          onClick={() => setActiveType(RANKING_TYPE.ALLIANCE)}
-        >
-          <img
-            className="mx-auto"
-            src={`/assets/images/upgrade/upgrade-tab${activeType === RANKING_TYPE.ALLIANCE ? '-active' : ''}.svg`}
-            alt="Upgrade Tab"
-          />
-          <div
-            className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === RANKING_TYPE.ALLIANCE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
-          >
-            Alliance
-          </div>
-        </div>
-      </div>
       <div className="mt-6">
-        {activeType === RANKING_TYPE.ENGINER ? (
-          <motion.div
-            initial={{ y: 25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -25, opacity: 0 }}
-            transition={{ duration: 0.35 }}
-          >
-            {/* <CustomList
-              type="ranking"
-              data={listRanking?.data?.ranking}
-              titleItemKey={'username'}
-              imageItemKey={'avatar'}
-            /> */}
-            <div className="flex flex-col space-y-4">
-              {listRanking?.data.ranking?.map((item: any, index: number) => (
-                <div key={index}>
-                  <div
-                    className={`relative before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 items-center justify-between ${getBgByRank(index)}`}
-                  >
-                    <div>
-                      <div className=" flex w-full justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
-                            <Image
-                              width={0}
-                              height={0}
-                              sizes="100vw"
-                              style={{ width: '100%' }}
-                              src={item.avatar}
-                              alt=""
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <div className="text-white font-mona text-lg font-semibold leading-[22px]">
-                              {item.username}
-                            </div>
-                            <div className="flex items-center space-x-4">
-                              <div className="flex items-center space-x-1">
-                                <img
-                                  className="size-4"
-                                  src="/assets/images/point.png"
-                                  srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                                  alt="Point"
-                                />
-                                <p className="text-primary font-geist font-semibold">
-                                  {formatNumber(item.miningPower, 0, 0)}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="mr-3">
-                          {[0, 1, 2].indexOf(index) === -1 ? (
-                            <div className="text-white font-geist text-lg size-[60px] flex items-center justify-center">
-                              #{index + 1}
-                            </div>
-                          ) : (
-                            <img
-                              className="size-[60px]"
-                              src={`/assets/images/ranking/rank-0${index + 1}.png`}
-                              alt="Rank"
-                            />
-                          )}
+        <div className="btn default cursor-default font-geist">
+          <div className="btn-border"></div>
+          <div className="btn-default max-xs:!py-2.5 max-xs:!px-3">
+            <div className="flex items-center justify-center space-x-4 min-[355px]:space-x-6 xs:space-x-8 2xs:space-x-10">
+              <div className="w-4 xs:w-6 2xs:w-[30px] h-[1px] bg-yellow-800"></div>
+              <div className="space-y-1 text-center">
+                <p className="uppercase text-[13px] xs:text-sm font-semibold leading-[16px] text-yellow-600">LAST UPDATE</p>
+                <div className="text-white xs:text-[15px] 2xs:text-base font-normal leading-[20px] whitespace-nowrap">29/08/2024 - 14:14:41</div>
+              </div>
+              <div className="w-4 xs:w-6 2xs:w-[30px] h-[1px] bg-yellow-800"></div>
+            </div>
+          </div>
+          <div className="btn-border"></div>
+        </div>
+      </div>
+      <div className="mt-10">
+        <motion.div
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -25, opacity: 0 }}
+          transition={{ duration: 0.35 }}
+        >
+          {/* <CustomList
+            type="ranking"
+            data={listRanking?.data?.ranking}
+            titleItemKey={'username'}
+            imageItemKey={'avatar'}
+          /> */}
+          <div className="flex flex-col space-y-4">
+            {listRanking?.data.ranking?.map((item: any, index: number) => (
+              <div className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${getBgByRank(index)}`} key={index}>
+                <div
+                  className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${getBgByRank(index)}`}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                      <Image
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ width: '100%' }}
+                        src={item.avatar}
+                        alt=""
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <div className="text-white font-mona text-lg font-semibold leading-[22px]">
+                        {item.username}
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-1">
+                          <img
+                            className="size-4"
+                            src="/assets/images/point.png"
+                            srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                            alt="Point"
+                          />
+                          <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
+                            {item.miningPower}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div className="mr-3">
+                    {[0, 1, 2].indexOf(index) === -1 ? (
+                      <div className="text-white font-geist text-lg size-[60px] flex items-center justify-center">
+                        #{index + 1}
+                      </div>
+                    ) : (
+                      <img
+                        className="size-[60px]"
+                        src={`/assets/images/ranking/rank-0${index + 1}.png`}
+                        alt="Rank"
+                      />
+                    )}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ y: 25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -25, opacity: 0 }}
-            transition={{ duration: 0.35 }}
-          >
-            <CustomList type="skill" data={listSkill} />
-          </motion.div>
-        )}
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </CustomPage>
   )
