@@ -35,7 +35,7 @@ export default function RankingPage() {
       case 99999:
         return 'bg-green-500 before:bg-item-green after:border-b-green-500 after:border-r-green-500'
       default:
-        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900'
+        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
     }
   }
   return (

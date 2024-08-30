@@ -19,7 +19,7 @@ export default function NewbieReward() {
     <div className="relative mt-28 mb-10">
       <img
         className="mx-auto"
-        src="/assets/images/onboarding-scholarship.svg"
+        src="/assets/images/onboarding/onboarding-scholarship.svg"
         alt="Onboarding Scholarship"
       />
       <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center justify-center space-x-2">
