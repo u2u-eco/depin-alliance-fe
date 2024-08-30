@@ -12,6 +12,8 @@ import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
 import UpgradeModal from './components/upgrade-modal'
 import { toast } from 'sonner'
+import { getSkills } from '@/services/user'
+import { ISkillItem } from '@/interfaces/i.user'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -30,6 +32,7 @@ export default function UpgradePage() {
   const currentItem = useRef<any>()
   const [activeType, setActiveType] = useState(UPGRADE_TYPE.DEVICE)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
+  const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const token = useCommonStore((state) => state.token)
   const [listDevice, setListDevice] = useState<Array<IDeviceTypeItem>>([])
   const getListDevice = async () => {
@@ -39,8 +42,25 @@ export default function UpgradePage() {
     }
   }
 
+  const _getSkills = async () => {
+    const res = await getSkills()
+    console.log('🚀 ~ const_getSkills= ~ res:', res)
+    if (res.status) {
+      setListSkill(res.data.skill)
+    }
+  }
+
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
+  }
+
+  const handleSelectTab = (tab: string) => {
+    setActiveType(tab)
+    if (tab === UPGRADE_TYPE.DEVICE) {
+      getDevicesByType(activeTab)
+    } else {
+      getSkills()
+    }
   }
 
   const handleClickItem = (item: IDeviceTypeItem) => {
@@ -77,7 +97,7 @@ export default function UpgradePage() {
         <div className="flex items-center justify-center space-x-4">
           <div
             className="relative cursor-pointer"
-            onClick={() => setActiveType(UPGRADE_TYPE.DEVICE)}
+            onClick={() => handleSelectTab(UPGRADE_TYPE.DEVICE)}
           >
             <img
               className="mx-auto"
@@ -92,7 +112,7 @@ export default function UpgradePage() {
           </div>
           <div
             className="relative cursor-pointer"
-            onClick={() => setActiveType(UPGRADE_TYPE.SKILL)}
+            onClick={() => handleSelectTab(UPGRADE_TYPE.SKILL)}
           >
             <img
               className="mx-auto"

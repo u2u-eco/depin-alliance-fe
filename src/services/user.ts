@@ -50,3 +50,7 @@ export const getUserFriend = (params?: { page: number; size: number }) => {
     params
   })
 }
+
+export const getSkills = () => {
+  return https.get('/users/skills')
+}

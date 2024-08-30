@@ -77,3 +77,11 @@ export interface IFriendItem {
   pointRef: number
   username: string
 }
+
+export interface ISkillItem {
+  skillId: number
+  name: string
+  levelCurrent: number
+  maxLevel: number
+  timeWaiting: number
+}

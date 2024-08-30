@@ -1,5 +1,5 @@
 export const INIT_DATA =
-  'query_id=AAHmoDEdAAAAAOagMR0UHKF_&user=%7B%22id%22%3A489791718%2C%22first_name%22%3A%22Huong%22%2C%22last_name%22%3A%22Vu%22%2C%22username%22%3A%22huongseven%22%2C%22language_code%22%3A%22vi%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724927681&hash=fe7021f9be70394551516a3fb24638c906d54bf050b03b52f7129ffb70111540'
+  'query_id=AAHUsCYUAAAAANSwJhTcETII&user=%7B%22id%22%3A338079956%2C%22first_name%22%3A%22holden%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22HoldenFcode%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724987005&hash=89db6fa85ca83715d2ad8ab245788c8271a3bf701e42eda8bfb740c012957348'
 export const TOKEN = 'depin-alliance-tk'
 export const TELE_URI = process.env.NEXT_PUBLIC_TELE_URI
 export const UPGRADE_TAB = {
