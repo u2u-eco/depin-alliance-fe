@@ -157,7 +157,7 @@ export default function UpgradeModal({
                   <motion.div
                     initial={{ x: -6 }}
                     animate={{ x: 20 }}
-                    transition={{ repeat: Infinity, duration: 1.6 }}
+                    transition={{ repeatType: 'loop', repeat: Infinity, duration: 1.6 }}
                   >
                     <div className="flex">
                       <img
