@@ -70,7 +70,7 @@ export default function RankingPage() {
           />
         </div>
         <div className="size-1.5 bg-green-800"></div>
-        <div className="text-title font-airnt font-medium text-2xl">RANKING</div>
+        <div className="text-title font-airnt font-medium text-xl xs:text-2xl">RANKING</div>
         <div className="size-1.5 bg-green-800"></div>
       </div>
       <div className="mt-6">
@@ -108,8 +108,8 @@ export default function RankingPage() {
                 <div
                   className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${getBgByRank(index)}`}
                 >
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                  <div className="flex items-center space-x-3 xs:space-x-4">
+                    <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
                       <Image
                         width={0}
                         height={0}
@@ -119,33 +119,31 @@ export default function RankingPage() {
                         alt=""
                       />
                     </div>
-                    <div className="space-y-3">
-                      <div className="text-white font-mona text-lg font-semibold leading-[22px]">
+                    <div className="space-y-2 xs:space-y-3">
+                      <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px]">
                         {item.username}
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-1">
-                          <img
-                            className="size-4"
-                            src="/assets/images/point.png"
-                            srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                            alt="Point"
-                          />
-                          <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-                            {item.miningPower}
-                          </p>
-                        </div>
+                    </div>
+                      <div className="flex items-center space-x-1">
+                        <img
+                          className="size-4"
+                          src="/assets/images/point.png"
+                          srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                          alt="Point"
+                        />
+                        <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
+                          {item.miningPower}
+                        </p>
                       </div>
                     </div>
                   </div>
                   <div className="mr-3">
                     {[0, 1, 2].indexOf(index) === -1 ? (
-                      <div className="text-white font-geist text-lg size-[60px] flex items-center justify-center">
+                      <div className="text-white font-geist text-base xs:text-lg size-12 xs:size-[60px] flex items-center justify-center">
                         #{index + 1}
                       </div>
                     ) : (
                       <img
-                        className="size-[60px]"
+                        className="size-12 xs:size-[60px]"
                         src={`/assets/images/ranking/rank-0${index + 1}.png`}
                         alt="Rank"
                       />
