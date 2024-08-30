@@ -131,7 +131,7 @@ export default function RankingPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="mr-3">
+                  <div className="mr-1 xs:mr-2 2xs:mr-3">
                     {[0, 1, 2].indexOf(index) === -1 ? (
                       <div className="text-white font-geist text-base xs:text-lg size-12 xs:size-[60px] flex items-center justify-center">
                         #{index + 1}

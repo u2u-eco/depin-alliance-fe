@@ -68,7 +68,7 @@ export default function InventoryPage() {
               alt="Upgrade Tab"
             />
             <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === INVENTORY_TYPE.BUILD ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === INVENTORY_TYPE.BUILD ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
             >
               Build
             </div>
@@ -83,7 +83,7 @@ export default function InventoryPage() {
               alt="Upgrade Tab"
             />
             <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === INVENTORY_TYPE.HARDWARE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === INVENTORY_TYPE.HARDWARE ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
             >
               Hardware
             </div>
@@ -106,33 +106,33 @@ export default function InventoryPage() {
                     src="/assets/images/inventory/inventory-frame.svg"
                     alt="Frame"
                   />
-                  <div className="absolute top-0 left-0 right-0 w-full h-full px-5 py-4 space-y-4">
+                  <div className="absolute top-0 left-0 right-0 w-full h-full px-3 xs:px-4 2xs:px-5 py-2 xs:py-3 2xs:py-4 space-y-2.5 xs:space-y-3 2xs:space-y-4 flex flex-col justify-center">
                     <div className="flex items-center justify-between">
-                      <div className="text-gradient font-mona text-xl font-semibold uppercase">
+                      <div className="text-gradient font-mona text-base xs:text-lg 2xs:text-xl font-semibold uppercase">
                         RAM
                       </div>
                       <div className="flex items-center space-x-1">
                         <img
-                          className="size-6"
+                          className="size-4 xs:size-5 2xs:size-6"
                           src="/assets/images/point.png"
                           srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                           alt="Point"
                         />
-                        <div className="text-base text-green-500">
+                        <div className="xs:text-[15px] text-base text-green-500">
                           1,000<span className="text-body">/hour</span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex space-x-5">
-                      <div className="flex-1 p-[14px] bg-white/10 [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_22px)]">
-                        <div className="flex items-center space-x-4">
+                    <div className="flex space-x-3 xs:space-x-4 2xs:space-x-5">
+                      <div className="flex-1 p-2.5 xs:p-3 2xs:p-[14px] bg-white/10 [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_22px)]">
+                        <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
                           <img
-                            className="size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]"
+                            className="size-[60px] xs:size-[66px] 2xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]"
                             src="/assets/images/upgrade/upgrade-ram-2gb.png"
                             alt=""
                           />
-                          <div className="space-y-2">
-                            <p className="font-mona text-base font-semibold text-white leading-[20px]">
+                          <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
+                            <p className="font-mona text-[15px] xs:text-base font-semibold text-white leading-[20px]">
                               RAM 2GB
                             </p>
                             <div className="flex items-center space-x-1">
@@ -147,7 +147,7 @@ export default function InventoryPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="size-[100px] cursor-pointer bg-white/10 flex items-center justify-center [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_22px),calc(100%_-_22px)_100%,0_100%,0_22px)]">
+                      <div className="size-20 xs:size-[90px] 2xs:size-[100px] cursor-pointer bg-white/10 flex items-center justify-center [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_22px),calc(100%_-_22px)_100%,0_100%,0_22px)]">
                         <img
                           className="size-8"
                           src="/assets/images/icons/icon-plus-white.svg"
@@ -182,18 +182,18 @@ export default function InventoryPage() {
                 exit={{ y: -25, opacity: 0 }}
                 transition={{ duration: 0.35 }}
               >
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
                   {listHardware.map((item: any) => (
                     <div
                       key={item.id}
                       className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                     >
                       <div
-                        className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] p-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                        className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
                         onClick={() => setActiveItem(item.id)}
                       >
                         <img
-                          className="size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                          className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                           src={`/assets/images/${item.image}.png`}
                           alt=""
                         />
