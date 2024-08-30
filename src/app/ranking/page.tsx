@@ -35,7 +35,7 @@ export default function RankingPage() {
       case 99999:
         return 'bg-green-500 before:bg-item-green after:border-b-green-500 after:border-r-green-500'
       default:
-        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900'
+        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
     }
   }
   return (
@@ -97,11 +97,11 @@ export default function RankingPage() {
           <div className="flex flex-col space-y-4">
             {listRanking?.data.ranking?.map((item: any, index: number) => (
               <div
-                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.data.currentRank > 3 ? getBgByRank(9999) : getBgByRank(index)}`}
+                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.data.currentRank > 3 ? getBgByRank(99999) : getBgByRank(index)}`}
                 key={index}
               >
                 <div
-                  className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${getBgByRank(index)}`}
+                  className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${listRanking?.data.currentRank > 3 ? getBgByRank(99999) : getBgByRank(index)}`}
                 >
                   <div className="flex items-center space-x-3 xs:space-x-4">
                     <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
