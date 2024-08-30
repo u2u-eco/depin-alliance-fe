@@ -31,7 +31,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
               transition={{ duration: 0.35 }}
             >
               <Info />
-              <div className="my-10 max-w-[480px] mx-auto ">{children}</div>
+              <div className=" my-8 xs:my-10 max-w-[480px] mx-auto ">{children}</div>
             </motion.div>
           </div>
           {isShowSidebar && <CustomNavbar />}

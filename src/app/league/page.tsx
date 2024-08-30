@@ -79,29 +79,31 @@ export default function LeaguePage() {
               // srcSet="/assets/images/league/league-image.png 1x, /assets/images/league/league-image@2x.png 2x"
               alt="League Image"
             />
-            <div className="px-4 py-6">
-              <div className="flex items-center justify-center space-x-4">
+            <div className="px-3 xs:px-4 py-3 xs:py-4 min-[400px]:py-5 2xs:py-6">
+              <div className="flex items-center justify-between min-[400px]:justify-center space-x-1 min-[400px]:space-x-3 2xs:space-x-4">
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                <p className="text-title font-airnt font-medium text-xl leading-[24px] text-center uppercase tracking-[1px]">
+                <p className="text-title font-airnt font-medium text-[15px] min-[355px]:text-base xs:text-lg 2xs:text-xl leading-[20px] 2xs:leading-[24px] text-center uppercase tracking-[1px]">
                   join LEAGUE now
                 </p>
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
-              <div className="mt-2 mb-6 text-center text-body font-geist tracking-[-1px]">
+              <div className="mt-2 mb-4 xs:mb-6 text-xs min-[355px]:text-[13px] xs:text-sm text-center text-body font-geist tracking-[-1px]">
                 Let’s join the League or create a new League to contribute together!
               </div>
               <CustomButton title="CREATE LEAGUE" onAction={handleCreateLeague} />
             </div>
           </div>
         </div>
-        <CustomList
-          type="league"
-          title="All Leagues"
-          data={listLeague?.data}
-          titleItemKey="name"
-          pointKey="totalMining"
-          onClickItem={handleClickItem}
-        />
+        {listLeague?.data.length > 0 ? (
+          <CustomList
+            type="league"
+            title="All Leagues"
+            data={listLeague?.data}
+            titleItemKey="name"
+            pointKey="totalMining"
+            onClickItem={handleClickItem}
+          />
+        ) : null}
       </CustomPage>
 
       <CustomModal

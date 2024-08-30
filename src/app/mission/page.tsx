@@ -7,7 +7,6 @@ import Image from 'next/image'
 import ListMission from './components/list-mission'
 
 export default function MissionPage() {
-  console.log('MissionPage')
   return (
     <>
       <CustomPage
