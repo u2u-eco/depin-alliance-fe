@@ -34,9 +34,9 @@ const CustomList = ({
     return type === LIST_TYPE.MISSION ? item.status === 'CLAIMED' : item.status
   }
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-3 xs:space-y-4">
       {title && (
-        <div className="font-geist text-[15px] xs:text-base tracking-[-1px] leading-[20px] text-white-50 mt-8">
+        <div className="font-geist text-[15px] xs:text-base tracking-[-1px] leading-[20px] text-white-50 mt-6 xs:mt-7 2xs:mt-8">
           {title}
         </div>
       )}

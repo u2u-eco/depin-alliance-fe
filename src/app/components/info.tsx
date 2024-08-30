@@ -72,9 +72,9 @@ const Info = () => {
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center space-x-3">
           <div className="relative" onClick={handleOpen}>
             <div className="absolute top-[-1px] left-[-1px] size-2 border-4 border-transparent border-t-green-700 border-l-green-700"></div>
-            <div className="bg-gray-800 size-12 min-[354px]:size-[52px] xs:size-14 min-[400px]:size-[60px] 2xs:size-[76px]">
+            <div className="bg-gray-800 size-[54px] min-[354px]:size-[64px] xs:size-[68px] min-[400px]:size-[72px] 2xs:size-[76px]">
               <Image
-                className="size-12 min-[354px]:size-[52px] xs:size-14 min-[400px]:size-[60px] 2xs:size-[76px]"
+                className="size-[54px] min-[354px]:size-[64px] xs:size-[68px] min-[400px]:size-[72px] 2xs:size-[76px]"
                 src={userInfo?.avatar || '/assets/images/avatar.png'}
                 width={0}
                 height={0}
@@ -93,7 +93,7 @@ const Info = () => {
               />
             </div>
           </div>
-          <div className="space-y-3 flex-1">
+          <div className="space-y-1 min-[355px]:space-y-1.5 xs:space-y-2 2xs:space-y-3 flex-1">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5 min-[400px]:space-y-1">
                 <div className="text-white text-[15px] xs:text-base font-semibold min-h-5 leading-[20px]">
@@ -156,7 +156,7 @@ const Info = () => {
                 </div>
               </div>
             </div>
-            <div className="relative w-[160px] h-1 rounded bg-gray-850">
+            <div className="relative w-[120px] min-[400px]:w-[140px] 2xs:w-[160px] h-1 rounded bg-gray-850">
               <div className="absolute top-0 left-0 h-1 w-[60%] bg-gradient rounded before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:bg-gradient before:blur-[6px]"></div>
             </div>
           </div>

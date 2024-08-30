@@ -44,11 +44,11 @@ export default function DailyCheckIn() {
     <>
         {listDaily?.data.length > 0 ? (
           <>
-            <div className="font-geist text-base tracking-[-1px] leading-[20px] text-white-50 mt-8">
+            <div className="font-geist text-[15px] xs:text-base tracking-[-1px] leading-[20px] text-white-50 mt-8">
               DAILY CHECK-IN
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 min-[355px]:grid-cols-4 gap-1.5 2xs:gap-2">
               {listDaily?.data.map((item: IMissionItem, index: number) => (
                 <div
                   onClick={() => handleClick(item)}
@@ -56,7 +56,7 @@ export default function DailyCheckIn() {
                   className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${item.isChecked ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                 >
                   <div
-                    className={`flex items-center justify-center flex-col min-h-[120px] [clip-path:_polygon(30px_0,100%_0,100%_100%,0_100%,0_30px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/5 after:z-[-1] after:[clip-path:_polygon(30px_0,100%_0,100%_100%,0_100%,0_30px)] p-4 text-center cursor-pointer ${item.isChecked ? '!bg-green-900 after:!bg-green-900' : currentDay.valueOf() === item.time ? '!bg-green-500 after:!bg-[linear-gradient(to_top,#084625,#000100)] shadow-[0_0_16px_rgba(0,153,86,0.5)]' : ''}`}
+                    className={`flex items-center justify-center flex-col min-h-[100px] 2xs:min-h-[120px] [clip-path:_polygon(30px_0,100%_0,100%_100%,0_100%,0_30px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/5 after:z-[-1] after:[clip-path:_polygon(30px_0,100%_0,100%_100%,0_100%,0_30px)] p-0 2xs:p-4 text-center cursor-pointer ${item.isChecked ? '!bg-green-900 after:!bg-green-900' : currentDay.valueOf() === item.time ? '!bg-green-500 after:!bg-[linear-gradient(to_top,#084625,#000100)] shadow-[0_0_16px_rgba(0,153,86,0.5)]' : ''}`}
                   >
                     <p
                       className={`font-mona font-semibold mb-2 leading-[16px] ${item.isChecked ? 'text-green-700' : currentDay.valueOf() === item.time ? 'text-title' : 'text-inactive'}`}
@@ -65,12 +65,12 @@ export default function DailyCheckIn() {
                     </p>
                     <div className="flex items-center space-x-1">
                       <img
-                        className="size-6"
+                        className="size-4 xs:size-5 2xs:size-6"
                         src="/assets/images/point.png"
                         srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                         alt="Point"
                       />
-                      <p className="text-green-500">{item.point}</p>
+                      <p className="text-green-500 text-[13px] 2xs:text-sm">{item.point}</p>
                     </div>
                   </div>
                 </div>
