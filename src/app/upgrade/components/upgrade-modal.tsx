@@ -2,6 +2,7 @@ import { formatNumber } from '@/helper/common'
 import { motion } from 'framer-motion'
 import { IDeviceItemAddParam } from '@/interfaces/i.devices'
 import React, { useEffect, useRef, useState } from 'react'
+import useCommonStore from '@/stores/commonStore'
 interface IUpgradeModal {
   activeType: string
   UPGRADE_TYPE: any
@@ -16,6 +17,7 @@ export default function UpgradeModal({
   refInterval,
   handleAction
 }: IUpgradeModal) {
+  const userInfo = useCommonStore((state) => state.userInfo)
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [amount, updateAmount] = useState<number>(1)
   const handleUpdateAmount = (value: number) => {
@@ -32,6 +34,9 @@ export default function UpgradeModal({
         number: amount
       })
     } else {
+      if (!userInfo?.pointSkill) {
+        return
+      }
       handleAction(item.skillId)
       clearInterval(refInterval.current)
     }
@@ -49,7 +54,6 @@ export default function UpgradeModal({
 
       // Find the distance between now and the count down date
       var distance = timeEnd - now
-      console.log('🚀 ~ interval ~ distance:', distance)
 
       // Time calculations for days, hours, minutes and seconds
       var days = Math.floor(distance / (1000 * 60 * 60 * 24))
@@ -204,7 +208,9 @@ export default function UpgradeModal({
         ) : (
           <>
             <div className="btn-border"></div>
-            <div className="btn-primary">
+            <div
+              className={`${activeType === UPGRADE_TYPE.SKILL && !userInfo?.pointSkill ? 'btn-default' : ' btn-primary'}`}
+            >
               <div className="flex items-center justify-center space-x-4" onClick={handleClick}>
                 <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
 

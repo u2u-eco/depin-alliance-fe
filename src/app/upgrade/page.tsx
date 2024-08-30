@@ -14,7 +14,6 @@ import UpgradeModal from './components/upgrade-modal'
 import { toast } from 'sonner'
 import { getSkillInfo, getSkills, updateSkill } from '@/services/user'
 import { ISkillItem } from '@/interfaces/i.user'
-import { MESSAGES } from '@/constants/messages'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -84,10 +83,6 @@ export default function UpgradePage() {
     if (res.status) {
       toast.success('Buy successfully!')
       onClose()
-    } else {
-      if (res.message) {
-        toast.error(res.message)
-      }
     }
   }
 
@@ -97,10 +92,6 @@ export default function UpgradePage() {
       toast.success('Level Up successfully!')
       _getSkills()
       onClose()
-    } else {
-      if (res.message) {
-        toast.error(MESSAGES[res.message] || res.message)
-      }
     }
   }
 
@@ -203,6 +194,7 @@ export default function UpgradePage() {
                 data={listSkill}
                 titleItemKey="name"
                 levelKey="levelCurrent"
+                imageDefault="upgrade/upgrade-skill-programing"
                 onClickItem={handleClickItem}
               />
             </motion.div>

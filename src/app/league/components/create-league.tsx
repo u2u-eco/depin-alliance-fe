@@ -51,10 +51,6 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
       toast.success('Create successfully')
       router.push('/league/in-league')
       onClose()
-    } else {
-      if (res.message) {
-        toast.error(res.message)
-      }
     }
   }
   return (

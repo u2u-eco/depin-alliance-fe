@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { toast } from 'sonner'
+import { MESSAGES } from './messages'
 
 const https = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -29,6 +31,9 @@ https.interceptors.response.use(
         data: response.data.data,
         status: true
       }
+    }
+    if (response.data.message) {
+      toast.error(MESSAGES[response.data.message] || response.data.message)
     }
     return { ...response.data, data: response.data.data, status: false }
   },
