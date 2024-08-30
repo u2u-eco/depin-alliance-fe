@@ -49,6 +49,7 @@ export default function UpgradeModal({
 
       // Find the distance between now and the count down date
       var distance = timeEnd - now
+      console.log('🚀 ~ interval ~ distance:', distance)
 
       // Time calculations for days, hours, minutes and seconds
       var days = Math.floor(distance / (1000 * 60 * 60 * 24))
@@ -62,11 +63,12 @@ export default function UpgradeModal({
       if (days > 0) {
         listTime.unshift(addPrefix(days))
       }
+      setTimeCountdown(listTime)
+
       if (distance <= 0) {
         clearInterval(refInterval.current)
         setTimeCountdown([])
       }
-      setTimeCountdown(listTime)
     }
     clearInterval(refInterval.current)
     interval()
