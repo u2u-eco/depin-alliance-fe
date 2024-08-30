@@ -1,5 +1,5 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { formatNumber } from '../../helper/common'
 import Link from 'next/link'
@@ -15,6 +15,7 @@ interface InfoProps {
 
 const Info = () => {
   const pathName = usePathname()
+  const route = useRouter()
   const { token, userInfo, getUserInfo } = useCommonStore((state) => state)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [listImage, setListImage] = useState<Array<string>>([])
@@ -45,6 +46,10 @@ const Info = () => {
       setSelectedImage(userInfo?.avatar)
     }
     onOpen()
+  }
+
+  const handleUpgrade = () => {
+    route.push('/upgrade?tab=skill')
   }
 
   useEffect(() => {
@@ -111,7 +116,10 @@ const Info = () => {
                   />
                 </Link>
                 <div className="w-[1px] h-5 bg-white/10"></div>
-                <div className="flex items-center space-x-0.5 min-[400px]:space-x-1">
+                <div
+                  className="flex items-center space-x-0.5 min-[400px]:space-x-1"
+                  onClick={handleUpgrade}
+                >
                   <Image
                     className="size-4 min-[400px]:size-[18px] 2xs:size-5"
                     src="/assets/images/icons/icon-thunder.svg"

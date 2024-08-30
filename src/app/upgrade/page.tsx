@@ -14,24 +14,20 @@ import UpgradeModal from './components/upgrade-modal'
 import { toast } from 'sonner'
 import { getSkillInfo, getSkills, updateSkill } from '@/services/user'
 import { ISkillItem } from '@/interfaces/i.user'
+import { useSearchParams } from 'next/navigation'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
   SKILL: 'skill'
 }
 
-const listSkill = [
-  { id: 1, title: 'Programing', level: '12', image: 'upgrade/upgrade-skill-programing' },
-  { id: 2, title: 'Design', level: '12', image: 'upgrade/upgrade-skill-design' },
-  { id: 3, title: 'Marketing', level: '12', image: 'upgrade/upgrade-skill-marketing' },
-  { id: 4, title: 'Social Networking', level: '12', image: 'upgrade/upgrade-skill-social' }
-]
-
 export default function UpgradePage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const searchParams = useSearchParams()
+  const tab = searchParams.get('tab')
   const currentItem = useRef<any>()
   const refInterval = useRef<any>()
-  const [activeType, setActiveType] = useState(UPGRADE_TYPE.DEVICE)
+  const [activeType, setActiveType] = useState(tab || UPGRADE_TYPE.DEVICE)
   const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const token = useCommonStore((state) => state.token)
@@ -105,9 +101,13 @@ export default function UpgradePage() {
 
   useEffect(() => {
     if (token) {
-      getListDevice()
+      if (activeType === UPGRADE_TYPE.DEVICE) {
+        getListDevice()
+      } else {
+        _getSkills()
+      }
     }
-  }, [activeTab, token])
+  }, [activeTab, token, activeType])
 
   useEffect(() => {
     if (!isOpen) {
