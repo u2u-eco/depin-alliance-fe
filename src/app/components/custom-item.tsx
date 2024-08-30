@@ -20,7 +20,7 @@ const CustomItem = ({ type, image, icon, done, title, children }: ItemProps) => 
         ${type === LIST_TYPE.MISSION ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900') : 'before:opacity-20 before:bg-item-green after:border-b-green-900 after:border-r-green-900'}`}
     >
       <div className="flex items-center space-x-4">
-        <div className="flex items-center justify-center size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+        <div className="flex items-center justify-center size-[72px] min-w-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
           {image ? (
             <>
               {type === LIST_TYPE.MISSION ? (

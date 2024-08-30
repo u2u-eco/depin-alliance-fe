@@ -209,7 +209,6 @@ export default function InventoryPage() {
             </div>
           )}
         </div>
-        <div onClick={onOpen}>sadasd</div>
       </CustomPage>
       <CustomModal
         title="Equip"

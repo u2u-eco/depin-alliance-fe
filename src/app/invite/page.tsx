@@ -100,14 +100,16 @@ export default function InvitePage() {
             </div>
           </div>
         </div>
-        <CustomList
-          type="invite"
-          title="FRIEND LIST"
-          data={listFriend?.data}
-          titleItemKey="username"
-          pointKey="pointRef"
-          imageItemKey="avatar"
-        />
+        {listFriend?.data.length > 0 ? (
+          <CustomList
+            type="invite"
+            title="FRIEND LIST"
+            data={listFriend?.data}
+            titleItemKey="username"
+            pointKey="pointRef"
+            imageItemKey="avatar"
+          />
+        ) : null}
       </CustomPage>
     </>
   )
