@@ -9,6 +9,7 @@ import { getRanking } from '../../services/user'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { formatNumber } from '@/helper/common'
+import dayjs from 'dayjs'
 
 const RANKING_TYPE = {
   ENGINER: 'enginer',
@@ -70,7 +71,8 @@ export default function RankingPage() {
                   LAST UPDATE
                 </p>
                 <div className="text-white xs:text-[15px] 2xs:text-base font-normal leading-[20px] whitespace-nowrap">
-                  29/08/2024 - 14:14:41
+                  {dayjs().format('DD/MM/YYYY - HH:mm:ss')}
+                  {/* 29/08/2024 - 14:14:41 */}
                 </div>
               </div>
               <div className="w-4 xs:w-6 2xs:w-[30px] h-[1px] bg-yellow-800"></div>
