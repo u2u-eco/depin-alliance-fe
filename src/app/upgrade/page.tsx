@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import { Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import CustomList from '../components/custom-list'
-import { addDeviceItem, getDevicesByType } from '../../services/devices'
+import { buyDeviceItem, getDevicesByType } from '../../services/devices'
 import { IDeviceItemAddParam, IDeviceTypeItem } from '../../interfaces/i.devices'
 import { UPGRADE_TAB } from '../../constants'
 import CustomPage from '../components/custom-page'
@@ -49,10 +49,14 @@ export default function UpgradePage() {
   }
 
   const buy = async (data: IDeviceItemAddParam) => {
-    const res = await addDeviceItem(data)
+    const res: any = await buyDeviceItem(data)
     if (res.status) {
       toast.success('Buy successfully!')
       onClose()
+    } else {
+      if (res.message) {
+        toast.error(res.message)
+      }
     }
   }
 
@@ -66,7 +70,8 @@ export default function UpgradePage() {
     <>
       <CustomPage
         classNames={{
-          wrapper: "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
+          wrapper:
+            "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
         }}
       >
         <div className="flex items-center justify-center space-x-4">

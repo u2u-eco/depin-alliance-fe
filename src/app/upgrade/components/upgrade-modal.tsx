@@ -26,8 +26,7 @@ export default function UpgradeModal({
     if (activeType === UPGRADE_TYPE.DEVICE) {
       handleAction({
         code: item.code,
-        number: amount,
-        index: 1
+        number: amount
       })
     }
   }

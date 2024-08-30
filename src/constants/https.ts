@@ -30,7 +30,7 @@ https.interceptors.response.use(
         status: true
       }
     }
-    return { data: response.data.data, status: false }
+    return { ...response.data, data: response.data.data, status: false }
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger

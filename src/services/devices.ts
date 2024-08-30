@@ -9,8 +9,8 @@ export const getDevicesByType = (type: string) => {
   return https.get(`/devices/item?type=${type}`)
 }
 
-export const addDeviceItem = (data: IDeviceItemAddParam) => {
-  return https.post('/devices/add-item', data)
+export const buyDeviceItem = (data: IDeviceItemAddParam) => {
+  return https.post('/devices/buy-item', data)
 }
 
 export const getListDevice = () => {
