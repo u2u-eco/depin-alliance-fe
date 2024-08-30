@@ -11,6 +11,7 @@ interface ListProps {
   titleItemKey?: string
   imageItemKey?: string
   pointKey?: string
+  levelKey?: string
   onClickItem?: (item: any) => void
 }
 
@@ -21,6 +22,7 @@ const CustomList = ({
   titleItemKey,
   imageItemKey,
   pointKey,
+  levelKey,
   onClickItem
 }: ListProps) => {
   const handleClickItem = (item: any) => {
@@ -53,7 +55,9 @@ const CustomList = ({
             key={item.code}
           >
             {type === LIST_TYPE.SKILL ? (
-              <div className="text-yellow-600 font-geist leading-[16px]">LV. {item.level}</div>
+              <div className="text-yellow-600 font-geist leading-[16px]">
+                LV. {levelKey ? item[levelKey] : item.level}
+              </div>
             ) : item.text ? (
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
             ) : (

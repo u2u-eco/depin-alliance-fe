@@ -94,8 +94,13 @@ const Info = () => {
                 {userInfo?.username}
               </div>
               <div className="flex items-center space-x-2 min-[400px]:space-x-3 2xs:space-x-4">
-                <Link href="/ranking" className="flex items-center min-[400px]:space-x-1 cursor-pointer">
-                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">LV. {userInfo?.level}</span>
+                <Link
+                  href="/ranking"
+                  className="flex items-center min-[400px]:space-x-1 cursor-pointer"
+                >
+                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">
+                    LV. {userInfo?.level}
+                  </span>
                   <Image
                     className="size-5 xs:size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
@@ -115,7 +120,9 @@ const Info = () => {
                     sizes="100vw"
                     width={0}
                   />
-                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">{userInfo?.xp}</span>
+                  <span className="font-geist text-yellow-500 text-xs min-[400px]:text-[13px] 2xs:text-sm">
+                    {userInfo?.pointSkill}
+                  </span>
                   <Image
                     className="size-5 xs:size-6"
                     src="/assets/images/icons/icon-chevron-right-green.svg"
