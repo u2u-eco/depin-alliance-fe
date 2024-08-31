@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import Device from './components/device'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -62,6 +63,9 @@ export default function WorkspacePage() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-6">
+          <Device/>
         </div>
       </CustomPage>
     </>

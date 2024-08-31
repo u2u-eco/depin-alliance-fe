@@ -1,1 +1,5 @@
 export { default as IconPoint } from "./point"
+export { default as IconEdit } from "./edit"
+export { default as IconChevron } from "./chevron"
+export { default as IconReload } from "./reload"
+export { default as IconPlus } from "./plus"

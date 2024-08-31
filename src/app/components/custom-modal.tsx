@@ -25,7 +25,7 @@ const CustomModal = ({ title, children, isOpen, onOpen, onOpenChange }: ModalPro
     >
       <ModalContent>
         {(onClose) => (
-          <div className="max-w-[480px] mx-auto">
+          <div className="max-w-[480px] mx-auto w-full">
             <div className="absolute top-4 xs:top-5 2xs:top-6 right-4 cursor-pointer" onClick={onClose}>
               <img className="size-6" src="/assets/images/icons/icon-close.svg" alt="Icon Close" />
             </div>
