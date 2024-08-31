@@ -90,13 +90,13 @@ export default function InventoryPage() {
           </div>
         </div>
         <div className="mt-6">
-          {activeType === INVENTORY_TYPE.BUILD ? (
-            <motion.div
-              initial={{ y: 25, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -25, opacity: 0 }}
-              transition={{ duration: 0.35 }}
-            >
+          <motion.div
+            initial={{ y: 25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -25, opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            {activeType === INVENTORY_TYPE.BUILD ? (
               <div className="flex flex-col space-y-4 w-full">
                 <div className="relative w-fit mx-auto">
                   <Image
@@ -158,56 +158,56 @@ export default function InventoryPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          ) : (
-            <div className="flex w-full flex-col space-y-6">
-              <Tabs
-                variant="underlined"
-                classNames={{
-                  tabList: 'gap-2 w-full relative rounded-none p-0 border-b border-divider',
-                  cursor: 'w-full bg-gradient rounded',
-                  tab: 'h-[30px] px-2 font-mona',
-                  tabContent:
-                    'group-data-[selected=true]:bg-gradient group-data-[selected=true]:[-webkit-background-clip:_text] group-data-[selected=true]:[-webkit-text-fill-color:_transparent] text-white/25 font-medium'
-                }}
-              >
-                <Tab key={UPGRADE_TAB.RAM} title="RAM"></Tab>
-                <Tab key={UPGRADE_TAB.CPU} title="CPU"></Tab>
-                <Tab key={UPGRADE_TAB.GPU} title="GPU"></Tab>
-                <Tab key={UPGRADE_TAB.STORAGE} title="STORAGE"></Tab>
-              </Tabs>
-              <motion.div
-                initial={{ y: 25, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -25, opacity: 0 }}
-                transition={{ duration: 0.35 }}
-              >
-                <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
-                  {listHardware.map((item: any) => (
-                    <div
-                      key={item.id}
-                      className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-                    >
+            ) : (
+              <div className="flex w-full flex-col space-y-6">
+                <Tabs
+                  variant="underlined"
+                  classNames={{
+                    tabList: 'gap-2 w-full relative rounded-none p-0 border-b border-divider',
+                    cursor: 'w-full bg-gradient rounded',
+                    tab: 'h-[30px] px-2 font-mona',
+                    tabContent:
+                      'group-data-[selected=true]:bg-gradient group-data-[selected=true]:[-webkit-background-clip:_text] group-data-[selected=true]:[-webkit-text-fill-color:_transparent] text-white/25 font-medium'
+                  }}
+                >
+                  <Tab key={UPGRADE_TAB.RAM} title="RAM"></Tab>
+                  <Tab key={UPGRADE_TAB.CPU} title="CPU"></Tab>
+                  <Tab key={UPGRADE_TAB.GPU} title="GPU"></Tab>
+                  <Tab key={UPGRADE_TAB.STORAGE} title="STORAGE"></Tab>
+                </Tabs>
+                <motion.div
+                  initial={{ y: 25, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -25, opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
+                    {listHardware.map((item: any) => (
                       <div
-                        className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
-                        onClick={() => setActiveItem(item.id)}
+                        key={item.id}
+                        className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                       >
-                        <img
-                          className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                          src={`/assets/images/${item.image}.png`}
-                          alt=""
-                        />
-                        <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
-                          {item.title}
-                        </p>
-                        <p className="text-green-500">x{item.number}</p>
+                        <div
+                          className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                          onClick={() => setActiveItem(item.id)}
+                        >
+                          <img
+                            className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                            src={`/assets/images/${item.image}.png`}
+                            alt=""
+                          />
+                          <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+                            {item.title}
+                          </p>
+                          <p className="text-green-500">x{item.number}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          )}
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
         </div>
       </CustomPage>
       <CustomModal

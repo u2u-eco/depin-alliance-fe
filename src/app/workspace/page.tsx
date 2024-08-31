@@ -1,10 +1,12 @@
 "use client"
 
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Device from './components/device'
+import Item from './components/item'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -65,7 +67,25 @@ export default function WorkspacePage() {
           ))}
         </div>
         <div className="mt-6">
-          <Device/>
+          {activeType === WORKSPACE_TYPE.DEVICE ? (
+            <motion.div
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <Device/>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <Item/>
+            </motion.div>
+          )}
         </div>
       </CustomPage>
     </>
