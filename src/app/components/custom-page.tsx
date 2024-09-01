@@ -15,9 +15,9 @@ interface Pageprops {
 
 const CustomPage = ({ children, classNames }: Pageprops) => {
   const pathName = usePathname()
-  const isShowInfo = pathName !== '/avatar'
+  const isShowInfo = pathName !== '/avatar' && pathName !== '/profile'
   const isShowSidebar =
-    pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting' && pathName !== '/workspace' && pathName !== '/avatar'
+    pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting' && pathName !== '/workspace' && pathName !== '/avatar' && pathName !== '/profile'
   return (
     <AnimatePresence mode="wait">
       <div className={cn('section', classNames?.wrapper)}>

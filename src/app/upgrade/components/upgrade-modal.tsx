@@ -97,13 +97,15 @@ export default function UpgradeModal({
           </p>
         )}
       </div>
-      <div className="my-8 mx-auto w-fit flex items-center space-x-4">
-        <img
-          className="size-[130px] [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0_30px)]"
-          src="/assets/images/upgrade/upgrade-ram-2gb.png"
-          srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x, /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
-          alt=""
-        />
+      <div className="my-8 flex items-center justify-center space-x-4">
+        <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0_30px)] flex items-center justify-center size-[130px] min-w-[130px]">
+          <img
+            className="w-full h-full [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0_30px)]"
+            src="/assets/images/upgrade/upgrade-ram-2gb.png"
+            srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x, /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
+            alt=""
+          />
+        </div>
         <div className="space-y-2">
           <p className="font-mona text-white text-2xl font-semibold">{item.name}</p>
           {activeType === UPGRADE_TYPE.DEVICE ? (
