@@ -1,12 +1,17 @@
-"use client"
+'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Device from './components/device'
 import Item from './components/item'
+import { useQuery } from '@tanstack/react-query'
+import { getUserDevice } from '@/services/devices'
+import { IDeviceTypeItem } from '@/interfaces/i.devices'
+import { QUERY_CONFIG } from '@/constants'
+import useCommonStore from '@/stores/commonStore'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -15,7 +20,27 @@ const WORKSPACE_TYPE = {
 
 export default function WorkspacePage() {
   const router = useRouter()
+  const token = useCommonStore((state) => state.token)
   const [activeType, setActiveType] = useState(WORKSPACE_TYPE.DEVICE)
+  const listItemEquipByType = useRef<{ [key: string]: Array<IDeviceTypeItem> }>({})
+  const { data: listDeviceItem, refetch } = useQuery({
+    queryKey: ['fetchListDeviceItem'],
+    queryFn: async () => {
+      const res = await getUserDevice()
+      if (res.status) {
+        listItemEquipByType.current = {}
+        res.data.forEach((item: IDeviceTypeItem) => {
+          if (!listItemEquipByType.current[item.type]) {
+            listItemEquipByType.current[item.type] = []
+          }
+          listItemEquipByType.current[item.type].push(item)
+        })
+      }
+      return res.data
+    },
+    ...QUERY_CONFIG,
+    enabled: Boolean(token)
+  })
 
   const handleBack = () => {
     router.back()
@@ -74,7 +99,7 @@ export default function WorkspacePage() {
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <Device/>
+              <Device listItemEquipByType={listItemEquipByType} />
             </motion.div>
           ) : (
             <motion.div
@@ -83,7 +108,11 @@ export default function WorkspacePage() {
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <Item/>
+              <Item
+                listItemEquipByType={listItemEquipByType}
+                listDeviceItem={listDeviceItem}
+                refetch={refetch}
+              />
             </motion.div>
           )}
         </div>

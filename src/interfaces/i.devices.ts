@@ -5,6 +5,7 @@ export interface IDeviceTypeItem {
   miningPower: number
   price: number
   image: string | null
+  id: number
 }
 
 export interface IDeviceItemAddParam {
@@ -23,4 +24,10 @@ export interface IUserDeviceItem {
   slotRamUsed: number
   slotStorageMax: number
   slotStorageUsed: number
+}
+
+export interface IDeviceDetailInfo {
+  equip: number
+  amount?: number
+  totalProfit: number
 }
