@@ -55,7 +55,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
   }
   return (
     <>
-      <div className="mt-14 mb-10 space-y-6">
+      <div className="mt-8 mb-10 space-y-6">
         <div className="mb-1">
           <CustomInput
             label="League Name:"

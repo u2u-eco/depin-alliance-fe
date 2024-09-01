@@ -11,7 +11,7 @@ interface InputProps {
 
 const CustomInput = ({ isDisabled, label, placeholder, copy, onValueChange }: InputProps) => {
   return (
-    <div className="relative">
+    <div className="relative pt-0.5">
       <Input
         isDisabled={isDisabled}
         label={label}
@@ -19,7 +19,7 @@ const CustomInput = ({ isDisabled, label, placeholder, copy, onValueChange }: In
         placeholder={placeholder}
         onValueChange={onValueChange}
         classNames={{
-          base: "data-[has-label=true]:mt-10 opacity-100",
+          base: "data-[has-label=true]:mt-6 opacity-100",
           label: "group-data-[filled-within=true]:text-body",
           inputWrapper: "rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10",
           input: "text-body group-data-[has-value=true]:text-body placeholder:text-inactive"

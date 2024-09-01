@@ -131,26 +131,26 @@ export default function Mining() {
       <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ? (
-          <div className="btn-default flex items-center justify-between !py-2.5 !px-3">
-            <div className="flex items-center space-x-2 xs:space-x-3 text-white uppercase text-[15px] xs:text-base font-bold">
+          <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
+            <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
               <div>Mining</div>
               <div className="flex items-center space-x-1">
                 <img
                   className="size-5 xs:size-6"
-                  src="/assets/images/point-color.svg"
+                  src="/assets/images/point-dark.svg"
                   alt="Point"
                 />
-                <p className="font-geist text-primary min-[355px]:text-base xs:text-[18px] font-semibold">
+                <p className="font-geist text-green-900 min-[355px]:text-base xs:text-[18px] font-semibold">
                   {miningCount ? formatNumber(miningCount, 0, 0) : 0}
                 </p>
               </div>
             </div>
             <div className="min-h-6 xs:min-h-[28px]">
               {timeCountdown.length === 0 ? null : (
-                <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-title">
+                <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-green-900">
                   {timeCountdown.map((item: any, index) => (
                     <React.Fragment key={index}>
-                      <p className="size-6 xs:size-[28px] flex items-center justify-center bg-white/10">
+                      <p className="size-6 xs:size-[28px] flex items-center justify-center bg-black/15">
                         {item}
                       </p>
                       {index === timeCountdown.length - 1 ? null : <span>:</span>}
