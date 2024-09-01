@@ -62,7 +62,7 @@ export default function Device() {
               height={0}
               sizes="100vw"
               style={{ width: '100%' }}
-              src="/assets/images/upgrade/upgrade-ram-2gb.png"
+              src="/assets/images/workspace/device-image-01@2x.png"
               alt=""
             />
           </div>

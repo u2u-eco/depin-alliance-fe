@@ -1,13 +1,14 @@
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { formatNumber } from '../../helper/common'
+import { formatNumber } from '../../../helper/common'
 import Link from 'next/link'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
-import CustomModal from './custom-modal'
+import CustomModal from '../custom-modal'
 import { getListAvatar, updateAvatar } from '@/services/user'
 import { toast } from 'sonner'
+import { IconSettings, IconUser } from '../icons'
 
 interface InfoProps {
   click: () => void
@@ -45,7 +46,7 @@ const Info = () => {
     if (userInfo?.avatar) {
       setSelectedImage(userInfo?.avatar)
     }
-    onOpen()
+    route.push('/avatar')
   }
 
   const handleUpgrade = () => {
@@ -70,7 +71,7 @@ const Info = () => {
           alt="Info Frame"
         />
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center space-x-3">
-          <div className="relative" onClick={handleOpen}>
+          <div className="relative cursor-pointer" onClick={handleOpen}>
             <div className="absolute top-[-1px] left-[-1px] size-2 border-4 border-transparent border-t-green-700 border-l-green-700"></div>
             <div className="bg-gray-800 size-[54px] min-[354px]:size-[64px] xs:size-[68px] min-[400px]:size-[72px] 2xs:size-[76px]">
               <Image
@@ -134,25 +135,11 @@ const Info = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 mr-2 2xs:mr-3">
-                <Link href="/inventory" className="p-1">
-                  <Image
-                    className="size-5 min-[400px]:size-6"
-                    src="/assets/images/icons/icon-inventory-green.svg"
-                    alt="Icon Ranking"
-                    sizes="100vw"
-                    width={0}
-                    height={0}
-                  />
+                <Link href="/inventory" className="p-1 group">
+                  <IconUser className="size-5 min-[400px]:size-6 text-green-800 group-hover:text-green-500 transition-colors"/>
                 </Link>
                 <div className="p-1">
-                  <Image
-                    className="size-5 min-[400px]:size-6"
-                    src="/assets/images/icons/icon-settings-green.svg"
-                    alt="Icon Settings"
-                    sizes="100vw"
-                    width={0}
-                    height={0}
-                  />
+                  <IconSettings className="size-5 min-[400px]:size-6 text-green-800 group-hover:text-green-500 transition-colors"/>
                 </div>
               </div>
             </div>
