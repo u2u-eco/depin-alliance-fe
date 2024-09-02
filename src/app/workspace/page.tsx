@@ -12,6 +12,7 @@ import { getUserDevice } from '@/services/devices'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { QUERY_CONFIG } from '@/constants'
 import useCommonStore from '@/stores/commonStore'
+import { IconChevron } from '../components/icons'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -57,15 +58,8 @@ export default function WorkspacePage() {
         }}
       >
         <div className="relative flex items-center justify-center space-x-4">
-          <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer">
-            <Image
-              onClick={handleBack}
-              width={0}
-              height={0}
-              style={{ width: '100%', height: 'auto' }}
-              src="/assets/images/icons/icon-chevron-left-green.svg"
-              alt="Icon Chevron"
-            />
+          <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90" onClick={handleBack}>
+            <IconChevron className="text-green-500"/>
           </div>
           <div className="size-1.5 bg-green-800"></div>
           <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Workspace</div>

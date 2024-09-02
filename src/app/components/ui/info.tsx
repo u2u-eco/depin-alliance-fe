@@ -9,6 +9,7 @@ import CustomModal from '../custom-modal'
 import { getListAvatar, updateAvatar } from '@/services/user'
 import { toast } from 'sonner'
 import { IconChevron, IconSettings, IconUser } from '../icons'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface InfoProps {
   click?: () => void
@@ -61,7 +62,12 @@ const Info = ({profile}: InfoProps) => {
   }, [token])
   return (
     <>
-      <div className="relative w-fit mx-auto">
+      <motion.div className="relative w-fit mx-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35 }}
+        >
         <Image
           width={0}
           height={0}
@@ -72,10 +78,10 @@ const Info = ({profile}: InfoProps) => {
           alt="Info Frame"
         />
         {profile && (
-          <div className="absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-end py-1.5 px-2 w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,30px_100%)] z-[1]">
+          <Link href="/ranking" className="absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-end py-1.5 px-2 w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,30px_100%)] z-[1]">
             <p className="text-green-900 tracking-[-1px]">#38,412</p>
             <IconChevron className="size-5 text-green-900 -rotate-90"/>
-          </div>
+          </Link>
         )}
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center space-x-3">
           <div className="relative cursor-pointer" onClick={handleOpen}>
@@ -108,7 +114,7 @@ const Info = ({profile}: InfoProps) => {
                   {userInfo?.username}
                 </div>
                 <div className="flex items-center space-x-2 min-[400px]:space-x-3 2xs:space-x-4">
-                  <Link href="/ranking" className="flex items-center min-[400px]:space-x-1 cursor-pointer">
+                  <Link href="/level" className="flex items-center min-[400px]:space-x-1 cursor-pointer">
                     <span className={`font-geist text-yellow-500 ${profile ? 'text-base' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}>LV. {userInfo?.level}</span>
                     <Image
                       className="size-5 xs:size-6"
@@ -191,7 +197,7 @@ const Info = ({profile}: InfoProps) => {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
       <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
           <div className="mt-6 mb-8 xs:mb-10 2xs:mb-12 grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">

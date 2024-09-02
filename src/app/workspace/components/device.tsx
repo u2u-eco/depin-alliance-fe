@@ -9,7 +9,6 @@ import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import React, { useRef, useState } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -29,8 +28,7 @@ interface IDevice {
 }
 
 export default function Device({ listItemEquipByType, refetch }: IDevice) {
-  console.log('🚀 ~ Device ~ listItemEquipByType:', listItemEquipByType)
-  const token = useCommonStore(useShallow((state) => state.token))
+  const token = useCommonStore((state) => state.token)
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -95,17 +93,7 @@ export default function Device({ listItemEquipByType, refetch }: IDevice) {
         handleRemoveItem()
         return
     }
-    // if (activeType === DEVICE_TYPE.EQUIP) {
-    //   if (activeItem) {
-    //     handleAddItem()
-    //     return
-    //   }
-    // }
   }
-
-  // const filterItemByEquip = (type) => {
-  // 	for
-  // }
 
   const handleClickItem = (index: number) => {
     if (!deviceItemDetail.current[index]) {
@@ -175,7 +163,7 @@ export default function Device({ listItemEquipByType, refetch }: IDevice) {
           {listDevice?.data.map((item: IUserDeviceItem) => (
             <AccordionItem
               key={item.index}
-              onClick={() => {
+              onPress={() => {
                 handleClickItem(item.index)
               }}
               startContent={

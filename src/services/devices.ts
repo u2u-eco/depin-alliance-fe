@@ -9,8 +9,12 @@ export const getUserDevice = (index?: number) => {
   })
 }
 
-export const getDevicesByType = (type: string) => {
-  return https.get(`/devices/item?type=${type}`)
+export const getDevicesByType = (type?: string) => {
+  return https.get(`/devices/item`, {
+    params: {
+      type
+    }
+  })
 }
 
 export const buyDeviceItem = (data: IDeviceItemAddParam) => {
