@@ -112,6 +112,7 @@ export default function LevelPage() {
         isOpen={isOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+        hideCloseButton
         classNames={{
           base: "max-w-full w-full h-full m-0 rounded-none p-0 bg-[linear-gradient(to_bottom,#000_40%,#00331d_100%)]",
           backdrop: 'bg-black/30 backdrop-blur-[8px]'
