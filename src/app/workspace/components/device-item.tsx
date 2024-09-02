@@ -47,14 +47,14 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
   return (
     <div className="btn default cursor-default">
       <div className="btn-border"></div>
-      <div className="btn-default p-4 text-left">
-        <div className="space-y-4">
-          <div className="space-y-3">
-            <p className="text-gradient uppercase text-base font-mona font-semibold leading-[20px] w-fit">
+      <div className="btn-default !p-3 xs:!p-4 text-left">
+        <div className="space-y-3 xs:space-y-4">
+          <div className="space-y-2 xs:space-y-3">
+            <p className="text-gradient uppercase text-[15px] xs:text-base font-mona font-semibold leading-[20px] w-fit">
               CPU
             </p>
             <div
-              className="bg-black/20 flex items-center justify-center px-4 py-2 cursor-pointer"
+              className="bg-black/20 flex items-center justify-center px-2 xs:px-3 2xs:px-4 py-2 cursor-pointer text-xs xs:text-[13px] 2xs:text-sm whitespace-nowrap"
               onClick={() =>
                 handleInfo(listInfo[UPGRADE_TAB.CPU], {
                   equip: 1,
@@ -74,7 +74,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
               return (
                 <>
                   <div className="space-y-3" key={keyItem}>
-                    <p className="text-gradient uppercase text-base font-mona font-semibold leading-[20px] w-fit">
+                    <p className="text-gradient uppercase text-[15px] xs:text-base font-mona font-semibold leading-[20px] w-fit">
                       {keyItem}
                     </p>
                     <div
@@ -88,7 +88,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                             return (
                               <div
                                 key={index}
-                                className="flex items-center justify-center py-2 px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
+                                className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] 2xs:text-sm whitespace-nowrap"
                                 onClick={() =>
                                   handleInfo(item, listInfoByFilter[keyItem][item.code])
                                 }
@@ -98,10 +98,10 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                             )
                           })}
                           <div
-                            className="flex items-center justify-center py-2 px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
+                            className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
                             onClick={() => handleEquip(keyItem)}
                           >
-                            <IconPlus className="text-title size-6" />
+                            <IconPlus className="text-title size-5 2xs:size-6" />
                           </div>
                         </>
                       )}

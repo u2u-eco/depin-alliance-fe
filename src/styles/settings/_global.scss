@@ -213,14 +213,14 @@ button {
   .btn-default, .btn-inactive {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(16px);
-    color: var(--white);
+    color: theme('colors.title');
   }
   .btn-inactive {
     color: theme('colors.inactive');
   }
   .btn-error {
     background: theme('backgroundImage.gradient-error');
-    color: var(--white);
+    color: theme('colors.title');
     box-shadow: 0 0 24px rgba(229, 57, 53, 0.35);
   }
   &:hover {

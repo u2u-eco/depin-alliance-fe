@@ -111,7 +111,7 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
     <>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <p className="text-title text-base tracking-[-1px]">ALL ITEMS</p>
+          <p className="text-body text-base tracking-[-1px]">ALL ITEMS</p>
           <div className="flex items-center space-x-6">
             <div className="cursor-pointer" onClick={() => handleClick(ITEM_TYPE.SORT)}>
               <IconSort
@@ -149,7 +149,7 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                   }
                   alt=""
                 />
-                <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+                <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
                   {item.name}
                 </p>
                 <p className="text-green-500">x{countInfoDevice.current[item.code].amount || 1}</p>

@@ -13,6 +13,7 @@ import { useShallow } from 'zustand/react/shallow'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -125,61 +126,67 @@ export default function Device({ listItemEquipByType }: IDevice) {
 
   return (
     <>
-      <Accordion
-        showDivider={false}
-        className="p-0"
-        itemClasses={{
-          base: '',
-          trigger:
-            "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
-          indicator: 'data-[open=true]:-rotate-180 mr-2'
-        }}
-      >
-        {listDevice?.data.map((item: IUserDeviceItem) => (
-          <AccordionItem
-            key={item.index}
-            onClick={() => {
-              handleClickItem(item.index)
-            }}
-            startContent={
-              <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{ width: '100%' }}
-                  src="/assets/images/upgrade/upgrade-ram-2gb.png"
-                  alt=""
-                />
-              </div>
-            }
-            title={
-              <div className="flex items-center space-x-1">
-                <p className="font-mona text-white font-semibold text-lg leading-[22px]">
-                  {item.name}
-                </p>
-                <div onClick={() => handleClick(DEVICE_TYPE.EDIT)}>
-                  <IconEdit className="text-[#888888] size-6 cursor-pointer" />
+      <div className="space-y-10">
+        <Accordion
+          showDivider={false}
+          className="p-0"
+          itemClasses={{
+            trigger:
+              "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
+            indicator: 'data-[open=true]:-rotate-180 mr-2'
+          }}
+        >
+          {listDevice?.data.map((item: IUserDeviceItem) => (
+            <AccordionItem
+              key={item.index}
+              onClick={() => {
+                handleClickItem(item.index)
+              }}
+              startContent={
+                <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                  <Image
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    style={{ width: '100%' }}
+                    src="/assets/images/workspace/device-image-01@2x.png"
+                    alt=""
+                  />
                 </div>
-              </div>
-            }
-            subtitle={
-              <div className="flex items-center space-x-1 mt-3">
-                <IconPoint className="size-4" />
-                <p className="text-green-500 font-semibold leading-[16px]">10,000/h</p>
-              </div>
-            }
-            indicator={<IconChevron className="size-8" gradient />}
-          >
-            <DeviceItem
-              isLoading={isLoadingDetail}
-              item={deviceItemDetail.current[item.index]}
-              handleEquip={handleEquip}
-              handleInfo={handleInfo}
-            />
-          </AccordionItem>
-        ))}
-      </Accordion>
+              }
+              title={
+                <div className="flex items-center space-x-1">
+                  <p className="font-mona text-white font-semibold text-lg leading-[22px]">
+                    {item.name}
+                  </p>
+                  <div onClick={() => handleClick(DEVICE_TYPE.EDIT)}>
+                    <IconEdit className="text-[#888888] size-6 cursor-pointer" />
+                  </div>
+                </div>
+              }
+              subtitle={
+                <div className="flex items-center space-x-1 mt-3">
+                  <IconPoint className="size-4" />
+                  <p className="text-green-500 font-semibold leading-[16px]">10,000/h</p>
+                </div>
+              }
+              indicator={<IconChevron className="size-8" gradient />}
+            >
+              <DeviceItem
+                isLoading={isLoadingDetail}
+                item={deviceItemDetail.current[item.index]}
+                handleEquip={handleEquip}
+                handleInfo={handleInfo}
+              />
+            </AccordionItem>
+          ))}
+        </Accordion>
+        <Link href="/shop" className="btn">
+          <div className="btn-border"></div>
+          <div className="btn-primary">buy more device</div>
+          <div className="btn-border"></div>
+        </Link>
+      </div>
 
       <CustomModal
         title={
