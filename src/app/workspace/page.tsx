@@ -99,7 +99,7 @@ export default function WorkspacePage() {
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <Device listItemEquipByType={listItemEquipByType} />
+              <Device listItemEquipByType={listItemEquipByType} refetch={refetch} />
             </motion.div>
           ) : (
             <motion.div

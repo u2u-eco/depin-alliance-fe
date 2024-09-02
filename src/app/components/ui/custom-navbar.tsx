@@ -11,7 +11,7 @@ const CustomNavbar = () => {
   const pathName = usePathname()
   const currentLeague = useCommonStore((state) => state.currentLeague)
   const listMenu = [
-    { id: 1, link: '/upgrade', title: 'upgrade' },
+    { id: 1, link: '/shop', title: 'shop' },
     { id: 2, link: '/mission', title: 'mission' },
     { id: 3, link: '/home', title: 'contribute' },
     { id: 4, link: '/invite', title: 'invite' },
