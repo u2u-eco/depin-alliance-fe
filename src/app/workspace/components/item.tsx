@@ -38,7 +38,6 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
   const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
 
   const filterDevice = () => {
-    console.log(listDeviceItem)
     countInfoDevice.current = {}
     const listDeviceItemByFilter = listDeviceItem?.filter((device) => {
       if (!countInfoDevice.current[device.code]) {
