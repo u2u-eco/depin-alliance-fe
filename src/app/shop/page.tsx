@@ -53,7 +53,7 @@ export default function ShopPage() {
             "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
         }}
       >
-        <div className="space-y-6">
+        <div className="space-y-5 xs:space-y-6">
           <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 mt-8">
             {Object.values(SHOP_TYPE).map((item, index) => (
               <div
@@ -75,17 +75,17 @@ export default function ShopPage() {
             ))}
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-body text-base tracking-[-1px]">ALL ITEMS</p>
-            <div className="flex items-center space-x-6">
+            <p className="text-body text-[15px] xs:text-base tracking-[-1px]">ALL ITEMS</p>
+            <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
               <div className="cursor-pointer" onClick={() => handleClick(MODAL_TYPE.SORT)}>
                 <IconSort
-                  className="size-[30px] text-green-800"
+                  className="size-6 xs:size-[30px] text-green-800"
                   gradient={activeModal === MODAL_TYPE.SORT}
                 />
               </div>
               <div className="cursor-pointer" onClick={() => handleClick(MODAL_TYPE.FILTER)}>
                 <IconFilter
-                  className="size-[30px] text-green-800"
+                  className="size-6 xs:size-[30px] text-green-800"
                   gradient={activeModal === MODAL_TYPE.FILTER}
                 />
               </div>
@@ -124,7 +124,7 @@ export default function ShopPage() {
         onOpenChange={onOpenChange}
       >
         <div>
-          <div className=" text-body text-base tracking-[-1px] text-center">
+          <div className=" text-body text-[15px] xs:text-base tracking-[-1px] text-center">
             {activeModal === MODAL_TYPE.DEVICE ? (
               <p>
                 Are you sure you want to buy{' '}
@@ -141,8 +141,8 @@ export default function ShopPage() {
           </div>
           {activeModal === MODAL_TYPE.DEVICE || activeModal === MODAL_TYPE.ITEM ? (
             <>
-              <div className="my-8 space-x-4 flex items-center justify-center">
-                <div className="size-[130px] min-w-[130px] p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center">
+              <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
+                <div className="size-[100px] xs:size-[115px] 2xs:size-[130px] min-w-[100px] xs:min-w-[115px] 2xs:min-w-[130px] p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center">
                   <Image
                     width={0}
                     height={0}
@@ -153,14 +153,14 @@ export default function ShopPage() {
                     alt=""
                   />
                 </div>
-                <div className="space-y-2">
-                  <p className=" text-title font-semibold text-xl font-mona leading-[22px]">
+                <div className="space-y-1.5 xs:space-y-2">
+                  <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona leading-[22px]">
                     DEVICE-04
                   </p>
                   {activeModal === MODAL_TYPE.DEVICE ? (
                     <div className="flex items-center space-x-1">
-                      <IconPoint className="size-6" />
-                      <p className="text-lg text-green-500 font-semibold">+100/h</p>
+                      <IconPoint className="size-5 2xs:size-6" />
+                      <p className="text-[15px] xs:text-base 2xs:text-lg text-green-500 font-semibold">+100/h</p>
                     </div>
                   ) : (
                     <div className="space-y-1">
@@ -177,25 +177,25 @@ export default function ShopPage() {
                 </div>
               </div>
               {activeModal === MODAL_TYPE.DEVICE ? (
-                <div className="btn default mb-8">
+                <div className="btn default mb-6 xs:mb-7 2xs:mb-8">
                   <div className="btn-border"></div>
-                  <div className="btn-default !p-4">
-                    <div className="text-sm">
+                  <div className="btn-default !p-3 2xs:!p-4">
+                    <div className="text-[13px] 2xs:text-sm space-y-2 2xs:space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="font-semibold text-body">CPU</div>
                         <div className="text-title font-semibold font-geist">1 SLOT</div>
                       </div>
-                      <div className="h-[1px] w-full bg-white/10 my-3"></div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
                       <div className="flex items-center justify-between">
                         <div className="font-semibold text-body">GPU</div>
                         <div className="text-title font-semibold font-geist">2 SLOT</div>
                       </div>
-                      <div className="h-[1px] w-full bg-white/10 my-3"></div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
                       <div className="flex items-center justify-between">
                         <div className="font-semibold text-body">RAM</div>
                         <div className="text-title font-semibold font-geist">3 SLOT</div>
                       </div>
-                      <div className="h-[1px] w-full bg-white/10 my-3"></div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
                       <div className="flex items-center justify-between">
                         <div className="font-semibold text-body">STORAGE</div>
                         <div className="text-title font-semibold font-geist">1 SLOT</div>

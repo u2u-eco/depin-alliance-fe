@@ -20,5 +20,6 @@ export const QUERY_CONFIG = {
 export const LIST_TYPE = {
   MISSION: 'mission',
   SKILL: 'skill',
-  RANKING: 'ranking'
+  RANKING: 'ranking',
+  PARTNERS: 'partners',
 }

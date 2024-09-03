@@ -113,7 +113,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                       {keyItem}
                     </p>
                     <div
-                      className={`grid ${keyItem === 'RAM' ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}
+                      className={`grid ${keyItem === 'RAM' ? 'grid-cols-3' : keyItem === 'STORAGE' ? 'grid-cols-1' : 'grid-cols-2'} gap-2`}
                     >
                       {isLoading ? (
                         <IconReload className="text-[#1AF7A8] size-6" />

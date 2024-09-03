@@ -10,7 +10,7 @@ interface IconProps {
 function Icon({ className, gradient }: IconProps) {
   return (
     gradient ? (
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+      <svg className={cn(className)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 17.5H20C20.69 17.5 21.25 18.06 21.25 18.75V23.75C21.25 24.44 20.69 25 20 25H17.5C16.81 25 16.25 24.44 16.25 23.75V18.75C16.25 18.06 16.81 17.5 17.5 17.5Z" fill="url(#paint0_linear_2603_49437)" stroke="url(#paint1_linear_2603_49437)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M26.25 21.25H21.25" stroke="url(#paint2_linear_2603_49437)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M16.25 21.25H3.75" stroke="url(#paint3_linear_2603_49437)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

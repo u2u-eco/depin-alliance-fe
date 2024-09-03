@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react'
 import CustomItem from './custom-item'
 import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
+import { IconGroupUser, IconPoint } from './icons'
 
 interface ListProps {
   type: string
@@ -13,6 +14,7 @@ interface ListProps {
   pointKey?: string
   levelKey?: string
   imageDefault?: string
+  partners?: boolean
   onClickItem?: (item: any) => void
 }
 
@@ -25,6 +27,7 @@ const CustomList = ({
   pointKey,
   imageDefault,
   levelKey,
+  partners,
   onClickItem
 }: ListProps) => {
   const handleClickItem = (item: any) => {
@@ -63,6 +66,24 @@ const CustomList = ({
               </div>
             ) : item.text ? (
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
+            ) : (type === LIST_TYPE.PARTNERS) ? (
+              <>
+                <div className="flex items-center space-x-1">
+                    <IconPoint className="size-[14px] xs:size-4" />
+                  <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">Up to +3000 points</p>
+                </div>
+                <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
+                  <div className="flex items-center leading-[16px] space-x-1">
+                    <p className="text-title font-semibold text-[13px] xs:text-sm">0/5</p>
+                    <p className="text-body text-xs">Conpleted</p>
+                  </div>
+                  <div className="w-[1px] h-4 bg-white/25"></div>
+                  <div className="flex items-center leading-[16px] space-x-1">
+                    <IconGroupUser className="text-body size-4" />
+                    <p className="text-title font-semibold text-[13px] xs:text-sm">416K</p>
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-1">
