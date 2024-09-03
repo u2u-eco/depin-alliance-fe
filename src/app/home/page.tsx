@@ -1,22 +1,18 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import Card from '../components/card'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
-import { getListDevice, getUserDevice } from '../../services/devices'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
-import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
-import { UPGRADE_TAB } from '@/constants'
 import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 
 export default function HomePage() {
-  const { token, userInfo, setDevice } = useCommonStore()
-  const totalDevice = useRef<number>(0)
+  const { userInfo } = useCommonStore()
+  // const totalDevice = useRef<number>(0)
 
   useUserInfo()
 
@@ -24,66 +20,66 @@ export default function HomePage() {
   //   webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
   // }
 
-  const _getListDevice = async () => {
-    const listDevice: any = await getListDevice()
-    if (listDevice.status) {
-      const data: Array<IUserDeviceItem> = listDevice.data
-      _getUserDevice(data[0].index)
-      totalDevice.current = data?.length
-    }
-  }
+  // const _getListDevice = async () => {
+  //   const listDevice: any = await getListDevice()
+  //   if (listDevice.status) {
+  //     const data: Array<IUserDeviceItem> = listDevice.data
+  //     _getUserDevice(data[0].index)
+  //     totalDevice.current = data?.length
+  //   }
+  // }
 
-  const _getUserDevice = async (index: number) => {
-    const res = await getUserDevice(index)
-    if (res.status) {
-      let listInfo: any = {}
-      let listByType: any = {}
+  // const _getUserDevice = async (index: number) => {
+  //   const res = await getUserDevice(index)
+  //   if (res.status) {
+  //     let listInfo: any = {}
+  //     let listByType: any = {}
 
-      res.data.forEach((item: IDeviceTypeItem) => {
-        if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
-          if (!listInfo[item.type]) {
-            listInfo[item.type] = item
-          } else {
-            listInfo[item.type].name =
-              `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
-          }
-        } else {
-          if (!listByType[item.type]?.[item.code]) {
-            if (!listByType[item.type]) {
-              listByType[item.type] = {}
-            }
-            if (!listByType[item.type][item.code]) {
-              listByType[item.type][item.code] = {
-                ...item,
-                value: 1
-              }
-            }
-          } else {
-            if (listByType[item.type][item.code]) {
-              listByType[item.type][item.code].value += 1
-            }
-          }
-        }
-      })
-      const listCPU_GPU = Object.keys(listByType).map((key) => {
-        let newItem = { type: key, name: '' }
-        Object.keys(listByType[key]).map((key2, index) => {
-          newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
-        })
-        return newItem
-      })
-      const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
-      setDevice({
-        info: [...listCPU_GPU, ...newData]
-      })
-    }
-  }
+  //     res.data.forEach((item: IDeviceTypeItem) => {
+  //       if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
+  //         if (!listInfo[item.type]) {
+  //           listInfo[item.type] = item
+  //         } else {
+  //           listInfo[item.type].name =
+  //             `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
+  //         }
+  //       } else {
+  //         if (!listByType[item.type]?.[item.code]) {
+  //           if (!listByType[item.type]) {
+  //             listByType[item.type] = {}
+  //           }
+  //           if (!listByType[item.type][item.code]) {
+  //             listByType[item.type][item.code] = {
+  //               ...item,
+  //               value: 1
+  //             }
+  //           }
+  //         } else {
+  //           if (listByType[item.type][item.code]) {
+  //             listByType[item.type][item.code].value += 1
+  //           }
+  //         }
+  //       }
+  //     })
+  //     const listCPU_GPU = Object.keys(listByType).map((key) => {
+  //       let newItem = { type: key, name: '' }
+  //       Object.keys(listByType[key]).map((key2, index) => {
+  //         newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
+  //       })
+  //       return newItem
+  //     })
+  //     const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
+  //     setDevice({
+  //       info: [...listCPU_GPU, ...newData]
+  //     })
+  //   }
+  // }
 
-  useEffect(() => {
-    if (token) {
-      _getListDevice()
-    }
-  }, [token])
+  // useEffect(() => {
+  //   if (token) {
+  //     _getListDevice()
+  //   }
+  // }, [token])
 
   return (
     <>
@@ -131,27 +127,29 @@ export default function HomePage() {
           {/* <Card /> */}
           <div className="relative w-fit mx-auto">
             <img src="/assets/images/workspace/workspace-frame.svg" alt="Frame" />
-            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center space-x-4 p-4">
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center space-x-3 xs:space-x-4 p-3 xs:p-4">
               <div className="relative">
                 <div className="absolute top-[10px] left-[50%] translate-x-[-50%] size-[67px] bg-green-500/65 blur-[75px] rounded-[50%]"></div>
                 <img
-                  className="size-[140px]"
+                  className="size-[110px] xs:size-[120px] min-[400px]:size-[130px] 2xs:size-[140px]"
                   src="/assets/images/workspace/workspace-image.png"
                   srcSet="/assets/images/workspace/workspace-image.png 1x, /assets/images/workspace/workspace-image@2x.png 2x"
                   alt=""
                 />
               </div>
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <div className="text-white font-airnt font-medium text-base tracking-[1px]">
+              <div className="space-y-2 xs:space-y-4 2xs:space-y-6">
+                <div className="space-y-2 2xs:space-y-3">
+                  <div className="text-white font-airnt font-medium text-[15px] xs:text-base tracking-[1px]">
                     Workspace
                   </div>
-                  <div className="flex items-center space-x-6">
-                    <div className="space-y-2">
-                      <div className="text-body text-xs uppercase">TOTAL PROFIT:</div>
+                  <div className="flex items-center space-x-2 xs:space-x-4 2xs:space-x-6">
+                    <div className="space-y-1 xs:space-y-2">
+                      <div className="text-body text-[11px] xs:text-xs uppercase">
+                        TOTAL PROFIT:
+                      </div>
                       <div className="flex items-center space-x-1">
                         <IconPoint className="size-4" />
-                        <p className="text-green-500 font-semibold">
+                        <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
                           {userInfo?.miningPower
                             ? `${formatNumber(userInfo.miningPower, 0, 0)}/h`
                             : null}
@@ -159,25 +157,29 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="bg-white/25 w-[1px] h-9"></div>
-                    <div className="space-y-2">
-                      <div className="text-body text-xs uppercase">DEVICE:</div>
+                    <div className="space-y-1 xs:space-y-2">
+                      <div className="text-body text-[11px] xs:text-xs uppercase">DEVICE:</div>
                       <div className="flex items-center space-x-1">
                         <img
                           src="/assets/images/icons/icon-device-gray.svg"
                           alt=""
                           className="size-4"
                         />
-                        <p className="text-green-500 font-semibold">{totalDevice.current}</p>
+                        <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
+                          {userInfo?.totalDevice}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <Link href="/workspace" className="flex items-center space-x-1">
-                  <div className="text-gradient uppercase font-mona font-semibold">VIEW DETAIL</div>
+                  <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
+                    VIEW DETAIL
+                  </div>
                   <img
                     src="/assets/images/icons/icon-open-link-gradient.svg"
                     alt=""
-                    className="size-6"
+                    className="size-5 xs:size-6"
                   />
                 </Link>
               </div>

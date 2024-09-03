@@ -1,64 +1,52 @@
 import CustomModal from '@/app/components/custom-modal'
-import {
-  IconFilter,
-  IconMinusCircle,
-  IconPlusCircle,
-  IconPoint,
-  IconSort
-} from '@/app/components/icons'
+import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import Image from 'next/image'
 import { formatNumber } from '@/helper/common'
 import SellItem from './sell-item'
-import { buyDeviceItem, sellItem } from '@/services/devices'
+import { buyDeviceItem, listUserItemDevice, sellItem } from '@/services/devices'
 import { toast } from 'sonner'
+import { useQuery } from '@tanstack/react-query'
+import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
+import FilterSort from '@/app/components/filter-sort'
 
 const ITEM_TYPE = {
-  FILTER: 'filter',
-  SORT: 'sort',
   INFO: 'info',
   SELL: 'sell'
 }
 
-interface IItem {
-  listItemEquipByType: any
-  listDeviceItem: Array<IDeviceTypeItem>
-  refetch: () => void
-}
-export default function Item({ refetch, listDeviceItem }: IItem) {
-  const [activeItem, setActiveItem] = useState()
+export default function Item() {
+  const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
+  const [activeFilter, setActiveFilter] = useState('')
+  const [filterOptions, setFilterOptions] = useState<{ sortBy: string; sortAscending: boolean }>({
+    sortBy: 'price',
+    sortAscending: true
+  })
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const {
+    isOpen: isOpenFilter,
+    onOpen: onOpenFilter,
+    onOpenChange: onOpenChangeFilter
+  } = useDisclosure()
   const currentItem = useRef<any>()
-  const countInfoDevice = useRef<any>({})
+
   const amountSell = useRef<number>(1)
-  const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
 
-  const filterDevice = () => {
-    countInfoDevice.current = {}
-    const listDeviceItemByFilter = listDeviceItem?.filter((device) => {
-      if (!countInfoDevice.current[device.code]) {
-        countInfoDevice.current[device.code] = {
-          amount: 1,
-          totalProfit: device.miningPower
-        }
-        return true
-      } else {
-        countInfoDevice.current[device.code].amount += 1
-        countInfoDevice.current[device.code].totalProfit += device.miningPower
-
-        return false
-      }
-    })
-
-    setListDeviceItemByFilter([...listDeviceItemByFilter])
-  }
+  const { data: listDeviceItem, refetch } = useQuery({
+    queryKey: ['getUserItemDevice', filterOptions],
+    queryFn: () => {
+      return listUserItemDevice(filterOptions.sortBy, filterOptions.sortAscending)
+    },
+    ...QUERY_CONFIG
+  })
 
   const handleInfo = (item: IDeviceTypeItem) => {
     currentItem.current = item
+    // setActiveItem(item.code)
     setActiveType(ITEM_TYPE.INFO)
     onOpen()
   }
@@ -100,11 +88,10 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
     onClose()
   }
 
-  useEffect(() => {
-    if (listDeviceItem?.length > 0) {
-      filterDevice()
-    }
-  }, [listDeviceItem])
+  const handleFilterSort = (type: string) => {
+    setActiveFilter(type)
+    onOpenFilter()
+  }
 
   return (
     <>
@@ -112,25 +99,25 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
         <div className="flex items-center justify-between">
           <p className="text-body text-base tracking-[-1px]">ALL ITEMS</p>
           <div className="flex items-center space-x-6">
-            <div className="cursor-pointer" onClick={() => handleClick(ITEM_TYPE.SORT)}>
+            <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
               <IconSort
                 className="size-[30px] text-green-800"
-                gradient={activeType === ITEM_TYPE.SORT}
+                gradient={activeFilter === FILTER_TYPE.SORT}
               />
             </div>
-            <div className="cursor-pointer" onClick={() => handleClick(ITEM_TYPE.FILTER)}>
+            <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.FILTER)}>
               <IconFilter
                 className="size-[30px] text-green-800"
-                gradient={activeType === ITEM_TYPE.FILTER}
+                gradient={activeFilter === FILTER_TYPE.FILTER}
               />
             </div>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
-          {listDeviceItemByFilter?.map((item: any) => (
+          {listDeviceItem?.data?.map((item: any) => (
             <div
-              key={item.id}
-              className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
+              key={item.code}
+              className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
             >
               <div
                 className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
@@ -151,22 +138,14 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                 <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
                   {item.name}
                 </p>
-                <p className="text-green-500">x{countInfoDevice.current[item.code].amount || 1}</p>
+                <p className="text-green-500">x{item.totalItem || 1}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
       <CustomModal
-        title={
-          activeType === ITEM_TYPE.INFO
-            ? 'ITEM Info'
-            : activeType === ITEM_TYPE.SELL
-              ? 'SELL ITEM'
-              : activeType === ITEM_TYPE.FILTER
-                ? 'FILTER'
-                : 'SORT BY'
-        }
+        title={activeType === ITEM_TYPE.INFO ? 'ITEM Info' : 'SELL ITEM'}
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={handleOnClose}
@@ -176,12 +155,11 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
           <div className=" text-body text-base tracking-[-1px] text-center">
             {activeType === ITEM_TYPE.INFO ? (
               <p>You are equipping this item!</p>
-            ) : activeType === ITEM_TYPE.SELL ? (
-              <p>
-                Are you sure you want to sell <span className="text-gradient">“RAM 16GB”</span>
-              </p>
             ) : (
-              <p>Select option to {ITEM_TYPE.FILTER ? 'filter' : 'sort'} item</p>
+              <p>
+                Are you sure you want to sell{' '}
+                <span className="text-gradient">“{currentItem.current.name}”</span>
+              </p>
             )}
           </div>
           {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
@@ -213,8 +191,7 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                   <div className="flex items-center space-x-6">
                     <div className="space-y-1">
                       <p className="text-title text-base font-semibold leading-[20px]">
-                        {currentItem.current?.code &&
-                          countInfoDevice.current[currentItem.current?.code]?.amount}{' '}
+                        {currentItem.current?.totalItem}{' '}
                         <span className="text-xs font-normal text-white-50 -ml-0.5">Available</span>
                       </p>
                       {/* <p className="text-primary text-base font-semibold leading-[20px]">
@@ -230,9 +207,8 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                           <div className="flex items-center space-x-1">
                             <IconPoint className="size-4" />
                             <span className="text-primary font-semibold leading-[16px]">
-                              {currentItem.current?.code &&
-                              countInfoDevice.current[currentItem.current?.code]?.totalProfit
-                                ? `${formatNumber(countInfoDevice.current[currentItem.current?.code]?.totalProfit, 0, 0)}/h`
+                              {currentItem.current?.miningPower
+                                ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
                                 : null}
                             </span>
                           </div>
@@ -243,31 +219,10 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                 </div>
               </div>
               {activeType === ITEM_TYPE.SELL && (
-                <SellItem
-                  infoItem={currentItem.current}
-                  totalAmount={countInfoDevice.current[currentItem.current.code].amount}
-                  updateAmountSell={updateAmountSell}
-                />
+                <SellItem item={currentItem.current} updateAmountSell={updateAmountSell} />
               )}
             </>
-          ) : (
-            <div
-              className={`grid gap-4 my-8 ${activeType === ITEM_TYPE.FILTER ? 'grid-cols-2' : 'grid-cols-1'}`}
-            >
-              <div className="bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5">
-                {activeType === ITEM_TYPE.FILTER ? 'CPU' : `High -> Low price`}
-              </div>
-              <div className="bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5">
-                {activeType === ITEM_TYPE.FILTER ? 'GPU' : `Low -> High price`}
-              </div>
-              <div className="bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5">
-                {activeType === ITEM_TYPE.FILTER ? 'RAM' : `High -> Low profit`}
-              </div>
-              <div className="bg-white/5 hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5">
-                {activeType === ITEM_TYPE.FILTER ? 'SSD' : `Low -> High profit`}
-              </div>
-            </div>
-          )}
+          ) : null}
           {activeType === ITEM_TYPE.SELL ? (
             <motion.div
               className="btn error z-[2]"
@@ -284,7 +239,9 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
                   <div className="w-[30px] h-[1px] bg-title"></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
-                    <span className="font-geist">5,000</span>
+                    <span className="font-geist">
+                      {currentItem.current.price && formatNumber(currentItem.current.price, 0, 0)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -315,6 +272,13 @@ export default function Item({ refetch, listDeviceItem }: IItem) {
           )}
         </div>
       </CustomModal>
+      <FilterSort
+        isOpen={isOpenFilter}
+        onOpen={onOpenFilter}
+        onOpenChange={onOpenChangeFilter}
+        type={activeFilter}
+        cb={setFilterOptions}
+      />
     </>
   )
 }

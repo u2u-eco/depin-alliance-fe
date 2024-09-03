@@ -20,5 +20,11 @@ export const QUERY_CONFIG = {
 export const LIST_TYPE = {
   MISSION: 'mission',
   SKILL: 'skill',
-  RANKING: 'ranking'
+  RANKING: 'ranking',
+  PARTNERS: 'partners'
+}
+
+export const FILTER_TYPE = {
+  FILTER: 'FILTER',
+  SORT: 'SORT'
 }

@@ -56,21 +56,21 @@ const CustomItem = ({ type, image, icon, done, title, children }: ItemProps) => 
             />
           )}
         </div>
-        <div className="space-y-2 2xs:space-y-3">
+        <div className="space-y-2 2xs:space-y-2.5">
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold leading-[18px] min-[355px]:leading-[20px] 2xs:leading-[22px]">{title}</div>
           {children}
         </div>
       </div>
       <div className="mr-3">
         {type === LIST_TYPE.SKILL ? (
-          <div className="size-7 2xs:size-8 min-w-7 2xs:min-w-8 overflow-hidden">
+          <div className="size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8 overflow-hidden">
             <img src="/assets/images/icons/icon-double-arrow-up-gradient.svg" alt="" />
           </div>
         ) : (
           <div className="cursor-pointer">
             <img
-              className="size-7 2xs:size-8 min-w-7 2xs:min-w-8"
-              src={`/assets/images/icons/icon-${type === 'mission' ? (done ? 'check-circle-green' : 'open-link-yellow') : type === 'invite' ? 'user-add-gradient' : type === 'league' ? 'open-link-gradient' : 'plus-gradient'}.svg`}
+              className="size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8"
+              src={`/assets/images/icons/icon-${(type === 'mission' || type === 'partners') ? (done ? 'check-circle-green' : 'open-link-yellow') : type === 'invite' ? 'user-add-gradient' : type === 'league' ? 'open-link-gradient' : 'plus-gradient'}.svg`}
               alt=""
             />
           </div>

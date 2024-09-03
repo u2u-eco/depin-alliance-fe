@@ -4,16 +4,15 @@ import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { formatNumber } from '@/helper/common'
 import { useState } from 'react'
 interface ISellItem {
-  infoItem: IDeviceTypeItem
-  totalAmount: number
+  item: IDeviceTypeItem
   updateAmountSell: (amount: number) => void
 }
-export default function SellItem({ infoItem, totalAmount, updateAmountSell }: ISellItem) {
+export default function SellItem({ item, updateAmountSell }: ISellItem) {
   const [amount, setAmount] = useState<number>(1)
   const handleUpdateAmount = (index: number) => {
     const newValue = amount + index
     if (index > 0) {
-      if (newValue <= totalAmount) {
+      if (newValue <= item.totalItem) {
         setAmount(newValue)
         updateAmountSell(newValue)
       }
@@ -39,7 +38,7 @@ export default function SellItem({ infoItem, totalAmount, updateAmountSell }: IS
           <div className="flex items-center space-x-2">
             <IconPoint className="size-7" />
             <span className="text-green-500 text-lg font-semibold">
-              {infoItem.miningPower ? `${formatNumber(infoItem.miningPower * amount, 0, 0)}/h` : ''}
+              {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 0)}/h` : ''}
             </span>
           </div>
         </div>

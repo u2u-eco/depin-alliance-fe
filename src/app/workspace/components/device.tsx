@@ -22,12 +22,7 @@ const DEVICE_TYPE = {
   EQUIP: 'equip'
 }
 
-interface IDevice {
-  listItemEquipByType: any
-  refetch: () => void
-}
-
-export default function Device({ listItemEquipByType, refetch }: IDevice) {
+export default function Device() {
   const token = useCommonStore((state) => state.token)
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -37,6 +32,25 @@ export default function Device({ listItemEquipByType, refetch }: IDevice) {
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   const countInfoDevice = useRef<any>({})
   const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
+  const listItemEquipByType = useRef<{ [key: string]: Array<IDeviceTypeItem> }>({})
+  const { refetch } = useQuery({
+    queryKey: ['fetchListDeviceItem'],
+    queryFn: async () => {
+      const res = await getUserDevice()
+      if (res.status) {
+        listItemEquipByType.current = {}
+        res.data.forEach((item: IDeviceTypeItem) => {
+          if (!listItemEquipByType.current[item.type]) {
+            listItemEquipByType.current[item.type] = []
+          }
+          listItemEquipByType.current[item.type].push(item)
+        })
+      }
+      return res.data
+    },
+    ...QUERY_CONFIG,
+    enabled: Boolean(token)
+  })
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
   const { data: listDevice } = useQuery({
@@ -191,7 +205,9 @@ export default function Device({ listItemEquipByType, refetch }: IDevice) {
               subtitle={
                 <div className="flex items-center space-x-1 mt-3">
                   <IconPoint className="size-4" />
-                  <p className="text-green-500 font-semibold leading-[16px]">10,000/h</p>
+                  <p className="text-green-500 font-semibold leading-[16px]">
+                    {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : 0}
+                  </p>
                 </div>
               }
               indicator={<IconChevron className="size-8" gradient />}

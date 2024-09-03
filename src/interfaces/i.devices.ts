@@ -6,6 +6,7 @@ export interface IDeviceTypeItem {
   price: number
   image: string | null
   id: number
+  totalItem: number
 }
 
 export interface IDeviceItemAddParam {
@@ -16,6 +17,7 @@ export interface IDeviceItemAddParam {
 export interface IUserDeviceItem {
   index: number
   name: string
+  totalMiningPower: number
   slotCpuMax: number
   slotCpuUsed: number
   slotGpuMax: number
