@@ -1,4 +1,4 @@
-import { IDeviceItemAddParam } from '@/interfaces/i.devices'
+import { IDeviceItemBuyParam } from '@/interfaces/i.devices'
 import https from '../constants/https'
 
 export const getUserDevice = (index?: number) => {
@@ -9,16 +9,14 @@ export const getUserDevice = (index?: number) => {
   })
 }
 
-export const getDevicesByType = (type?: string) => {
+export const getDevicesByType = ({ type, page }: { type?: string; page?: number }) => {
   return https.get(`/devices/item`, {
     params: {
-      type
+      type,
+      page,
+      size: 16
     }
   })
-}
-
-export const buyDeviceItem = (data: IDeviceItemAddParam) => {
-  return https.post('/devices/buy-item', data)
 }
 
 export const getListDevice = () => {
@@ -36,12 +34,16 @@ export const removeItem = (itemId: number) => {
 export const sellItem = (itemId: number) => {
   return https.get(`/devices/sell-item/${itemId}`)
 }
+export const buyDeviceItem = (data: IDeviceItemBuyParam) => {
+  return https.post(`/devices/buy-item`, data)
+}
 
-export const listUserItemDevice = (sortBy?: string, sortAscending?: boolean) => {
+export const listUserItemDevice = (sortBy?: string, sortAscending?: boolean, type?: string) => {
   return https.get(`/devices/user-item`, {
     params: {
       sortBy,
-      sortAscending
+      sortAscending,
+      type
     }
   })
 }

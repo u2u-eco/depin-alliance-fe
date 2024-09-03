@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import { Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import CustomList from '../components/custom-list'
-import { buyDeviceItem, getDevicesByType } from '../../services/devices'
-import { IDeviceItemAddParam, IDeviceTypeItem } from '../../interfaces/i.devices'
+import { getDevicesByType } from '../../services/devices'
+import { IDeviceTypeItem } from '../../interfaces/i.devices'
 import { UPGRADE_TAB } from '../../constants'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
@@ -28,7 +28,7 @@ export default function UpgradePage() {
   const currentItem = useRef<any>()
   const refInterval = useRef<any>()
   const [activeType, setActiveType] = useState(tab || UPGRADE_TYPE.DEVICE)
-  const [activeTab, setActiveTab] = useState(UPGRADE_TAB.RAM)
+  const [activeTab, setActiveTab] = useState<any>(UPGRADE_TAB.RAM)
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const token = useCommonStore((state) => state.token)
   const [listDevice, setListDevice] = useState<Array<IDeviceTypeItem>>([])
@@ -74,13 +74,13 @@ export default function UpgradePage() {
     }
   }
 
-  const buy = async (data: IDeviceItemAddParam) => {
-    const res: any = await buyDeviceItem(data)
-    if (res.status) {
-      toast.success('Buy successfully!')
-      onClose()
-    }
-  }
+  // const buy = async (data: IDeviceItemAddParam) => {
+  //   const res: any = await buyDeviceItem(data)
+  //   if (res.status) {
+  //     toast.success('Buy successfully!')
+  //     onClose()
+  //   }
+  // }
 
   const handleUpdateSkill = async (skillId: number) => {
     const res: any = await updateSkill(skillId)
@@ -93,7 +93,7 @@ export default function UpgradePage() {
 
   const handleModalAction = (data: any) => {
     if (activeType === UPGRADE_TYPE.DEVICE) {
-      buy(data)
+      // buy(data)
     } else {
       handleUpdateSkill(data)
     }

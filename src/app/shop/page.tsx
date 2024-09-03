@@ -160,7 +160,9 @@ export default function ShopPage() {
                   {activeModal === MODAL_TYPE.DEVICE ? (
                     <div className="flex items-center space-x-1">
                       <IconPoint className="size-5 2xs:size-6" />
-                      <p className="text-[15px] xs:text-base 2xs:text-lg text-green-500 font-semibold">+100/h</p>
+                      <p className="text-[15px] xs:text-base 2xs:text-lg text-green-500 font-semibold">
+                        +100/h
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-1">

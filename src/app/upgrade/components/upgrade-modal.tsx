@@ -1,6 +1,5 @@
 import { formatNumber } from '@/helper/common'
 import { motion } from 'framer-motion'
-import { IDeviceItemAddParam } from '@/interfaces/i.devices'
 import React, { useEffect, useRef, useState } from 'react'
 import useCommonStore from '@/stores/commonStore'
 interface IUpgradeModal {
@@ -8,7 +7,7 @@ interface IUpgradeModal {
   UPGRADE_TYPE: any
   item: any
   refInterval: any
-  handleAction: (data: IDeviceItemAddParam) => void
+  handleAction: (data: any) => void
 }
 export default function UpgradeModal({
   activeType,
