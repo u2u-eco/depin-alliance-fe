@@ -15,7 +15,8 @@ import FilterSort from '@/app/components/filter-sort'
 
 const ITEM_TYPE = {
   INFO: 'info',
-  SELL: 'sell'
+  SELL: 'sell',
+  SPECIAL: 'special',
 }
 
 export default function Item() {
@@ -83,6 +84,11 @@ export default function Item() {
     }
   }
 
+  const handleSpecial = () => {
+    console.log(111);
+    
+  }
+
   const handleOnClose = () => {
     amountSell.current = 1
     onClose()
@@ -145,7 +151,7 @@ export default function Item() {
         </div>
       </div>
       <CustomModal
-        title={activeType === ITEM_TYPE.INFO ? 'ITEM Info' : 'SELL ITEM'}
+        title={activeType === ITEM_TYPE.SELL ? 'SELL ITEM' : 'ITEM Info'}
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={handleOnClose}
@@ -155,6 +161,8 @@ export default function Item() {
           <div className=" text-body text-base tracking-[-1px] text-center">
             {activeType === ITEM_TYPE.INFO ? (
               <p>You are equipping this item!</p>
+            ) : activeType === ITEM_TYPE.SPECIAL ? (
+              <p>You own this item!</p>
             ) : (
               <p>
                 Are you sure you want to sell{' '}
@@ -162,13 +170,13 @@ export default function Item() {
               </p>
             )}
           </div>
-          {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
+          {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO ? 'mt-10 mb-14' : 'my-8'}`}
+                className={`space-x-4 flex items-center justify-center ${(activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL) ? 'mt-10 mb-14' : 'my-8'}`}
               >
                 <div
-                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
+                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${(activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL) ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
                 >
                   <Image
                     width={0}
@@ -178,6 +186,8 @@ export default function Item() {
                     src={
                       currentItem.current?.image?.length > 0
                         ? currentItem.current.image
+                        : activeType === ITEM_TYPE.SPECIAL
+                        ? `/assets/images/workspace/item-special@2x.png`
                         : `/assets/images/upgrade/upgrade-ram-2gb@2x.png`
                     }
                     // srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x. /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
@@ -185,37 +195,44 @@ export default function Item() {
                   />
                 </div>
                 <div className={activeType === ITEM_TYPE.INFO ? 'space-y-4' : 'space-y-2'}>
-                  <p className=" text-title font-semibold text-xl font-mona leading-[22px]">
+                  <p className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}>
                     {currentItem.current?.name}
                   </p>
-                  <div className="flex items-center space-x-6">
-                    <div className="space-y-1">
-                      <p className="text-title text-base font-semibold leading-[20px]">
-                        {currentItem.current?.totalItem}{' '}
-                        <span className="text-xs font-normal text-white-50 -ml-0.5">Available</span>
-                      </p>
-                      {/* <p className="text-primary text-base font-semibold leading-[20px]">
-                        0{' '}
-                        <span className="text-xs font-normal text-white-50 -ml-0.5">Equipped</span>
-                      </p> */}
-                    </div>
-                    {activeType === ITEM_TYPE.INFO && (
-                      <>
-                        <div className="w-[1px] h-9 bg-white/25"></div>
-                        <div className="space-y-2">
-                          <div className="text-xs text-white-50">TOTAL PROFIT:</div>
-                          <div className="flex items-center space-x-1">
-                            <IconPoint className="size-4" />
-                            <span className="text-primary font-semibold leading-[16px]">
-                              {currentItem.current?.miningPower
-                                ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
-                                : null}
-                            </span>
+                  {activeType === ITEM_TYPE.SPECIAL ? (
+                    <p className="text-title text-base font-semibold leading-[20px]">
+                      {currentItem.current?.totalItem}{' '}
+                      <span className="text-xs font-normal text-white-50 -ml-0.5">In Total</span>
+                    </p>
+                  ) : (
+                    <div className="flex items-center space-x-6">
+                      <div className="space-y-1">
+                        <p className="text-title text-base font-semibold leading-[20px]">
+                          {currentItem.current?.totalItem}{' '}
+                          <span className="text-xs font-normal text-white-50 -ml-0.5">Available</span>
+                        </p>
+                        {/* <p className="text-primary text-base font-semibold leading-[20px]">
+                          0{' '}
+                          <span className="text-xs font-normal text-white-50 -ml-0.5">Equipped</span>
+                        </p> */}
+                      </div>
+                      {activeType === ITEM_TYPE.INFO && (
+                        <>
+                          <div className="w-[1px] h-9 bg-white/25"></div>
+                          <div className="space-y-2">
+                            <div className="text-xs text-white-50">TOTAL PROFIT:</div>
+                            <div className="flex items-center space-x-1">
+                              <IconPoint className="size-4" />
+                              <span className="text-primary font-semibold leading-[16px]">
+                                {currentItem.current?.miningPower
+                                  ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
+                                  : null}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               {activeType === ITEM_TYPE.SELL && (
@@ -223,20 +240,20 @@ export default function Item() {
               )}
             </>
           ) : null}
-          {activeType === ITEM_TYPE.SELL ? (
+          {(activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL) ? (
             <motion.div
-              className="btn error z-[2]"
+              className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              onClick={handleSell}
+              onClick={activeType === ITEM_TYPE.SELL ? handleSell : handleSpecial}
             >
               <div className="btn-border"></div>
-              <div className="btn-error">
-                <div className="flex items-center justify-center space-x-4 text-title">
-                  <p>SELL</p>
-                  <div className="w-[30px] h-[1px] bg-title"></div>
+              <div className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : 'primary'}`}>
+                <div className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : 'text-green-900'}`}>
+                  <p>{activeType === ITEM_TYPE.SELL ? 'SELL' : 'USE KEY'}</p>
+                  <div className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL ? 'bg-title' : 'bg-green-900'}`}></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
