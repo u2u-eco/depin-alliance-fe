@@ -12,6 +12,8 @@ import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
 import FilterSort from '@/app/components/filter-sort'
+import NoItem from '@/app/components/no-item'
+import ImageDevice from '@/app/components/image-device'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -23,31 +25,45 @@ export default function Item() {
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [activeFilter, setActiveFilter] = useState('')
-  const [filterOptions, setFilterOptions] = useState<{ sortBy: string; sortAscending: boolean }>({
+  const [filterOptions, setFilterOptions] = useState<{
+    sortBy: string
+    sortAscending: boolean
+    type?: string
+  }>({
     sortBy: 'price',
-    sortAscending: true
+    sortAscending: true,
+    type: ''
   })
+
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const {
     isOpen: isOpenFilter,
     onOpen: onOpenFilter,
+    onClose: onCloseFilter,
     onOpenChange: onOpenChangeFilter
   } = useDisclosure()
   const currentItem = useRef<any>()
 
   const amountSell = useRef<number>(1)
 
-  const { data: listDeviceItem, refetch } = useQuery({
+  const {
+    data: listDeviceItem,
+    isLoading,
+    refetch
+  } = useQuery({
     queryKey: ['getUserItemDevice', filterOptions],
     queryFn: () => {
-      return listUserItemDevice(filterOptions.sortBy, filterOptions.sortAscending)
+      return listUserItemDevice(
+        filterOptions.sortBy,
+        filterOptions.sortAscending,
+        filterOptions.type
+      )
     },
     ...QUERY_CONFIG
   })
 
   const handleInfo = (item: IDeviceTypeItem) => {
     currentItem.current = item
-    // setActiveItem(item.code)
     setActiveType(ITEM_TYPE.INFO)
     onOpen()
   }
@@ -119,36 +135,34 @@ export default function Item() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
-          {listDeviceItem?.data?.map((item: any) => (
-            <div
-              key={item.code}
-              className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-            >
+        {!isLoading && listDeviceItem?.data?.length === 0 ? (
+          <NoItem />
+        ) : (
+          <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
+            {listDeviceItem?.data?.map((item: any) => (
               <div
-                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
-                onClick={() => handleInfo(item)}
+                key={item.code}
+                className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
               >
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                  src={
-                    item.image?.length > 0
-                      ? item.image
-                      : `/assets/images/upgrade/upgrade-ram-2gb.png`
-                  }
-                  alt=""
-                />
-                <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
-                  {item.name}
-                </p>
-                <p className="text-green-500">x{item.totalItem || 1}</p>
+                <div
+                  className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                  onClick={() => handleInfo(item)}
+                >
+                  <ImageDevice
+                    className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                    image={item.image}
+                    type={item.type}
+                  />
+
+                  <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
+                    {item.name}
+                  </p>
+                  <p className="text-green-500">x{item.totalItem || 1}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
       <CustomModal
         title={activeType === ITEM_TYPE.SELL ? 'SELL ITEM' : 'ITEM Info'}
@@ -293,6 +307,7 @@ export default function Item() {
         isOpen={isOpenFilter}
         onOpen={onOpenFilter}
         onOpenChange={onOpenChangeFilter}
+        onClose={onCloseFilter}
         type={activeFilter}
         cb={setFilterOptions}
       />
