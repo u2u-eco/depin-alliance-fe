@@ -1,22 +1,18 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import Card from '../components/card'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
-import { getListDevice, getUserDevice } from '../../services/devices'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
-import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
-import { UPGRADE_TAB } from '@/constants'
 import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 
 export default function HomePage() {
-  const { token, userInfo, setDevice } = useCommonStore()
-  const totalDevice = useRef<number>(0)
+  const { userInfo } = useCommonStore()
+  // const totalDevice = useRef<number>(0)
 
   useUserInfo()
 
@@ -24,66 +20,66 @@ export default function HomePage() {
   //   webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
   // }
 
-  const _getListDevice = async () => {
-    const listDevice: any = await getListDevice()
-    if (listDevice.status) {
-      const data: Array<IUserDeviceItem> = listDevice.data
-      _getUserDevice(data[0].index)
-      totalDevice.current = data?.length
-    }
-  }
+  // const _getListDevice = async () => {
+  //   const listDevice: any = await getListDevice()
+  //   if (listDevice.status) {
+  //     const data: Array<IUserDeviceItem> = listDevice.data
+  //     _getUserDevice(data[0].index)
+  //     totalDevice.current = data?.length
+  //   }
+  // }
 
-  const _getUserDevice = async (index: number) => {
-    const res = await getUserDevice(index)
-    if (res.status) {
-      let listInfo: any = {}
-      let listByType: any = {}
+  // const _getUserDevice = async (index: number) => {
+  //   const res = await getUserDevice(index)
+  //   if (res.status) {
+  //     let listInfo: any = {}
+  //     let listByType: any = {}
 
-      res.data.forEach((item: IDeviceTypeItem) => {
-        if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
-          if (!listInfo[item.type]) {
-            listInfo[item.type] = item
-          } else {
-            listInfo[item.type].name =
-              `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
-          }
-        } else {
-          if (!listByType[item.type]?.[item.code]) {
-            if (!listByType[item.type]) {
-              listByType[item.type] = {}
-            }
-            if (!listByType[item.type][item.code]) {
-              listByType[item.type][item.code] = {
-                ...item,
-                value: 1
-              }
-            }
-          } else {
-            if (listByType[item.type][item.code]) {
-              listByType[item.type][item.code].value += 1
-            }
-          }
-        }
-      })
-      const listCPU_GPU = Object.keys(listByType).map((key) => {
-        let newItem = { type: key, name: '' }
-        Object.keys(listByType[key]).map((key2, index) => {
-          newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
-        })
-        return newItem
-      })
-      const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
-      setDevice({
-        info: [...listCPU_GPU, ...newData]
-      })
-    }
-  }
+  //     res.data.forEach((item: IDeviceTypeItem) => {
+  //       if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
+  //         if (!listInfo[item.type]) {
+  //           listInfo[item.type] = item
+  //         } else {
+  //           listInfo[item.type].name =
+  //             `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
+  //         }
+  //       } else {
+  //         if (!listByType[item.type]?.[item.code]) {
+  //           if (!listByType[item.type]) {
+  //             listByType[item.type] = {}
+  //           }
+  //           if (!listByType[item.type][item.code]) {
+  //             listByType[item.type][item.code] = {
+  //               ...item,
+  //               value: 1
+  //             }
+  //           }
+  //         } else {
+  //           if (listByType[item.type][item.code]) {
+  //             listByType[item.type][item.code].value += 1
+  //           }
+  //         }
+  //       }
+  //     })
+  //     const listCPU_GPU = Object.keys(listByType).map((key) => {
+  //       let newItem = { type: key, name: '' }
+  //       Object.keys(listByType[key]).map((key2, index) => {
+  //         newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
+  //       })
+  //       return newItem
+  //     })
+  //     const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
+  //     setDevice({
+  //       info: [...listCPU_GPU, ...newData]
+  //     })
+  //   }
+  // }
 
-  useEffect(() => {
-    if (token) {
-      _getListDevice()
-    }
-  }, [token])
+  // useEffect(() => {
+  //   if (token) {
+  //     _getListDevice()
+  //   }
+  // }, [token])
 
   return (
     <>
@@ -148,7 +144,9 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center space-x-2 xs:space-x-4 2xs:space-x-6">
                     <div className="space-y-1 xs:space-y-2">
-                      <div className="text-body text-[11px] xs:text-xs uppercase">TOTAL PROFIT:</div>
+                      <div className="text-body text-[11px] xs:text-xs uppercase">
+                        TOTAL PROFIT:
+                      </div>
                       <div className="flex items-center space-x-1">
                         <IconPoint className="size-4" />
                         <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
@@ -167,13 +165,17 @@ export default function HomePage() {
                           alt=""
                           className="size-4"
                         />
-                        <p className="text-green-500 font-semibold text-[13px] xs:text-sm">{totalDevice.current}</p>
+                        <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
+                          {userInfo?.totalDevice}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <Link href="/workspace" className="flex items-center space-x-1">
-                  <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">VIEW DETAIL</div>
+                  <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
+                    VIEW DETAIL
+                  </div>
                   <img
                     src="/assets/images/icons/icon-open-link-gradient.svg"
                     alt=""

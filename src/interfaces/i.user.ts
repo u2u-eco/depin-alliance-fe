@@ -58,6 +58,7 @@ export type IUserInfo = {
   lastLoginTime: number
   timeStartMining: number
   lastCheckin: number
+  totalDevice: number
 }
 
 export enum CURRENT_STATUS {

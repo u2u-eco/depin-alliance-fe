@@ -36,3 +36,12 @@ export const removeItem = (itemId: number) => {
 export const sellItem = (itemId: number) => {
   return https.get(`/devices/sell-item/${itemId}`)
 }
+
+export const listUserItemDevice = (sortBy?: string, sortAscending?: boolean) => {
+  return https.get(`/devices/user-item`, {
+    params: {
+      sortBy,
+      sortAscending
+    }
+  })
+}

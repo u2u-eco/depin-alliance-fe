@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 
 interface ModalProps {
@@ -12,13 +12,19 @@ interface ModalProps {
 
 const CustomModal = ({ title, children, isOpen, onClose, onOpenChange }: ModalProps) => {
   // const {isOpen, onOpen, onOpenChange} = useDisclosure()
+  const [placement, setPlacement] = useState<any>('bottom')
+  useEffect(() => {
+    if (isOpen) {
+      setPlacement(window && window.innerWidth >= 375 ? 'bottom' : 'top')
+    }
+  }, [isOpen])
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       onOpenChange={onOpenChange}
-      placement={window.innerWidth >= 375 ? "bottom" : "top"}
+      placement={placement}
       hideCloseButton
       classNames={{
         base: "max-w-full m-0 rounded-none h-full xs:h-auto bg-transparent xs:bg-green-600 before:content-[''] before:bottom-0 before:absolute before:left-0 before:size-full before:z-[-1] before:bg-[linear-gradient(to_top,#000000,#002012)] pt-10 xs:pt-12 pb-8 xs:pb-10 px-4 xs:border-t-[0.5px] min-[355px]:border-t-green-600 xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] before:xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)]",

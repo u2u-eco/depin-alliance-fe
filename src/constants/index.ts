@@ -21,5 +21,10 @@ export const LIST_TYPE = {
   MISSION: 'mission',
   SKILL: 'skill',
   RANKING: 'ranking',
-  PARTNERS: 'partners',
+  PARTNERS: 'partners'
+}
+
+export const FILTER_TYPE = {
+  FILTER: 'FILTER',
+  SORT: 'SORT'
 }

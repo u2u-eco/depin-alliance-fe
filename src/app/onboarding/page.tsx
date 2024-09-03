@@ -2,7 +2,7 @@
 'use client'
 
 import { redirect, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
@@ -23,9 +23,11 @@ const ONBOARDING_TYPE = {
 
 const Onboarding = () => {
   const router = useRouter()
+  const isDetectDevice = useRef<boolean>(false)
   const setDevice = useCommonStore((state) => state.setDevice)
+  const [deviceName, setDeviceName] = useState<string>('')
   const { currentStatus, token } = useCommonStore()
-  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(ONBOARDING_TYPE.DEVICE)
   const _getDeviceInfo = async () => {
     try {
@@ -63,6 +65,47 @@ const Onboarding = () => {
     }
   }
 
+  const detectDevice = () => {
+    if (isDetectDevice.current) return
+    isDetectDevice.current = true
+    const screenWidth = window.screen.width
+    const screenHeight = window.screen.height
+    const devicePixelRatio = window.devicePixelRatio
+
+    const clientInfo = {
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
+      devicePixelRatio: devicePixelRatio,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+      userAgent: navigator.userAgent,
+      platform: /iPad|iPhone/.test(navigator.platform) ? 'iOS' : 'Unknown',
+      osVersion:
+        navigator.userAgent && navigator.userAgent.match(/OS (\d+_\d+)/i)
+          ? navigator.userAgent.match(/OS (\d+_\d+)/i)?.[1].replace('_', '.')
+          : 'Unknown',
+      isProMotion: window.matchMedia('(min-resolution: 120dpi)').matches,
+      dynamicIsland: false
+    }
+
+    fetch('https://detect-mobile.u2w.app/detect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(clientInfo)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        isDetectDevice.current = false
+        setDeviceName(data.detectedModel)
+      })
+      .catch((error) => {
+        isDetectDevice.current = false
+        console.error('Error:', error)
+      })
+  }
+
   useEffect(() => {
     switch (currentStatus) {
       case CURRENT_STATUS.STARTED:
@@ -78,10 +121,14 @@ const Onboarding = () => {
       case CURRENT_STATUS.CLAIMED:
         redirect('/home')
     }
-    if(type === ONBOARDING_TYPE.DEVICE) {
+    if (type === ONBOARDING_TYPE.DEVICE) {
       setTimeout(() => onOpen(), 1000)
     }
   }, [currentStatus, token])
+
+  useEffect(() => {
+    detectDevice()
+  })
 
   return (
     <AnimatePresence mode="wait">
@@ -93,8 +140,8 @@ const Onboarding = () => {
             <div className="absolute top-0 left-0 right-0 w-full h-full z-[-1]">
               <img
                 className="mx-auto object-cover min-[460px]:h-full w-full"
-                src={`/assets/images/onboarding/onboarding${(type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE) ? '-scholarship' : ''}-background.png`}
-                srcSet={`/assets/images/onboarding/onboarding${(type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE) ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding/onboarding${(type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE) ? '-scholarship' : ''}-background@2x.png 2x`}
+                src={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png`}
+                srcSet={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background@2x.png 2x`}
                 alt=""
               />
             </div>
@@ -114,7 +161,9 @@ const Onboarding = () => {
                     </div>
                     {/* Image */}
                     <div className="relative">
-                      {(type === ONBOARDING_TYPE.DEVICE || type === ONBOARDING_TYPE.LOADING || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                      {(type === ONBOARDING_TYPE.DEVICE ||
+                        type === ONBOARDING_TYPE.LOADING ||
+                        type === ONBOARDING_TYPE.SCHOLARSHIP) && (
                         <>
                           <div className="absolute top-[5%] left-[50%] translate-x-[-50%] rounded-[50%] size-[140px] blur-[75px] bg-green-500 z-[-1]"></div>
                         </>
@@ -127,7 +176,7 @@ const Onboarding = () => {
                       />
                     </div>
                     {/* Content */}
-                    {(type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP) ? (
+                    {type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
                       <div className="text-center mb-6 space-y-3">
                         <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
                           <div className="size-1.5 min-w-1.5 bg-green-800"></div>
@@ -164,7 +213,9 @@ const Onboarding = () => {
                       <div className="mt-4">
                         <div className="btn default cursor-default">
                           <div className="btn-border"></div>
-                          <div className="btn-default font-normal font-geist normal-case">iPhone 15 Pro Max</div>
+                          <div className="btn-default font-normal font-geist normal-case">
+                            {deviceName}
+                          </div>
                           <div className="btn-border"></div>
                         </div>
                       </div>
@@ -172,24 +223,21 @@ const Onboarding = () => {
                     {/* Configuration */}
                     {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
                   </div>
-                  {(type === ONBOARDING_TYPE.START ||
-                    type === ONBOARDING_TYPE.SCHOLARSHIP) && (
-                    <motion.div className="xs:absolute bottom-0 xs:bottom-8 2xs:bottom-10 left-0 right-0 3xs:px-4 xs:px-3 max-w-[480px] mx-auto space-y-4 xs:space-y-5 2xs:space-y-6"
+                  {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                    <motion.div
+                      className="xs:absolute bottom-0 xs:bottom-8 2xs:bottom-10 left-0 right-0 3xs:px-4 xs:px-3 max-w-[480px] mx-auto space-y-4 xs:space-y-5 2xs:space-y-6"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.35 }}
                     >
-                      <div className="text-center text-body leading-[18px] tracking-[-1px]">Everything is ready, let's get started!</div>
-                      <button
-                        className="btn"
-                        onClick={() => handleOnboarding(type)}
-                      >
+                      <div className="text-center text-body leading-[18px] tracking-[-1px]">
+                        {`Everything is ready, let's get started!`}
+                      </div>
+                      <button className="btn" onClick={() => handleOnboarding(type)}>
                         <div className="btn-border"></div>
                         <div className="btn-primary">
-                          {type === ONBOARDING_TYPE.START
-                            ? 'Next'
-                            : 'Get Started'}
+                          {type === ONBOARDING_TYPE.START ? 'Next' : 'Get Started'}
                         </div>
                         <div className="btn-border"></div>
                       </button>
