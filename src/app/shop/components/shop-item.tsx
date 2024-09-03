@@ -1,47 +1,206 @@
-import { getDevicesByType } from '@/services/devices'
+import CustomModal from '@/app/components/custom-modal'
+import ImageDevice from '@/app/components/image-device'
+import { formatNumber } from '@/helper/common'
+import { IDeviceItemBuyParam, IDeviceTypeItem } from '@/interfaces/i.devices'
+import { buyDeviceItem, getDevicesByType } from '@/services/devices'
+import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-const listHardware = [
-  { id: 1, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 2, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 3, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 4, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 5, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' },
-  { id: 6, image: 'upgrade/upgrade-ram-2gb', title: 'RAM 2GB', number: '12' }
-]
+import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/icons'
+import { useEffect, useRef, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { toast } from 'sonner'
 export default function ShopItem() {
-  const { data } = useQuery({
-    queryKey: ['getListDevice'],
-    queryFn: () => getDevicesByType()
+  const maxPage = useRef<number>(0)
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const currentItem = useRef<IDeviceTypeItem>()
+  const [amount, setAmount] = useState<number>(1)
+  const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
+  const [page, setPage] = useState<number>(1)
+  const [scrollTrigger, isInView] = useInView()
+
+  const { isLoading } = useQuery({
+    queryKey: ['getListDevice', page],
+    queryFn: async () => {
+      const res: any = await getDevicesByType({ page })
+      if (res.pagination?.totalPage) {
+        maxPage.current = res.pagination?.totalPage
+      }
+      if (res.data?.length > 0) {
+        setListItem([...listItem, ...res.data])
+      }
+    }
   })
-  console.log('🚀 ~ ShopItem ~ data:', data)
+
+  const handleAmount = (index: number) => {
+    const newAmount = amount + index
+    if (newAmount > 0) {
+      setAmount(newAmount)
+    }
+  }
+
+  const handleClick = (item: IDeviceTypeItem) => {
+    currentItem.current = item
+    onOpen()
+  }
+
+  const buy = async () => {
+    if (currentItem?.current?.code) {
+      const data: IDeviceItemBuyParam = {
+        number: amount,
+        code: currentItem?.current?.code || ''
+      }
+      const res: any = await buyDeviceItem(data)
+      if (res.status) {
+        toast.success('Buy successfully!')
+        onClose()
+      }
+    }
+  }
+
+  const handleClose = () => {
+    setAmount(1)
+    onClose()
+  }
+
+  useEffect(() => {
+    if (isInView && page < maxPage.current && !isLoading) {
+      setPage(page + 1)
+    }
+  }, [isInView, page])
 
   return (
-    <motion.div
-      initial={{ y: 25, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -25, opacity: 0 }}
-      transition={{ duration: 0.35 }}
-    >
-      <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
-        {listHardware.map((item: any) => (
-          <div
-            key={item.id}
-            className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer`}
-            // onClick={() => handleClick(MODAL_TYPE.ITEM)}
-          >
-            <img
-              className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-              src={`/assets/images/${item.image}.png`}
-              alt=""
-            />
-            <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
-              {item.title}
+    <>
+      <motion.div
+        initial={{ y: 25, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -25, opacity: 0 }}
+        transition={{ duration: 0.35 }}
+        className="max-h-[60vh] overflow-scroll"
+      >
+        <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
+          {listItem?.map((item: any) => (
+            <div
+              key={item.id}
+              className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer`}
+              onClick={() => handleClick(item)}
+            >
+              <ImageDevice
+                image={item.image}
+                className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                type={item.type}
+              />
+
+              <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+                {item.title}
+              </p>
+              <p className="text-green-500">{formatNumber(item.price, 0, 0)}</p>
+            </div>
+          ))}
+          <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
+        </div>
+      </motion.div>
+      <CustomModal
+        title="BUY ITEM"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={handleClose}
+        onOpenChange={onOpenChange}
+      >
+        <div>
+          <div className=" text-body text-[15px] xs:text-base tracking-[-1px] text-center">
+            <p>
+              Are you sure you want to buy{' '}
+              <span className="text-gradient whitespace-nowrap">“{currentItem.current?.name}”</span>
             </p>
-            <p className="text-green-500">x{item.number}</p>
           </div>
-        ))}
-      </div>
-    </motion.div>
+          <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
+            <div className="size-[100px] xs:size-[115px] 2xs:size-[130px] min-w-[100px] xs:min-w-[115px] 2xs:min-w-[130px] p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center">
+              <ImageDevice
+                image={currentItem.current ? currentItem.current?.image : ''}
+                type={currentItem.current ? currentItem.current.type : ''}
+                className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+              />
+            </div>
+            <div className="space-y-1.5 xs:space-y-2">
+              <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona leading-[22px]">
+                {currentItem.current?.name}
+              </p>
+
+              {/* <div className="space-y-1">
+                <p className="text-title text-base font-semibold leading-[20px]">
+                  __ <span className="text-xs font-normal text-white-50 -ml-0.5">Available</span>
+                </p>
+                <p className="text-primary text-base font-semibold leading-[20px]">
+                  __ <span className="text-xs font-normal text-white-50 -ml-0.5">Equipped</span>
+                </p>
+              </div> */}
+            </div>
+          </div>
+          <motion.div
+            className="relative w-fit mx-auto mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
+              <div className="space-y-3">
+                <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
+                <div className="flex items-center space-x-2">
+                  <IconPoint className="size-7" />
+                  <span className="text-green-500 text-lg font-semibold">
+                    {currentItem.current?.miningPower
+                      ? `${formatNumber(currentItem.current?.miningPower, 0, 0)}/h`
+                      : 0}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
+                <div className="flex items-center space-x-6">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      handleAmount(-1)
+                    }}
+                  >
+                    <IconMinusCircle className="text-green-500 size-6" />
+                  </div>
+                  <span className="text-green-100 text-lg font-semibold">{amount}</span>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      handleAmount(+1)
+                    }}
+                  >
+                    <IconPlusCircle className="text-green-500 size-6" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          <div className="btn" onClick={buy}>
+            <div className="btn-border"></div>
+            <div className="btn-primary">
+              <div className="flex items-center justify-center space-x-4 text-green-900">
+                <p>BUY NOW</p>
+                <div className="w-[30px] h-[1px] bg-green-800"></div>
+                <div className="flex items-center space-x-1">
+                  <IconPoint className="size-5" color />
+                  <span className="font-geist">
+                    {currentItem.current?.price
+                      ? `${formatNumber(currentItem.current.price, 0, 0)}`
+                      : 0}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="btn-border"></div>
+          </div>
+        </div>
+      </CustomModal>
+    </>
   )
 }

@@ -9,7 +9,7 @@ export interface IDeviceTypeItem {
   totalItem: number
 }
 
-export interface IDeviceItemAddParam {
+export interface IDeviceItemBuyParam {
   code: string
   number: number
 }

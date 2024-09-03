@@ -27,6 +27,7 @@ export default function Device() {
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
+  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set(['1']))
   const deviceItemDetail = useRef<{ [key: number]: Array<IDeviceTypeItem> }>({})
   const detailDeviceItem = useRef<any>()
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
@@ -110,12 +111,14 @@ export default function Device() {
   }
 
   const handleClickItem = (index: number) => {
+    console.log(112)
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
   }
 
   const handleClick = (type: string) => {
+    console.log(1)
     setActiveType(type)
     onOpen()
   }
