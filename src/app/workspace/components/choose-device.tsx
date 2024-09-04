@@ -1,7 +1,7 @@
 import ImageDevice from '@/app/components/image-device'
 import NoItem from '@/app/components/no-item'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
-import { listUserItemDevice } from '@/services/devices'
+import { getUserDevice, listUserItemDevice } from '@/services/devices'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -18,7 +18,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const { isLoading } = useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
     queryFn: async () => {
-      const res: any = await listUserItemDevice({ type })
+      const res: any = await getUserDevice({ type })
       if (res.status) {
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
@@ -63,7 +63,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
                 <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
                   {item.name}
                 </p>
-                <p className="text-green-500">x{item.totalItem}</p>
+                {/* <p className="text-green-500">x{item.totalItem}</p> */}
               </div>
             </div>
           ))}

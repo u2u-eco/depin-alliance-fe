@@ -41,8 +41,8 @@ export const removeItem = (itemId: number) => {
   return https.get(`/devices/remove-item/${itemId}`)
 }
 
-export const sellItem = (itemId: number) => {
-  return https.get(`/devices/sell-item/${itemId}`)
+export const sellItem = (data: IDeviceItemBuyParam) => {
+  return https.post(`/devices/sell-item`, data)
 }
 export const buyDeviceItem = (data: IDeviceItemBuyParam) => {
   return https.post(`/devices/buy-item`, data)

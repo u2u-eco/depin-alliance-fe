@@ -15,6 +15,7 @@ import FilterSort from '@/app/components/filter-sort'
 import NoItem from '@/app/components/no-item'
 import ImageDevice from '@/app/components/image-device'
 import { useInView } from 'react-intersection-observer'
+import { ACTION } from 'next/dist/client/components/app-router-headers'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -26,6 +27,7 @@ export default function Item() {
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
+  const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
@@ -78,15 +80,19 @@ export default function Item() {
 
   const updateAmountSell = (amount: number) => {
     amountSell.current = amount
+    setTotalPriceSell(currentItem.current.price * amount)
   }
 
   const handleClick = (type: string) => {
+    if (type === ITEM_TYPE.SELL) {
+      setTotalPriceSell(currentItem.current.price)
+    }
     setActiveType(type)
     onOpen()
   }
 
   const handleSell = async () => {
-    const res = await sellItem(currentItem.current.id)
+    const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
     if (res.status) {
       toast.success('Sell item successfully!')
       refetch && refetch()
@@ -299,7 +305,7 @@ export default function Item() {
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
-                      {currentItem.current.price && formatNumber(currentItem.current.price, 0, 0)}
+                      {totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
                     </span>
                   </div>
                 </div>
