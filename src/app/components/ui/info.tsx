@@ -164,10 +164,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                     />
                   </Link>
                   <div className="w-[1px] h-5 bg-white/10"></div>
-                  <div
-                    className="flex items-center space-x-0.5 min-[400px]:space-x-1"
-                    onClick={handleUpgrade}
-                  >
+                  <div className="flex items-center space-x-0.5 min-[400px]:space-x-1">
                     <Image
                       className="size-4 min-[400px]:size-[18px] 2xs:size-5"
                       src="/assets/images/icons/icon-thunder.svg"

@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/helper/common'
 import useCommonStore from '@/stores/commonStore'
+import ModalReward from '@/app/components/ui/modal-reward'
+import { useDisclosure } from '@nextui-org/react'
 
 const HOME_TYPE = {
   START: 'start',
@@ -11,6 +13,8 @@ const HOME_TYPE = {
 }
 export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
+  const [bonusReward, setBonusReward] = useState<number>(0)
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
@@ -62,6 +66,10 @@ export default function Mining() {
   const handleClaim = async () => {
     const res = await claim()
     if (res.status) {
+      if (res.data.bonusReward > 0) {
+        setBonusReward(res.data.bonusReward)
+        onOpen()
+      }
       updateUserInfo()
     }
   }
@@ -135,11 +143,7 @@ export default function Mining() {
             <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
               <div>Mining</div>
               <div className="flex items-center space-x-1">
-                <img
-                  className="size-5 xs:size-6"
-                  src="/assets/images/point-dark.svg"
-                  alt="Point"
-                />
+                <img className="size-5 xs:size-6" src="/assets/images/point-dark.svg" alt="Point" />
                 <p className="font-geist text-green-900 min-[355px]:text-base xs:text-[18px] font-semibold">
                   {miningCount ? formatNumber(miningCount, 0, 0) : 0}
                 </p>
@@ -167,6 +171,20 @@ export default function Mining() {
         )}
         <div className="btn-border"></div>
       </button>
+      <ModalReward
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        onCloseModal={onClose}
+        title="BONUS rewarRD"
+        point={formatNumber(bonusReward, 0, 0)}
+        text={
+          <>
+            <p>You’ve received your first reward!</p>
+            <p>Claim it now!</p>
+          </>
+        }
+      />
     </div>
   )
 }

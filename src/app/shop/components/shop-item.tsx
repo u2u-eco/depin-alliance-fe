@@ -43,6 +43,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         }
         setListItem(_listItem)
       }
+      return res
     }
   })
 

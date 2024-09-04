@@ -3,13 +3,7 @@
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import CustomPage from '../components/custom-page'
-import {
-  IconFilter,
-  IconMinusCircle,
-  IconPlusCircle,
-  IconPoint,
-  IconSort
-} from '../components/icons'
+import { IconFilter, IconPoint, IconSort } from '../components/icons'
 import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
 import CustomList from '../components/custom-list'
@@ -37,7 +31,7 @@ const listDevice = [
 ]
 
 export default function ShopPage() {
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [activeType, setActiveType] = useState(SHOP_TYPE.DEVICE)
   const [activeFilter, setActiveFilter] = useState('')
   const [activeModal, setActiveModal] = useState(MODAL_TYPE.DEVICE)
@@ -97,23 +91,28 @@ export default function ShopPage() {
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-between">
-            <p className="text-body text-[15px] xs:text-base tracking-[-1px]">ALL ITEMS</p>
-            <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
-              <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
-                <IconSort
-                  className="size-6 xs:size-[30px] text-green-800"
-                  gradient={activeFilter === FILTER_TYPE.SORT}
-                />
-              </div>
-              <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.FILTER)}>
-                <IconFilter
-                  className="size-6 xs:size-[30px] text-green-800"
-                  gradient={activeFilter === FILTER_TYPE.FILTER}
-                />
+          {activeType == SHOP_TYPE.ITEM && (
+            <div className="flex items-center justify-between">
+              <p className="text-body text-[15px] xs:text-base tracking-[-1px]">ALL ITEMS</p>
+              <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+                <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
+                  <IconSort
+                    className="size-6 xs:size-[30px] text-green-800"
+                    gradient={activeFilter === FILTER_TYPE.SORT}
+                  />
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleFilterSort(FILTER_TYPE.FILTER)}
+                >
+                  <IconFilter
+                    className="size-6 xs:size-[30px] text-green-800"
+                    gradient={activeFilter === FILTER_TYPE.FILTER}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
           {activeType == SHOP_TYPE.DEVICE ? (
             <motion.div
               initial={{ y: 25, opacity: 0 }}
