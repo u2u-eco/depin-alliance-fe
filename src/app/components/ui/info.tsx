@@ -64,10 +64,10 @@ const Info = ({ profile, rank }: InfoProps) => {
 
       if (currentXp > 0) {
         const percent = (currentXp / maxXp) * 100
-        return `w-${percent}`
+        return `${percent}%`
       }
     }
-    return 'w-[0]'
+    return 0
   }
 
   useEffect(() => {
@@ -207,7 +207,8 @@ const Info = ({ profile, rank }: InfoProps) => {
             >
               <div className="relative w-[120px] min-[400px]:w-[140px] 2xs:w-[160px] h-1 rounded bg-gray-850">
                 <div
-                  className={`absolute top-0 left-0 h-1 ${getCurrentPercentXp(userInfo)} bg-gradient rounded before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:bg-gradient before:blur-[6px]`}
+                  style={{ width: `${getCurrentPercentXp(userInfo)}` }}
+                  className={`absolute top-0 left-0 h-1 bg-gradient rounded before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:bg-gradient before:blur-[6px]`}
                 ></div>
               </div>
               {profile && (

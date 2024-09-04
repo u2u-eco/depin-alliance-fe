@@ -100,7 +100,7 @@ export default function Mining() {
     return () => {
       window.removeEventListener('mousedown', handleOutSideClick)
     }
-  }, [refButton])
+  }, [refButton, type])
 
   useEffect(() => {
     workerRef.current = new Worker(new URL('@/worker.ts', import.meta.url))
