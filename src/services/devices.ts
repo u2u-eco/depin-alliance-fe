@@ -57,3 +57,7 @@ export const listUserItemDevice = (params: {
     params
   })
 }
+
+export const changeNameDevice = (data: { index: number; name: string }) => {
+  return https.post('/devices/change-name', data)
+}
