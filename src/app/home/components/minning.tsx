@@ -90,7 +90,7 @@ export default function Mining() {
 
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
-      if (!refButton.current?.contains(event.target)) {
+      if (!refButton.current?.contains(event.target) && type !== HOME_TYPE.START) {
         setType(HOME_TYPE.MINING)
       }
     }

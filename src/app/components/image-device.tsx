@@ -11,7 +11,11 @@ export default function ImageDevice({ className, image, type }: IImageDevice) {
       height={0}
       sizes="100vw"
       className={className}
-      src={image && image?.length > 0 ? image : `/assets/images/upgrade/upgrade-${type}@2x.png`}
+      src={
+        image && image?.length > 0
+          ? image
+          : `/assets/images/upgrade/upgrade-${type?.toLocaleLowerCase()}@2x.png`
+      }
       alt=""
     />
   )
