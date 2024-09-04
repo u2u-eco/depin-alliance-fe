@@ -24,7 +24,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   const [scrollTrigger, isInView] = useInView()
 
   const { isLoading } = useQuery({
-    queryKey: ['getListDevice', page, filterOptions],
+    queryKey: [
+      'getListDevice',
+      page,
+      filterOptions.sortAscending,
+      filterOptions.sortBy,
+      filterOptions.type
+    ],
     queryFn: async () => {
       const res: any = await getDevicesByType({ page, filterOptions })
       if (res.pagination?.totalPage) {
@@ -106,10 +112,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
               <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
                 {item.name}
               </p>
-              <p className="text-green-500">
-                {' '}
-                {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
-              </p>
+              <div className="flex items-center justify-center space-x-2">
+                <IconPoint className="size-4" />
+                <p className="text-green-500">
+                  {' '}
+                  {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
+                </p>
+              </div>
             </div>
           ))}
           <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
