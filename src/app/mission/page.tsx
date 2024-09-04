@@ -8,7 +8,7 @@ import ListMission from './components/list-mission'
 import { Tab, Tabs } from '@nextui-org/react'
 import { IconEmpty } from '../components/icons'
 import CustomList from '../components/custom-list'
-import NoItem from '../components/no-item'
+import NoItem from '../components/ui/no-item'
 import { useRouter } from 'next/navigation'
 
 const MISSION_TAB = {

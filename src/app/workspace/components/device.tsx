@@ -26,7 +26,8 @@ import ChooseDevice from './choose-device'
 const DEVICE_TYPE = {
   INFO: 'info',
   EDIT: 'edit',
-  EQUIP: 'equip'
+  EQUIP: 'equip',
+  BUY: 'buy'
 }
 
 export default function Device() {
@@ -120,6 +121,10 @@ export default function Device() {
     }
   }
 
+  const handleBuyDevice = () => {
+    toast.success('Buy Device successfully!')
+  }
+
   const handleConfirm = () => {
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
@@ -133,6 +138,9 @@ export default function Device() {
         break
       case DEVICE_TYPE.EDIT:
         handleChangeName()
+        break
+      case DEVICE_TYPE.BUY:
+        handleBuyDevice()
         break
     }
   }
@@ -191,73 +199,75 @@ export default function Device() {
 
   return (
     <>
-      <div className="space-y-10 min-h-[55vh]">
-        <Accordion
-          showDivider={false}
-          className="p-0"
-          // selectedKeys={selectedKeys}
-          // onSelectionChange={handleSelectionChange}
+      <div className="flex flex-col justify-between h-full">
+        <div className="space-y-10 min-h-[55vh]">
+          <Accordion
+            showDivider={false}
+            className="p-0"
+            // selectedKeys={selectedKeys}
+            // onSelectionChange={handleSelectionChange}
 
-          itemClasses={{
-            trigger:
-              "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
-            indicator: 'data-[open=true]:-rotate-180 mr-2'
-          }}
-        >
-          {listDevice?.data.map((item: IUserDeviceItem) => (
-            <AccordionItem
-              key={item.index}
-              onPress={() => {
-                handleClickItem(item.index)
-              }}
-              startContent={
-                <div className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
-                  <Image
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: '100%' }}
-                    src="/assets/images/workspace/device-image-01@2x.png"
-                    alt=""
-                  />
-                </div>
-              }
-              title={
-                <div className="flex items-center space-x-1">
-                  <p className="font-mona text-white font-semibold text-lg leading-[22px]">
-                    {item.name}
-                  </p>
-                  <div onClick={() => handleClick(DEVICE_TYPE.EDIT, item)}>
-                    <IconEdit className="text-[#888888] size-6 cursor-pointer" />
+            itemClasses={{
+              trigger:
+                "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
+              indicator: 'data-[open=true]:-rotate-180 mr-2'
+            }}
+          >
+            {listDevice?.data.map((item: IUserDeviceItem) => (
+              <AccordionItem
+                key={item.index}
+                onPress={() => {
+                  handleClickItem(item.index)
+                }}
+                startContent={
+                  <div className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                    <Image
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: '100%' }}
+                      src="/assets/images/workspace/device-image-01@2x.png"
+                      alt=""
+                    />
                   </div>
-                  <div className=""></div>
-                </div>
-              }
-              subtitle={
-                <div className="flex items-center space-x-1 mt-3">
-                  <IconPoint className="size-4" />
-                  <p className="text-green-500 font-semibold leading-[16px]">
-                    {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : 0}
-                  </p>
-                </div>
-              }
-              indicator={<IconChevron className="size-8" gradient />}
-            >
-              <DeviceItem
-                isLoading={isLoadingDetail}
-                item={deviceItemDetail.current[item.index]}
-                handleEquip={handleEquip}
-                handleInfo={handleInfo}
-              />
-            </AccordionItem>
-          ))}
-        </Accordion>
+                }
+                title={
+                  <div className="flex items-center space-x-1">
+                    <p className="font-mona text-white font-semibold text-lg leading-[22px]">
+                      {item.name}
+                    </p>
+                    <div onClick={() => handleClick(DEVICE_TYPE.EDIT, item)}>
+                      <IconEdit className="text-[#888888] size-6 cursor-pointer" />
+                    </div>
+                    <div className=""></div>
+                  </div>
+                }
+                subtitle={
+                  <div className="flex items-center space-x-1 mt-3">
+                    <IconPoint className="size-4" />
+                    <p className="text-green-500 font-semibold leading-[16px]">
+                      {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : 0}
+                    </p>
+                  </div>
+                }
+                indicator={<IconChevron className="size-8" gradient />}
+              >
+                <DeviceItem
+                  isLoading={isLoadingDetail}
+                  item={deviceItemDetail.current[item.index]}
+                  handleEquip={handleEquip}
+                  handleInfo={handleInfo}
+                />
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+        <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
+          <div className="btn-border"></div>
+          <div className="btn-primary">buy more device</div>
+          <div className="btn-border"></div>
+        </div>
       </div>
-      <Link href="/shop" className="btn">
-        <div className="btn-border"></div>
-        <div className="btn-primary">buy more device</div>
-        <div className="btn-border"></div>
-      </Link>
 
       <CustomModal
         title={
@@ -265,6 +275,8 @@ export default function Device() {
             ? 'ITEM Info'
             : activeType === DEVICE_TYPE.EQUIP
               ? 'equip item'
+              : activeType === DEVICE_TYPE.BUY
+              ? 'Buy Device'
               : 'DEVICE NAME'
         }
         isOpen={isOpen}
@@ -278,6 +290,11 @@ export default function Device() {
             <div className=" text-body text-base tracking-[-1px] text-center">
               {activeType === DEVICE_TYPE.INFO ? (
                 <p>You are equipping this item!</p>
+              ) : activeType === DEVICE_TYPE.BUY ? (
+                <p>
+                  Are you sure you want to buy{' '}
+                  <span className="text-gradient whitespace-nowrap">“Device-04”</span>?
+                </p>
               ) : (
                 <p>
                   Select 01 <span className="text-gradient">“{equipType.current}”</span> to equip
@@ -297,6 +314,8 @@ export default function Device() {
                     image={
                       activeType === DEVICE_TYPE.EDIT
                         ? '/assets/images/workspace/device-image-01@2x.png'
+                        : activeType === DEVICE_TYPE.BUY
+                        ? '/assets/images/shop/device-01@2x.png'
                         : detailDeviceItem.current?.image
                     }
                     type={detailDeviceItem.current?.type?.toLowerCase()}
@@ -304,55 +323,57 @@ export default function Device() {
                   />
                 </div>
                 <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-4' : 'space-y-2'}>
-                  <p className=" text-title font-semibold text-xl font-mona leading-[22px]">
-                    {detailDeviceItem.current?.name}
+                  <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona leading-[20px] xs:leading-[22px]">
+                    {activeType === DEVICE_TYPE.BUY ? 'DEVICE-04' : detailDeviceItem.current?.name}
                   </p>
-                  <div className="flex items-center space-x-6">
-                    {activeType === DEVICE_TYPE.INFO && (
-                      <>
-                        <div className="space-y-1">
-                          <p className="text-title text-base font-semibold leading-[20px]">
-                            16{' '}
-                            <span className="text-xs font-normal text-white-50 -ml-0.5">
-                              Available
-                            </span>
-                          </p>
-                          <p className="text-primary text-base font-semibold leading-[20px]">
-                            {detailDeviceItem.current?.equip}{' '}
-                            <span className="text-xs font-normal text-white-50 -ml-0.5">
-                              Equipped
-                            </span>
-                          </p>
-                        </div>
-                        <div className="w-[1px] h-9 bg-white/25"></div>
-                      </>
-                    )}
-                    <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-2' : 'space-y-3'}>
-                      <div
-                        className={
-                          activeType === DEVICE_TYPE.INFO ? 'text-xs text-white-50' : 'text-title'
-                        }
-                      >
-                        {activeType === DEVICE_TYPE.INFO ? 'TOTAL ' : ''}PROFIT:
-                      </div>
-                      <div
-                        className={`flex items-center ${activeType === DEVICE_TYPE.INFO ? 'space-x-1' : 'space-x-2'}`}
-                      >
-                        <IconPoint
-                          className={activeType === DEVICE_TYPE.INFO ? 'size-4' : 'size-7'}
-                        />
-                        <span
-                          className={`text-primary font-semibold leading-[16px] ${activeType === DEVICE_TYPE.EDIT ? 'text-lg' : ''}`}
+                  {activeType !== DEVICE_TYPE.BUY && (
+                    <div className="flex items-center space-x-6">
+                      {activeType === DEVICE_TYPE.INFO && (
+                        <>
+                          <div className="space-y-1">
+                            <p className="text-title text-base font-semibold leading-[20px]">
+                              16{' '}
+                              <span className="text-xs font-normal text-white-50 -ml-0.5">
+                                Available
+                              </span>
+                            </p>
+                            <p className="text-primary text-base font-semibold leading-[20px]">
+                              {detailDeviceItem.current?.equip}{' '}
+                              <span className="text-xs font-normal text-white-50 -ml-0.5">
+                                Equipped
+                              </span>
+                            </p>
+                          </div>
+                          <div className="w-[1px] h-9 bg-white/25"></div>
+                        </>
+                      )}
+                      <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-2' : 'space-y-3'}>
+                        <div
+                          className={
+                            activeType === DEVICE_TYPE.INFO ? 'text-xs text-white-50' : 'text-title'
+                          }
                         >
-                          {activeType === DEVICE_TYPE.EDIT
-                            ? `${formatNumber(currentDevice.current.totalMiningPower, 0, 0)}/h`
-                            : detailDeviceItem.current?.miningPower
-                              ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
-                              : ''}
-                        </span>
+                          {activeType === DEVICE_TYPE.INFO ? 'TOTAL ' : ''}PROFIT:
+                        </div>
+                        <div
+                          className={`flex items-center ${activeType === DEVICE_TYPE.INFO ? 'space-x-1' : 'space-x-2'}`}
+                        >
+                          <IconPoint
+                            className={activeType === DEVICE_TYPE.INFO ? 'size-4' : 'size-7'}
+                          />
+                          <span
+                            className={`text-primary font-semibold leading-[16px] ${activeType === DEVICE_TYPE.EDIT ? 'text-lg' : ''}`}
+                          >
+                            {activeType === DEVICE_TYPE.EDIT
+                              ? `${formatNumber(currentDevice.current.totalMiningPower, 0, 0)}/h`
+                              : detailDeviceItem.current?.miningPower
+                                ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
+                                : ''}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
               {activeType === DEVICE_TYPE.EDIT && (
@@ -364,6 +385,35 @@ export default function Device() {
                   />
                 </div>
               )}
+              {activeType === DEVICE_TYPE.BUY && (
+                <div className="btn default mb-6 xs:mb-7 2xs:mb-8 cursor-default">
+                  <div className="btn-border"></div>
+                  <div className="btn-default !p-3 2xs:!p-4">
+                    <div className="text-[13px] 2xs:text-sm space-y-2 2xs:space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-body">CPU</div>
+                        <div className="text-title font-semibold font-geist">1 SLOT</div>
+                      </div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-body">GPU</div>
+                        <div className="text-title font-semibold font-geist">2 SLOT</div>
+                      </div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-body">RAM</div>
+                        <div className="text-title font-semibold font-geist">3 SLOT</div>
+                      </div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-body">STORAGE</div>
+                        <div className="text-title font-semibold font-geist">1 SLOT</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="btn-border"></div>
+                </div>
+              )}
             </>
           ) : (
             <ChooseDevice
@@ -373,17 +423,28 @@ export default function Device() {
             />
           )}
           <div
-            className={`btn z-[2] ${disableBtn ? 'default' : ''} ${activeType === DEVICE_TYPE.INFO ? 'error' : ''}`}
+            className={`btn z-[2] ${disableBtn ? 'inactive' : ''} ${activeType === DEVICE_TYPE.INFO ? 'error' : ''}`}
             onClick={handleConfirm}
           >
             <div className="btn-border"></div>
             <div
-              className={`${disableBtn ? 'btn-default' : `btn-${activeType === DEVICE_TYPE.INFO ? 'error' : 'primary'}`}`}
+              className={`${disableBtn ? 'btn-inactive' : `btn-${activeType === DEVICE_TYPE.INFO ? 'error' : 'primary'}`}`}
             >
               {activeType === DEVICE_TYPE.INFO
                 ? 'UNEQUIPPED'
                 : activeType === DEVICE_TYPE.EQUIP
                   ? 'CONFIRM'
+                  : activeType === DEVICE_TYPE.BUY
+                  ? (
+                    <div className="flex items-center justify-center space-x-4 text-green-900">
+                      <p>BUY NOW</p>
+                      <div className="w-[30px] h-[1px] bg-green-800"></div>
+                      <div className="flex items-center space-x-1">
+                        <IconPoint className="size-5" color />
+                        <span className="font-geist">5,000</span>
+                      </div>
+                    </div>
+                  )
                   : 'SAVE'}
             </div>
             <div className="btn-border"></div>

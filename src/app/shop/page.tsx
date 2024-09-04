@@ -32,9 +32,9 @@ const listDevice = [
 
 export default function ShopPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [activeType, setActiveType] = useState(SHOP_TYPE.DEVICE)
+  const [activeType, setActiveType] = useState(SHOP_TYPE.ITEM)
   const [activeFilter, setActiveFilter] = useState('')
-  const [activeModal, setActiveModal] = useState(MODAL_TYPE.DEVICE)
+  const [activeModal, setActiveModal] = useState(MODAL_TYPE.ITEM)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -71,7 +71,7 @@ export default function ShopPage() {
         }}
       >
         <div className="space-y-5 xs:space-y-6">
-          <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 mt-8">
+          {/* <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 mt-8">
             {Object.values(SHOP_TYPE).map((item, index) => (
               <div
                 key={index}
@@ -90,7 +90,7 @@ export default function ShopPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
           {activeType == SHOP_TYPE.ITEM && (
             <div className="flex items-center justify-between">
               <p className="text-body text-[15px] xs:text-base tracking-[-1px]">ALL ITEMS</p>

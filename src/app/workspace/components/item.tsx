@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
 import FilterSort from '@/app/components/filter-sort'
-import NoItem from '@/app/components/no-item'
+import NoItem from '@/app/components/ui/no-item'
 import ImageDevice from '@/app/components/image-device'
 import { useInView } from 'react-intersection-observer'
 

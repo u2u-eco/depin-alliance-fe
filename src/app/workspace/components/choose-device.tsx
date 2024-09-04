@@ -1,5 +1,5 @@
 import ImageDevice from '@/app/components/image-device'
-import NoItem from '@/app/components/no-item'
+import NoItem from '@/app/components/ui/no-item'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { getUserDevice, listUserItemDevice } from '@/services/devices'
 import { useQuery } from '@tanstack/react-query'
