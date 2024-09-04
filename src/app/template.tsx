@@ -33,7 +33,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
     if (res.status) {
       https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
       setCurrentStatus({ status: res.data.currentStatus })
-      console.log('🚀 ~ login ~ res:', res)
       setToken({ token: res.data?.accessToken })
       getUserInfo()
       _getUserLeague()

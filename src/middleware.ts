@@ -9,9 +9,8 @@ export const config = {
 
 export function middleware(request: NextRequest) {
   // Call our authentication function to check the request
-
-  if (!isAuthenticated(request)) {
-    // Respond with JSON indicating an error message
-    return NextResponse.redirect(new URL('/onboarding', request.url))
-  }
+  // if (!isAuthenticated(request)) {
+  //   // Respond with JSON indicating an error message
+  //   return NextResponse.redirect(new URL('/onboarding', request.url))
+  // }
 }
