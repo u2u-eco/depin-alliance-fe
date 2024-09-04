@@ -15,7 +15,6 @@ import FilterSort from '@/app/components/filter-sort'
 import NoItem from '@/app/components/no-item'
 import ImageDevice from '@/app/components/image-device'
 import { useInView } from 'react-intersection-observer'
-import { ACTION } from 'next/dist/client/components/app-router-headers'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -60,13 +59,11 @@ export default function Item() {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
-      if (res.data?.length > 0) {
-        let _listItem = res.data
-        if (page > 1) {
-          _listItem = [...listDeviceItem, ...res.data]
-        }
-        setListDeviceItem(_listItem)
+      let _listItem = res.data
+      if (page > 1) {
+        _listItem = [...listDeviceItem, ...res.data]
       }
+      setListDeviceItem(_listItem)
       return res
     },
     ...QUERY_CONFIG
@@ -159,7 +156,12 @@ export default function Item() {
           </div>
         </div>
         {!isLoading && listDeviceItem?.length === 0 ? (
-          <NoItem />
+          <NoItem
+            title="No item"
+            classNames={{
+              icon: 'text-body'
+            }}
+          />
         ) : (
           <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar">
             {listDeviceItem?.map((item: any) => (

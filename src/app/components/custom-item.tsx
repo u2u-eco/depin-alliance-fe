@@ -2,21 +2,24 @@
 import { LIST_TYPE } from '@/constants'
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
+import { IconCheck, IconCheckCircle, IconLoader, IconOpenLink, IconPlus, IconUserAdd } from './icons'
 
 interface ItemProps {
   type: string
   image?: string
   icon?: string
+  checked?: boolean
+  loader?: boolean
   done?: boolean
   rank?: number
   title: string
   children: ReactNode
 }
 
-const CustomItem = ({ type, image, icon, done, title, children }: ItemProps) => {
+const CustomItem = ({ type, image, icon, done, loader, checked, title, children }: ItemProps) => {
   return (
     <div
-      className={`relative before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between
+      className={`relative cursor-pointer before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between
         ${type === LIST_TYPE.MISSION ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900') : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'}`}
     >
       <div className="flex items-center space-x-3 2xs:space-x-4">
@@ -67,12 +70,16 @@ const CustomItem = ({ type, image, icon, done, title, children }: ItemProps) => 
             <img src="/assets/images/icons/icon-double-arrow-up-gradient.svg" alt="" />
           </div>
         ) : (
-          <div className="cursor-pointer">
-            <img
-              className="size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8"
-              src={`/assets/images/icons/icon-${(type === 'mission' || type === 'partners') ? (done ? 'check-circle-green' : 'open-link-yellow') : type === 'invite' ? 'user-add-gradient' : type === 'league' ? 'open-link-gradient' : 'plus-gradient'}.svg`}
-              alt=""
-            />
+          <div className="cursor-pointer size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8">
+            {(type === 'mission' || type === 'partners') ? (
+              done ? <IconCheckCircle className="text-green-800" /> : loader ? <IconLoader className="text-yellow-200" /> : checked ? <IconCheck className="text-green-500" /> : <IconOpenLink className="text-yellow-500" />
+            ) : type === 'invite' ? (
+              <IconUserAdd gradient />
+            ) : type === 'league' ? (
+              <IconOpenLink gradient />
+            ) : (
+              <IconPlus gradient />
+            )}
           </div>
         )}
       </div>

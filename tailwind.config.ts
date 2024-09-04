@@ -75,7 +75,7 @@ const config = {
         'gradient': 'linear-gradient(to right, #00FF90, #F4FD36)',
         'gradient-error': 'linear-gradient(to right, #E35D5B, #E53935)',
         'gradient-green': 'linear-gradient(315deg, #000 21%, #00331D 50%, #000 80%)',
-        'gradient-yellow': 'linear-gradient(315deg, #000 22%, #31330B 44%, #000 73%)',
+        'gradient-yellow': 'linear-gradient(315deg, #000 22%, #31330B 50%, #000 73%)',
         'navbar': 'linear-gradient(to top, rgba(0, 51, 29, 0), rgba(0, 51, 29, 1))',
         'item-accordion': 'linear-gradient(to right, #023C22, #022C19)',
         'item-default': 'linear-gradient(to right, rgba(0, 255, 144, 0.5), rgba(0, 255, 144, 0.1))',

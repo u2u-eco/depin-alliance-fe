@@ -24,10 +24,10 @@ const MODAL_TYPE = {
 }
 
 const listDevice = [
-  { id: 1, title: 'DEVCIE-01', miningPower: '100', image: 'shop/device-01' },
-  { id: 2, title: 'DEVCIE-02', miningPower: '100', image: 'shop/device-02' },
-  { id: 3, title: 'DEVCIE-03', miningPower: '100', image: 'shop/device-03' },
-  { id: 4, title: 'DEVCIE-04', miningPower: '100', image: 'shop/device-04' }
+  { id: 1, title: 'DEVCIE-01', image: 'shop/device-01' },
+  { id: 2, title: 'DEVCIE-02', image: 'shop/device-02' },
+  { id: 3, title: 'DEVCIE-03', image: 'shop/device-03' },
+  { id: 4, title: 'DEVCIE-04', image: 'shop/device-04' }
 ]
 
 export default function ShopPage() {
@@ -121,7 +121,7 @@ export default function ShopPage() {
               transition={{ duration: 0.35 }}
             >
               <CustomList
-                type="device"
+                type="shop"
                 data={listDevice}
                 onClickItem={() => handleClick(MODAL_TYPE.DEVICE)}
               />

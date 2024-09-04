@@ -8,8 +8,8 @@ import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 
 const listLevel = [
   { id: 1, number: '10', currentXP: '1,400', totalXP: '10,000', capacity: '10,000', rate: '10', reward: '15' },
-  { id: 2, number: '11', currentXP: '0', totalXP: '20,000', capacity: '10,000', rate: '10', reward: '15', lock: true },
-  { id: 3, number: '12', currentXP: '0', totalXP: '40,000', capacity: '10,000', rate: '10', reward: '15', lock: true },
+  // { id: 2, number: '11', currentXP: '0', totalXP: '20,000', capacity: '10,000', rate: '10', reward: '15', lock: true },
+  // { id: 3, number: '12', currentXP: '0', totalXP: '40,000', capacity: '10,000', rate: '10', reward: '15', lock: true },
 ]
 
 export default function LevelPage() {
@@ -79,19 +79,19 @@ export default function LevelPage() {
                         <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS RATE</div>
-                          <p className="text-title">10%</p>
+                          <p className="text-title">5%</p>
                         </div>
-                        <div className="h-[1px] w-full bg-white/10"></div>
+                        {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
-                          <div className="text-body uppercase">CAPACITY</div>
+                          <div className="text-body uppercase">BONUS REWARD</div>
                           <p className="text-title">15%</p>
-                        </div>
+                        </div> */}
                       </div>
                     )}
                   </div>
                   <div className="btn-border"></div>
                 </div>
-                {!item.lock && (
+                {/* {!item.lock && (
                   <div className={`btn ${levelUp ? '' : 'inactive'}`} onClick={onOpen}>
                     <div className="btn-border"></div>
                     <div className={levelUp ? `btn-primary` : `btn-inactive`}>Level Up</div>
@@ -102,7 +102,7 @@ export default function LevelPage() {
                   <div className="!mt-8">
                     <img className="mx-auto max-w-[85px]" src={`/assets/images/level/level-arrow${item.lock ? '' : '-color'}.png`} srcSet={`/assets/images/level/level-arrow${item.lock ? '' : '-color'}.png 1x, /assets/images/level/level-arrow${item.lock ? '' : '-color'}@2x.png 2x`} alt="" />
                   </div>
-                )}
+                )} */}
               </div>
             ))}
           </div>
@@ -114,7 +114,7 @@ export default function LevelPage() {
         onOpenChange={onOpenChange}
         hideCloseButton
         classNames={{
-          base: "max-w-full w-full h-full m-0 rounded-none p-0 bg-[linear-gradient(to_bottom,#000_40%,#00331d_100%)]",
+          base: "max-w-full w-full h-full m-0 rounded-none p-0 bg-black/80 backdrop-blur-[4px]",
           backdrop: 'bg-black/30 backdrop-blur-[8px]'
         }}
       >

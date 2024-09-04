@@ -77,8 +77,7 @@ const Info = ({ profile, rank }: InfoProps) => {
   }, [token])
   return (
     <>
-      <motion.div
-        className="relative w-fit mx-auto"
+      <motion.div className="relative w-full max-w-[400px] mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

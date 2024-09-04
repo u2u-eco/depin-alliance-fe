@@ -36,13 +36,11 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
-      if (res.data?.length > 0) {
-        let _listItem = res.data
-        if (page > 1) {
-          _listItem = [...listItem, ...res.data]
-        }
-        setListItem(_listItem)
+      let _listItem = res.data
+      if (page > 1) {
+        _listItem = [...listItem, ...res.data]
       }
+      setListItem(_listItem)
       return res
     }
   })
@@ -95,7 +93,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -25, opacity: 0 }}
         transition={{ duration: 0.35 }}
-        className="max-h-[60vh] overflow-scroll"
+        className="max-h-[60vh] overflow-y-auto hide-scrollbar"
       >
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
           {listItem?.map((item: any) => (

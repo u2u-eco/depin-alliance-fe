@@ -1,5 +1,6 @@
 export const MESSAGES: { [key: string]: string } = {
   MSG_USER_POINT_NOT_ENOUGH: 'User point not enough!',
+  MSG_USER_POINT_SKILL_NOT_ENOUGH: 'User point skill not enough!',
   MSG_DATA_INVALID: 'Data invalid',
   MSG_NOT_FOUND: 'Not found',
   MSG_HAS_ERROR: 'Has error',
