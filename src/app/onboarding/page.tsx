@@ -6,12 +6,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loading from '../components/loading'
-import { claim, detectDeviceInfo } from '../../services/user'
+import { claim, claimRewardNewUser, detectDeviceInfo } from '../../services/user'
 import { CURRENT_STATUS } from '../../interfaces/i.user'
-import NewbieReward from './components/NewbieReward'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '../components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
+import { formatNumber } from '@/helper/common'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',
@@ -24,15 +24,17 @@ const ONBOARDING_TYPE = {
 const Onboarding = () => {
   const router = useRouter()
   const isDetectDevice = useRef<boolean>(false)
+  const [pointReward, setPointReward] = useState<number>(0)
   const [deviceName, setDeviceName] = useState<string>('')
-  const { currentStatus, token, getUserInfo, setDevice } = useCommonStore()
+  const { currentStatus, token, getUserInfo, setDevice, userInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(ONBOARDING_TYPE.DEVICE)
   const _getDeviceInfo = async () => {
     try {
       const res = await detectDeviceInfo()
       if (res.status) {
-        setDevice({ info: res.data })
+        // setDevice({ info: res.data })
+        setPointReward(res.data)
         setType(ONBOARDING_TYPE.DEVICE)
         setTimeout(() => onOpen(), 3000)
       }
@@ -42,13 +44,13 @@ const Onboarding = () => {
   }
 
   const handleClaim = async () => {
-    const res = await claim()
+    const res = await claimRewardNewUser()
     if (res.status) {
       setType(ONBOARDING_TYPE.SCHOLARSHIP)
     }
   }
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     handleClaim()
     onClose()
   }
@@ -117,12 +119,16 @@ const Onboarding = () => {
         break
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        if (userInfo?.pointUnClaimed) {
+          setPointReward(userInfo.pointUnClaimed)
+          onOpen()
+        }
         break
       case CURRENT_STATUS.MINING:
       case CURRENT_STATUS.CLAIMED:
         redirect('/home')
     }
-  }, [currentStatus, token])
+  }, [currentStatus, token, userInfo])
 
   useEffect(() => {
     detectDevice()
@@ -251,7 +257,7 @@ const Onboarding = () => {
             onOpenChange={onOpenChange}
             onCloseModal={handleCloseModal}
             title="newbie rewarRD"
-            point="5,000"
+            point={formatNumber(pointReward, 0, 0)}
             text={
               <>
                 <p>You’ve received your first reward!</p>

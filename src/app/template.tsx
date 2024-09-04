@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useMemo, useRef } from 'react'
-import { INIT_DATA } from '@/constants'
+import { CURRENT_STATUS, INIT_DATA } from '@/constants'
 import { userAuth } from '@/services/user'
+import Cookies from 'js-cookie'
 import https from '@/constants/https'
 import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
@@ -35,7 +36,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       setToken({ token: res.data?.accessToken })
       getUserInfo()
       _getUserLeague()
-      // localStorage.setItem(TOKEN, res.data?.accessToken)
+      Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
     }
     isProgressLogin.current = false
   }

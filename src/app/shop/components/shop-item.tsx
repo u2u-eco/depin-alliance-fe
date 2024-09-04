@@ -206,7 +206,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   <IconPoint className="size-5" color />
                   <span className="font-geist">
                     {currentItem.current?.price
-                      ? `${formatNumber(currentItem.current.price, 0, 0)}`
+                      ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
                       : 0}
                   </span>
                 </div>
