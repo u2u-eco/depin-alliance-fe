@@ -93,7 +93,7 @@ export default function ListMission() {
                 // className="size-10"
                 width={40}
                 height={40}
-                src="/assets/images/icons/icon-calendar-gradient.svg"
+                src={`/assets/images/icons/icon-${currentItem.current?.type.toLowerCase()}-gradient.svg`}
                 alt=""
               />
             </div>

@@ -149,107 +149,105 @@ const Onboarding = () => {
                 alt=""
               />
             </div>
-            <div className="overflow-y-auto flex flex-col hide-scrollbar h-full">
-              <div className="container-custom !py-6">
-                <motion.div
-                  layout
-                  className="h-full"
-                  initial={{ y: 25, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -25, opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <div className="pb-10 xs:pb-20 max-w-[480px] mx-auto">
-                    <div>
-                      <img className="h-12 2xs:h-14 mx-auto" src="/assets/images/logo.svg" alt="" />
+            <motion.div
+              layout
+              className="h-full max-w-[480px] mx-auto py-6 px-4 overflow-y-auto hide-scrollbar flex flex-col justify-between"
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <div className="pb-4 xs:pb-6 2xs:pb-8">
+                <div>
+                  <img className="h-12 2xs:h-14 mx-auto" src="/assets/images/logo.svg" alt="" />
+                </div>
+                {/* Image */}
+                <div className="relative">
+                  {(type === ONBOARDING_TYPE.DEVICE ||
+                    type === ONBOARDING_TYPE.LOADING ||
+                    type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                    <>
+                      <div className="absolute top-[5%] left-[50%] translate-x-[-50%] rounded-[50%] size-[140px] blur-[75px] bg-green-500 z-[-1]"></div>
+                    </>
+                  )}
+                  <img
+                    className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[275px] xs:max-h-[300px] 2xs:max-h-[325px] mt-5 xs:mt-6 2xs:mt-7 mb-6 xs:mb-7 2xs:mb-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-8 xs:mt-10 2xs:mt-12 mb-4 max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px]' : 'max-h-[220px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
+                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-mockup'}.png`}
+                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-mockup'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding/onboarding-info'}@2x.png 2x`}
+                    alt="Computer"
+                  />
+                </div>
+                {/* Content */}
+                {type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
+                  <div className="text-center space-y-3">
+                    <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
+                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
+                      <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
+                        {type === ONBOARDING_TYPE.START
+                          ? 'contribute and earn rewards'
+                          : type === ONBOARDING_TYPE.LOADING
+                            ? 'getting info...'
+                            : type === ONBOARDING_TYPE.DEVICE
+                              ? 'Device Info'
+                              : 'newbie reward'}
+                      </div>
+                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                     </div>
-                    {/* Image */}
-                    <div className="relative">
-                      {(type === ONBOARDING_TYPE.DEVICE ||
-                        type === ONBOARDING_TYPE.LOADING ||
-                        type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                    <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
+                      {type === ONBOARDING_TYPE.START ? (
+                        'Become a node contributor to build a decentralized world.'
+                      ) : type === ONBOARDING_TYPE.LOADING ? (
                         <>
-                          <div className="absolute top-[5%] left-[50%] translate-x-[-50%] rounded-[50%] size-[140px] blur-[75px] bg-green-500 z-[-1]"></div>
+                          <p>We’re getting your device information.</p>
+                          <p>Please wait...</p>
+                        </>
+                      ) : type === ONBOARDING_TYPE.DEVICE ? (
+                        'This is your device information. Use it to contribute and upgrade for more rewards'
+                      ) : (
+                        <>
+                          <p>You’ve received your first reward!</p>
+                          <p>Let’s go!!!</p>
                         </>
                       )}
-                      <img
-                        className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[300px] xs:max-h-[325px] my-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-12 mb-4 max-h-[250px] xs:max-h-[300px]' : 'max-h-[240px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
-                        src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-mockup'}.png`}
-                        srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-mockup'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding/onboarding-info'}@2x.png 2x`}
-                        alt="Computer"
-                      />
                     </div>
-                    {/* Content */}
-                    {type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
-                      <div className="text-center mb-6 space-y-3">
-                        <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
-                          <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                          <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
-                            {type === ONBOARDING_TYPE.START
-                              ? 'contribute and earn rewards'
-                              : type === ONBOARDING_TYPE.LOADING
-                                ? 'getting info...'
-                                : type === ONBOARDING_TYPE.DEVICE
-                                  ? 'Device Info'
-                                  : 'newbie reward'}
-                          </div>
-                          <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                        </div>
-                        <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
-                          {type === ONBOARDING_TYPE.START ? (
-                            'Become a node contributor to build a decentralized world.'
-                          ) : type === ONBOARDING_TYPE.LOADING ? (
-                            <>
-                              <p>We’re getting your device information.</p>
-                              <p>Please wait...</p>
-                            </>
-                          ) : type === ONBOARDING_TYPE.DEVICE ? (
-                            'This is your device information. Use it to contribute and upgrade for more rewards'
-                          ) : (
-                            <>
-                              <p>You’ve received your first reward!</p>
-                              <p>Let’s go!!!</p>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="mt-4">
-                        <div className="btn default cursor-default">
-                          <div className="btn-border"></div>
-                          <div className="btn-default font-normal font-geist normal-case">
-                            {deviceName}
-                          </div>
-                          <div className="btn-border"></div>
-                        </div>
-                      </div>
-                    )}
-                    {/* Configuration */}
-                    {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
                   </div>
-                  {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
-                    <motion.div
-                      className="xs:absolute bottom-0 xs:bottom-8 2xs:bottom-10 left-0 right-0 3xs:px-4 xs:px-3 max-w-[480px] mx-auto space-y-4 xs:space-y-5 2xs:space-y-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.35 }}
-                    >
-                      <div className="text-center text-body leading-[18px] tracking-[-1px]">
-                        {`Everything is ready, let's get started!`}
+                ) : (
+                  <div className="mt-4">
+                    <div className="btn default cursor-default">
+                      <div className="btn-border"></div>
+                      <div className="btn-default font-normal font-geist normal-case">
+                        {deviceName}
                       </div>
-                      <button className="btn" onClick={() => handleOnboarding(type)}>
-                        <div className="btn-border"></div>
-                        <div className="btn-primary">
-                          {type === ONBOARDING_TYPE.START ? 'Next' : 'Get Started'}
-                        </div>
-                        <div className="btn-border"></div>
-                      </button>
-                    </motion.div>
-                  )}
-                </motion.div>
+                      <div className="btn-border"></div>
+                    </div>
+                  </div>
+                )}
+                {/* Configuration */}
+                {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
               </div>
-            </div>
+              {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                <motion.div
+                  className="p-4 xs:p-6 2xs:p-8 w-full space-y-4 xs:space-y-5 2xs:space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  {type === ONBOARDING_TYPE.SCHOLARSHIP && (
+                    <div className="text-center text-body leading-[18px] tracking-[-1px]">
+                      {`Everything is ready, let's get started!`}
+                    </div>
+                  )}
+                  <button className="btn" onClick={() => handleOnboarding(type)}>
+                    <div className="btn-border"></div>
+                    <div className="btn-primary">
+                      {type === ONBOARDING_TYPE.START ? 'Next' : 'Get Started'}
+                    </div>
+                    <div className="btn-border"></div>
+                  </button>
+                </motion.div>
+              )}
+            </motion.div>
           </div>
           <ModalReward
             isOpen={isOpen}

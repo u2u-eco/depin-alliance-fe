@@ -6,7 +6,7 @@ interface ModalProps {
   children: ReactNode
   background?: ReactNode
   isOpen: any
-  onOpen: any
+  onOpen?: any
   onOpenChange: any
   onClose?: any
   full?: boolean
