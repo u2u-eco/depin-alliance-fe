@@ -9,6 +9,7 @@ import { TELE_URI } from '@/constants'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { getUserFriend } from '@/services/user'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 // const listFriend = {
 //   title: 'FRIEND LIST',
@@ -29,7 +30,6 @@ export default function InvitePage() {
 
   const handleCopy = () => {
     if (userInfo) {
-      navigator.clipboard.writeText(`${TELE_URI}?start=${userInfo.code}`)
       toast.success('Copied!')
     }
   }
@@ -79,23 +79,27 @@ export default function InvitePage() {
                 <div className="btn" onClick={handleShare}>
                   <div className="btn-border"></div>
                   {/* href={`https://t.me/share/url?url=${uriCopy}?start=${user?.code}&text=Hello! Welcome to Depin Alliance`} */}
-                  <div className="btn-primary max-[399px]:!py-3 max-[354px]:text-sm max-[354px]:!py-2">INVITE FRIEND</div>
-                  <div className="btn-border"></div>
-                </div>
-                <div className="btn w-fit" onClick={handleCopy}>
-                  <div className="btn-border"></div>
-                  <div className="btn-default !p-2">
-                    <Image
-                      className="size-8 max-[399px]:size-7 max-[354px]:size-5 min-w-8 max-[399px]:min-w-7 max-[354px]:min-w-5"
-                      src="/assets/images/icons/icon-copy-gradient.svg"
-                      alt="Icon Copy"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                    />
+                  <div className="btn-primary max-[399px]:!py-3 max-[354px]:text-sm max-[354px]:!py-2">
+                    INVITE FRIEND
                   </div>
                   <div className="btn-border"></div>
                 </div>
+                <CopyToClipboard text={`${TELE_URI}?start=${userInfo?.code}`} onCopy={handleCopy}>
+                  <div className="btn w-fit">
+                    <div className="btn-border"></div>
+                    <div className="btn-default !p-2">
+                      <Image
+                        className="size-8 max-[399px]:size-7 max-[354px]:size-5 min-w-8 max-[399px]:min-w-7 max-[354px]:min-w-5"
+                        src="/assets/images/icons/icon-copy-gradient.svg"
+                        alt="Icon Copy"
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                      />
+                    </div>
+                    <div className="btn-border"></div>
+                  </div>
+                </CopyToClipboard>
               </div>
             </div>
           </div>

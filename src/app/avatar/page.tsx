@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { useEffect, useState } from 'react'
 import CustomPage from '../components/custom-page'
@@ -57,8 +57,11 @@ export default function Avatar() {
       >
         <div className="space-y-10">
           <div className="relative flex items-center justify-center space-x-4">
-            <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90" onClick={handleBack}>
-              <IconChevron className="text-green-500"/>
+            <div
+              className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
+              onClick={handleBack}
+            >
+              <IconChevron className="text-green-500" />
             </div>
             <div className="size-1.5 bg-green-800"></div>
             <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Avatar</div>
@@ -91,11 +94,18 @@ export default function Avatar() {
             <div className="text-center min-w-[170px]">
               <div className="relative min-h-[320px] max-w-[120px] mx-auto">
                 <div className="absolute bottom-[-5px] left-[50%] translate-x-[-50%] w-[160px] h-5 [clip-path:_ellipse(50%_50%_at_50%_50%)] bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] z-[-1]"></div>
-                <img className="h-full object-cover" src="/assets/images/figure.png" srcSet="/assets/images/figure.png 1x, /assets/images/figure@2x.png 2x" alt="" />
+                <img
+                  className="h-full object-cover"
+                  src="/assets/images/figure.png"
+                  srcSet="/assets/images/figure.png 1x, /assets/images/figure@2x.png 2x"
+                  alt=""
+                />
               </div>
               <div className="mt-3 space-y-2 mb-6">
                 <div className="text-title font-mona text-lg font-semibold">Cyber Girl</div>
-                <div className="text-body text-xs tracking-[-1px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+                <div className="text-body text-xs tracking-[-1px]">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                </div>
               </div>
               <div className="flex items-center justify-between space-x-2">
                 <div className="relative size-10 bg-white/10 rotate-45 flex items-center justify-center cursor-pointer">

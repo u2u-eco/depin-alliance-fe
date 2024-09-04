@@ -53,8 +53,8 @@ const Info = ({ profile, rank }: InfoProps) => {
     route.push('/avatar')
   }
 
-  const handleUpgrade = () => {
-    route.push('/upgrade?tab=skill')
+  const handleProfile = () => {
+    route.push('/profile')
   }
 
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
@@ -77,7 +77,8 @@ const Info = ({ profile, rank }: InfoProps) => {
   }, [token])
   return (
     <>
-      <motion.div className="relative w-full max-w-[400px] mx-auto"
+      <motion.div
+        className="relative w-full max-w-[400px] mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -163,7 +164,10 @@ const Info = ({ profile, rank }: InfoProps) => {
                     />
                   </Link>
                   <div className="w-[1px] h-5 bg-white/10"></div>
-                  <div className="flex items-center space-x-0.5 min-[400px]:space-x-1">
+                  <div
+                    className="flex items-center space-x-0.5 min-[400px]:space-x-1"
+                    onClick={handleProfile}
+                  >
                     <Image
                       className="size-4 min-[400px]:size-[18px] 2xs:size-5"
                       src="/assets/images/icons/icon-thunder.svg"
