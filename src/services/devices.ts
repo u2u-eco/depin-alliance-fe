@@ -1,10 +1,11 @@
 import { IDeviceItemBuyParam, IFilterDevice } from '@/interfaces/i.devices'
 import https from '../constants/https'
 
-export const getUserDevice = (index?: number) => {
+export const getUserDevice = ({ index, type }: { index?: number; type?: string }) => {
   return https.get(`/devices/user-device-item`, {
     params: {
-      index
+      index,
+      type
     }
   })
 }
@@ -47,12 +48,12 @@ export const buyDeviceItem = (data: IDeviceItemBuyParam) => {
   return https.post(`/devices/buy-item`, data)
 }
 
-export const listUserItemDevice = (sortBy?: string, sortAscending?: boolean, type?: string) => {
+export const listUserItemDevice = (params: {
+  sortBy?: string
+  sortAscending?: boolean
+  type?: string
+}) => {
   return https.get(`/devices/user-item`, {
-    params: {
-      sortBy,
-      sortAscending,
-      type
-    }
+    params
   })
 }

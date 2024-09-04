@@ -1,6 +1,6 @@
 import { IconPlus, IconReload } from '@/app/components/icons'
 import { UPGRADE_TAB } from '@/constants'
-import { IDeviceDetailInfo, IDeviceTypeItem } from '@/interfaces/i.devices'
+import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { useEffect, useRef, useState } from 'react'
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -11,7 +11,7 @@ interface IDeviceItem {
   isLoading: boolean
   item: IDeviceTypeItem[]
   handleEquip: (type: string) => void
-  handleInfo: (item: IDeviceTypeItem, info: IDeviceDetailInfo) => void
+  handleInfo: (item: IDeviceTypeItem) => void
 }
 const MAX_SLOT_BY_TYPE = {
   [UPGRADE_TAB.RAM]: 3,
@@ -37,20 +37,8 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
         listInfo[UPGRADE_TAB.CPU] = device
         return
       }
-      if (listInfo[device.type].length === 0) {
-        // listInfo[device.type] = []
-        listInfoByFilter.current[device.type] = {}
-      }
-      if (!listInfoByFilter.current[device.type][device.code]) {
-        listInfoByFilter.current[device.type][device.code] = {
-          equip: 1,
-          totalProfit: device.miningPower
-        }
-        listInfo[device.type]?.push(device)
-      } else {
-        listInfoByFilter.current[device.type][device.code].equip += 1
-        listInfoByFilter.current[device.type][device.code].totalProfit += device.miningPower
-      }
+
+      listInfo[device.type]?.push(device)
     })
     if (!listInfo[UPGRADE_TAB.CPU]) {
       listInfo[UPGRADE_TAB.CPU] = []
@@ -90,12 +78,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
             </p>
             <div
               className="bg-black/20 flex items-center justify-center px-2 xs:px-3 2xs:px-4 py-2 cursor-pointer text-xs xs:text-[13px] 2xs:text-sm whitespace-nowrap"
-              onClick={() =>
-                handleInfo(listInfo[UPGRADE_TAB.CPU], {
-                  equip: 1,
-                  totalProfit: listInfo[UPGRADE_TAB.CPU]?.miningPower
-                })
-              }
+              onClick={() => handleInfo(listInfo[UPGRADE_TAB.CPU])}
             >
               {isLoading ? (
                 <IconReload className="text-[#1AF7A8] size-6" />
@@ -124,9 +107,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                               <div
                                 key={index}
                                 className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] 2xs:text-sm whitespace-nowrap"
-                                onClick={() =>
-                                  handleInfo(item, listInfoByFilter.current[keyItem][item.code])
-                                }
+                                onClick={() => handleInfo(item)}
                               >
                                 {item?.name}
                               </div>

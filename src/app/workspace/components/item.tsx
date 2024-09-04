@@ -1,7 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import Image from 'next/image'
@@ -14,16 +14,21 @@ import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
 import FilterSort from '@/app/components/filter-sort'
 import NoItem from '@/app/components/no-item'
 import ImageDevice from '@/app/components/image-device'
+import { useInView } from 'react-intersection-observer'
 
 const ITEM_TYPE = {
   INFO: 'info',
   SELL: 'sell',
-  SPECIAL: 'special',
+  SPECIAL: 'special'
 }
 
 export default function Item() {
+  const maxPage = useRef<number>(0)
+  const [page, setPage] = useState<number>(1)
+  const [scrollTrigger, isInView] = useInView()
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
+  const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const [activeFilter, setActiveFilter] = useState('')
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
@@ -46,18 +51,21 @@ export default function Item() {
 
   const amountSell = useRef<number>(1)
 
-  const {
-    data: listDeviceItem,
-    isLoading,
-    refetch
-  } = useQuery({
+  const { isLoading, refetch } = useQuery({
     queryKey: ['getUserItemDevice', filterOptions],
-    queryFn: () => {
-      return listUserItemDevice(
-        filterOptions.sortBy,
-        filterOptions.sortAscending,
-        filterOptions.type
-      )
+    queryFn: async () => {
+      const res: any = await listUserItemDevice(filterOptions)
+      if (res.pagination?.totalPage) {
+        maxPage.current = res.pagination?.totalPage
+      }
+      if (res.data?.length > 0) {
+        let _listItem = res.data
+        if (page > 1) {
+          _listItem = [...listDeviceItem, ...res.data]
+        }
+        setListDeviceItem(_listItem)
+      }
+      return res
     },
     ...QUERY_CONFIG
   })
@@ -101,8 +109,7 @@ export default function Item() {
   }
 
   const handleSpecial = () => {
-    console.log(111);
-    
+    console.log(111)
   }
 
   const handleOnClose = () => {
@@ -114,6 +121,16 @@ export default function Item() {
     setActiveFilter(type)
     onOpenFilter()
   }
+
+  useEffect(() => {
+    if (isInView && page < maxPage.current && !isLoading) {
+      setPage(page + 1)
+    }
+  }, [isInView, page])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filterOptions])
 
   return (
     <>
@@ -135,11 +152,11 @@ export default function Item() {
             </div>
           </div>
         </div>
-        {!isLoading && listDeviceItem?.data?.length === 0 ? (
+        {!isLoading && listDeviceItem?.length === 0 ? (
           <NoItem />
         ) : (
-          <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
-            {listDeviceItem?.data?.map((item: any) => (
+          <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar">
+            {listDeviceItem?.map((item: any) => (
               <div
                 key={item.code}
                 className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
@@ -161,6 +178,7 @@ export default function Item() {
                 </div>
               </div>
             ))}
+            <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
           </div>
         )}
       </div>
@@ -184,13 +202,15 @@ export default function Item() {
               </p>
             )}
           </div>
-          {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (
+          {activeType === ITEM_TYPE.INFO ||
+          activeType === ITEM_TYPE.SELL ||
+          activeType === ITEM_TYPE.SPECIAL ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${(activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL) ? 'mt-10 mb-14' : 'my-8'}`}
+                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-10 mb-14' : 'my-8'}`}
               >
                 <div
-                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${(activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL) ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
+                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
                 >
                   <Image
                     width={0}
@@ -201,15 +221,17 @@ export default function Item() {
                       currentItem.current?.image?.length > 0
                         ? currentItem.current.image
                         : activeType === ITEM_TYPE.SPECIAL
-                        ? `/assets/images/workspace/item-special@2x.png`
-                        : `/assets/images/upgrade/upgrade-ram-2gb@2x.png`
+                          ? `/assets/images/workspace/item-special@2x.png`
+                          : `/assets/images/upgrade/upgrade-ram-2gb@2x.png`
                     }
                     // srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x. /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
                     alt=""
                   />
                 </div>
                 <div className={activeType === ITEM_TYPE.INFO ? 'space-y-4' : 'space-y-2'}>
-                  <p className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}>
+                  <p
+                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}
+                  >
                     {currentItem.current?.name}
                   </p>
                   {activeType === ITEM_TYPE.SPECIAL ? (
@@ -222,7 +244,9 @@ export default function Item() {
                       <div className="space-y-1">
                         <p className="text-title text-base font-semibold leading-[20px]">
                           {currentItem.current?.totalItem}{' '}
-                          <span className="text-xs font-normal text-white-50 -ml-0.5">Available</span>
+                          <span className="text-xs font-normal text-white-50 -ml-0.5">
+                            Available
+                          </span>
                         </p>
                         {/* <p className="text-primary text-base font-semibold leading-[20px]">
                           0{' '}
@@ -254,7 +278,7 @@ export default function Item() {
               )}
             </>
           ) : null}
-          {(activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL) ? (
+          {activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (
             <motion.div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}
               initial={{ opacity: 0 }}
@@ -265,9 +289,13 @@ export default function Item() {
             >
               <div className="btn-border"></div>
               <div className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : 'primary'}`}>
-                <div className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : 'text-green-900'}`}>
+                <div
+                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : 'text-green-900'}`}
+                >
                   <p>{activeType === ITEM_TYPE.SELL ? 'SELL' : 'USE KEY'}</p>
-                  <div className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL ? 'bg-title' : 'bg-green-900'}`}></div>
+                  <div
+                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL ? 'bg-title' : 'bg-green-900'}`}
+                  ></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">

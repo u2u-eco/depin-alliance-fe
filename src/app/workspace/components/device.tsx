@@ -3,7 +3,13 @@ import CustomModal from '@/app/components/custom-modal'
 import { IconChevron, IconEdit, IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceDetailInfo, IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
-import { addItem, getListDevice, getUserDevice, removeItem } from '@/services/devices'
+import {
+  addItem,
+  getListDevice,
+  getUserDevice,
+  listUserItemDevice,
+  removeItem
+} from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
 import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +21,7 @@ import { toast } from 'sonner'
 import Link from 'next/link'
 import ImageDevice from '@/app/components/image-device'
 import NoItem from '@/app/components/no-item'
+import ChooseDevice from './choose-device'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -27,7 +34,7 @@ export default function Device() {
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
-  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set(['1']))
+  // const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set(['1']))
   const deviceItemDetail = useRef<{ [key: number]: Array<IDeviceTypeItem> }>({})
   const detailDeviceItem = useRef<any>()
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
@@ -37,7 +44,7 @@ export default function Device() {
   const { refetch } = useQuery({
     queryKey: ['fetchListDeviceItem'],
     queryFn: async () => {
-      const res = await getUserDevice()
+      const res = await getUserDevice({})
       if (res.status) {
         listItemEquipByType.current = {}
         res.data.forEach((item: IDeviceTypeItem) => {
@@ -65,7 +72,7 @@ export default function Device() {
     currentIndex.current = index
     try {
       setIsLoadingDetail(true)
-      const res = await getUserDevice(index)
+      const res = await getUserDevice({ index })
       if (res.status) {
         deviceItemDetail.current[index] = res.data
       }
@@ -111,7 +118,6 @@ export default function Device() {
   }
 
   const handleClickItem = (index: number) => {
-    console.log(112)
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
@@ -123,39 +129,24 @@ export default function Device() {
     onOpen()
   }
 
+  const getListUserItemByType = async (type: string) => {
+    const res = await listUserItemDevice({ type })
+    if (res.status) {
+      setListDeviceItemByFilter(res.data)
+    }
+  }
+
   const handleEquip = (type: string) => {
     equipType.current = type
-    // listItemEquip.current = listItemEquipByType.current[type]
-    filterDevice(listItemEquipByType.current[type])
+    // getListUserItemByType(type)
     setActiveType(DEVICE_TYPE.EQUIP)
     onOpen()
   }
 
-  const handleInfo = (item: IDeviceTypeItem, info: IDeviceDetailInfo) => {
-    detailDeviceItem.current = { ...item, ...info }
+  const handleInfo = (item: IDeviceTypeItem) => {
+    detailDeviceItem.current = item
     setActiveType(DEVICE_TYPE.INFO)
     onOpen()
-  }
-
-  const filterDevice = (list: Array<IDeviceTypeItem>) => {
-    countInfoDevice.current = {}
-    const listDeviceItemByFilter = list
-      ? list.filter((device: IDeviceTypeItem) => {
-          if (!countInfoDevice.current[device.code]) {
-            countInfoDevice.current[device.code] = {
-              amount: 1,
-              totalProfit: device.miningPower
-            }
-            return true
-          } else {
-            countInfoDevice.current[device.code].amount += 1
-            countInfoDevice.current[device.code].totalProfit += device.miningPower
-            return false
-          }
-        })
-      : []
-
-    setListDeviceItemByFilter([...listDeviceItemByFilter])
   }
 
   const handleClose = () => {
@@ -312,8 +303,8 @@ export default function Device() {
                         <span
                           className={`text-primary font-semibold leading-[16px] ${activeType === DEVICE_TYPE.EDIT ? 'text-lg' : ''}`}
                         >
-                          {detailDeviceItem.current?.totalProfit
-                            ? `${formatNumber(detailDeviceItem.current?.totalProfit, 0, 0)}/h`
+                          {detailDeviceItem.current?.miningPower
+                            ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
                             : ''}
                         </span>
                       </div>
@@ -328,37 +319,40 @@ export default function Device() {
               )}
             </>
           ) : (
-            <div className="max-h-[450px] overflow-y-auto hide-scrollbar mt-8 mb-6">
-              {listDeviceItemByFilter?.length === 0 ? (
-                <NoItem />
-              ) : (
-                <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
-                  {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
-                    <div
-                      key={index}
-                      className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-                    >
-                      <div
-                        className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
-                        onClick={() => setActiveItem(item.id)}
-                      >
-                        <ImageDevice
-                          image={item.image}
-                          type={item.type?.toLowerCase()}
-                          className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                        />
-                        <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
-                          {item.name}
-                        </p>
-                        <p className="text-green-500">
-                          x{countInfoDevice.current[item.code]?.amount}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ChooseDevice
+              setActiveItem={setActiveItem}
+              type={equipType.current}
+              activeItem={activeItem}
+            />
+            // <div className="max-h-[450px] overflow-y-auto hide-scrollbar mt-8 mb-6">
+            //   {listDeviceItemByFilter?.length === 0 ? (
+            //     <NoItem />
+            //   ) : (
+            //     <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
+            //       {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
+            //         <div
+            //           key={index}
+            //           className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
+            //         >
+            //           <div
+            //             className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+            //             onClick={() => setActiveItem(item.id)}
+            //           >
+            //             <ImageDevice
+            //               image={item.image}
+            //               type={item.type?.toLowerCase()}
+            //               className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+            //             />
+            //             <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+            //               {item.name}
+            //             </p>
+            //             <p className="text-green-500">x{item.totalItem}</p>
+            //           </div>
+            //         </div>
+            //       ))}
+            //     </div>
+            //   )}
+            // </div>
           )}
           <div
             className={`btn z-[2] ${disableBtn ? 'default' : ''} ${activeType === DEVICE_TYPE.INFO ? 'error' : ''}`}
