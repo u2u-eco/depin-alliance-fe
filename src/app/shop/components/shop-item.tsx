@@ -1,7 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import ImageDevice from '@/app/components/image-device'
 import { formatNumber } from '@/helper/common'
-import { IDeviceItemBuyParam, IDeviceTypeItem } from '@/interfaces/i.devices'
+import { IDeviceItemBuyParam, IDeviceTypeItem, IFilterDevice } from '@/interfaces/i.devices'
 import { buyDeviceItem, getDevicesByType } from '@/services/devices'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
@@ -10,9 +10,13 @@ import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/ico
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
-export default function ShopItem() {
+interface IShopItem {
+  filterOptions: IFilterDevice
+}
+export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
@@ -20,14 +24,18 @@ export default function ShopItem() {
   const [scrollTrigger, isInView] = useInView()
 
   const { isLoading } = useQuery({
-    queryKey: ['getListDevice', page],
+    queryKey: ['getListDevice', page, filterOptions],
     queryFn: async () => {
-      const res: any = await getDevicesByType({ page })
+      const res: any = await getDevicesByType({ page, filterOptions })
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
       if (res.data?.length > 0) {
-        setListItem([...listItem, ...res.data])
+        let _listItem = res.data
+        if (page > 1) {
+          _listItem = [...listItem, ...res.data]
+        }
+        setListItem(_listItem)
       }
     }
   })
@@ -69,6 +77,10 @@ export default function ShopItem() {
     }
   }, [isInView, page])
 
+  useEffect(() => {
+    setPage(1)
+  }, [filterOptions])
+
   return (
     <>
       <motion.div
@@ -92,9 +104,12 @@ export default function ShopItem() {
               />
 
               <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
-                {item.title}
+                {item.name}
               </p>
-              <p className="text-green-500">{formatNumber(item.price, 0, 0)}</p>
+              <p className="text-green-500">
+                {' '}
+                {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
+              </p>
             </div>
           ))}
           <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
