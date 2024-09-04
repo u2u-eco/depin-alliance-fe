@@ -36,13 +36,11 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
-      if (res.data?.length > 0) {
-        let _listItem = res.data
-        if (page > 1) {
-          _listItem = [...listItem, ...res.data]
-        }
-        setListItem(_listItem)
+      let _listItem = res.data
+      if (page > 1) {
+        _listItem = [...listItem, ...res.data]
       }
+      setListItem(_listItem)
       return res
     }
   })

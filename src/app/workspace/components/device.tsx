@@ -2,7 +2,7 @@ import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
 import { IconChevron, IconEdit, IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
-import { IDeviceDetailInfo, IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
+import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
   addItem,
   getListDevice,
@@ -20,7 +20,6 @@ import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import ImageDevice from '@/app/components/image-device'
-import NoItem from '@/app/components/no-item'
 import ChooseDevice from './choose-device'
 
 const DEVICE_TYPE = {
@@ -34,12 +33,12 @@ export default function Device() {
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
-  // const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set(['1']))
+  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set())
   const deviceItemDetail = useRef<{ [key: number]: Array<IDeviceTypeItem> }>({})
   const detailDeviceItem = useRef<any>()
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
-  const countInfoDevice = useRef<any>({})
-  const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
+  // const countInfoDevice = useRef<any>({})
+  // const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
   const listItemEquipByType = useRef<{ [key: string]: Array<IDeviceTypeItem> }>({})
   const { refetch } = useQuery({
     queryKey: ['fetchListDeviceItem'],
@@ -118,6 +117,12 @@ export default function Device() {
   }
 
   const handleClickItem = (index: number) => {
+    if (selectedKeys.has(index.toString())) {
+      setSelectedKeys(new Set())
+    } else {
+      setSelectedKeys(new Set([index.toString()]))
+    }
+
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
@@ -129,12 +134,12 @@ export default function Device() {
     onOpen()
   }
 
-  const getListUserItemByType = async (type: string) => {
-    const res = await listUserItemDevice({ type })
-    if (res.status) {
-      setListDeviceItemByFilter(res.data)
-    }
-  }
+  // const getListUserItemByType = async (type: string) => {
+  //   const res = await listUserItemDevice({ type })
+  //   if (res.status) {
+  //     setListDeviceItemByFilter(res.data)
+  //   }
+  // }
 
   const handleEquip = (type: string) => {
     equipType.current = type
@@ -154,14 +159,21 @@ export default function Device() {
     setActiveItem(0)
   }
 
+  const handleSelectionChange = (data: any) => {
+    setSelectedKeys(data)
+  }
+
   const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
 
   return (
     <>
-      <div className="space-y-10">
+      <div className="space-y-10 min-h-[60vh]">
         <Accordion
           showDivider={false}
           className="p-0"
+          selectedKeys={selectedKeys}
+          // onSelectionChange={handleSelectionChange}
+
           itemClasses={{
             trigger:
               "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
@@ -215,12 +227,12 @@ export default function Device() {
             </AccordionItem>
           ))}
         </Accordion>
-        <Link href="/shop" className="btn">
-          <div className="btn-border"></div>
-          <div className="btn-primary">buy more device</div>
-          <div className="btn-border"></div>
-        </Link>
       </div>
+      <Link href="/shop" className="btn">
+        <div className="btn-border"></div>
+        <div className="btn-primary">buy more device</div>
+        <div className="btn-border"></div>
+      </Link>
 
       <CustomModal
         title={
