@@ -159,7 +159,12 @@ export default function Item() {
           </div>
         </div>
         {!isLoading && listDeviceItem?.length === 0 ? (
-          <NoItem />
+          <NoItem
+            title="No item"
+            classNames={{
+              icon: "text-body"
+            }}
+          />
         ) : (
           <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar">
             {listDeviceItem?.map((item: any) => (

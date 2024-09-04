@@ -8,6 +8,8 @@ import ListMission from './components/list-mission'
 import { Tab, Tabs } from '@nextui-org/react'
 import { IconEmpty } from '../components/icons'
 import CustomList from '../components/custom-list'
+import NoItem from '../components/no-item'
+import { useRouter } from 'next/navigation'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
@@ -15,14 +17,18 @@ const MISSION_TAB = {
 }
 
 const listPartners = [
-  { id: 1, title: 'Clayton', image: 'mission/clayton'}
+  { id: 1, title: 'OKX Wallet', image: 'mission/okx'}
 ]
 
 export default function MissionPage() {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(MISSION_TAB.PARTNERS)
 
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
+  }
+  const handleClick = () => {
+    router.push('/mission/partners')
   }
 
   return (
@@ -66,15 +72,11 @@ export default function MissionPage() {
                 <CustomList
                   type="partners"
                   data={listPartners}
+                  onClickItem={handleClick}
                 />
               </div>
             ) : (
-              <div className="min-h-[200px] xs:min-h-[220px] 2xs:min-h-[240px] flex items-center justify-center flex-col space-y-2.5 xs:space-y-3 2xs:space-y-4">
-                <div className="size-16 xs:size-[72px] bg-white/10 flex items-center justify-center [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0%_16px)]">
-                  <IconEmpty className="text-inactive size-8 xs:size-9" />
-                </div>
-                <p className="text-body text-[15px] xs:text-base tracking-[-1px]">No partner available</p>
-              </div>
+              <NoItem title="No partner available" />
             )}
           </>
         ) : (

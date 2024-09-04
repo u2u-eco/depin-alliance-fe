@@ -85,35 +85,37 @@ const CustomList = ({
                 </div>
               </>
             ) : (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <img
-                    className="size-4"
-                    src="/assets/images/point.png"
-                    srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                    alt="Point"
-                  />
-                  <p className="text-primary font-geist font-semibold">
-                    {item.miningPower && '+'}
-                    {(pointKey ? formatNumber(item[pointKey], 0, 0) : '') ||
-                      formatNumber(item.miningPower, 0, 1)}
-                  </p>
+              type !== 'shop' && (
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <img
+                      className="size-4"
+                      src="/assets/images/point.png"
+                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                      alt="Point"
+                    />
+                    <p className="text-primary font-geist font-semibold">
+                      {item.miningPower && '+'}
+                      {(pointKey ? formatNumber(item[pointKey], 0, 0) : '') ||
+                        formatNumber(item.miningPower, 0, 1)}
+                    </p>
+                  </div>
+                  {item.available ||
+                    (item.complete && (
+                      <>
+                        <div className="h-4 w-[1px] bg-white/25"></div>
+                        <div className="flex items-center">
+                          <p className="text-primary font-geist font-semibold">
+                            {item.available ? item.available : `${item.complete}/${item.totalTask}`}{' '}
+                            <span className="font-normal text-xs text-white-50 -ml-0.5">
+                              {item.available ? 'Available' : 'Completed'}
+                            </span>
+                          </p>
+                        </div>
+                      </>
+                    ))}
                 </div>
-                {item.available ||
-                  (item.complete && (
-                    <>
-                      <div className="h-4 w-[1px] bg-white/25"></div>
-                      <div className="flex items-center">
-                        <p className="text-primary font-geist font-semibold">
-                          {item.available ? item.available : `${item.complete}/${item.totalTask}`}{' '}
-                          <span className="font-normal text-xs text-white-50 -ml-0.5">
-                            {item.available ? 'Available' : 'Completed'}
-                          </span>
-                        </p>
-                      </div>
-                    </>
-                  ))}
-              </div>
+              )
             )}
           </CustomItem>
         </div>
