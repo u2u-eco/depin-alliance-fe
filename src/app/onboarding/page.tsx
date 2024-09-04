@@ -24,9 +24,8 @@ const ONBOARDING_TYPE = {
 const Onboarding = () => {
   const router = useRouter()
   const isDetectDevice = useRef<boolean>(false)
-  const setDevice = useCommonStore((state) => state.setDevice)
   const [deviceName, setDeviceName] = useState<string>('')
-  const { currentStatus, token } = useCommonStore()
+  const { currentStatus, token, getUserInfo, setDevice } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(ONBOARDING_TYPE.DEVICE)
   const _getDeviceInfo = async () => {
@@ -35,6 +34,7 @@ const Onboarding = () => {
       if (res.status) {
         setDevice({ info: res.data })
         setType(ONBOARDING_TYPE.DEVICE)
+        setTimeout(() => onOpen(), 3000)
       }
     } catch (ex) {
       setType(ONBOARDING_TYPE.SCHOLARSHIP)
@@ -60,6 +60,7 @@ const Onboarding = () => {
         setType(ONBOARDING_TYPE.LOADING)
         break
       case ONBOARDING_TYPE.SCHOLARSHIP:
+        getUserInfo()
         router.push('/home')
         break
     }
@@ -121,14 +122,11 @@ const Onboarding = () => {
       case CURRENT_STATUS.CLAIMED:
         redirect('/home')
     }
-    if (type === ONBOARDING_TYPE.DEVICE) {
-      setTimeout(() => onOpen(), 1000)
-    }
   }, [currentStatus, token])
 
   useEffect(() => {
     detectDevice()
-  })
+  }, [])
 
   return (
     <AnimatePresence mode="wait">

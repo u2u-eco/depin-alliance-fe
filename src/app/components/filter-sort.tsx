@@ -41,11 +41,11 @@ export default function FilterSort({
   const checkActive = (sortBy: string, sortAscending: boolean, _type: string) => {
     if (type === FILTER_TYPE.SORT) {
       if (filterOptions.sortBy === sortBy && filterOptions.sortAscending === sortAscending) {
-        return '!bg-white/10'
+        return '!bg-green-900 text-green-600'
       }
     } else {
       if (filterOptions.type === _type) {
-        return '!bg-white/10'
+        return '!bg-green-900 text-green-600'
       }
     }
   }
@@ -54,8 +54,7 @@ export default function FilterSort({
     let _filterOption = filterOptions
     if (type === FILTER_TYPE.FILTER) {
       _filterOption = {
-        ...filterOptions,
-        type: ''
+        ...filterOptions
       }
     } else {
       _filterOption = {
@@ -104,14 +103,12 @@ export default function FilterSort({
           >
             {type === FILTER_TYPE.FILTER ? 'RAM' : `High -> Low profit`}
           </div>
-          {type === FILTER_TYPE.SORT ? (
-            <div
-              onClick={() => handleSort('miningPower', true, '')}
-              className={`bg-white/5 ${checkActive('miningPower', true, 'SSD')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-            >
-              {type === FILTER_TYPE.FILTER ? '' : `Low -> High profit`}
-            </div>
-          ) : null}
+          <div
+            onClick={() => handleSort('miningPower', true, 'STORAGE')}
+            className={`bg-white/5 ${checkActive('miningPower', true, 'STORAGE')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
+          >
+            {type === FILTER_TYPE.FILTER ? 'STORAGE' : `Low -> High profit`}
+          </div>
         </div>
 
         <div className="flex items-center space-x-4">

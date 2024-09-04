@@ -33,3 +33,9 @@ export interface IDeviceDetailInfo {
   amount?: number
   totalProfit: number
 }
+
+export interface IFilterDevice {
+  sortBy: string
+  sortAscending: boolean
+  type?: string
+}
