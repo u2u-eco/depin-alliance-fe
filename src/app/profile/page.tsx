@@ -112,7 +112,13 @@ export default function ProfilePage() {
           </div>
         </div>
       </CustomPage>
-      <CustomModal title="UPDATE SKILL" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
+      <CustomModal
+        title="UPDATE SKILL"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        onClose={onClose}
+      >
         <UpgradeModal
           activeType={PROFILE_TYPE.SKILL}
           UPGRADE_TYPE={PROFILE_TYPE}

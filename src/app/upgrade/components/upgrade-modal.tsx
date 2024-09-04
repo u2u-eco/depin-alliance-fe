@@ -1,6 +1,6 @@
 import { formatNumber } from '@/helper/common'
 import { motion } from 'framer-motion'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useCommonStore from '@/stores/commonStore'
 import { IconPoint, IconThunder } from '@/app/components/icons'
 interface IUpgradeModal {
@@ -85,7 +85,11 @@ export default function UpgradeModal({
     }
   }, [])
 
-  const totalAmount = amount * item.price
+  const totalAmount = amount * item.feePointUpgrade
+
+  const disableBtn =
+    activeType === UPGRADE_TYPE.SKILL &&
+    (!userInfo?.pointSkill || item.levelCurrent === item.maxLevel)
   return (
     <div>
       <div className=" text-body text-base tracking-[-1px] text-center">
@@ -109,9 +113,7 @@ export default function UpgradeModal({
         <div className="space-y-2">
           <p className="font-mona text-white text-2xl font-semibold">{item.name}</p>
           {activeType === UPGRADE_TYPE.DEVICE ? (
-            <p className="font-geist font-semibold text-green-600">
-              {/* 8 <span className="text-xs font-normal text-white-50">Available</span> */}
-            </p>
+            <p className="font-geist font-semibold text-green-600"></p>
           ) : (
             <p className="font-geist font-semibold text-yellow-600">LV. {item.levelCurrent}</p>
           )}
@@ -122,28 +124,27 @@ export default function UpgradeModal({
         <div className="absolute top-0 left-0 right-0 w-full h-full px-10 py-5 flex items-center justify-between">
           <div className="space-y-3 font-geist">
             <p className="tracking-[-1px] text-title uppercase">
-              {activeType === UPGRADE_TYPE.DEVICE ? 'TOTAL PROFIT:' : 'MINING POWER:'}
+              {activeType === UPGRADE_TYPE.DEVICE ? 'TOTAL PROFIT:' : `${item?.description}:`}
             </p>
             {activeType === UPGRADE_TYPE.DEVCIE ? (
               <div className="flex items-center space-x-2">
-              <img
-                className="size-7"
-                src="/assets/images/point.png"
-                srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                alt="Point"
-              />
-              <div className="text-lg font-semibold text-primary">
-                {item.miningPower ? `${formatNumber(item.miningPower, 0, 0)}/h` : ''}
+                <img
+                  className="size-7"
+                  src="/assets/images/point.png"
+                  srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                  alt="Point"
+                />
+                <div className="text-lg font-semibold text-primary">
+                  {item.miningPower ? `${formatNumber(item.miningPower, 0, 0)}/h` : ''}
+                </div>
               </div>
-            </div>
             ) : (
               <div className="flex items-center space-x-1">
-                <p className="text-lg font-semibold text-green-700 leading-[24px]">1%</p>
+                {/* <p className="text-lg font-semibold text-green-700 leading-[24px]">1%</p> */}
                 <div className="w-[20px] overflow-hidden mr-[2px]">
                   <motion.div
                     initial={{ x: -24 }}
                     animate={{ x: 0 }}
-                    exit={{ y: 24 }}
                     transition={{ repeat: Infinity, duration: 1 }}
                   >
                     <div className="flex space-x-1">
@@ -160,7 +161,9 @@ export default function UpgradeModal({
                     </div>
                   </motion.div>
                 </div>
-                <p className="text-lg font-semibold text-green-300 leading-[24px]">2%</p>
+                <p className="text-lg font-semibold text-green-300 leading-[24px]">
+                  {formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%
+                </p>
               </div>
             )}
           </div>
@@ -193,7 +196,6 @@ export default function UpgradeModal({
                   <motion.div
                     initial={{ x: -24 }}
                     animate={{ x: 0 }}
-                    exit={{ y: 24 }}
                     transition={{ repeat: Infinity, duration: 1 }}
                   >
                     <div className="flex space-x-1">
@@ -218,7 +220,7 @@ export default function UpgradeModal({
           </div>
         </div>
       </div>
-      <div className={`btn mt-6 ${activeType === UPGRADE_TYPE.SKILL && !userInfo?.pointSkill ? 'inactive' : ''}`}>
+      <div className={`btn mt-6 ${disableBtn ? 'inactive' : ''}`}>
         {activeType === UPGRADE_TYPE.SKILL && item.timeWaiting && timeCountdown.length > 0 ? (
           <div className="btn-default flex items-center justify-center !py-2.5 !px-3">
             <div className="min-h-6 xs:min-h-[28px]">
@@ -239,19 +241,24 @@ export default function UpgradeModal({
         ) : (
           <>
             <div className="btn-border"></div>
-            <div
-              className={`${activeType === UPGRADE_TYPE.SKILL && !userInfo?.pointSkill ? 'btn-inactive' : ' btn-primary'}`}
-            >
-              <div className={`flex items-center justify-center space-x-4 ${activeType === UPGRADE_TYPE.SKILL && !userInfo?.pointSkill ? 'text-inactive' : 'text-green-900'}`} onClick={handleClick}>
+            <div className={`${disableBtn ? 'btn-inactive' : ' btn-primary'}`}>
+              <div
+                className={`flex items-center justify-center space-x-4 ${disableBtn ? 'text-inactive' : 'text-green-900'}`}
+                onClick={handleClick}
+              >
                 <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
-                <div className={`w-[30px] h-[1px] ${activeType === UPGRADE_TYPE.SKILL && !userInfo?.pointSkill ? 'bg-inactive' : 'bg-green-800'}`}></div>
+                <div
+                  className={`w-[30px] h-[1px] ${disableBtn ? 'bg-inactive' : 'bg-green-800'}`}
+                ></div>
                 <div className="flex items-center space-x-1">
                   <IconThunder className="size-5" />
                   <p className="font-geist text-base font-semibold">{item.feeUpgrade}</p>
                 </div>
                 <div className="flex items-center space-x-1">
                   <IconPoint color className="size-5" />
-                  <p className="font-geist text-base font-semibold">{formatNumber(totalAmount, 0, 0)}</p>
+                  <p className="font-geist text-base font-semibold">
+                    {formatNumber(totalAmount, 0, 0)}
+                  </p>
                 </div>
               </div>
             </div>

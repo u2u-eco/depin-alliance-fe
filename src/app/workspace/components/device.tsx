@@ -5,6 +5,7 @@ import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
   addItem,
+  changeNameDevice,
   getListDevice,
   getUserDevice,
   listUserItemDevice,
@@ -36,6 +37,8 @@ export default function Device() {
   const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set())
   const deviceItemDetail = useRef<{ [key: number]: Array<IDeviceTypeItem> }>({})
   const detailDeviceItem = useRef<any>()
+  const currentDevice = useRef<any>()
+  const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   // const countInfoDevice = useRef<any>({})
   // const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
@@ -60,7 +63,7 @@ export default function Device() {
   })
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
-  const { data: listDevice } = useQuery({
+  const { data: listDevice, refetch: refetchListDevice } = useQuery({
     queryKey: ['fetchListDevice'],
     queryFn: getListDevice,
     ...QUERY_CONFIG,
@@ -102,6 +105,21 @@ export default function Device() {
     }
   }
 
+  const handleChangeName = async () => {
+    if (currentName.current.trim().length > 0) {
+      const res = await changeNameDevice({
+        name: currentName.current.trim(),
+        index: currentDevice.current.index
+      })
+      if (res.status) {
+        toast.success('Device name changed successfully!')
+        currentName.current = ''
+        onClose()
+        refetchListDevice()
+      }
+    }
+  }
+
   const handleConfirm = () => {
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
@@ -112,7 +130,10 @@ export default function Device() {
         break
       case DEVICE_TYPE.INFO:
         handleRemoveItem()
-        return
+        break
+      case DEVICE_TYPE.EDIT:
+        handleChangeName()
+        break
     }
   }
 
@@ -128,9 +149,11 @@ export default function Device() {
     }
   }
 
-  const handleClick = (type: string) => {
-    console.log(1)
+  const handleClick = (type: string, device?: IUserDeviceItem) => {
     setActiveType(type)
+    if (device) {
+      currentDevice.current = device
+    }
     onOpen()
   }
 
@@ -156,22 +179,23 @@ export default function Device() {
 
   const handleClose = () => {
     onClose()
+    currentName.current = ''
     setActiveItem(0)
   }
 
-  const handleSelectionChange = (data: any) => {
-    setSelectedKeys(data)
+  const handleInputName = (value: string) => {
+    currentName.current = value
   }
 
   const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
 
   return (
     <>
-      <div className="space-y-10 min-h-[60vh]">
+      <div className="space-y-10 min-h-[55vh]">
         <Accordion
           showDivider={false}
           className="p-0"
-          selectedKeys={selectedKeys}
+          // selectedKeys={selectedKeys}
           // onSelectionChange={handleSelectionChange}
 
           itemClasses={{
@@ -187,7 +211,7 @@ export default function Device() {
                 handleClickItem(item.index)
               }}
               startContent={
-                <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                <div className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
                   <Image
                     width={0}
                     height={0}
@@ -203,9 +227,10 @@ export default function Device() {
                   <p className="font-mona text-white font-semibold text-lg leading-[22px]">
                     {item.name}
                   </p>
-                  <div onClick={() => handleClick(DEVICE_TYPE.EDIT)}>
+                  <div onClick={() => handleClick(DEVICE_TYPE.EDIT, item)}>
                     <IconEdit className="text-[#888888] size-6 cursor-pointer" />
                   </div>
+                  <div className=""></div>
                 </div>
               }
               subtitle={
@@ -269,7 +294,11 @@ export default function Device() {
                   className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
                 >
                   <ImageDevice
-                    image={detailDeviceItem.current?.image}
+                    image={
+                      activeType === DEVICE_TYPE.EDIT
+                        ? '/assets/images/workspace/device-image-01@2x.png'
+                        : detailDeviceItem.current?.image
+                    }
                     type={detailDeviceItem.current?.type?.toLowerCase()}
                     className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                   />
@@ -315,9 +344,11 @@ export default function Device() {
                         <span
                           className={`text-primary font-semibold leading-[16px] ${activeType === DEVICE_TYPE.EDIT ? 'text-lg' : ''}`}
                         >
-                          {detailDeviceItem.current?.miningPower
-                            ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
-                            : ''}
+                          {activeType === DEVICE_TYPE.EDIT
+                            ? `${formatNumber(currentDevice.current.totalMiningPower, 0, 0)}/h`
+                            : detailDeviceItem.current?.miningPower
+                              ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
+                              : ''}
                         </span>
                       </div>
                     </div>
@@ -326,7 +357,11 @@ export default function Device() {
               </div>
               {activeType === DEVICE_TYPE.EDIT && (
                 <div className="mb-10">
-                  <CustomInput label="Device Name:" placeholder="DEVICE MARS" />
+                  <CustomInput
+                    label="Device Name:"
+                    placeholder="DEVICE MARS"
+                    onValueChange={handleInputName}
+                  />
                 </div>
               )}
             </>
