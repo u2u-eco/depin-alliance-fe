@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import CustomList from '../components/custom-list'
 import { ISkillItem } from '@/interfaces/i.user'
 import { useDisclosure } from '@nextui-org/react'
-import { getSkillInfo, getSkills, updateSkill } from '@/services/user'
+import { getRanking, getSkillInfo, getSkills, updateSkill } from '@/services/user'
 import { toast } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const token = useCommonStore((state) => state.token)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
+  const [rank, setRank] = useState<number>(0)
 
   const _getSkills = async () => {
     const res = await getSkills()
@@ -33,18 +34,25 @@ export default function ProfilePage() {
     }
   }
 
+  const _getRank = async () => {
+    const res = await getRanking()
+    if (res.status) {
+      setRank(res.data.currentRank)
+    }
+  }
+
   const handleBack = () => {
     router.back()
   }
 
   const handleClickItem = async (item: any) => {
-      const res = await getSkillInfo(item.skillId)
-      let infoSkill = {}
-      if (res.status) {
-        infoSkill = res.data
-      }
-      currentItem.current = { ...item, ...infoSkill }
-      onOpen()
+    const res = await getSkillInfo(item.skillId)
+    let infoSkill = {}
+    if (res.status) {
+      infoSkill = res.data
+    }
+    currentItem.current = { ...item, ...infoSkill }
+    onOpen()
   }
 
   const handleUpdateSkill = async (skillId: number) => {
@@ -62,6 +70,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (token) {
+      _getRank()
       _getSkills()
     }
   }, [token])
@@ -77,15 +86,18 @@ export default function ProfilePage() {
       <CustomPage>
         <div>
           <div className="relative flex items-center justify-center space-x-4">
-            <div className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90" onClick={handleBack}>
-              <IconChevron className="text-green-500"/>
+            <div
+              className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
+              onClick={handleBack}
+            >
+              <IconChevron className="text-green-500" />
             </div>
             <div className="size-1.5 bg-green-800"></div>
             <div className="text-title font-airnt font-medium text-xl xs:text-2xl">PROFILE</div>
             <div className="size-1.5 bg-green-800"></div>
           </div>
           <div className="mt-10 mb-12">
-            <Info profile/>
+            <Info profile rank={rank} />
           </div>
           <div>
             <CustomList
@@ -100,12 +112,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </CustomPage>
-      <CustomModal
-        title="UPDATE SKILL"
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-      >
+      <CustomModal title="UPDATE SKILL" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <UpgradeModal
           activeType={PROFILE_TYPE.SKILL}
           UPGRADE_TYPE={PROFILE_TYPE}
