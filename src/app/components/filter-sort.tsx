@@ -33,6 +33,7 @@ export default function FilterSort({
       })
     } else {
       setFilterOptions({
+        ...filterOptions,
         sortBy,
         sortAscending
       })
@@ -54,7 +55,8 @@ export default function FilterSort({
     let _filterOption = filterOptions
     if (type === FILTER_TYPE.FILTER) {
       _filterOption = {
-        ...filterOptions
+        ...filterOptions,
+        type: ''
       }
     } else {
       _filterOption = {
