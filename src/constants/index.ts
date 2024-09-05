@@ -7,7 +7,8 @@ export const UPGRADE_TAB = {
   RAM: 'RAM',
   CPU: 'CPU',
   GPU: 'GPU',
-  STORAGE: 'STORAGE'
+  STORAGE: 'STORAGE',
+  SPECIAL: 'SPECIAL',
 }
 
 export const QUERY_CONFIG = {

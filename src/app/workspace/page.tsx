@@ -37,7 +37,7 @@ export default function WorkspacePage() {
             className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
             onClick={handleBack}
           >
-            <IconChevron className="text-green-500" />
+            <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
           </div>
           <div className="size-1.5 bg-green-800"></div>
           <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Workspace</div>
