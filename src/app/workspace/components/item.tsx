@@ -7,7 +7,7 @@ import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import Image from 'next/image'
 import { formatNumber } from '@/helper/common'
 import SellItem from './sell-item'
-import { buyDeviceItem, listUserItemDevice, sellItem } from '@/services/devices'
+import { listUserItemDevice, sellItem } from '@/services/devices'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
@@ -16,6 +16,8 @@ import NoItem from '@/app/components/ui/no-item'
 import ImageDevice from '@/app/components/image-device'
 import { useInView } from 'react-intersection-observer'
 import useCommonStore from '@/stores/commonStore'
+import Link from 'next/link'
+import Loader from '@/app/components/ui/loader'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -42,6 +44,7 @@ export default function Item() {
     sortAscending: true,
     type: ''
   })
+  const refList = useRef<any>()
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const {
@@ -51,9 +54,8 @@ export default function Item() {
     onOpenChange: onOpenChangeFilter
   } = useDisclosure()
   const currentItem = useRef<any>()
-
   const amountSell = useRef<number>(1)
-
+  const timeoutUpdate = useRef<any>()
   const { isLoading, refetch } = useQuery({
     queryKey: ['getUserItemDevice', filterOptions],
     queryFn: async () => {
@@ -65,8 +67,11 @@ export default function Item() {
       if (page > 1) {
         _listItem = [...listDeviceItem, ...res.data]
       }
-      setListDeviceItem(_listItem)
-      return res
+      clearTimeout(timeoutUpdate.current)
+      timeoutUpdate.current = setTimeout(() => {
+        setListDeviceItem(_listItem)
+        return res
+      }, 100)
     },
     ...QUERY_CONFIG
   })
@@ -100,20 +105,22 @@ export default function Item() {
     }
   }
 
-  const handleBuy = async () => {
-    if (activeType === ITEM_TYPE.INFO) {
-      const res = await buyDeviceItem({
-        code: currentItem.current.code,
-        number: 1
-      })
-      if (res.status) {
-        toast.success('Buy item successfully!')
-        refetch && refetch()
-        getUserInfo()
-        onClose()
-      }
-    }
-  }
+  // const handleBuy = () => {
+  //   console.log(11)
+  //   onClose()
+  //   redirect('/shop')
+
+  //   // const res = await buyDeviceItem({
+  //   //   code: currentItem.current.code,
+  //   //   number: 1
+  //   // })
+  //   // if (res.status) {
+  //   //   toast.success('Buy item successfully!')
+  //   //   refetch && refetch()
+  //   //   getUserInfo()
+  //   //   onClose()
+  //   // }
+  // }
 
   const handleSpecial = () => {
     console.log(111)
@@ -136,6 +143,9 @@ export default function Item() {
   }, [isInView, page])
 
   useEffect(() => {
+    if (refList.current) {
+      refList.current?.scrollTo(0, 0)
+    }
     setPage(1)
   }, [filterOptions])
 
@@ -167,31 +177,44 @@ export default function Item() {
             }}
           />
         ) : (
-          <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar">
-            {listDeviceItem?.map((item: any) => (
-              <div
-                key={item.code}
-                className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-              >
+          <>
+            {isLoading && (
+              <Loader
+                classNames={{
+                  wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/30',
+                  icon: 'w-[45px] h-[45px] text-white'
+                }}
+              />
+            )}
+            <div
+              className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar"
+              ref={refList}
+            >
+              {listDeviceItem?.map((item: any) => (
                 <div
-                  className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
-                  onClick={() => handleInfo(item)}
+                  key={item.code}
+                  className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                 >
-                  <ImageDevice
-                    className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                    image={item.image}
-                    type={item.type}
-                  />
+                  <div
+                    className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                    onClick={() => handleInfo(item)}
+                  >
+                    <ImageDevice
+                      className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                      image={item.image}
+                      type={item.type}
+                    />
 
-                  <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
-                    {item.name}
-                  </p>
-                  <p className="text-green-500">x{item.totalItem || 1}</p>
+                    <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
+                      {item.name}
+                    </p>
+                    <p className="text-green-500">x{item.totalItem || 1}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-            <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
-          </div>
+              ))}
+              <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
+            </div>
+          </>
         )}
       </div>
       <CustomModal
@@ -268,9 +291,9 @@ export default function Item() {
                   )}
                 </div>
               </div>
-              {/* {activeType === ITEM_TYPE.SELL && (
+              {activeType === ITEM_TYPE.SELL && (
                 <SellItem item={currentItem.current} updateAmountSell={updateAmountSell} />
-              )} */}
+              )}
             </>
           ) : null}
           {activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (
@@ -315,13 +338,13 @@ export default function Item() {
                 </div>
                 <div className="btn-border"></div>
               </div>
-              <div className="btn" onClick={handleBuy}>
+              <Link href="/shop" className="btn">
                 <div className="btn-border"></div>
                 <div className="btn-primary">
                   {activeType === ITEM_TYPE.INFO ? 'Buy' : 'Confirm'}
                 </div>
                 <div className="btn-border"></div>
-              </div>
+              </Link>
             </div>
           )}
         </div>

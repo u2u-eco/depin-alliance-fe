@@ -38,7 +38,7 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
           <div className="flex items-center space-x-2">
             <IconPoint className="size-7" />
             <span className="text-green-500 text-lg font-semibold">
-              {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 0)}/h` : ''}
+              {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 1)}/h` : ''}
             </span>
           </div>
         </div>

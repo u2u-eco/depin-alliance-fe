@@ -10,10 +10,15 @@ interface LoaderProps {
   }
 }
 
-const Loader = ({classNames}: LoaderProps) => {
+const Loader = ({ classNames }: LoaderProps) => {
   return (
-    <div className={cn('flex items-center justify-center w-full h-full bg-black/20', classNames?.wrapper)}>
-      <IconLoader className={cn('size-6 text-green-600 animate-spin', classNames?.icon)}/>
+    <div
+      className={cn(
+        'flex items-center justify-center w-full h-full  bg-transparent',
+        classNames?.wrapper
+      )}
+    >
+      <IconLoader className={cn('size-6 text-green-600 animate-spin', classNames?.icon)} />
     </div>
   )
 }
