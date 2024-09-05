@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 interface ICountdownTime {
   time: number
-  type: string
+  type?: string
 }
 export default function CountdownTime({ time, type }: ICountdownTime) {
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
