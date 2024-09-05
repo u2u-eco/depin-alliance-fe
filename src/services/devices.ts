@@ -61,3 +61,7 @@ export const listUserItemDevice = (params: {
 export const changeNameDevice = (data: { index: number; name: string }) => {
   return https.post('/devices/change-name', data)
 }
+
+export const getNewDevice = () => {
+  return https.get('/devices/add-device')
+}

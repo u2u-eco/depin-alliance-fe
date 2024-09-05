@@ -7,6 +7,7 @@ import {
   addItem,
   changeNameDevice,
   getListDevice,
+  getNewDevice,
   getUserDevice,
   removeItem
 } from '@/services/devices'
@@ -20,6 +21,7 @@ import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
+import { getUserInfo } from '@/services/user'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -29,7 +31,7 @@ const DEVICE_TYPE = {
 }
 
 export default function Device() {
-  const token = useCommonStore((state) => state.token)
+  const { token, userConfig, getUserConfig, getUserInfo } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -99,10 +101,6 @@ export default function Device() {
     }
   }
 
-  const handleBuyDevice = () => {
-    toast.success('Buy Device successfully!')
-  }
-
   const handleConfirm = () => {
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
@@ -118,7 +116,7 @@ export default function Device() {
         handleChangeName()
         break
       case DEVICE_TYPE.BUY:
-        handleBuyDevice()
+        handleAddNewDevice()
         break
     }
   }
@@ -168,6 +166,17 @@ export default function Device() {
     currentName.current = value
   }
 
+  const handleAddNewDevice = async () => {
+    const res = await getNewDevice()
+    if (res.status) {
+      toast.success('Buy device successfully!!')
+      refetchListDevice()
+      getUserInfo()
+      getUserConfig()
+      onClose()
+    }
+  }
+
   const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
 
   return (
@@ -181,6 +190,7 @@ export default function Device() {
             // onSelectionChange={handleSelectionChange}
 
             itemClasses={{
+              base: 'mb-[10px]',
               trigger:
                 "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
               indicator: 'data-[open=true]:-rotate-180 mr-2'
@@ -194,7 +204,7 @@ export default function Device() {
                     onClick={() => {
                       handleClickItem(item.index)
                     }}
-                    className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10"
+                    className="relative flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10"
                   >
                     <Image
                       width={0}
@@ -262,11 +272,13 @@ export default function Device() {
             ))}
           </Accordion>
         </div>
-        <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
-          <div className="btn-border"></div>
-          <div className="btn-primary">buy more device</div>
-          <div className="btn-border"></div>
-        </div>
+        {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
+          <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
+            <div className="btn-border"></div>
+            <div className="btn-primary">buy more device</div>
+            <div className="btn-border"></div>
+          </div>
+        )}
       </div>
 
       <CustomModal
@@ -293,7 +305,7 @@ export default function Device() {
               ) : activeType === DEVICE_TYPE.BUY ? (
                 <p>
                   Are you sure you want to buy{' '}
-                  <span className="text-gradient whitespace-nowrap">“Device-04”</span>?
+                  <span className="text-gradient whitespace-nowrap">“New Device”</span>?
                 </p>
               ) : (
                 <p>
@@ -324,11 +336,11 @@ export default function Device() {
                 </div>
                 <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-4' : 'space-y-2'}>
                   <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona leading-[20px] xs:leading-[22px]">
-                    {activeType === DEVICE_TYPE.BUY ? 'DEVICE-04' : detailDeviceItem.current?.name}
+                    {activeType === DEVICE_TYPE.BUY ? 'NEW DEVICE' : detailDeviceItem.current?.name}
                   </p>
                   {activeType !== DEVICE_TYPE.BUY && (
                     <div className="flex items-center space-x-6">
-                      {activeType === DEVICE_TYPE.INFO && (
+                      {/* {activeType === DEVICE_TYPE.INFO && (
                         <>
                           <div className="space-y-1">
                             <p className="text-title text-base font-semibold leading-[20px]">
@@ -346,7 +358,7 @@ export default function Device() {
                           </div>
                           <div className="w-[1px] h-9 bg-white/25"></div>
                         </>
-                      )}
+                      )} */}
                       <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-2' : 'space-y-3'}>
                         <div
                           className={
@@ -441,7 +453,11 @@ export default function Device() {
                   <div className="w-[30px] h-[1px] bg-green-800"></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
-                    <span className="font-geist">5,000</span>
+                    <span className="font-geist">
+                      {userConfig?.pointBuyDevice
+                        ? formatNumber(userConfig?.pointBuyDevice, 0, 0)
+                        : 0}
+                    </span>
                   </div>
                 </div>
               ) : (
