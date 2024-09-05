@@ -19,7 +19,6 @@ import React, { useRef, useState } from 'react'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
-import Link from 'next/link'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 
@@ -162,6 +161,9 @@ export default function Device() {
     if (device) {
       currentDevice.current = device
     }
+    if (type === DEVICE_TYPE.EDIT) {
+      currentName.current = device?.name || ''
+    }
     onOpen()
   }
 
@@ -196,7 +198,7 @@ export default function Device() {
           <Accordion
             showDivider={false}
             className="p-0"
-            // selectedKeys={selectedKeys}
+            selectedKeys={selectedKeys}
             // onSelectionChange={handleSelectionChange}
 
             itemClasses={{
@@ -208,11 +210,13 @@ export default function Device() {
             {listDevice?.data.map((item: IUserDeviceItem) => (
               <AccordionItem
                 key={item.index}
-                onPress={() => {
-                  handleClickItem(item.index)
-                }}
                 startContent={
-                  <div className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                  <div
+                    onClick={() => {
+                      handleClickItem(item.index)
+                    }}
+                    className="relative  flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10"
+                  >
                     <Image
                       width={0}
                       height={0}
@@ -224,25 +228,48 @@ export default function Device() {
                   </div>
                 }
                 title={
-                  <div className="flex items-center space-x-1">
-                    <p className="font-mona text-white font-semibold text-lg leading-[22px]">
+                  <div className="flex items-center space-x-1 w-full">
+                    <p
+                      className="font-mona text-white font-semibold text-lg leading-[22px]"
+                      onClick={() => {
+                        handleClickItem(item.index)
+                      }}
+                    >
                       {item.name}
                     </p>
                     <div onClick={() => handleClick(DEVICE_TYPE.EDIT, item)}>
                       <IconEdit className="text-[#888888] size-6 cursor-pointer" />
                     </div>
-                    <div className=""></div>
+                    <div
+                      className="w-full min-h-[20px]"
+                      onClick={() => {
+                        handleClickItem(item.index)
+                      }}
+                    ></div>
                   </div>
                 }
                 subtitle={
-                  <div className="flex items-center space-x-1 mt-3">
+                  <div
+                    className="flex w-full items-center space-x-1 mt-3"
+                    onClick={() => {
+                      handleClickItem(item.index)
+                    }}
+                  >
                     <IconPoint className="size-4" />
                     <p className="text-green-500 font-semibold leading-[16px]">
                       {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : 0}
                     </p>
                   </div>
                 }
-                indicator={<IconChevron className="size-8" gradient />}
+                indicator={
+                  <div
+                    onClick={() => {
+                      handleClickItem(item.index)
+                    }}
+                  >
+                    <IconChevron className="size-8" gradient />
+                  </div>
+                }
               >
                 <DeviceItem
                   isLoading={isLoadingDetail}
@@ -372,6 +399,7 @@ export default function Device() {
                 <div className="mb-10">
                   <CustomInput
                     label="Device Name:"
+                    value={currentName.current}
                     placeholder="DEVICE MARS"
                     onValueChange={handleInputName}
                   />

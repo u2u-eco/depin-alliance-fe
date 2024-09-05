@@ -32,7 +32,7 @@ export default function Item() {
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
-  const [activeFilter, setActiveFilter] = useState('')
+  const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
