@@ -2,9 +2,11 @@
 import { LIST_TYPE } from '@/constants'
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
+import { motion } from 'framer-motion'
 import {
   IconCheck,
   IconCheckCircle,
+  IconDoubleArrow,
   IconLoader,
   IconOpenLink,
   IconPlus,
@@ -95,8 +97,15 @@ const CustomItem = ({
             {item.timeWaiting > Date.now() ? (
               <CountdownTime time={item.timeWaiting} type="basic" />
             ) : (
-              <div className="size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8 overflow-hidden">
-                <img src="/assets/images/icons/icon-double-arrow-up-gradient.svg" alt="" />
+              <div className="size-7 overflow-hidden">
+                <motion.div
+                  initial={{ y: 22 }}
+                  animate={{ y: -34 }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                >
+                  <IconDoubleArrow className="size-full" gradient/>
+                  <IconDoubleArrow className="size-full" gradient/>
+                </motion.div>
               </div>
             )}
           </>

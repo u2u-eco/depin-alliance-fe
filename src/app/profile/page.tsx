@@ -85,7 +85,11 @@ export default function ProfilePage() {
 
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper: "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
+        }}
+      >
         <div>
           <div className="relative flex items-center justify-center space-x-4">
             <div

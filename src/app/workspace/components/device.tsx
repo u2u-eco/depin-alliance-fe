@@ -230,7 +230,7 @@ export default function Device() {
                       <IconEdit className="text-[#888888] size-6 cursor-pointer" />
                     </div>
                     <div
-                      className="w-full min-h-[20px]"
+                      className="flex-1 min-h-[20px]"
                       onClick={() => {
                         handleClickItem(item.index)
                       }}
