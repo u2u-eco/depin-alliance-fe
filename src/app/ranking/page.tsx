@@ -28,13 +28,13 @@ export default function RankingPage() {
   const getBgByRank = (index: number) => {
     switch (index) {
       case 0:
-        return 'bg-[#BA3AFF] before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
+        return 'bg-[#BA3AFF] drop-shadow-purple before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
       case 1:
-        return 'bg-[#00A3FF] before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
+        return 'bg-[#00A3FF] drop-shadow-blue before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
       case 2:
-        return 'bg-[#FFA800] before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
+        return 'bg-[#FFA800] drop-shadow-orange before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
       case 99999:
-        return 'bg-green-500 before:bg-item-green after:border-b-green-500 after:border-r-green-500'
+        return 'bg-green-500 drop-shadow-green before:bg-item-green after:border-b-green-500 after:border-r-green-500'
       default:
         return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
     }

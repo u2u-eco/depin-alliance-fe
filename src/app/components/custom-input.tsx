@@ -6,23 +6,33 @@ interface InputProps {
   label: string
   placeholder: string
   copy?: boolean
+  value?: string
   onValueChange?: (value: string) => void
 }
 
-const CustomInput = ({ isDisabled, label, placeholder, copy, onValueChange }: InputProps) => {
+const CustomInput = ({
+  isDisabled,
+  label,
+  value,
+  placeholder,
+  copy,
+  onValueChange
+}: InputProps) => {
   return (
     <div className="relative pt-0.5">
       <Input
         isDisabled={isDisabled}
         label={label}
+        defaultValue={value || ''}
         labelPlacement="outside"
         placeholder={placeholder}
         onValueChange={onValueChange}
         classNames={{
-          base: "data-[has-label=true]:mt-6 opacity-100",
-          label: "group-data-[filled-within=true]:text-body",
-          inputWrapper: "rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10",
-          input: "text-body group-data-[has-value=true]:text-body placeholder:text-inactive"
+          base: 'data-[has-label=true]:mt-6 opacity-100',
+          label: 'group-data-[filled-within=true]:text-body',
+          inputWrapper:
+            'rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10',
+          input: 'text-body group-data-[has-value=true]:text-body placeholder:text-inactive'
         }}
       />
       {copy && (

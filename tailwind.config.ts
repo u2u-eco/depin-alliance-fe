@@ -93,7 +93,13 @@ const config = {
       boxShadow: {
         'inner-primary': 'inset 0 0 8px 1px rgba(26, 247, 168, 0.25)',
         'inner-base': 'inset 0 0 8px 1px rgba(255, 255, 255, 0.15)',
-        'point': '0 0 12px rgba(0, 255, 144, 0.45)'
+        'point': '0 0 12px rgba(0, 255, 144, 0.45)',
+      },
+      dropShadow: {
+        'green': '0 0 16px rgba(0, 153, 86, 0.5)',
+        'blue': '0 0 16px rgba(0, 163, 255, 0.3)',
+        'purple': '0 0 16px rgba(186, 58, 255, 0.3)',
+        'orange': '0 0 16px rgba(255, 168, 0, 0.3)',
       }
     },
   },
