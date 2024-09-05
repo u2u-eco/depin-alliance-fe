@@ -253,41 +253,24 @@ export default function Item() {
                     </p>
                   ) : (
                     <div className="flex items-center space-x-6">
-                      <div className="space-y-1">
-                        <p className="text-title text-base font-semibold leading-[20px]">
-                          {currentItem.current?.totalItem}{' '}
-                          <span className="text-xs font-normal text-white-50 -ml-0.5">
-                            Available
+                      <div className="space-y-2">
+                        <div className="text-xs text-white-50">PROFIT:</div>
+                        <div className="flex items-center space-x-1">
+                          <IconPoint className="size-4" />
+                          <span className="text-primary font-semibold leading-[16px]">
+                            {currentItem.current?.miningPower
+                              ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
+                              : null}
                           </span>
-                        </p>
-                        {/* <p className="text-primary text-base font-semibold leading-[20px]">
-                          0{' '}
-                          <span className="text-xs font-normal text-white-50 -ml-0.5">Equipped</span>
-                        </p> */}
+                        </div>
                       </div>
-                      {activeType === ITEM_TYPE.INFO && (
-                        <>
-                          <div className="w-[1px] h-9 bg-white/25"></div>
-                          <div className="space-y-2">
-                            <div className="text-xs text-white-50">TOTAL PROFIT:</div>
-                            <div className="flex items-center space-x-1">
-                              <IconPoint className="size-4" />
-                              <span className="text-primary font-semibold leading-[16px]">
-                                {currentItem.current?.miningPower
-                                  ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
-                                  : null}
-                              </span>
-                            </div>
-                          </div>
-                        </>
-                      )}
                     </div>
                   )}
                 </div>
               </div>
-              {activeType === ITEM_TYPE.SELL && (
+              {/* {activeType === ITEM_TYPE.SELL && (
                 <SellItem item={currentItem.current} updateAmountSell={updateAmountSell} />
-              )}
+              )} */}
             </>
           ) : null}
           {activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (

@@ -96,7 +96,10 @@ const config = {
         'point': '0 0 12px rgba(0, 255, 144, 0.45)',
       },
       dropShadow: {
-        'shape': '0 0 16px rgba(0, 153, 86, 0.5)'
+        'green': '0 0 16px rgba(0, 153, 86, 0.5)',
+        'blue': '0 0 16px rgba(0, 163, 255, 0.3)',
+        'purple': '0 0 16px rgba(186, 58, 255, 0.3)',
+        'orange': '0 0 16px rgba(255, 168, 0, 0.3)',
       }
     },
   },
