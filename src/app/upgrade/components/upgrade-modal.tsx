@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import useCommonStore from '@/stores/commonStore'
 import { IconPoint, IconThunder } from '@/app/components/icons'
+import CountdownTime from '@/app/components/countdown-time'
 interface IUpgradeModal {
   activeType: string
   UPGRADE_TYPE: any
@@ -18,7 +19,7 @@ export default function UpgradeModal({
   handleAction
 }: IUpgradeModal) {
   const userInfo = useCommonStore((state) => state.userInfo)
-  const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
+  // const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [amount, updateAmount] = useState<number>(1)
   const handleUpdateAmount = (value: number) => {
     if (value < 0 && amount + value < 1) {
@@ -38,52 +39,52 @@ export default function UpgradeModal({
         return
       }
       handleAction(item.skillId)
-      clearInterval(refInterval.current)
+      // clearInterval(refInterval.current)
     }
   }
 
-  const addPrefix = (number: number) => {
-    if (number >= 10) {
-      return number
-    }
-    return `0${number}`
-  }
-  const countdown = (timeEnd: number) => {
-    const interval = () => {
-      var now = new Date().getTime()
+  // const addPrefix = (number: number) => {
+  //   if (number >= 10) {
+  //     return number
+  //   }
+  //   return `0${number}`
+  // }
+  // const countdown = (timeEnd: number) => {
+  //   const interval = () => {
+  //     var now = new Date().getTime()
 
-      // Find the distance between now and the count down date
-      var distance = timeEnd - now
+  //     // Find the distance between now and the count down date
+  //     var distance = timeEnd - now
 
-      // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000)
+  //     // Time calculations for days, hours, minutes and seconds
+  //     var days = Math.floor(distance / (1000 * 60 * 60 * 24))
+  //     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  //     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+  //     var seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-      // Display the result in the element with id="demo"
-      const listTime = [addPrefix(hours), addPrefix(minutes), addPrefix(seconds)]
+  //     // Display the result in the element with id="demo"
+  //     const listTime = [addPrefix(hours), addPrefix(minutes), addPrefix(seconds)]
 
-      if (days > 0) {
-        listTime.unshift(addPrefix(days))
-      }
-      setTimeCountdown(listTime)
+  //     if (days > 0) {
+  //       listTime.unshift(addPrefix(days))
+  //     }
+  //     setTimeCountdown(listTime)
 
-      if (distance <= 0) {
-        clearInterval(refInterval.current)
-        setTimeCountdown([])
-      }
-    }
-    clearInterval(refInterval.current)
-    interval()
-    refInterval.current = setInterval(interval, 1000)
-  }
+  //     if (distance <= 0) {
+  //       clearInterval(refInterval.current)
+  //       setTimeCountdown([])
+  //     }
+  //   }
+  //   clearInterval(refInterval.current)
+  //   interval()
+  //   refInterval.current = setInterval(interval, 1000)
+  // }
 
-  useEffect(() => {
-    if (item.timeWaiting) {
-      countdown(item.timeWaiting)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (item.timeWaiting) {
+  //     countdown(item.timeWaiting)
+  //   }
+  // }, [])
 
   const totalAmount = amount * item.feePointUpgrade
 
@@ -221,10 +222,11 @@ export default function UpgradeModal({
         </div>
       </div>
       <div className={`btn mt-6 ${disableBtn ? 'inactive' : ''}`}>
-        {activeType === UPGRADE_TYPE.SKILL && item.timeWaiting && timeCountdown.length > 0 ? (
+        {activeType === UPGRADE_TYPE.SKILL && item.timeWaiting > Date.now() ? (
           <div className="btn-default flex items-center justify-center !py-2.5 !px-3">
             <div className="min-h-6 xs:min-h-[28px]">
-              {timeCountdown.length === 0 ? null : (
+              <CountdownTime time={item.timeWaiting} />
+              {/* {timeCountdown.length === 0 ? null : (
                 <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-title">
                   {timeCountdown.map((item: any, index) => (
                     <React.Fragment key={index}>
@@ -235,7 +237,7 @@ export default function UpgradeModal({
                     </React.Fragment>
                   ))}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         ) : (
