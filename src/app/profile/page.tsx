@@ -13,6 +13,7 @@ import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
 import UpgradeModal from '../upgrade/components/upgrade-modal'
 import Info from '../components/ui/info'
+import { LIST_TYPE } from '@/constants'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -101,7 +102,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <CustomList
-              type="skill"
+              type={LIST_TYPE.SKILL}
               data={listSkill}
               title="ALL SKILLS"
               titleItemKey="name"

@@ -59,6 +59,7 @@ const CustomList = ({
             icon={item.icon}
             done={isDone(item)}
             key={item.code}
+            item={item}
           >
             {type === LIST_TYPE.SKILL ? (
               <div className="text-yellow-600 font-geist leading-[16px]">
@@ -66,11 +67,13 @@ const CustomList = ({
               </div>
             ) : item.text ? (
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
-            ) : (type === LIST_TYPE.PARTNERS) ? (
+            ) : type === LIST_TYPE.PARTNERS ? (
               <>
                 <div className="flex items-center space-x-1">
-                    <IconPoint className="size-[14px] xs:size-4" />
-                  <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">Up to +3000 points</p>
+                  <IconPoint className="size-[14px] xs:size-4" />
+                  <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">
+                    Up to +3000 points
+                  </p>
                 </div>
                 <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
                   <div className="flex items-center leading-[16px] space-x-1">

@@ -1,4 +1,4 @@
-import { IconEmpty } from "./icons"
+import { IconEmpty } from "../icons"
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 
