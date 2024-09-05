@@ -18,6 +18,7 @@ import { useInView } from 'react-intersection-observer'
 import useCommonStore from '@/stores/commonStore'
 import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
+import OpenBox from './open-box'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -52,6 +53,12 @@ export default function Item() {
     onOpen: onOpenFilter,
     onClose: onCloseFilter,
     onOpenChange: onOpenChangeFilter
+  } = useDisclosure()
+  const {
+    isOpen: isOpenSpecial,
+    onOpen: onOpenSpecial,
+    onClose: onCloseSpecial,
+    onOpenChange: onOpenChangeSpecial
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
@@ -116,6 +123,10 @@ export default function Item() {
     onOpenFilter()
   }
 
+  const handleClickSpecial = () => {
+    onOpenSpecial()
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -133,7 +144,7 @@ export default function Item() {
     <>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <p className="text-body text-base tracking-[-1px]">ALL ITEMS</p>
+          <p className="text-body text-base tracking-[-1px] uppercase">{filterOptions.type || 'ALL ITEMS'}</p>
           <div className="flex items-center space-x-6">
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
               <IconSort
@@ -177,7 +188,7 @@ export default function Item() {
                     type={item.type}
                   />
 
-                  <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px] min-h-[32px]">
+                  <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
                     {item.name}
                   </p>
                   <p className="text-green-500">x{item.totalItem || 1}</p>
@@ -340,6 +351,12 @@ export default function Item() {
         onClose={onCloseFilter}
         type={activeFilter}
         cb={setFilterOptions}
+      />
+      <OpenBox
+        isOpen={isOpenSpecial}
+        onOpen={onOpenSpecial}
+        onOpenChange={onOpenChangeSpecial}
+        onClose={onCloseSpecial}
       />
     </>
   )

@@ -127,12 +127,12 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                 type={item.type}
               />
 
-              <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+              <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
                 {item.name}
               </p>
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                 <IconPoint className="size-4" />
-                <p className="text-green-500">
+                <p className="text-green-500 text-[13px] xs:text-sm">
                   {' '}
                   {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
                 </p>
@@ -231,13 +231,23 @@ export default function ShopItem({ filterOptions }: IShopItem) {
               <div className="flex items-center justify-center space-x-4 text-green-900">
                 <p>BUY NOW</p>
                 <div className="w-[30px] h-[1px] bg-green-800"></div>
-                <div className="flex items-center space-x-1">
-                  <IconPoint className="size-5" color />
-                  <span className="font-geist">
-                    {currentItem.current?.price
-                      ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
-                      : 0}
-                  </span>
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1">
+                    <IconPoint className="size-5" color />
+                    <span className="font-geist">
+                      {currentItem.current?.price
+                        ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
+                        : 0}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-1 opacity-65">
+                    <IconPoint className="size-4" color />
+                    <span className="font-geist text-xs line-through">
+                      {currentItem.current?.price
+                        ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
+                        : 0}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 interface ICountdownTime {
   time: number
   type?: string
+  cb?: () => void
 }
-export default function CountdownTime({ time, type }: ICountdownTime) {
+export default function CountdownTime({ time, type, cb }: ICountdownTime) {
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const refInterval = useRef<any>(0)
   const addPrefix = (number: number) => {
@@ -36,6 +37,7 @@ export default function CountdownTime({ time, type }: ICountdownTime) {
       if (distance <= 0) {
         clearInterval(refInterval.current)
         setTimeCountdown([])
+        cb && cb()
       }
     }
     clearInterval(refInterval.current)

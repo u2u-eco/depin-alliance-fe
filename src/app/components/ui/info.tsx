@@ -96,19 +96,19 @@ const Info = ({ profile, rank }: InfoProps) => {
         {profile && (
           <Link
             href="/ranking"
-            className="absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-end py-1.5 px-2 w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,30px_100%)] z-[1]"
+            className="[--space:_20px] xs:[--space:_24px] 2xs:[--space:_28px] absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-between py-1 xs:py-1.5 pr-2 pl-6 xs:pl-7 2xs:pl-8 w-[90px] xs:w-[100px] 2xs:w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,var(--space)_100%)] z-[1]"
           >
-            <p className="text-green-900 tracking-[-1px]">
+            <p className="text-green-900 tracking-[-1px] text-[13px] xs:text-sm">
               {rank ? `#${formatNumber(rank, 0, 0)}` : ''}
             </p>
-            <IconChevron className="size-5 text-green-900 -rotate-90" />
+            <IconChevron className="size-4 xs:size-5 text-green-900 -rotate-90" />
           </Link>
         )}
         <div className="absolute top-0 left-0 right-0 w-full p-1.5 flex items-center space-x-3">
           <div className="relative cursor-pointer" onClick={handleOpen}>
             <div className="absolute top-[-1px] left-[-1px] size-2 border-4 border-transparent border-t-green-500 border-l-green-500"></div>
             <div
-              className={`bg-gray-800 ${profile ? 'size-[88px] min-[335px]:size-[94px] min-[355px]:size-[102px] xs:size-[109px] min-[400px]:size-[116px] 2xs:size-[122px] min-w-[80px] min-[354px]:min-w-[100px]] xs:min-w-[110px] min-[400px]:min-w-[116px] 2xs:min-w-[122px]' : 'size-[54px] min-[355px]:size-[64px] xs:size-[68px] min-[400px]:size-[72px] 2xs:size-[76px]'}`}
+              className={`bg-gray-800 ${profile ? 'size-[88px] min-[335px]:size-[94px] min-[355px]:size-[102px] xs:size-[106px] min-[400px]:size-[116px] 2xs:size-[122px] min-w-[80px] min-[354px]:min-w-[100px]] xs:min-w-[106px] min-[400px]:min-w-[116px] 2xs:min-w-[122px]' : 'size-[54px] min-[355px]:size-[62px] xs:size-[68px] min-[400px]:size-[72px] 2xs:size-[76px]'}`}
             >
               <Image
                 className="size-full min-w-full"
@@ -126,7 +126,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 className={`border-r-yellow-500 border-b-yellow-500 border-l-transparent border-t-transparent ${profile ? 'border-[14px] xs:border-[16px] min-[400px]::border-[18px] 2xs:border-[20px]' : 'border-[10px] xs:border-[12px]'}`}
               ></div>
               <Image
-                className={`absolute ${profile ? 'bottom-0.5 right-0.5 size-3 min-[400px]:size-4 2xs:size-5' : 'right-[1px] xs:right-0.5 bottom-[1px] xs:bottom-0.5 !size-2.5'}`}
+                className={`absolute ${profile ? 'bottom-0.5 right-0.5 size-3 xs:size-4 2xs:size-5' : 'right-[1px] xs:right-0.5 bottom-[1px] xs:bottom-0.5 !size-2.5'}`}
                 src="/assets/images/icons/icon-photo-edit.svg"
                 alt="Icon Photo Edit"
                 width={0}
@@ -135,12 +135,12 @@ const Info = ({ profile, rank }: InfoProps) => {
             </div>
           </div>
           <div
-            className={`flex-1 ${profile ? 'space-y-4' : 'space-y-1 min-[355px]:space-y-1.5 xs:space-y-2 2xs:space-y-3'}`}
+            className={`flex-1 ${profile ? 'space-y-2 xs:space-y-3 2xs:space-y-4' : 'space-y-1 xs:space-y-1.5 min-[400px]::space-y-2 2xs:space-y-3'}`}
           >
             <div className="flex items-center justify-between">
               <div className="space-y-0.5 min-[400px]:space-y-1">
                 <div
-                  className={`text-white font-semibold ${profile ? 'text-lg leading-[22px] min-h-[22px]' : 'text-[15px] xs:text-base min-h-5 leading-[20px]'}`}
+                  className={`text-white font-semibold ${profile ? 'text-[15px] xs:text-base 2xs:text-lg leading-[20px] 2xs:leading-[22px] min-h-5 2xs:min-h-[22px]' : 'text-[15px] xs:text-base min-h-5 leading-[20px]'}`}
                 >
                   {userInfo?.username}
                 </div>
@@ -150,7 +150,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                     className="flex items-center min-[400px]:space-x-1 cursor-pointer"
                   >
                     <span
-                      className={`font-geist text-yellow-500 ${profile ? 'text-base' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
+                      className={`font-geist text-yellow-500 ${profile ? 'text-sm xs:text-sm 2xs:text-base leading-[18px] 2xs:leading-[20px]' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
                     >
                       LV. {userInfo?.level}
                     </span>
@@ -177,7 +177,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                       width={0}
                     />
                     <span
-                      className={`font-geist text-yellow-500 ${profile ? 'text-base' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
+                      className={`font-geist text-yellow-500 ${profile ? 'text-sm xs:text-[15px] 2xs:text-base leading-[18px] xs:leading-[20px]' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
                     >
                       {userInfo?.pointSkill}
                     </span>
@@ -215,7 +215,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 ></div>
               </div>
               {profile && (
-                <div className="text-xs text-body">
+                <div className="text-[11px] xs:text-xs text-body">
                   <span className="text-title">
                     {userInfo?.xp && formatNumber(userInfo?.xp, 0, 0)} XP
                   </span>{' '}
@@ -226,7 +226,7 @@ const Info = ({ profile, rank }: InfoProps) => {
           </div>
         </div>
         <div
-          className={`absolute left-[50%] translate-x-[-50%] flex items-center ${profile ? 'flex-col justify-center space-y-1 bottom-[-55px]' : ' space-x-1 bottom-[-15px]'}`}
+            className={`absolute left-[50%] translate-x-[-50%] flex items-center ${profile ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
         >
           {(pathName === '/home' || pathName === '/profile') && (
             <p className="font-geist uppercase text-white tracking-[-1px]">BALANCE:</p>
@@ -240,7 +240,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                   <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
                 </div>
                 <Image
-                  className={profile ? 'size-8' : 'size-5'}
+                  className={profile ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'}
                   src="/assets/images/point@2x.png"
                   // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                   alt="Point"
@@ -249,7 +249,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                   height={0}
                 />
               </div>
-              <div className={`text-point font-bold ${profile ? 'text-[28px]' : 'text-base'}`}>
+              <div className={`text-point font-bold ${profile ? 'text-xl xs:text-2xl 2xs:text-[28px]' : 'text-base'}`}>
                 {' '}
                 {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
               </div>

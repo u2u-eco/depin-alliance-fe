@@ -40,7 +40,7 @@ export default function ShopPage() {
       >
         <div className="space-y-5 xs:space-y-6">
           <div className="flex items-center justify-between">
-            <p className="text-body text-[15px] xs:text-base tracking-[-1px]">ALL ITEMS</p>
+            <p className="text-body text-[15px] xs:text-base tracking-[-1px] uppercase">{filterOptions.type || 'ALL ITEMS'}</p>
             <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
               <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
                 <IconSort

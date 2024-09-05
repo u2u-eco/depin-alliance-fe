@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const router = useRouter()
   const currentItem = useRef<any>()
   const refInterval = useRef<any>()
-  const token = useCommonStore((state) => state.token)
+  const { token, getUserInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const [rank, setRank] = useState<number>(0)
@@ -61,6 +61,7 @@ export default function ProfilePage() {
     if (res.status) {
       toast.success('Level Up successfully!')
       _getSkills()
+      getUserInfo()
       onClose()
     }
   }
@@ -91,13 +92,13 @@ export default function ProfilePage() {
               className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
               onClick={handleBack}
             >
-              <IconChevron className="text-green-500" />
+              <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
             </div>
             <div className="size-1.5 bg-green-800"></div>
             <div className="text-title font-airnt font-medium text-xl xs:text-2xl">PROFILE</div>
             <div className="size-1.5 bg-green-800"></div>
           </div>
-          <div className="mt-10 mb-12">
+          <div className="mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-11 2xs:mb-12">
             <Info profile rank={rank} />
           </div>
           <div>
@@ -107,7 +108,7 @@ export default function ProfilePage() {
               title="ALL SKILLS"
               titleItemKey="name"
               levelKey="levelCurrent"
-              imageDefault="upgrade/upgrade-skill-programing"
+              imageItemKey="image"
               onClickItem={handleClickItem}
             />
           </div>
