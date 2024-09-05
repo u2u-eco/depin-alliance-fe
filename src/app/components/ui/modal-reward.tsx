@@ -32,7 +32,9 @@ const ModalReward = ({
       <div className="h-full flex flex-col justify-between p-4">
         <div className="flex flex-1 flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
           <div className="relative">
-            <img src="/assets/images/reward-frame.svg" alt="Frame" />
+            <div className="drop-shadow-[0_0_16px_rgba(0,153,86,0.5)]">
+              <img src="/assets/images/reward-frame.svg" alt="Frame" />
+            </div>
             <div className="absolute top-0 left-0 right-0 h-full w-full flex items-center justify-center space-x-2">
               <p className="text-point text-3xl xs:text-4xl 2xs:text-[40px] font-bold leading-[calc(48/40)] tracking-[-1px]">+{point}</p>
               <IconPoint className="size-8 xs:size-9 2xs:size-10" />
