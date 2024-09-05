@@ -3,14 +3,14 @@
 import CustomPage from '@/app/components/custom-page'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { leaveLeague } from '@/services/league'
+import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
-  const currentLeague = useCommonStore((state) => state.currentLeague)
+  const { currentLeague, setCurrentLeague } = useCommonStore()
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -21,12 +21,20 @@ export default function InLeaguePage() {
     }
   }
 
+  const _getUserLeague = async () => {
+    const res = await userLeague()
+    if (res.status) {
+      setCurrentLeague({ league: res.data })
+    }
+  }
+
   const handleLeave = async () => {
     if (currentLeague?.isOwner) {
       return
     }
     const res = await leaveLeague()
     if (res.status) {
+      _getUserLeague()
       router.push('/league')
     }
   }
