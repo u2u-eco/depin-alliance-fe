@@ -34,6 +34,7 @@ export default function Item() {
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
+  const dataList = useRef<IDeviceTypeItem[]>([])
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
@@ -54,7 +55,6 @@ export default function Item() {
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
-  const timeoutUpdate = useRef<any>()
   const { isLoading, refetch } = useQuery({
     queryKey: ['getUserItemDevice', filterOptions],
     queryFn: async () => {
@@ -64,13 +64,11 @@ export default function Item() {
       }
       let _listItem = res.data
       if (page > 1) {
-        _listItem = [...listDeviceItem, ...res.data]
+        _listItem = [...dataList.current, ...res.data]
       }
-      clearTimeout(timeoutUpdate.current)
-      timeoutUpdate.current = setTimeout(() => {
-        setListDeviceItem(_listItem)
-        return res
-      }, 100)
+      dataList.current = _listItem
+      setListDeviceItem(_listItem)
+      return res
     },
     ...QUERY_CONFIG
   })
@@ -186,7 +184,9 @@ export default function Item() {
                 </div>
               </div>
             ))}
-            <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
+            </div>
           </div>
         ) : (
           <>
