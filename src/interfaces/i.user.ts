@@ -61,6 +61,7 @@ export type IUserInfo = {
   totalDevice: number
   xpLevelFrom: number
   xpLevelTo: number
+  rateBonusReward: number
 }
 
 export enum CURRENT_STATUS {
