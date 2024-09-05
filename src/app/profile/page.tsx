@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const router = useRouter()
   const currentItem = useRef<any>()
   const refInterval = useRef<any>()
-  const token = useCommonStore((state) => state.token)
+  const { token, getUserInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const [rank, setRank] = useState<number>(0)
@@ -61,6 +61,7 @@ export default function ProfilePage() {
     if (res.status) {
       toast.success('Level Up successfully!')
       _getSkills()
+      getUserInfo()
       onClose()
     }
   }
@@ -107,7 +108,7 @@ export default function ProfilePage() {
               title="ALL SKILLS"
               titleItemKey="name"
               levelKey="levelCurrent"
-              imageDefault="upgrade/upgrade-skill-programing"
+              imageItemKey="image"
               onClickItem={handleClickItem}
             />
           </div>
