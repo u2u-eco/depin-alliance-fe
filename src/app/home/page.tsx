@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 
 export default function HomePage() {
-  const { userInfo, getUserConfig } = useCommonStore()
+  const { userInfo, token, getUserConfig } = useCommonStore()
   // const totalDevice = useRef<number>(0)
 
   useUserInfo()
@@ -81,8 +81,10 @@ export default function HomePage() {
   //   }
   // }, [token])
   useEffect(() => {
-    getUserConfig()
-  }, [])
+    if (token) {
+      getUserConfig()
+    }
+  }, [token])
 
   return (
     <>
