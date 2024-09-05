@@ -56,7 +56,7 @@ export default function FilterSort({
     if (type === FILTER_TYPE.FILTER) {
       _filterOption = {
         ...filterOptions,
-        type: ''
+        type: undefined
       }
     } else {
       _filterOption = {

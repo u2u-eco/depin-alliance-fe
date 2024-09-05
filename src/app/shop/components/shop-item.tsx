@@ -11,19 +11,21 @@ import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
+import Loader from '@/app/components/ui/loader'
 interface IShopItem {
   filterOptions: IFilterDevice
 }
 export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { getUserInfo } = useCommonStore()
+  const { getUserInfo, token } = useCommonStore()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
-
+  const refList = useRef<any>()
+  const timeoutUpdate = useRef<any>()
   const { isLoading } = useQuery({
     queryKey: [
       'getListDevice',
@@ -41,9 +43,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (page > 1) {
         _listItem = [...listItem, ...res.data]
       }
-      setListItem(_listItem)
-      return res
-    }
+      clearTimeout(timeoutUpdate.current)
+      timeoutUpdate.current = setTimeout(() => {
+        setListItem(_listItem)
+        return res
+      }, 100)
+    },
+    enabled: Boolean(token)
   })
 
   const handleAmount = (index: number) => {
@@ -85,6 +91,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   }, [isInView, page])
 
   useEffect(() => {
+    if (refList.current) {
+      refList.current?.scrollTo(0, 0)
+    }
     setPage(1)
   }, [filterOptions])
 
@@ -96,7 +105,16 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         exit={{ y: -25, opacity: 0 }}
         transition={{ duration: 0.35 }}
         className="max-h-[60vh] overflow-y-auto hide-scrollbar"
+        ref={refList}
       >
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/30',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
           {listItem?.map((item: any) => (
             <div

@@ -5,6 +5,7 @@ import { formatNumber } from '@/helper/common'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
+import Loader from '@/app/components/ui/loader'
 
 const HOME_TYPE = {
   START: 'start',
@@ -18,6 +19,7 @@ export default function Mining() {
   const { userInfo, setUserInfo } = useCommonStore()
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const refButton = useRef<any>(null)
   const workerRef = useRef<Worker>()
 
@@ -56,33 +58,47 @@ export default function Mining() {
   }
 
   const handleMining = async () => {
-    const res = await startContributing()
-    if (res.status) {
-      setType(HOME_TYPE.MINING)
-      updateUserInfo()
+    setIsLoading(true)
+    try {
+      const res = await startContributing()
+      if (res.status) {
+        setType(HOME_TYPE.MINING)
+        updateUserInfo()
+      }
+      setIsLoading(false)
+    } catch (ex) {
+      setIsLoading(false)
     }
   }
 
   const handleClaim = async () => {
-    const res = await claim()
-    if (res.status) {
-      if (res.data.bonusReward > 0) {
-        setBonusReward(res.data.bonusReward)
-        onOpen()
+    setIsLoading(true)
+    try {
+      const res = await claim()
+      if (res.status) {
+        if (res.data.bonusReward > 0) {
+          setBonusReward(res.data.bonusReward)
+          onOpen()
+        }
+        updateUserInfo()
       }
-      updateUserInfo()
+      setIsLoading(false)
+    } catch (ex) {
+      setIsLoading(false)
     }
   }
 
   const handleClick = (type: any) => {
     switch (type) {
       case HOME_TYPE.START:
+        if (isLoading) return
         handleMining()
         break
       case HOME_TYPE.MINING:
         setType(HOME_TYPE.CLAIM)
         break
       case HOME_TYPE.CLAIM:
+        if (isLoading) return
         handleClaim()
         break
     }
@@ -136,7 +152,11 @@ export default function Mining() {
 
   return (
     <div className="mt-8 ">
-      <button className="btn" onClick={() => handleClick(type)} ref={refButton}>
+      <button
+        className={`btn ${isLoading ? 'default' : ''}`}
+        onClick={() => handleClick(type)}
+        ref={refButton}
+      >
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
@@ -165,8 +185,18 @@ export default function Mining() {
             </div>
           </div>
         ) : (
-          <div className="btn-primary">
+          <div
+            className={`${isLoading ? 'btn-default' : 'btn-primary'}  flex justify-center items-center`}
+          >
             {type === HOME_TYPE.START ? 'START CONTRIBUTING' : 'CLAIM NOW'}
+            {isLoading && (
+              <Loader
+                classNames={{
+                  icon: 'text-white',
+                  wrapper: 'bg-transparent max-w-[20px] ml-1'
+                }}
+              />
+            )}
           </div>
         )}
         <div className="btn-border"></div>

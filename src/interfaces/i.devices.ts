@@ -35,6 +35,7 @@ export interface IDeviceDetailInfo {
 }
 
 export interface IFilterDevice {
+  page?: number
   sortBy: string
   sortAscending: boolean
   type?: string
