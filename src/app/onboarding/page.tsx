@@ -3,10 +3,8 @@
 
 import { redirect, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import Card from '../components/card'
 import { AnimatePresence, motion } from 'framer-motion'
-import Loading from '../components/loading'
-import { claim, claimRewardNewUser, detectDeviceInfo } from '../../services/user'
+import { claimRewardNewUser, detectDeviceInfo } from '../../services/user'
 import { CURRENT_STATUS } from '../../interfaces/i.user'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '../components/ui/modal-reward'
@@ -112,7 +110,7 @@ const Onboarding = () => {
   useEffect(() => {
     switch (currentStatus) {
       case CURRENT_STATUS.STARTED:
-        setType(ONBOARDING_TYPE.SPLASH)
+        // setType(ONBOARDING_TYPE.SPLASH)
         if (token) {
           setType(ONBOARDING_TYPE.START)
         }
@@ -136,9 +134,7 @@ const Onboarding = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {type === ONBOARDING_TYPE.SPLASH ? (
-        <Loading />
-      ) : (
+      {type === ONBOARDING_TYPE.SPLASH ? null : (
         <>
           <div className="onboarding section">
             <div className="absolute top-0 left-0 right-0 w-full h-full z-[-1]">

@@ -15,6 +15,7 @@ import FilterSort from '@/app/components/filter-sort'
 import NoItem from '@/app/components/ui/no-item'
 import ImageDevice from '@/app/components/image-device'
 import { useInView } from 'react-intersection-observer'
+import useCommonStore from '@/stores/commonStore'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -23,6 +24,7 @@ const ITEM_TYPE = {
 }
 
 export default function Item() {
+  const { getUserInfo } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -93,6 +95,7 @@ export default function Item() {
     if (res.status) {
       toast.success('Sell item successfully!')
       refetch && refetch()
+      getUserInfo()
       onClose()
     }
   }
@@ -106,6 +109,7 @@ export default function Item() {
       if (res.status) {
         toast.success('Buy item successfully!')
         refetch && refetch()
+        getUserInfo()
         onClose()
       }
     }

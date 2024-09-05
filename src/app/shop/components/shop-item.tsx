@@ -10,13 +10,14 @@ import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/ico
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
+import useCommonStore from '@/stores/commonStore'
 interface IShopItem {
   filterOptions: IFilterDevice
 }
 export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-
+  const { getUserInfo } = useCommonStore()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
@@ -66,6 +67,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       const res: any = await buyDeviceItem(data)
       if (res.status) {
         toast.success('Buy successfully!')
+        getUserInfo()
         onClose()
       }
     }

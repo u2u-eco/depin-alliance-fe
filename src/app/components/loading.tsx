@@ -6,7 +6,7 @@ import React from 'react'
 const Loading = () => {
   return (
     <>
-      <div className="loading section">
+      <div className="loading section bg-black">
         <div className="relative h-full">
           <img
             className="mx-auto min-[460px]:h-full object-cover w-full"
@@ -15,7 +15,11 @@ const Loading = () => {
             alt="Loading Background"
           />
           <div className="absolute top-[90px] 2xs:top-[100px] left-0 right-0">
-            <img className="mx-auto h-[60px] xs:h-20 2xs:h-full" src="/assets/images/logo.svg" alt="Logo" />
+            <img
+              className="mx-auto h-[60px] xs:h-20 2xs:h-full"
+              src="/assets/images/logo.svg"
+              alt="Logo"
+            />
           </div>
           <div className="absolute bottom-[60px] xs:bottom-[80px] 2xs:bottom-[100px] left-0 right-0 text-center space-y-4">
             <span className="font-geist text-body">Logging to your account, please wait...</span>

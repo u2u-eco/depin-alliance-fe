@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CURRENT_STATUS, INIT_DATA } from '@/constants'
 import { userAuth } from '@/services/user'
 import Cookies from 'js-cookie'
@@ -8,9 +8,11 @@ import https from '@/constants/https'
 import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
 import { userLeague } from '@/services/league'
+import Loading from './components/loading'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const isProgressLogin = useRef<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { token, setToken, setCurrentStatus, getUserInfo, setCurrentLeague } = useCommonStore(
     (state) => state
   )
@@ -28,24 +30,37 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
 
   const login = async (initData: string) => {
-    isProgressLogin.current = true
-    const res = await userAuth({ initData })
-    if (res.status) {
-      https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
-      setCurrentStatus({ status: res.data.currentStatus })
-      setToken({ token: res.data?.accessToken })
-      getUserInfo()
-      _getUserLeague()
-      Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
+    setIsLoading(true)
+    try {
+      isProgressLogin.current = true
+      const res = await userAuth({ initData })
+      if (res.status) {
+        https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
+        setCurrentStatus({ status: res.data.currentStatus })
+        setToken({ token: res.data?.accessToken })
+        getUserInfo()
+        _getUserLeague()
+        Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
+        setIsLoading(false)
+      }
+      isProgressLogin.current = false
+    } catch (ex) {
+      setIsLoading(false)
     }
-    isProgressLogin.current = false
   }
 
   useEffect(() => {
     if (initData && !token && !isProgressLogin.current) {
       login(initData)
+    } else {
+      setIsLoading(false)
     }
   }, [initData, token])
 
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      {isLoading ? <Loading /> : null}
+    </>
+  )
 }
