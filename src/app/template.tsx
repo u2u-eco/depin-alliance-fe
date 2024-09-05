@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CURRENT_STATUS, INIT_DATA } from '@/constants'
-import { getUserConfig, userAuth } from '@/services/user'
+import { userAuth } from '@/services/user'
 import Cookies from 'js-cookie'
 import https from '@/constants/https'
 import { useTelegram } from '@/hooks/useTelegram'
@@ -13,7 +13,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const isProgressLogin = useRef<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { token, setToken, setUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
+  const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
     useCommonStore((state) => state)
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
@@ -28,13 +28,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const _getUserConfig = async () => {
-    const res = await getUserConfig()
-    if (res.status && res.data) {
-      setUserConfig({ config: res.data })
-    }
-  }
-
   const login = async (initData: string) => {
     setIsLoading(true)
     try {
@@ -45,7 +38,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         setCurrentStatus({ status: res.data.currentStatus })
         setToken({ token: res.data?.accessToken })
         getUserInfo()
-        _getUserConfig()
+        getUserConfig()
         _getUserLeague()
         Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
         setIsLoading(false)
