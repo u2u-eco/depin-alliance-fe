@@ -51,7 +51,7 @@ const CustomItem = ({
                   width={0}
                   height={0}
                   src={
-                    image.includes('assets')
+                    image.includes('assets') || image.includes('http')
                       ? image
                       : `/assets/images/icons/icon-${icon}-gradient.svg`
                   }
@@ -63,7 +63,11 @@ const CustomItem = ({
                   height={0}
                   sizes="100vw"
                   style={{ width: '100%' }}
-                  src={image.includes('assets') ? image : `/assets/images/${image}@2x.png`}
+                  src={
+                    image.includes('assets') || image.includes('http')
+                      ? image
+                      : `/assets/images/${image}@2x.png`
+                  }
                   alt=""
                 />
               )}
