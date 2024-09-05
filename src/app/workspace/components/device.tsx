@@ -165,16 +165,8 @@ export default function Device() {
     onOpen()
   }
 
-  // const getListUserItemByType = async (type: string) => {
-  //   const res = await listUserItemDevice({ type })
-  //   if (res.status) {
-  //     setListDeviceItemByFilter(res.data)
-  //   }
-  // }
-
   const handleEquip = (type: string) => {
     equipType.current = type
-    // getListUserItemByType(type)
     setActiveType(DEVICE_TYPE.EQUIP)
     onOpen()
   }
@@ -276,8 +268,8 @@ export default function Device() {
             : activeType === DEVICE_TYPE.EQUIP
               ? 'equip item'
               : activeType === DEVICE_TYPE.BUY
-              ? 'Buy Device'
-              : 'DEVICE NAME'
+                ? 'Buy Device'
+                : 'DEVICE NAME'
         }
         isOpen={isOpen}
         onClose={handleClose}
@@ -315,8 +307,8 @@ export default function Device() {
                       activeType === DEVICE_TYPE.EDIT
                         ? '/assets/images/workspace/device-image-01@2x.png'
                         : activeType === DEVICE_TYPE.BUY
-                        ? '/assets/images/shop/device-01@2x.png'
-                        : detailDeviceItem.current?.image
+                          ? '/assets/images/shop/device-01@2x.png'
+                          : detailDeviceItem.current?.image
                     }
                     type={detailDeviceItem.current?.type?.toLowerCase()}
                     className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
@@ -430,22 +422,22 @@ export default function Device() {
             <div
               className={`${disableBtn ? 'btn-inactive' : `btn-${activeType === DEVICE_TYPE.INFO ? 'error' : 'primary'}`}`}
             >
-              {activeType === DEVICE_TYPE.INFO
-                ? 'UNEQUIPPED'
-                : activeType === DEVICE_TYPE.EQUIP
-                  ? 'CONFIRM'
-                  : activeType === DEVICE_TYPE.BUY
-                  ? (
-                    <div className="flex items-center justify-center space-x-4 text-green-900">
-                      <p>BUY NOW</p>
-                      <div className="w-[30px] h-[1px] bg-green-800"></div>
-                      <div className="flex items-center space-x-1">
-                        <IconPoint className="size-5" color />
-                        <span className="font-geist">5,000</span>
-                      </div>
-                    </div>
-                  )
-                  : 'SAVE'}
+              {activeType === DEVICE_TYPE.INFO ? (
+                'UNEQUIPPED'
+              ) : activeType === DEVICE_TYPE.EQUIP ? (
+                'CONFIRM'
+              ) : activeType === DEVICE_TYPE.BUY ? (
+                <div className="flex items-center justify-center space-x-4 text-green-900">
+                  <p>BUY NOW</p>
+                  <div className="w-[30px] h-[1px] bg-green-800"></div>
+                  <div className="flex items-center space-x-1">
+                    <IconPoint className="size-5" color />
+                    <span className="font-geist">5,000</span>
+                  </div>
+                </div>
+              ) : (
+                'SAVE'
+              )}
             </div>
             <div className="btn-border"></div>
           </div>
