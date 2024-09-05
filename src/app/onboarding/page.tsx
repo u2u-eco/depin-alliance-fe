@@ -110,7 +110,7 @@ const Onboarding = () => {
   useEffect(() => {
     switch (currentStatus) {
       case CURRENT_STATUS.STARTED:
-        // setType(ONBOARDING_TYPE.SPLASH)
+        setType(ONBOARDING_TYPE.SPLASH)
         if (token) {
           setType(ONBOARDING_TYPE.START)
         }
