@@ -178,7 +178,7 @@ export default function Mining() {
                 <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-green-900">
                   {timeCountdown.map((item: any, index) => (
                     <React.Fragment key={index}>
-                      <p className="size-6 xs:size-[28px] flex items-center justify-center bg-black/15">
+                      <p className="px-[3px] flex items-center justify-center bg-black/15">
                         {item}
                       </p>
                       {index === timeCountdown.length - 1 ? null : <span>:</span>}
