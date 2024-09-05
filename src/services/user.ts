@@ -11,6 +11,10 @@ export const getUserInfo = () => {
   return https.get('/users/info')
 }
 
+export const getUserConfig = () => {
+  return https.get('/users/config')
+}
+
 export const detectDeviceInfo = () => {
   return https.get('/users/detect-device-info')
 }

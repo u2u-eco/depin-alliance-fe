@@ -5,12 +5,13 @@ import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
-  const { currentLeague, setCurrentLeague } = useCommonStore()
+  const { currentLeague, userConfig, setCurrentLeague } = useCommonStore()
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -49,9 +50,12 @@ export default function InLeaguePage() {
           <div className="space-y-5">
             <div className="relative size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
-                <img
+                <Image
+                  width={0}
+                  height={0}
+                  sizes="100vw"
                   className="size-full [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
-                  src="/assets/images/league/league-04@2x.png"
+                  src={`${userConfig?.urlImage && currentLeague?.avatar ? `${userConfig.urlImage}${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
                   alt=""
                 />
               </div>
@@ -59,7 +63,7 @@ export default function InLeaguePage() {
             <div className="flex items-center justify-center space-x-6">
               <div className="size-1.5 min-w-1.5 bg-white"></div>
               <div className="font-airnt font-medium text-title text-2xl tracking-[1px] leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)]">
-                Space Cartel
+                {currentLeague?.name}
               </div>
               <div className="size-1.5 min-w-1.5 bg-white"></div>
             </div>

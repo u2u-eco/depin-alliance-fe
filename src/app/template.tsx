@@ -13,9 +13,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const isProgressLogin = useRef<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { token, setToken, setCurrentStatus, getUserInfo, setCurrentLeague } = useCommonStore(
-    (state) => state
-  )
+  const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
+    useCommonStore((state) => state)
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
 
@@ -39,6 +38,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         setCurrentStatus({ status: res.data.currentStatus })
         setToken({ token: res.data?.accessToken })
         getUserInfo()
+        getUserConfig()
         _getUserLeague()
         Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
         setIsLoading(false)

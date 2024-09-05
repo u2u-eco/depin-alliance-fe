@@ -21,7 +21,8 @@ const LEAGUE_TYPE = {
 }
 
 export default function LeaguePage() {
-  const { token, setCurrentLeague } = useCommonStore()
+  const { token, setCurrentLeague, userConfig } = useCommonStore()
+  console.log('🚀 ~ LeaguePage ~ userConfig:', userConfig)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(LEAGUE_TYPE.CREATE)
   const router = useRouter()
@@ -100,6 +101,8 @@ export default function LeaguePage() {
             title="All Leagues"
             data={listLeague?.data}
             titleItemKey="name"
+            imageItemKey="avatar"
+            imageUrlPath={userConfig?.urlImage}
             pointKey="totalMining"
             onClickItem={handleClickItem}
           />

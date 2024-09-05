@@ -15,3 +15,8 @@ export interface IUserLeague {
   totalContributors: number
   totalMining: number
 }
+export interface IUserConfig {
+  maxDevice: number
+  pointBuyDevice: number
+  urlImage: string
+}
