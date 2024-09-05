@@ -19,7 +19,7 @@ const MAX_SLOT_BY_TYPE = {
   [UPGRADE_TAB.STORAGE]: 1,
   [UPGRADE_TAB.CPU]: 1
 }
-const LIST_TYPE = [UPGRADE_TAB.RAM, UPGRADE_TAB.GPU, UPGRADE_TAB.STORAGE]
+const LIST_TYPE = [UPGRADE_TAB.RAM, UPGRADE_TAB.GPU, UPGRADE_TAB.STORAGE, UPGRADE_TAB.CPU]
 export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }: IDeviceItem) {
   const [listInfo, setListInfo] = useState<any>({})
 

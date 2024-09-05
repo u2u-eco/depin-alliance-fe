@@ -95,7 +95,9 @@ export default function Mining() {
         handleMining()
         break
       case HOME_TYPE.MINING:
-        setType(HOME_TYPE.CLAIM)
+        if (userInfo?.miningPower && userInfo?.maximumPower > 0) {
+          setType(HOME_TYPE.CLAIM)
+        }
         break
       case HOME_TYPE.CLAIM:
         if (isLoading) return
@@ -131,8 +133,10 @@ export default function Mining() {
           setTimeCountdown(message.value)
           break
         case 'RESET':
-          setTimeCountdown([])
-          setType(HOME_TYPE.CLAIM)
+          setTimeCountdown(['00', '00', '00'])
+          if (userInfo?.miningPower && userInfo?.maximumPower > 0) {
+            setType(HOME_TYPE.CLAIM)
+          }
           break
       }
     }
@@ -158,7 +162,7 @@ export default function Mining() {
         ref={refButton}
       >
         <div className="btn-border"></div>
-        {type === HOME_TYPE.MINING ? (
+        {type === HOME_TYPE.MINING || !userInfo || userInfo?.miningPower === 0 ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
               <div>Mining</div>
