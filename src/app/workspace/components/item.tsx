@@ -163,8 +163,8 @@ export default function Item() {
         {isLoading && (
           <Loader
             classNames={{
-              wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/30',
-              icon: 'w-[45px] h-[45px] text-white'
+              wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/65 backdrop-blur-[4px]',
+              icon: 'size-10 text-white'
             }}
           />
         )}

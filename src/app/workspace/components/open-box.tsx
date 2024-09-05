@@ -14,7 +14,8 @@ const BOX_TYPE = {
 }
 
 export default function OpenBox({isOpen, onOpenChange, onOpen, onClose}: OpenBoxProps) {
-  const [activeType, setActiveType] = useState(BOX_TYPE.CLAIM)
+  const [activeType, setActiveType] = useState(BOX_TYPE.OPEN)
+
 
 
   return (

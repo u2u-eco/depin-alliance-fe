@@ -98,7 +98,7 @@ const Info = ({ profile, rank }: InfoProps) => {
             href="/ranking"
             className="[--space:_20px] xs:[--space:_24px] 2xs:[--space:_28px] absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-between py-1 xs:py-1.5 pr-2 pl-6 xs:pl-7 2xs:pl-8 w-[90px] xs:w-[100px] 2xs:w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,var(--space)_100%)] z-[1]"
           >
-            <p className="text-green-900 tracking-[-1px] text-[13px] xs:text-sm">
+            <p className="text-green-900 tracking-[-1px] text-[13px] xs:text-sm flex-1 text-center">
               {rank ? `#${formatNumber(rank, 0, 0)}` : ''}
             </p>
             <IconChevron className="size-4 xs:size-5 text-green-900 -rotate-90" />
@@ -226,35 +226,33 @@ const Info = ({ profile, rank }: InfoProps) => {
           </div>
         </div>
         <div
-            className={`absolute left-[50%] translate-x-[-50%] flex items-center ${profile ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
+            className={`absolute left-[50%] translate-x-[-50%] flex items-center ${(profile || pathName === '/home') ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
         >
           {(pathName === '/home' || pathName === '/profile') && (
             <p className="font-geist uppercase text-white tracking-[-1px]">BALANCE:</p>
           )}
-          {pathName !== '/home' && (
-            <div className="flex items-center space-x-1">
-              <div className="relative">
-                <div
-                  className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_8px_rgba(0,255,144,0.45)] z-[-1] ${profile ? 'size-5' : 'size-4'}`}
-                >
-                  <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
-                </div>
-                <Image
-                  className={profile ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'}
-                  src="/assets/images/point@2x.png"
-                  // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                  alt="Point"
-                  sizes="100vw"
-                  width={0}
-                  height={0}
-                />
+          <div className={`flex items-center ${(profile || pathName === '/home') ? 'space-x-1 xs:space-x-2' : 'space-x-1'}`}>
+            <div className="relative">
+              <div
+                className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_8px_rgba(0,255,144,0.45)] z-[-1] ${(profile || pathName === '/home') ? 'size-5' : 'size-4'}`}
+              >
+                <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
               </div>
-              <div className={`text-point font-bold ${profile ? 'text-xl xs:text-2xl 2xs:text-[28px]' : 'text-base'}`}>
-                {' '}
-                {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
-              </div>
+              <Image
+                className={(profile || pathName === '/home') ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'}
+                src="/assets/images/point@2x.png"
+                // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                alt="Point"
+                sizes="100vw"
+                width={0}
+                height={0}
+              />
             </div>
-          )}
+            <div className={`text-point font-bold ${(profile || pathName === '/home') ? 'text-xl xs:text-2xl 2xs:text-[28px]' : 'text-base'}`}>
+              {' '}
+              {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
+            </div>
+          </div>
         </div>
       </motion.div>
       <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
