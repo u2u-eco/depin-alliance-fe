@@ -8,7 +8,6 @@ import {
   changeNameDevice,
   getListDevice,
   getUserDevice,
-  listUserItemDevice,
   removeItem
 } from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
@@ -40,27 +39,7 @@ export default function Device() {
   const currentDevice = useRef<any>()
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
-  // const countInfoDevice = useRef<any>({})
-  // const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
-  const listItemEquipByType = useRef<{ [key: string]: Array<IDeviceTypeItem> }>({})
-  const { refetch } = useQuery({
-    queryKey: ['fetchListDeviceItem'],
-    queryFn: async () => {
-      const res = await getUserDevice({})
-      if (res.status) {
-        listItemEquipByType.current = {}
-        res.data.forEach((item: IDeviceTypeItem) => {
-          if (!listItemEquipByType.current[item.type]) {
-            listItemEquipByType.current[item.type] = []
-          }
-          listItemEquipByType.current[item.type].push(item)
-        })
-      }
-      return res.data
-    },
-    ...QUERY_CONFIG,
-    enabled: Boolean(token)
-  })
+
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
   const { data: listDevice, refetch: refetchListDevice } = useQuery({
@@ -89,7 +68,7 @@ export default function Device() {
     if (res.status) {
       toast.success('Equip item successfully!')
       setActiveItem(0)
-      refetch()
+      refetchListDevice()
       getDeviceItemDetail(currentIndex.current)
       onClose()
     }
@@ -99,7 +78,7 @@ export default function Device() {
     const res = await removeItem(detailDeviceItem.current.id)
     if (res.status) {
       toast.success('Unequipped successfully!')
-      refetch()
+      refetchListDevice()
       getDeviceItemDetail(currentIndex.current)
       onClose()
     }
@@ -257,7 +236,9 @@ export default function Device() {
                   >
                     <IconPoint className="size-4" />
                     <p className="text-green-500 font-semibold leading-[16px]">
-                      {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : 0}
+                      {item.totalMiningPower
+                        ? `${formatNumber(item.totalMiningPower, 0, 0)}/h`
+                        : '0/h'}
                     </p>
                   </div>
                 }
