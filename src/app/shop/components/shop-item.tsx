@@ -200,7 +200,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   <IconPoint className="size-7" />
                   <span className="text-green-500 text-lg font-semibold">
                     {currentItem.current?.miningPower
-                      ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
+                      ? `${formatNumber(currentItem.current?.miningPower * amount, 0, 2)}/h`
                       : 0}
                   </span>
                 </div>

@@ -12,9 +12,10 @@ import Loading from './components/loading'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const isProgressLogin = useRef<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
     useCommonStore((state) => state)
+  const [isLoading, setIsLoading] = useState<boolean>(token ? false : true)
+
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
 
@@ -42,25 +43,22 @@ export default function Template({ children }: { children: React.ReactNode }) {
         _getUserLeague()
         Cookies.set(CURRENT_STATUS, res.data?.currentStatus)
         setIsLoading(false)
+        isProgressLogin.current = false
       }
-      isProgressLogin.current = false
     } catch (ex) {
       setIsLoading(false)
+      isProgressLogin.current = false
     }
   }
 
   useEffect(() => {
     if (initData && !token && !isProgressLogin.current) {
       login(initData)
-    } else {
+    }
+    if (token) {
       setIsLoading(false)
     }
   }, [initData, token])
 
-  return (
-    <>
-      {children}
-      {isLoading ? <Loading /> : null}
-    </>
-  )
+  return <>{isLoading ? <Loading /> : children}</>
 }

@@ -8,7 +8,7 @@ export const UPGRADE_TAB = {
   CPU: 'CPU',
   GPU: 'GPU',
   STORAGE: 'STORAGE',
-  SPECIAL: 'SPECIAL',
+  SPECIAL: 'SPECIAL'
 }
 
 export const QUERY_CONFIG = {
@@ -29,4 +29,10 @@ export const LIST_TYPE = {
 export const FILTER_TYPE = {
   FILTER: 'FILTER',
   SORT: 'SORT'
+}
+
+export const LIST_STATUS_MISSION = {
+  CHECK: 'CHECK',
+  VERIFY: 'VERIFY',
+  LINK: 'LINK'
 }

@@ -62,7 +62,9 @@ export default function ListMission() {
       handleVerifyMission(currentItem.current.id)
     } else {
       setCheckMission(true)
-      window.open(currentItem.current.url, '_blank')
+      if (currentItem.current.url) {
+        window.open(currentItem.current.url, '_blank')
+      }
     }
   }
 
@@ -93,7 +95,11 @@ export default function ListMission() {
                 // className="size-10"
                 width={40}
                 height={40}
-                src={currentItem.current?.image ? currentItem.current?.image : `/assets/images/icons/icon-mission-gradient.svg`}
+                src={
+                  currentItem.current?.image
+                    ? currentItem.current?.image
+                    : `/assets/images/icons/icon-mission-gradient.svg`
+                }
                 alt=""
               />
             </div>
