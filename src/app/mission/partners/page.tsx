@@ -39,7 +39,7 @@ export default function PartnersPage() {
             <IconChevron className="text-green-500"/>
           </div>
           <div className="space-y-6">
-            <div className="text-center relative size-[130px] mx-auto">
+            <div className="text-center relative size-[110px] xs:size-[120px] 2xs:size-[130px] mx-auto">
               <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]">
                 <img
                   className="w-full h-full object-cover [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]"
