@@ -1,6 +1,6 @@
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
-import { IconChevron, IconEdit, IconPoint } from '@/app/components/icons'
+import { IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
@@ -12,16 +12,16 @@ import {
   removeItem
 } from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
-import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
+import { useDisclosure } from '@nextui-org/react'
+// import { Accordion, AccordionItem } from '@szhsin/react-accordion'
 import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
 import React, { useRef, useState } from 'react'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
-import { getUserInfo } from '@/services/user'
+import AccordionItem from '@/app/components/accordion-item'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -35,13 +35,13 @@ export default function Device() {
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
-  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set())
   const deviceItemDetail = useRef<{ [key: number]: Array<IDeviceTypeItem> }>({})
   const detailDeviceItem = useRef<any>()
   const currentDevice = useRef<any>()
+  const [expanded, setExpanded] = useState<number | false>(false)
+
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
-
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
   const { data: listDevice, refetch: refetchListDevice } = useQuery({
@@ -122,12 +122,6 @@ export default function Device() {
   }
 
   const handleClickItem = (index: number) => {
-    if (selectedKeys.has(index.toString())) {
-      setSelectedKeys(new Set())
-    } else {
-      setSelectedKeys(new Set([index.toString()]))
-    }
-
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
@@ -182,85 +176,17 @@ export default function Device() {
   return (
     <>
       <div className="flex flex-col justify-between h-full">
-        <div className="space-y-10 min-h-[55vh]">
-          <Accordion
-            showDivider={false}
-            className="p-0"
-            selectedKeys={selectedKeys}
-            // onSelectionChange={handleSelectionChange}
-
-            itemClasses={{
-              base: 'mb-[10px]',
-              trigger:
-                "relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100",
-              indicator: 'data-[open=true]:-rotate-180 mr-2'
-            }}
-          >
-            {listDevice?.data.map((item: IUserDeviceItem) => (
+        <div className="space-y-5 min-h-[55vh]">
+          {listDevice?.data.map((item: IUserDeviceItem) => {
+            return (
               <AccordionItem
                 key={item.index}
-                startContent={
-                  <div
-                    onClick={() => {
-                      handleClickItem(item.index)
-                    }}
-                    className="relative flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10"
-                  >
-                    <Image
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      style={{ width: '100%' }}
-                      src="/assets/images/workspace/device-image-01@2x.png"
-                      alt=""
-                    />
-                  </div>
-                }
-                title={
-                  <div className="flex items-center space-x-1 w-full">
-                    <p
-                      className="font-mona text-white font-semibold text-lg leading-[22px]"
-                      onClick={() => {
-                        handleClickItem(item.index)
-                      }}
-                    >
-                      {item.name}
-                    </p>
-                    <div onClick={() => handleClick(DEVICE_TYPE.EDIT, item)}>
-                      <IconEdit className="text-[#888888] size-6 cursor-pointer" />
-                    </div>
-                    <div
-                      className="flex-1 min-h-[20px]"
-                      onClick={() => {
-                        handleClickItem(item.index)
-                      }}
-                    ></div>
-                  </div>
-                }
-                subtitle={
-                  <div
-                    className="flex w-full items-center space-x-1 mt-3"
-                    onClick={() => {
-                      handleClickItem(item.index)
-                    }}
-                  >
-                    <IconPoint className="size-4" />
-                    <p className="text-green-500 font-semibold leading-[16px]">
-                      {item.totalMiningPower
-                        ? `${formatNumber(item.totalMiningPower, 0, 0)}/h`
-                        : '0/h'}
-                    </p>
-                  </div>
-                }
-                indicator={
-                  <div
-                    onClick={() => {
-                      handleClickItem(item.index)
-                    }}
-                  >
-                    <IconChevron className="size-8" gradient />
-                  </div>
-                }
+                index={item.index}
+                item={item}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                handleEdit={(item) => handleClick(DEVICE_TYPE.EDIT, item)}
+                handleClickItem={handleClickItem}
               >
                 <DeviceItem
                   isLoading={isLoadingDetail}
@@ -269,8 +195,8 @@ export default function Device() {
                   handleInfo={handleInfo}
                 />
               </AccordionItem>
-            ))}
-          </Accordion>
+            )
+          })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
           <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>

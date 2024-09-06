@@ -11,5 +11,6 @@ export const MESSAGES: { [key: string]: string } = {
   MSG_SKILL_NOT_FOUND: 'Skill not found',
   MSG_USER_SKILL_NOT_FOUND: 'User skill not found',
   MSG_USER_SKILL_MAX_LEVEL: 'User skill max level',
-  MSG_USER_SKILL_WAITING_UPGRADE: 'User skill waiting upgrade'
+  MSG_USER_SKILL_WAITING_UPGRADE: 'User skill waiting upgrade',
+  MSG_USER_SKILL_ANOTHER_WAITING_UPGRADE: 'User skill another waiting upgrade'
 }
