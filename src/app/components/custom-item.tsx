@@ -38,10 +38,27 @@ const CustomItem = ({
   item,
   children
 }: ItemProps) => {
+
+  const getClassBySkill = (index: number) => {
+    switch (index) {
+      case 1:
+        return 'before:bg-skill-01 after:border-b-[rgba(0,76,205,0.2)] after:border-r-[rgba(0,76,205,0.2)]'
+      case 2:
+        return 'before:bg-skill-02 after:border-b-[rgba(0,255,144,0.2)] after:border-r-[rgba(0,255,144,0.2)]'
+      case 3:
+        return 'before:bg-skill-03 after:border-b-[rgba(228,140,0,0.2)] after:border-r-[rgba(228,140,0,0.2)]'
+      case 4:
+        return 'before:bg-skill-04 after:border-b-[rgba(152,57,255,0.2)] after:border-r-[rgba(152,57,255,0.2)]'
+      case 5:
+        return 'before:bg-skill-05 after:border-b-[rgba(0,215,231,0.2)] after:border-r-[rgba(0,215,231,0.2)]'
+    }
+  }
+
   return (
     <div
       className={`relative cursor-pointer before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between
-        ${type === LIST_TYPE.MISSION ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900') : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'}`}
+        ${type === LIST_TYPE.MISSION ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900')
+          : type === LIST_TYPE.SKILL ? `${getClassBySkill(item.skillId)} before:opacity-20` : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'}`}
     >
       <div className="flex items-center space-x-3 2xs:space-x-4">
         <div className="flex items-center justify-center size-[60px] min-[355px]:size-16 xs:size-[68px] 2xs:size-[72px] min-w-[60px] min-[355px]:min-w-16 xs:min-w-[68px] 2xs:min-w-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
@@ -55,7 +72,8 @@ const CustomItem = ({
                   src={
                     image.includes('assets') || image.includes('http')
                       ? image
-                      : `/assets/images/icons/icon-${icon}-gradient.svg`
+                      : icon ? `/assets/images/icons/icon-${icon}-gradient.svg`
+                      : `/assets/images/icons/icon-mission-gradient.svg`
                   }
                   alt=""
                 />

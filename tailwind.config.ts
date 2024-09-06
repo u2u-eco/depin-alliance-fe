@@ -84,6 +84,11 @@ const config = {
         'item-orange': 'linear-gradient(to right, #4B350C, #1B170F)',
         'item-purple': 'linear-gradient(to right, #3A1A4B, #18111B)',
         'item-yellow': 'linear-gradient(to right, rgba(244, 253, 54, 0.5), rgba(244, 253, 54, 0.1))',
+        'skill-01': 'linear-gradient(to right, rgba(0, 76, 205, 1), rgba(0, 76, 205, 0.1))',
+        'skill-02': 'linear-gradient(to right, rgba(0, 255, 144, 0.5), rgba(0, 255, 144, 0.1))',
+        'skill-03': 'linear-gradient(to right, rgba(228, 140, 0, 1), rgba(228, 140, 0, 0.1))',
+        'skill-04': 'linear-gradient(to right, rgba(152, 57, 255, 1), rgba(152, 57, 255, 0.1))',
+        'skill-05': 'linear-gradient(to right, rgba(0, 215, 231, 1), rgba(0, 215, 231, 0.1))',
       },
       fontFamily: {
         'airnt': "var(--ff-airnt)",

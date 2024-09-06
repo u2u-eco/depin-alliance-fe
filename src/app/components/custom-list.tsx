@@ -50,7 +50,7 @@ const CustomList = ({
           <CustomItem
             type={type}
             title={
-              (titleItemKey && item[titleItemKey]) || item.title || `${item.type} ${item.name}`
+              (titleItemKey && item[titleItemKey]) || item.title || `${item.name}`
             }
             image={
               imageDefault ||
