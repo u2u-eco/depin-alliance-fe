@@ -61,7 +61,7 @@ export default function LeaguePage() {
   return (
     <>
       <CustomPage>
-        <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-green-300 before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
+        <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-green-300 before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
           <Image
             width={0}
             height={0}

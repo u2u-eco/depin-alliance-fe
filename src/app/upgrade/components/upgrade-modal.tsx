@@ -54,7 +54,7 @@ export default function UpgradeModal({
           />
         </div>
         <div className="space-y-2">
-          <p className="font-mona text-white text-2xl font-semibold">{item.name}</p>
+          <p className="font-mona text-white text-lg xs:text-xl 2xs:text-2xl font-semibold">{item.name}</p>
 
           <p className="font-geist font-semibold text-yellow-600">LV. {item.levelCurrent}</p>
         </div>

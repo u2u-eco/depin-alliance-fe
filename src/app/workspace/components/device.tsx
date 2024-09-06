@@ -175,7 +175,7 @@ export default function Device() {
   return (
     <>
       <div className="flex flex-col justify-between h-full">
-        <div className="space-y-5 min-h-[55vh]">
+        <div className="space-y-4 min-h-[55vh]">
           {listDevice?.data.map((item: IUserDeviceItem) => {
             return (
               <AccordionItem
@@ -198,7 +198,7 @@ export default function Device() {
           })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
+          <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
             <div className="btn-border"></div>
             <div className="btn-primary">buy more device</div>
             <div className="btn-border"></div>
