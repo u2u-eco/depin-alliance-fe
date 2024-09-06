@@ -69,6 +69,7 @@ export default function Item() {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
+      if (page !== res.pagination.page) return
       let _listItem = res.data
       if (page > 1) {
         _listItem = [...dataList.current, ...res.data]

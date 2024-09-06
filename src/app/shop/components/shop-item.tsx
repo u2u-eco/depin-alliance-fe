@@ -39,6 +39,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
+      if (page !== res.pagination.page) return
       let _listItem = res.data
 
       if (page > 1) {
@@ -72,6 +73,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       const res: any = await buyDeviceItem(data)
       if (res.status) {
         toast.success('Buy successfully!')
+        setAmount(1)
         getUserInfo()
         onClose()
       }
