@@ -12,7 +12,7 @@ const Card = ({ shadow }: CardProps) => {
   const { userInfo } = useCommonStore()
   const profit = {
     type: 'Profit',
-    name: `${userInfo?.miningPower ? formatNumber(userInfo?.miningPower, 0, 0) : 0}/h`
+    name: `${userInfo?.miningPower ? formatNumber(userInfo?.miningPower, 0, 2) : 0}/h`
   }
   const listInfo = userInfo?.miningPower ? [profit, ...deviceInfo] : deviceInfo
   return (

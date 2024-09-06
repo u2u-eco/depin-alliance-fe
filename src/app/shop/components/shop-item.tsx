@@ -39,6 +39,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
+      if (page !== res.pagination.page) return
       let _listItem = res.data
 
       if (page > 1) {
@@ -72,6 +73,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       const res: any = await buyDeviceItem(data)
       if (res.status) {
         toast.success('Buy successfully!')
+        setAmount(1)
         getUserInfo()
         onClose()
       }
@@ -196,7 +198,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   <IconPoint className="size-7" />
                   <span className="text-green-500 text-lg font-semibold">
                     {currentItem.current?.miningPower
-                      ? `${formatNumber(currentItem.current?.miningPower, 0, 0)}/h`
+                      ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
                       : 0}
                   </span>
                 </div>

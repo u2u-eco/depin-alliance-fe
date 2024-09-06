@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/icons'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { formatNumber } from '@/helper/common'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 interface ISellItem {
   item: IDeviceTypeItem
   updateAmountSell: (amount: number) => void
@@ -14,15 +14,16 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
     if (index > 0) {
       if (newValue <= item.totalItem) {
         setAmount(newValue)
-        updateAmountSell(newValue)
       }
     } else {
       if (newValue >= 1) {
         setAmount(newValue)
-        updateAmountSell(newValue)
       }
     }
   }
+  useEffect(() => {
+    updateAmountSell(amount)
+  }, [amount])
   return (
     <motion.div
       className="relative w-fit mx-auto mb-6"
@@ -38,7 +39,7 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
           <div className="flex items-center space-x-2">
             <IconPoint className="size-7" />
             <span className="text-green-500 text-lg font-semibold">
-              {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 1)}/h` : ''}
+              {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 2)}/h` : ''}
             </span>
           </div>
         </div>

@@ -13,7 +13,6 @@ import {
 } from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
-// import { Accordion, AccordionItem } from '@szhsin/react-accordion'
 import { useQuery } from '@tanstack/react-query'
 import React, { useRef, useState } from 'react'
 import DeviceItem from './device-item'
@@ -303,9 +302,9 @@ export default function Device() {
                             className={`text-primary font-semibold leading-[16px] ${activeType === DEVICE_TYPE.EDIT ? 'text-lg' : ''}`}
                           >
                             {activeType === DEVICE_TYPE.EDIT
-                              ? `${formatNumber(currentDevice.current.totalMiningPower, 0, 0)}/h`
+                              ? `${formatNumber(currentDevice.current.totalMiningPower, 0, 2)}/h`
                               : detailDeviceItem.current?.miningPower
-                                ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 0)}/h`
+                                ? `${formatNumber(detailDeviceItem.current?.miningPower, 0, 2)}/h`
                                 : ''}
                           </span>
                         </div>
