@@ -62,6 +62,7 @@ export type IUserInfo = {
   xpLevelFrom: number
   xpLevelTo: number
   rateBonusReward: number
+  ratePurchase: number
 }
 
 export enum CURRENT_STATUS {

@@ -18,7 +18,7 @@ interface IShopItem {
 export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { getUserInfo, token } = useCommonStore()
+  const { getUserInfo, token, userInfo } = useCommonStore()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
@@ -97,6 +97,8 @@ export default function ShopItem({ filterOptions }: IShopItem) {
     }
     setPage(1)
   }, [filterOptions])
+
+  const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
   return (
     <>
@@ -237,19 +239,19 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
-                      {currentItem.current?.price
-                        ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
+                      {totalAmount
+                        ? `${formatNumber(userInfo?.ratePurchase ? totalAmount - (totalAmount * userInfo.ratePurchase) / 100 : totalAmount, 0, 0)}`
                         : 0}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-1 opacity-65">
-                    <IconPoint className="size-4" color />
-                    <span className="font-geist text-xs line-through">
-                      {currentItem.current?.price
-                        ? `${formatNumber(currentItem.current.price * amount, 0, 0)}`
-                        : 0}
-                    </span>
-                  </div>
+                  {userInfo?.ratePurchase && (
+                    <div className="flex items-center space-x-1 opacity-65">
+                      <IconPoint className="size-4" color />
+                      <span className="font-geist text-xs line-through">
+                        {totalAmount ? `${formatNumber(totalAmount, 0, 0)}` : 0}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
