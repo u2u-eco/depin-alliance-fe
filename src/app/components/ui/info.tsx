@@ -5,8 +5,7 @@ import { formatNumber } from '../../../helper/common'
 import Link from 'next/link'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
-import CustomModal from '../custom-modal'
-import { getListAvatar, updateAvatar } from '@/services/user'
+import { updateAvatar } from '@/services/user'
 import { toast } from 'sonner'
 import { IconChevron, IconSettings, IconUser } from '../icons'
 import { motion } from 'framer-motion'
@@ -22,34 +21,8 @@ const Info = ({ profile, rank }: InfoProps) => {
   const pathName = usePathname()
   const route = useRouter()
   const { token, userInfo, getUserInfo } = useCommonStore((state) => state)
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [listImage, setListImage] = useState<Array<string>>([])
-  const [selectedImage, setSelectedImage] = useState<string>('')
-
-  const getAvatar = async () => {
-    const res = await getListAvatar()
-    if (res.status) {
-      setListImage(res.data)
-    }
-  }
-
-  const setAvatarActive = (avatar: string) => {
-    setSelectedImage(avatar)
-  }
-
-  const handleUpdateAvatar = async () => {
-    const res = await updateAvatar(selectedImage)
-    if (res.status) {
-      toast.success('Update successfully')
-      onClose()
-      getUserInfo()
-    }
-  }
 
   const handleOpen = () => {
-    if (userInfo?.avatar) {
-      setSelectedImage(userInfo?.avatar)
-    }
     route.push('/avatar')
   }
 
@@ -70,11 +43,6 @@ const Info = ({ profile, rank }: InfoProps) => {
     return 0
   }
 
-  useEffect(() => {
-    if (token) {
-      getAvatar()
-    }
-  }, [token])
   return (
     <>
       <motion.div
@@ -226,20 +194,24 @@ const Info = ({ profile, rank }: InfoProps) => {
           </div>
         </div>
         <div
-            className={`absolute left-[50%] translate-x-[-50%] flex items-center ${(profile || pathName === '/home') ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
+          className={`absolute left-[50%] translate-x-[-50%] flex items-center ${profile || pathName === '/home' ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
         >
           {(pathName === '/home' || pathName === '/profile') && (
             <p className="font-geist uppercase text-white tracking-[-1px]">BALANCE:</p>
           )}
-          <div className={`flex items-center ${(profile || pathName === '/home') ? 'space-x-1 xs:space-x-2' : 'space-x-1'}`}>
+          <div
+            className={`flex items-center ${profile || pathName === '/home' ? 'space-x-1 xs:space-x-2' : 'space-x-1'}`}
+          >
             <div className="relative">
               <div
-                className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_8px_rgba(0,255,144,0.45)] z-[-1] ${(profile || pathName === '/home') ? 'size-5' : 'size-4'}`}
+                className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_8px_rgba(0,255,144,0.45)] z-[-1] ${profile || pathName === '/home' ? 'size-5' : 'size-4'}`}
               >
                 <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
               </div>
               <Image
-                className={(profile || pathName === '/home') ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'}
+                className={
+                  profile || pathName === '/home' ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'
+                }
                 src="/assets/images/point@2x.png"
                 // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                 alt="Point"
@@ -248,14 +220,16 @@ const Info = ({ profile, rank }: InfoProps) => {
                 height={0}
               />
             </div>
-            <div className={`text-point font-bold ${(profile || pathName === '/home') ? 'text-xl xs:text-2xl 2xs:text-[28px]' : 'text-base'}`}>
+            <div
+              className={`text-point font-bold ${profile || pathName === '/home' ? 'text-xl xs:text-2xl 2xs:text-[28px]' : 'text-base'}`}
+            >
               {' '}
               {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
             </div>
           </div>
         </div>
       </motion.div>
-      <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
+      {/* <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
           <div className="mt-6 mb-8 xs:mb-10 2xs:mb-12 grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
             {listImage.map((item: any) => (
@@ -286,7 +260,7 @@ const Info = ({ profile, rank }: InfoProps) => {
             <div className="btn-border"></div>
           </div>
         </div>
-      </CustomModal>
+      </CustomModal> */}
     </>
   )
 }

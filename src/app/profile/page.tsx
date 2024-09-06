@@ -130,7 +130,7 @@ export default function ProfilePage() {
         </div>
       </CustomPage>
       <CustomModal
-        title="UPDATE SKILL"
+        title="Upgrade skill"
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}

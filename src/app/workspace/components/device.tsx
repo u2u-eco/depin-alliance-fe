@@ -175,7 +175,7 @@ export default function Device() {
   return (
     <>
       <div className="flex flex-col justify-between h-full">
-        <div className="space-y-5 min-h-[55vh]">
+        <div className="space-y-4 min-h-[55vh]">
           {listDevice?.data.map((item: IUserDeviceItem) => {
             return (
               <AccordionItem
@@ -198,7 +198,7 @@ export default function Device() {
           })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="btn" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
+          <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
             <div className="btn-border"></div>
             <div className="btn-primary">buy more device</div>
             <div className="btn-border"></div>
@@ -245,7 +245,7 @@ export default function Device() {
                 className={`space-x-4 flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'mt-10 mb-14' : 'my-8'}`}
               >
                 <div
-                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'size-[90px] min-w-[90px]' : 'size-[130px] min-w-[130px]'}`}
+                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'size-[90px] min-w-[90px]' : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
                 >
                   <ImageDevice
                     image={

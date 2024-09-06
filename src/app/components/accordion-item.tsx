@@ -37,9 +37,9 @@ export default function AccordionItem({
       <motion.header
         initial={false}
         // onClick={() => setExpanded(isOpen ? false : index)}
-        className="relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 data-[open=true]:bg-green-500 data-[open=true]:before:bg-item-accordion data-[open=true]:before:opacity-100"
+        className={`relative after:content-[''] after:right-0 after:bottom-0 after:absolute after:size-4 after:border-[8px] after:border-transparent ${isOpen ? 'after:border-r-green-500 after:border-b-green-500' : 'after:border-r-green-900 after:border-b-green-900'}`}
       >
-        <div className="flex justify-between items-center">
+        <div className={`relative space-x-3 cursor-pointer [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 flex justify-between items-center ${isOpen ? 'bg-green-500 before:!bg-item-accordion before:!opacity-100 mb-3' : ''}`}>
           <div className="relative w-full flex items-center justify-center">
             <div
               onClick={() => {
@@ -56,10 +56,10 @@ export default function AccordionItem({
                 alt=""
               />
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="space-y-1 xs:space-y-2 2xs:space-y-3">
               <div className="flex items-center space-x-1 w-full">
                 <p
-                  className="font-mona text-white font-semibold text-lg leading-[22px]"
+                  className="font-mona text-white font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] line-clamp-2"
                   onClick={() => {
                     handleSelectItem(isOpen ? false : index)
                   }}
@@ -72,7 +72,7 @@ export default function AccordionItem({
               </div>
 
               <div
-                className="flex w-full items-center space-x-1 mt-3"
+                className="flex w-full items-center space-x-1"
                 onClick={() => {
                   handleSelectItem(isOpen ? false : index)
                 }}
@@ -97,26 +97,26 @@ export default function AccordionItem({
             transition={{ duration: 0.3 }}
             animate={{ rotate: isOpen ? 180 : 0 }}
           >
-            <IconChevron className="size-8" gradient />
+            <IconChevron className="size-6 xs:size-7 2xs:size-8" gradient />
           </motion.div>
         </div>
       </motion.header>
-      <AnimatePresence initial={false}>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.section
+            className="overflow-hidden"
             key="content"
             initial="collapsed"
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, height: '365px' },
-              collapsed: { opacity: 0, height: 0 }
+              open: { opacity: 1, maxHeight: "390px" },
+              collapsed: { opacity: 0, maxHeight: 0 },
             }}
-            transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
+            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
             <motion.div
-              variants={{ collapsed: { scale: 0.8 }, open: { scale: 1 } }}
-              transition={{ duration: 0.8 }}
+
               className="content-placeholder"
             >
               {children}

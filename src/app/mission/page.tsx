@@ -6,29 +6,18 @@ import DailyCheckIn from './components/daily-check-in'
 import Image from 'next/image'
 import ListMission from './components/list-mission'
 import { Tab, Tabs } from '@nextui-org/react'
-import { IconEmpty } from '../components/icons'
-import CustomList from '../components/custom-list'
-import NoItem from '../components/ui/no-item'
-import { useRouter } from 'next/navigation'
+import ListPartner from './components/list-partner'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
-  REWARDS: 'rewards',
+  REWARDS: 'rewards'
 }
 
-const listPartners = [
-  { id: 1, title: 'OKX Wallet', image: 'mission/okx'}
-]
-
 export default function MissionPage() {
-  const router = useRouter()
   const [activeTab, setActiveTab] = useState(MISSION_TAB.PARTNERS)
 
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
-  }
-  const handleClick = () => {
-    router.push('/mission/partners')
   }
 
   return (
@@ -66,19 +55,7 @@ export default function MissionPage() {
           <Tab key={MISSION_TAB.REWARDS} title={`${MISSION_TAB.REWARDS} (4)`}></Tab>
         </Tabs>
         {activeTab === MISSION_TAB.PARTNERS ? (
-          <>
-            {listPartners.length > 0 ? (
-              <div className="mt-5 xs:mt-6">
-                <CustomList
-                  type="partners"
-                  data={listPartners}
-                  onClickItem={handleClick}
-                />
-              </div>
-            ) : (
-              <NoItem title="No partner available" />
-            )}
-          </>
+          <ListPartner />
         ) : (
           <>
             <div className="space-y-4">

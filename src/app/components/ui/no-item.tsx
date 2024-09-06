@@ -24,7 +24,7 @@ export default function NoItem({ title, classNames, link, textLink }: ItemProps)
       <p className={cn('text-body text-[15px] xs:text-base tracking-[-1px]', classNames?.text)}>{title}</p>
       {link && (
         <Link href={link || '#'} className="flex items-center space-x-1">
-          <p className="text-gradient uppercase text-base leading-[20px]">{textLink || 'Buy Now'}</p>
+          <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">{textLink || 'Buy Now'}</p>
           <IconOpenLink className="size-6" gradient/>
         </Link>
       )}
