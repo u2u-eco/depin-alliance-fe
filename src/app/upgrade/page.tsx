@@ -87,8 +87,18 @@ export default function UpgradePage() {
     if (res.status) {
       toast.success('Level Up successfully!')
       _getSkills()
+      currentItem.current = {}
       onClose()
     }
+  }
+
+  const handleFetchList = () => {
+    setTimeout(() => {
+      _getSkills()
+      if (currentItem.current.skillId) {
+        handleClickItem(currentItem.current)
+      }
+    }, 5300)
   }
 
   const handleModalAction = (data: any) => {
@@ -213,6 +223,7 @@ export default function UpgradePage() {
           item={currentItem.current}
           refInterval={refInterval}
           handleAction={handleModalAction}
+          handleFetchList={handleFetchList}
         />
       </CustomModal>
     </>
