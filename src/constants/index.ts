@@ -32,6 +32,7 @@ export const FILTER_TYPE = {
 }
 
 export const LIST_STATUS_MISSION = {
+  DONE: 'DONE',
   CHECK: 'CHECK',
   VERIFY: 'VERIFY',
   LINK: 'LINK'
