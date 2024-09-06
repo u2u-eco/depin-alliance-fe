@@ -144,7 +144,9 @@ export default function Item() {
     <>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <p className="text-body text-base tracking-[-1px] uppercase">{filterOptions.type || 'ALL ITEMS'}</p>
+          <p className="text-body text-base tracking-[-1px] uppercase">
+            {filterOptions.type || 'ALL ITEMS'}
+          </p>
           <div className="flex items-center space-x-6">
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
               <IconSort
@@ -277,7 +279,7 @@ export default function Item() {
                           <IconPoint className="size-4" />
                           <span className="text-primary font-semibold leading-[16px]">
                             {currentItem.current?.miningPower
-                              ? `${formatNumber(currentItem.current?.miningPower * currentItem.current.totalItem, 0, 0)}/h`
+                              ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
                               : null}
                           </span>
                         </div>

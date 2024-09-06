@@ -156,7 +156,7 @@ export default function HomePage() {
                         <IconPoint className="size-4" />
                         <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
                           {userInfo?.miningPower
-                            ? `${formatNumber(userInfo.miningPower, 0, 0)}/h`
+                            ? `${formatNumber(userInfo.miningPower, 0, 2)}/h`
                             : null}
                         </p>
                       </div>
