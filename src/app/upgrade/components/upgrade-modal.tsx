@@ -11,44 +11,29 @@ interface IUpgradeModal {
   item: any
   refInterval: any
   handleAction: (data: any) => void
+  handleFetchList: () => void
 }
 export default function UpgradeModal({
   activeType,
   UPGRADE_TYPE,
   item,
-  handleAction
+  handleAction,
+  handleFetchList
 }: IUpgradeModal) {
   const userInfo = useCommonStore((state) => state.userInfo)
   const [timeCountdown, setTimeCountdown] = useState<number>(item.timeWaiting)
-  // const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
-  const [amount, updateAmount] = useState<number>(1)
-  const handleUpdateAmount = (value: number) => {
-    if (value < 0 && amount + value < 1) {
-      return
-    }
-    updateAmount(amount + value)
-  }
 
   const handleClick = () => {
-    if (activeType === UPGRADE_TYPE.DEVICE) {
-      handleAction({
-        code: item.code,
-        number: amount
-      })
-    } else {
-      if (!userInfo?.pointSkill) {
-        return
-      }
-      handleAction(item.skillId)
-      // clearInterval(refInterval.current)
+    if (!userInfo?.pointSkill) {
+      return
     }
+    handleAction(item.skillId)
   }
 
   const cbReset = () => {
     setTimeCountdown(0)
+    handleFetchList()
   }
-
-  const totalAmount = amount * item.feePointUpgrade
 
   const disableBtn =
     activeType === UPGRADE_TYPE.SKILL &&
@@ -166,7 +151,7 @@ export default function UpgradeModal({
                 <div className="flex items-center space-x-1">
                   <IconPoint color className="size-5" />
                   <p className="font-geist text-base font-semibold">
-                    {formatNumber(totalAmount, 0, 0)}
+                    {formatNumber(item.feePointUpgrade, 0, 0)}
                   </p>
                 </div>
               </div>

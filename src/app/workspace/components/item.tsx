@@ -207,6 +207,7 @@ export default function Item() {
             {!isLoading && (
               <NoItem
                 title="No item"
+                link="/shop"
                 classNames={{
                   icon: 'text-body'
                 }}
@@ -255,7 +256,7 @@ export default function Item() {
                         ? currentItem.current.image
                         : activeType === ITEM_TYPE.SPECIAL
                           ? `/assets/images/workspace/item-special@2x.png`
-                          : `/assets/images/upgrade/upgrade-ram-2gb@2x.png`
+                          : `/assets/images/upgrade/upgrade-${currentItem.current?.type?.toLowerCase()}@2x.png`
                     }
                     // srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x. /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
                     alt=""
@@ -274,17 +275,26 @@ export default function Item() {
                     </p>
                   ) : (
                     <div className="flex items-center space-x-6">
-                      <div className="space-y-2">
-                        <div className="text-xs text-white-50">PROFIT:</div>
-                        <div className="flex items-center space-x-1">
-                          <IconPoint className="size-4" />
-                          <span className="text-primary font-semibold leading-[16px]">
-                            {currentItem.current?.miningPower
-                              ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
-                              : null}
-                          </span>
-                        </div>
+                      <div className="flex items-center space-x-1">
+                        <p className="text-base text-title font-semibold leading-[20px]">{currentItem.current?.totalItem}</p>
+                        <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">Available</div>
                       </div>
+                      {activeType === ITEM_TYPE.INFO && (
+                        <>
+                          <div className="w-[1px] h-9 bg-white/25"></div>
+                          <div className="space-y-2">
+                            <div className="text-xs text-white-50">TOTAL PROFIT:</div>
+                            <div className="flex items-center space-x-1">
+                              <IconPoint className="size-4" />
+                              <span className="text-primary font-semibold leading-[16px]">
+                                {currentItem.current?.miningPower
+                                  ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
+                                  : null}
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

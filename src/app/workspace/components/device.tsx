@@ -222,7 +222,7 @@ export default function Device() {
         onOpenChange={onOpenChange}
       >
         <div className="relative w-full">
-          <div className="absolute bottom-[60px] left-0 right-0 w-full h-[50px] bg-[linear-gradient(to_bottom,rgba(3,9,5,0)0%,rgba(3,9,5,1)_60%)] z-[1]"></div>
+          {activeType === DEVICE_TYPE.EQUIP && <div className="absolute bottom-[60px] left-0 right-0 w-full h-[50px] bg-[linear-gradient(to_bottom,rgba(3,9,5,0)0%,rgba(3,9,5,1)_60%)] z-[1]"></div>}
           {activeType !== DEVICE_TYPE.EDIT && (
             <div className=" text-body text-base tracking-[-1px] text-center">
               {activeType === DEVICE_TYPE.INFO ? (

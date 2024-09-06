@@ -60,14 +60,24 @@ export default function ProfilePage() {
     const res: any = await updateSkill(skillId)
     if (res.status) {
       toast.success('Level Up successfully!')
-      _getSkills()
       getUserInfo()
+      _getSkills()
+      currentItem.current = {}
       onClose()
     }
   }
 
   const handleModalAction = (data: any) => {
     handleUpdateSkill(data)
+  }
+
+  const fetchList = () => {
+    setTimeout(() => {
+      _getSkills()
+      if (currentItem.current.skillId) {
+        handleClickItem(currentItem.current)
+      }
+    }, 5300)
   }
 
   useEffect(() => {
@@ -87,7 +97,8 @@ export default function ProfilePage() {
     <>
       <CustomPage
         classNames={{
-          wrapper: "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
+          wrapper:
+            "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
         }}
       >
         <div>
@@ -131,6 +142,7 @@ export default function ProfilePage() {
           item={currentItem.current}
           refInterval={refInterval}
           handleAction={handleModalAction}
+          handleFetchList={fetchList}
         />
       </CustomModal>
     </>
