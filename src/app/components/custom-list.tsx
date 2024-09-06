@@ -62,7 +62,7 @@ const CustomList = ({
             item={item}
           >
             {type === LIST_TYPE.SKILL ? (
-              <div className="text-yellow-600 font-geist leading-[16px]">
+              <div className="text-yellow-600 font-geist text-[13px] xs:text-sm !leading-[16px]">
                 LV. {levelKey ? item[levelKey] : item.level}
               </div>
             ) : item.text ? (

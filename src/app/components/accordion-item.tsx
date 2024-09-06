@@ -33,7 +33,7 @@ export default function AccordionItem({
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
   return (
-    <div className="p-0">
+    <div>
       <motion.header
         initial={false}
         // onClick={() => setExpanded(isOpen ? false : index)}
