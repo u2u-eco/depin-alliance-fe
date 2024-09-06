@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { LIST_TYPE } from '@/constants'
+import { LIST_STATUS_MISSION, LIST_TYPE } from '@/constants'
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
 import { motion } from 'framer-motion'
@@ -18,27 +18,15 @@ interface ItemProps {
   type: string
   image?: string
   icon?: string
-  checked?: boolean
-  loader?: boolean
   done?: boolean
   rank?: number
   title: string
   item?: any
+  status?: string
   children: ReactNode
 }
 
-const CustomItem = ({
-  type,
-  image,
-  icon,
-  done,
-  loader,
-  checked,
-  title,
-  item,
-  children
-}: ItemProps) => {
-
+const CustomItem = ({ type, image, icon, done, status, title, item, children }: ItemProps) => {
   const getClassBySkill = (index: number) => {
     switch (index) {
       case 1:
@@ -54,11 +42,34 @@ const CustomItem = ({
     }
   }
 
+  const getIconMission = () => {
+    if (done) {
+      return <IconCheckCircle className="text-green-800" />
+    } else {
+      switch (status) {
+        case LIST_STATUS_MISSION.CHECK:
+          ;<IconCheckCircle className="text-green-800" />
+          return
+        case LIST_STATUS_MISSION.VERIFY:
+          return <IconLoader className="text-yellow-200" />
+        case LIST_STATUS_MISSION.LINK:
+          return <IconOpenLink className="text-yellow-500" />
+      }
+    }
+  }
+
   return (
     <div
       className={`relative cursor-pointer before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between
-        ${type === LIST_TYPE.MISSION ? (done ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5' : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900')
-          : type === LIST_TYPE.SKILL ? `${getClassBySkill(item.skillId)} before:opacity-20` : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'}`}
+        ${
+          type === LIST_TYPE.MISSION
+            ? done
+              ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5'
+              : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900'
+            : type === LIST_TYPE.SKILL
+              ? `${getClassBySkill(item.skillId)} before:opacity-20`
+              : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'
+        }`}
     >
       <div className="flex items-center space-x-3 2xs:space-x-4">
         <div className="flex items-center justify-center size-[60px] min-[355px]:size-16 xs:size-[68px] 2xs:size-[72px] min-w-[60px] min-[355px]:min-w-16 xs:min-w-[68px] 2xs:min-w-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
@@ -72,8 +83,9 @@ const CustomItem = ({
                   src={
                     image.includes('assets') || image.includes('http')
                       ? image
-                      : icon ? `/assets/images/icons/icon-${icon}-gradient.svg`
-                      : `/assets/images/icons/icon-mission-gradient.svg`
+                      : icon
+                        ? `/assets/images/icons/icon-${icon}-gradient.svg`
+                        : `/assets/images/icons/icon-mission-gradient.svg`
                   }
                   alt=""
                 />
@@ -121,8 +133,8 @@ const CustomItem = ({
                   animate={{ y: -34 }}
                   transition={{ repeat: Infinity, duration: 1.5 }}
                 >
-                  <IconDoubleArrow className="size-full" gradient/>
-                  <IconDoubleArrow className="size-full" gradient/>
+                  <IconDoubleArrow className="size-full" gradient />
+                  <IconDoubleArrow className="size-full" gradient />
                 </motion.div>
               </div>
             )}
@@ -130,15 +142,7 @@ const CustomItem = ({
         ) : (
           <div className="cursor-pointer size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8">
             {type === 'mission' || type === 'partners' ? (
-              done ? (
-                <IconCheckCircle className="text-green-800" />
-              ) : loader ? (
-                <IconLoader className="text-yellow-200" />
-              ) : checked ? (
-                <IconCheck className="text-green-500" />
-              ) : (
-                <IconOpenLink className="text-yellow-500" />
-              )
+              getIconMission()
             ) : type === 'invite' ? (
               <IconUserAdd gradient />
             ) : type === 'league' ? (

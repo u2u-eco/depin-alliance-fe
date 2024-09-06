@@ -12,6 +12,10 @@ export const getListMission = () => {
   return https.get('/missions')
 }
 
+export const getListMissionByPartner = () => {
+  return https.get('/missions/partner')
+}
+
 export const verifyMission = (id: number) => {
   return https.get(`/missions/verify-task/${id}`)
 }
