@@ -8,6 +8,7 @@ interface IFilterSort {
   onOpenChange: () => void
   onClose: () => void
   cb: (filter: any) => void
+  filterType?: string
 }
 export default function FilterSort({
   type,
@@ -15,7 +16,8 @@ export default function FilterSort({
   onOpen,
   onOpenChange,
   cb,
-  onClose
+  onClose,
+  filterType
 }: IFilterSort) {
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
@@ -23,7 +25,8 @@ export default function FilterSort({
     type?: string
   }>({
     sortBy: 'price',
-    sortAscending: true
+    sortAscending: true,
+    type: filterType || undefined
   })
   const handleSort = (sortBy: string, sortAscending: boolean, _type: string) => {
     if (type === FILTER_TYPE.FILTER) {
@@ -111,12 +114,14 @@ export default function FilterSort({
           >
             {type === FILTER_TYPE.FILTER ? 'STORAGE' : `Low -> High profit`}
           </div>
-          {/* <div
-            onClick={() => handleSort('miningPower', true, 'SPECIAL')}
-            className={`bg-white/5 ${checkActive('miningPower', true, 'SPECIAL')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-          >
-            SPECIAL
-          </div> */}
+          {type === FILTER_TYPE.FILTER && (
+            <div
+              onClick={() => handleSort('miningPower', true, 'SPECIAL')}
+              className={`bg-white/5 ${checkActive('miningPower', true, 'SPECIAL')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
+            >
+              SPECIAL
+            </div>
+          )}
         </div>
 
         <div className="flex items-center space-x-4">

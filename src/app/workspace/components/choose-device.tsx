@@ -19,7 +19,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const { isLoading } = useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
     queryFn: async () => {
-      const res: any = await getUserDevice({ type })
+      const res: any = await getUserDevice({ type, page })
       if (res.status) {
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage

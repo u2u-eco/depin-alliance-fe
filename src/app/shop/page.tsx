@@ -7,9 +7,14 @@ import { useDisclosure } from '@nextui-org/react'
 import ShopItem from './components/shop-item'
 import FilterSort from '../components/filter-sort'
 import { FILTER_TYPE } from '@/constants'
+import { useSearchParams } from 'next/navigation'
 
 export default function ShopPage() {
-  const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
+  const searchParams = useSearchParams()
+
+  const type = searchParams.get('type')
+  const [activeFilter, setActiveFilter] = useState(type ? FILTER_TYPE.FILTER : FILTER_TYPE.SORT)
+
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -17,7 +22,7 @@ export default function ShopPage() {
   }>({
     sortBy: 'price',
     sortAscending: true,
-    type: ''
+    type: type || ''
   })
   const {
     isOpen: isOpenFilter,
@@ -40,7 +45,9 @@ export default function ShopPage() {
       >
         <div className="space-y-5 xs:space-y-6">
           <div className="flex items-center justify-between">
-            <p className="text-body text-[15px] xs:text-base tracking-[-1px] uppercase">{filterOptions.type || 'ALL ITEMS'}</p>
+            <p className="text-body text-[15px] xs:text-base tracking-[-1px] uppercase">
+              {filterOptions.type || 'ALL ITEMS'}
+            </p>
             <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
               <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
                 <IconSort
@@ -67,6 +74,7 @@ export default function ShopPage() {
         onOpenChange={onOpenChangeFilter}
         onClose={onCloseFilter}
         type={activeFilter}
+        filterType={filterOptions.type}
         cb={setFilterOptions}
       />
     </>
