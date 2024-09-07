@@ -63,13 +63,19 @@ export default function Item() {
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
   const { isLoading, refetch } = useQuery({
-    queryKey: ['getUserItemDevice', filterOptions],
+    queryKey: [
+      'getUserItemDevice',
+      filterOptions.sortAscending,
+      filterOptions.sortBy,
+      filterOptions.type,
+      page
+    ],
     queryFn: async () => {
-      const res: any = await listUserItemDevice(filterOptions)
+      const res: any = await listUserItemDevice({ ...filterOptions, page })
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
-      if (page !== res.pagination.page) return
+      if (page !== res.pagination.page) return []
       let _listItem = res.data
       if (page > 1) {
         _listItem = [...dataList.current, ...res.data]
@@ -129,6 +135,8 @@ export default function Item() {
   }
 
   useEffect(() => {
+    console.log('🚀 ~ Item ~ isInView:', isInView, page, maxPage.current)
+
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
@@ -171,9 +179,9 @@ export default function Item() {
             }}
           />
         )}
-        {!isLoading && listDeviceItem?.length > 0 ? (
+        {listDeviceItem?.length > 0 ? (
           <div
-            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[60vh] overflow-y-auto hide-scrollbar"
+            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[49vh] overflow-y-auto hide-scrollbar"
             ref={refList}
           >
             {listDeviceItem?.map((item: any) => (
@@ -276,8 +284,12 @@ export default function Item() {
                   ) : (
                     <div className="flex items-center space-x-6">
                       <div className="flex items-center space-x-1">
-                        <p className="text-base text-title font-semibold leading-[20px]">{currentItem.current?.totalItem}</p>
-                        <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">Available</div>
+                        <p className="text-base text-title font-semibold leading-[20px]">
+                          {currentItem.current?.totalItem}
+                        </p>
+                        <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">
+                          Available
+                        </div>
                       </div>
                       {activeType === ITEM_TYPE.INFO && (
                         <>

@@ -39,7 +39,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
-      if (page !== res.pagination.page) return
+      if (page !== res.pagination.page) return []
       let _listItem = res.data
 
       if (page > 1) {
