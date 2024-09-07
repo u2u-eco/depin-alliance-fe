@@ -68,15 +68,17 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
         <div className="space-y-3 xs:space-y-4">
           {Object.keys(listInfo)?.map((keyItem) => {
             return (
-              <div className="space-y-3" key={keyItem}>
-                <p className="text-gradient uppercase text-[15px] xs:text-base font-mona font-semibold leading-[20px] w-fit">
+              <div className="space-y-2 xs:space-y-2.5 2xs:space-y-3" key={keyItem}>
+                <p className="text-gradient uppercase text-sm xs:text-[15px] 2xs:text-base font-mona font-semibold !leading-[18px] xs:!leading-[20px] w-fit">
                   {keyItem}
                 </p>
                 <div
                   className={`grid ${keyItem === 'RAM' ? 'grid-cols-3' : keyItem === 'STORAGE' || keyItem === 'CPU' ? 'grid-cols-1' : 'grid-cols-2'} gap-2`}
                 >
                   {isLoading ? (
-                    <IconReload className="text-[#1AF7A8] size-6" />
+                    <div className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)]">
+                      <IconReload className="text-[#1AF7A8] size-4 xs:size-5 2xs:size-6" />
+                    </div>
                   ) : (
                     <>
                       {listInfo[keyItem].map((item: IDeviceTypeItem, index: number) => {
@@ -84,7 +86,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                           return (
                             <div
                               key={index}
-                              className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] 2xs:text-sm whitespace-nowrap"
+                              className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] !leading-[16px] xs:!leading-[20px] 2xs:!leading-[24px] 2xs:text-sm whitespace-nowrap"
                               onClick={() => handleInfo(item)}
                             >
                               {item?.name}
@@ -97,7 +99,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                               className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
                               onClick={() => handleEquip(keyItem)}
                             >
-                              <IconPlus className="text-title size-5 2xs:size-6" />
+                              <IconPlus className="text-title size-4 xs:size-5 2xs:size-6" />
                             </div>
                           )
                         }

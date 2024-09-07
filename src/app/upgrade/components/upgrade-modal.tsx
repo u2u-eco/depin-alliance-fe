@@ -40,15 +40,15 @@ export default function UpgradeModal({
     (!userInfo?.pointSkill || item.levelCurrent === item.maxLevel)
   return (
     <div>
-      <div className=" text-body text-base tracking-[-1px] text-center">
+      <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
         <p>
           Are you sure you want to level up <span className="text-gradient">“{item.name}”</span>?
         </p>
       </div>
-      <div className="my-8 flex items-center justify-center space-x-4">
-        <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0_30px)] flex items-center justify-center size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]">
+      <div className="my-6 xs:my-7 2xs:my-8 flex items-center justify-center space-x-4">
+        <div className="[--shape:_22px] xs:[--shape:_26px] 2xs:[--shape:_30px] p-[1px] bg-green-100 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape))] flex items-center justify-center size-[100px] xs:size-[115px] 2xs:size-[130px] min-w-[100px] xs:min-w-[115px] 2xs:min-w-[130px]">
           <ImageDevice
-            className="w-full h-full [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0_30px)]"
+            className="w-full h-full [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape))]"
             image={item.image}
             type=""
           />
@@ -56,10 +56,10 @@ export default function UpgradeModal({
         <div className="space-y-3 xs:space-y-4">
           <div className="space-y-1 xs:space-y-2">
             <p className="font-mona text-white text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] font-semibold">{item.name}</p>
-            <p className="font-geist text-yellow-600 leading-[20px]">LV. {item.levelCurrent}</p>
+            {/* <p className="font-geist text-yellow-600 leading-[20px]">LV. {item.levelCurrent}</p> */}
           </div>
           <div className="space-y-1 xs:space-y-2 2xs:space-y-3 font-geist">
-            <p className="tracking-[-1px] text-title uppercase leading-[18px]">GROWTH:</p>
+            <p className="tracking-[-1px] text-title uppercase text-[13px] xs:text-sm !leading-[18px]">GROWTH:</p>
             <div className="flex items-center space-x-1">
               <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-700 !leading-[20px] 2xs:!leading-[24px]">
                 LV. <span className="text-green-300 -ml-2">{item.levelCurrent}</span>

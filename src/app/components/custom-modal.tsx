@@ -48,7 +48,7 @@ const CustomModal = ({ title, children, background, isOpen, onClose, onOpenChang
                 </div>
                 <div className="flex items-center justify-center space-x-4 mb-3">
                   <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                  <div className="font-airnt font-medium text-xl xs:text-2xl tracking-[1px] text-title text-center leading-[24px] xs:leading-[28px]">
+                  <div className="font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl tracking-[1px] text-title text-center !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]">
                     {title}
                   </div>
                   <div className="size-1.5 min-w-1.5 bg-green-800"></div>

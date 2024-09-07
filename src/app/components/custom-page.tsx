@@ -32,7 +32,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
               transition={{ duration: 0.35 }}
             >
               {isShowInfo && <Info />}
-              <div className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-7'} max-w-[480px] mx-auto`}>{children}</div>
+              <div className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}>{children}</div>
             </motion.div>
           </div>
           {isShowSidebar && <CustomNavbar />}

@@ -62,7 +62,7 @@ const CustomList = ({
             item={item}
           >
             {type === LIST_TYPE.SKILL ? (
-              <div className="text-yellow-600 font-geist leading-[16px]">
+              <div className="text-yellow-600 font-geist text-[13px] xs:text-sm !leading-[16px]">
                 LV. {levelKey ? item[levelKey] : item.level}
               </div>
             ) : item.text ? (
@@ -79,8 +79,8 @@ const CustomList = ({
                     />
                     <p className="text-primary font-geist font-semibold">
                       {item.miningPower && '+'}
-                      {(pointKey ? formatNumber(item[pointKey], 0, 2) : '') ||
-                        formatNumber(item.miningPower, 0, 2)}
+                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '') ||
+                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}
                     </p>
                   </div>
                   {item.available ||
