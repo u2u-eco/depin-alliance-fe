@@ -240,11 +240,11 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
                       {totalAmount
-                        ? `${formatNumber(userInfo?.ratePurchase ? totalAmount - (totalAmount * userInfo.ratePurchase) / 100 : totalAmount, 0, 0)}`
+                        ? `${formatNumber(userInfo?.ratePurchase ? userInfo.ratePurchase * totalAmount : totalAmount, 0, 0)}`
                         : 0}
                     </span>
                   </div>
-                  {userInfo?.ratePurchase && (
+                  {userInfo?.ratePurchase && userInfo?.ratePurchase < 1 && (
                     <div className="flex items-center space-x-1 opacity-65">
                       <IconPoint className="size-4" color />
                       <span className="font-geist text-xs line-through">
