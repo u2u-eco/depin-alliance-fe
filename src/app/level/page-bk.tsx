@@ -26,7 +26,6 @@ const listLevel = [
 export default function LevelPage() {
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [levelUp, setLevelUp] = useState(true)
   const { userInfo } = useCommonStore()
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
     if (userInfo) {
