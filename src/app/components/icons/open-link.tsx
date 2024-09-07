@@ -26,7 +26,8 @@ function Icon({ className, gradient }: IconProps) {
       </svg>
     ) : (
       <svg className={cn(className)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-        <path d="M25 7.5L11.25 21.25L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.542 9.22919L9.16699 21.6042" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.8545 9.16669L21.542 9.22794L21.6045 17.9167" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     )
   )
