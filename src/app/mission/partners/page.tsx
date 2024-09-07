@@ -1,33 +1,46 @@
 'use client'
 
-import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { IconChevron, IconPoint } from '@/app/components/icons'
-import { QUERY_CONFIG } from '@/constants'
+import { formatNumber } from '@/helper/common'
+import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
+import useMissionStore from '@/stores/missionsStore'
 import { useDisclosure } from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import React from 'react'
-
-const listMission = [
-  { id: 1, title: 'OKX Mission', miningPower: '3000', icon: 'okx' },
-  { id: 2, title: 'OKX Mission', miningPower: '3000', icon: 'okx' },
-  { id: 3, title: 'OKX Mission', miningPower: '3000', icon: 'okx' },
-  { id: 4, title: 'OKX Mission', miningPower: '3000', icon: 'okx', status: 'CLAIMED' }
-]
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect } from 'react'
+import ListMission from '../components/list-mission'
+import Image from 'next/image'
 
 export default function PartnersPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const id = searchParams.get('id')
+  const { currentMission, setCurrentMission } = useMissionStore()
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
+  const getCurrentMissionById = async () => {
+    const res = await getListMissionByPartner()
+    if (res.status) {
+      res.data.forEach((item: IMissionPartner, index: number) => {
+        if (index === Number(id)) {
+          setCurrentMission(item)
+        }
+      })
+    }
+  }
   const handleBack = () => {
     router.back()
   }
-  const handleClick = () => {
-    onOpen()
-  }
+
+  useEffect(() => {
+    if (!currentMission && id) {
+      getCurrentMissionById()
+    }
+  }, [currentMission, id])
 
   return (
     <>
@@ -44,10 +57,13 @@ export default function PartnersPage() {
           <div className="space-y-6">
             <div className="text-center relative size-[110px] xs:size-[120px] 2xs:size-[130px] mx-auto">
               <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]">
-                <img
+                <Image
+                  width={0}
+                  height={0}
+                  sizes="100vw"
                   className="w-full h-full object-cover [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]"
-                  src="/assets/images/mission/okx.png"
-                  srcSet="/assets/images/mission/okx.png 1x, /assets/images/mission/okx@2x.png 2x"
+                  src={currentMission?.image || `/assets/images/mission/okx.png`}
+                  // srcSet="/assets/images/mission/okx.png 1x, /assets/images/mission/okx@2x.png 2x"
                   alt="DePIN Alliance"
                 />
               </div>
@@ -56,12 +72,12 @@ export default function PartnersPage() {
               <div className="flex items-center justify-center space-x-6">
                 <div className="size-1.5 bg-green-100"></div>
                 <div className="text-title font-airnt font-medium text-lg xs:text-xl [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] uppercase">
-                  okx wallet
+                  {currentMission?.name}
                 </div>
                 <div className="size-1.5 bg-green-100"></div>
               </div>
               <p className="text-base leading-[20px] tracking-[-1px] text-body">
-                OKX Wallet is the safest wallet you can find on market
+                {currentMission?.description}
               </p>
             </div>
             <div className="btn default cursor-default">
@@ -73,7 +89,7 @@ export default function PartnersPage() {
                     <div className="flex items-center justify-center space-x-1 font-geist">
                       <IconPoint className="size-4" />
                       <p className="text-green-500 text-sm normal-case leading-[16px] whitespace-nowrap">
-                        Up to +3000 points
+                        {currentMission?.rewards}
                       </p>
                     </div>
                   </div>
@@ -82,18 +98,21 @@ export default function PartnersPage() {
                     <p className="text-sm font-semibold text-body leading-[16px]">PARTICIPANTS</p>
                     <div className="flex items-center justify-center space-x-1 font-geist">
                       <IconPoint className="size-4" />
-                      <p className="text-title text-sm normal-case leading-[16px]">416K</p>
+                      <p className="text-title text-sm normal-case leading-[16px]">
+                        {currentMission?.participants
+                          ? formatNumber(currentMission.participants)
+                          : 0}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="btn-border"></div>
             </div>
-            <CustomList
-              type="mission"
-              title="Mission"
-              data={listMission}
-              onClickItem={handleClick}
+
+            <ListMission
+              listMission={[{ group: 'Missions', missions: currentMission?.missions || [] }]}
+              refetch={getCurrentMissionById}
             />
           </div>
         </div>

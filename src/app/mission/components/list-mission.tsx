@@ -1,28 +1,29 @@
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
-import { LIST_TYPE, QUERY_CONFIG } from '@/constants'
+import { LIST_TYPE } from '@/constants'
+import { IItemMissionPartner, IMissionItem, IMissionPartner } from '@/interfaces/i.missions'
 import { claimTask, getListMission, verifyMission } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { useShallow } from 'zustand/react/shallow'
-
-export default function ListMission() {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItem = useRef<any>()
+interface IListMission {
+  title?: string
+  missions?: IMissionItem[] | IItemMissionPartner[]
+  id?: number
+  listMission: {
+    group: string
+    missions: IMissionItem[] | IItemMissionPartner[]
+  }[]
+  refetch?: () => void
+}
+export default function ListMission({ title, missions, id, listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
-  const { token, getUserInfo } = useCommonStore(useShallow((state) => state))
-  const { data: listMission, refetch } = useQuery({
-    queryKey: ['fetchListMission'],
-    queryFn: getListMission,
-    enabled: Boolean(token),
-    ...QUERY_CONFIG
-  })
-
+  const { getUserInfo } = useCommonStore()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const currentItem = useRef<any>()
   const handleClick = (item: any) => {
     if (item.status === 'CLAIMED') return
     if (item.status === 'VERIFIED') {
@@ -39,7 +40,7 @@ export default function ListMission() {
     const res = await verifyMission(id)
     if (res.status && res.data) {
       setVerified(true)
-      refetch()
+      refetch && refetch()
     }
   }
 
@@ -47,7 +48,7 @@ export default function ListMission() {
     const res = await claimTask(currentItem.current.id)
     if (res.status) {
       toast.success('Mission is completed')
-      refetch()
+      refetch && refetch()
       getUserInfo()
       onClose()
     }
@@ -67,22 +68,22 @@ export default function ListMission() {
       }
     }
   }
-
   return (
     <>
-      {listMission?.data.map((item: any, index: number) => (
+      {listMission.map((item: any, index: number) => (
         <React.Fragment key={index}>
           <CustomList
             type={LIST_TYPE.MISSION}
             title={item.group}
             data={item.missions}
             pointKey="point"
-            key={item.id}
+            key={index}
             onClickItem={handleClick}
             imageItemKey="image"
           />
         </React.Fragment>
       ))}
+
       <CustomModal title={'Mission'} isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">

@@ -79,8 +79,8 @@ const CustomList = ({
                     />
                     <p className="text-primary font-geist font-semibold">
                       {item.miningPower && '+'}
-                      {(pointKey ? formatNumber(item[pointKey], 0, 2) : '') ||
-                        formatNumber(item.miningPower, 0, 2)}
+                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '') ||
+                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}
                     </p>
                   </div>
                   {item.available ||

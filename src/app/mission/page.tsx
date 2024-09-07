@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import CustomPage from '../components/custom-page'
 import DailyCheckIn from './components/daily-check-in'
 import Image from 'next/image'
-import ListMission from './components/list-mission'
+import Missions from './components/missions'
 import { Tab, Tabs } from '@nextui-org/react'
 import ListPartner from './components/list-partner'
 
@@ -62,7 +62,7 @@ export default function MissionPage() {
               <DailyCheckIn />
             </div>
             <div>
-              <ListMission />
+              <Missions />
             </div>
           </>
         )}
