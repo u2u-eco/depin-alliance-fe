@@ -52,7 +52,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
           {!isLoading && (
             <NoItem
               title="No item"
-              link="/shop"
+              link={`/shop?type=${type}`}
               classNames={{
                 icon: 'text-body'
               }}

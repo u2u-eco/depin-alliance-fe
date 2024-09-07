@@ -72,12 +72,19 @@ export default function ProfilePage() {
   }
 
   const fetchList = () => {
-    setTimeout(() => {
+    const update = () => {
       _getSkills()
       if (currentItem.current.skillId) {
         handleClickItem(currentItem.current)
       }
+    }
+    update()
+    setTimeout(() => {
+      update()
     }, 5300)
+    setTimeout(() => {
+      update()
+    }, 10000)
   }
 
   useEffect(() => {
