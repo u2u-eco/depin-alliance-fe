@@ -223,7 +223,6 @@ export default function UpgradePage() {
           item={currentItem.current}
           refInterval={refInterval}
           handleAction={handleModalAction}
-          handleFetchList={handleFetchList}
         />
       </CustomModal>
     </>
