@@ -60,5 +60,5 @@ export default function Template({ children }: { children: React.ReactNode }) {
     }
   }, [initData, token])
 
-  return <>{isLoading ? <Loading /> : children}</>
+  return <>{isLoading ? <Loading isDone={!isLoading} /> : children}</>
 }

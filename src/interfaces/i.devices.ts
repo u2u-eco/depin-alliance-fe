@@ -7,6 +7,7 @@ export interface IDeviceTypeItem {
   image: string | null
   id: number
   totalItem: number
+  isCanSell: boolean
 }
 
 export interface IDeviceItemBuyParam {

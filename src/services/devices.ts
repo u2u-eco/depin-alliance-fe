@@ -1,11 +1,20 @@
 import { IDeviceItemBuyParam, IFilterDevice } from '@/interfaces/i.devices'
 import https from '../constants/https'
 
-export const getUserDevice = ({ index, type }: { index?: number; type?: string }) => {
+export const getUserDevice = ({
+  index,
+  type,
+  page
+}: {
+  index?: number
+  type?: string
+  page?: number
+}) => {
   return https.get(`/devices/user-device-item`, {
     params: {
       index,
-      type
+      type,
+      page: page || 1
     }
   })
 }

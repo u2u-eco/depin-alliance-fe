@@ -135,8 +135,6 @@ export default function Item() {
   }
 
   useEffect(() => {
-    console.log('🚀 ~ Item ~ isInView:', isInView, page, maxPage.current)
-
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
@@ -148,6 +146,8 @@ export default function Item() {
     }
     setPage(1)
   }, [filterOptions])
+
+  const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
 
   return (
     <>
@@ -215,7 +215,7 @@ export default function Item() {
             {!isLoading && (
               <NoItem
                 title="No item"
-                link="/shop"
+                link={filterOptions.type ? `/shop?type=${filterOptions.type}` : '/shop'}
                 classNames={{
                   icon: 'text-body'
                 }}
@@ -234,9 +234,7 @@ export default function Item() {
         <div className="relative w-full">
           <div className=" text-body text-base tracking-[-1px] text-center">
             {activeType === ITEM_TYPE.INFO ? (
-              <p>You are equipping this item!</p>
-            ) : activeType === ITEM_TYPE.SPECIAL ? (
-              <p>You own this item!</p>
+              <p>{isSpecial ? 'You own this item!' : 'You are equipping this item!'} </p>
             ) : (
               <p>
                 Are you sure you want to sell{' '}
@@ -244,9 +242,7 @@ export default function Item() {
               </p>
             )}
           </div>
-          {activeType === ITEM_TYPE.INFO ||
-          activeType === ITEM_TYPE.SELL ||
-          activeType === ITEM_TYPE.SPECIAL ? (
+          {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
             <>
               <div
                 className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-10 mb-14' : 'my-8'}`}
@@ -262,11 +258,10 @@ export default function Item() {
                     src={
                       currentItem.current?.image?.length > 0
                         ? currentItem.current.image
-                        : activeType === ITEM_TYPE.SPECIAL
+                        : isSpecial
                           ? `/assets/images/workspace/item-special@2x.png`
                           : `/assets/images/upgrade/upgrade-${currentItem.current?.type?.toLowerCase()}@2x.png`
                     }
-                    // srcSet="/assets/images/upgrade/upgrade-ram-2gb.png 1x. /assets/images/upgrade/upgrade-ram-2gb@2x.png 2x"
                     alt=""
                   />
                 </div>
@@ -276,26 +271,24 @@ export default function Item() {
                   >
                     {currentItem.current?.name}
                   </p>
-                  {activeType === ITEM_TYPE.SPECIAL ? (
-                    <p className="text-title text-base font-semibold leading-[20px]">
-                      {currentItem.current?.totalItem}{' '}
-                      <span className="text-xs font-normal text-white-50 -ml-0.5">In Total</span>
-                    </p>
-                  ) : (
-                    <div className="flex items-center space-x-6">
-                      <div className="flex items-center space-x-1">
-                        <p className="text-base text-title font-semibold leading-[20px]">
-                          {currentItem.current?.totalItem}
-                        </p>
-                        <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">
-                          Available
-                        </div>
+
+                  <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-1">
+                      <p className="text-base text-title font-semibold leading-[20px]">
+                        {currentItem.current?.totalItem}
+                      </p>
+                      <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">
+                        {isSpecial ? 'In Total' : 'Available'}
                       </div>
-                      {activeType === ITEM_TYPE.INFO && (
-                        <>
-                          <div className="w-[1px] h-9 bg-white/25"></div>
-                          <div className="space-y-2">
-                            <div className="text-xs text-white-50">TOTAL PROFIT:</div>
+                    </div>
+                    {activeType === ITEM_TYPE.INFO && (
+                      <>
+                        <div className="w-[1px] h-9 bg-white/25"></div>
+                        <div className="space-y-2">
+                          <div className="text-xs text-white-50">
+                            {isSpecial ? 'AMOUNT:' : 'TOTAL PROFIT:'}
+                          </div>
+                          {isSpecial ? null : (
                             <div className="flex items-center space-x-1">
                               <IconPoint className="size-4" />
                               <span className="text-primary font-semibold leading-[16px]">
@@ -304,11 +297,11 @@ export default function Item() {
                                   : null}
                               </span>
                             </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  )}
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
               {activeType === ITEM_TYPE.SELL && (
@@ -316,7 +309,7 @@ export default function Item() {
               )}
             </>
           ) : null}
-          {activeType === ITEM_TYPE.SELL || activeType === ITEM_TYPE.SPECIAL ? (
+          {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
             <motion.div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}
               initial={{ opacity: 0 }}
@@ -346,18 +339,21 @@ export default function Item() {
             </motion.div>
           ) : (
             <div className="flex items-center space-x-4">
-              <div
-                className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
-                onClick={() =>
-                  activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
-                }
-              >
-                <div className="btn-border"></div>
-                <div className={`btn btn-${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}>
-                  {activeType === ITEM_TYPE.INFO ? 'Sell' : 'Reset'}
+              {(activeType !== ITEM_TYPE.INFO ||
+                (activeType === ITEM_TYPE.INFO && currentItem.current?.isCanSell)) && (
+                <div
+                  className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
+                  onClick={() =>
+                    activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
+                  }
+                >
+                  <div className="btn-border"></div>
+                  <div className={`btn btn-${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}>
+                    {activeType === ITEM_TYPE.INFO ? 'Sell' : 'Reset'}
+                  </div>
+                  <div className="btn-border"></div>
                 </div>
-                <div className="btn-border"></div>
-              </div>
+              )}
               <Link href="/shop" className="btn">
                 <div className="btn-border"></div>
                 <div className="btn-primary">
