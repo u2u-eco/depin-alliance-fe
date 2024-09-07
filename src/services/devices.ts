@@ -52,6 +52,7 @@ export const listUserItemDevice = (params: {
   sortBy?: string
   sortAscending?: boolean
   type?: string
+  page: number
 }) => {
   return https.get(`/devices/user-item`, {
     params

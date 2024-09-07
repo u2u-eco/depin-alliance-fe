@@ -14,6 +14,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const [listDeviceItemByFilter, setListDeviceItemByFilter] = useState<IDeviceTypeItem[]>([])
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
+  const dataList = useRef<any[]>([])
   const [scrollTrigger, isInView] = useInView()
   const { isLoading } = useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
@@ -23,8 +24,12 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
-        const listItem = page === 1 ? res.data : [...listDeviceItemByFilter, res.data]
-        setListDeviceItemByFilter(listItem)
+        let _listItem = res.data
+        if (page > 1) {
+          _listItem = [...dataList.current, ...res.data]
+        }
+        dataList.current = _listItem
+        setListDeviceItemByFilter(dataList.current)
       }
       return res
     }
@@ -41,15 +46,19 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   }, [type])
 
   return (
-    <div className="max-h-[450px] overflow-y-auto hide-scrollbar mt-8 mb-6">
+    <div className="max-h-[300px] overflow-y-auto hide-scrollbar mt-8 mb-6">
       {listDeviceItemByFilter?.length === 0 ? (
-        <NoItem
-          title="No item"
-          link="/shop"
-          classNames={{
-            icon: "text-body"
-          }}
-        />
+        <>
+          {!isLoading && (
+            <NoItem
+              title="No item"
+              link="/shop"
+              classNames={{
+                icon: 'text-body'
+              }}
+            />
+          )}
+        </>
       ) : (
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
@@ -75,7 +84,9 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
           ))}
         </div>
       )}
-      <>{page < maxPage.current && <div ref={scrollTrigger}></div>}</>
+      <div ref={scrollTrigger} className="text-[transparent]">
+        Loading...
+      </div>
     </div>
   )
 }
