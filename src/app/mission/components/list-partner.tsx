@@ -103,7 +103,7 @@ export default function ListPartner() {
           </div>
         </div>
       ) : (
-        <NoItem title="No partner available" />
+        <>{!isLoading && <NoItem title="No partner available" />}</>
       )}
     </>
   )

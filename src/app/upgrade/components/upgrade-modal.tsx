@@ -157,12 +157,11 @@ export default function UpgradeModal({
                 onClick={handleClick}
               >
                 <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
-                {item.feeUpgrade ||
-                  (item.feePointUpgrade && (
-                    <div
-                      className={`w-5 xs:w-6 2xs:w-[30px] h-[1px] ${disableBtn ? 'bg-inactive' : 'bg-green-800'}`}
-                    ></div>
-                  ))}
+                {item.feeUpgrade || item.feePointUpgrade ? (
+                  <div
+                    className={`w-5 xs:w-6 2xs:w-[30px] h-[1px] ${disableBtn ? 'bg-inactive' : 'bg-green-800'}`}
+                  ></div>
+                ) : null}
 
                 {item.feeUpgrade && (
                   <div className="flex items-center space-x-0.5 xs:space-x-1">
