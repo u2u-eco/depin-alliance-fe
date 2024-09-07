@@ -47,10 +47,12 @@ export default function ProfilePage() {
   }
 
   const handleClickItem = async (item: any) => {
-    const res = await getSkillInfo(item.skillId)
     let infoSkill = {}
-    if (res.status) {
-      infoSkill = res.data
+    if (item.levelCurrent < item.maxLevel) {
+      const res = await getSkillInfo(item.skillId)
+      if (res.status) {
+        infoSkill = res.data
+      }
     }
     currentItem.current = { ...item, ...infoSkill }
     onOpen()
@@ -132,6 +134,7 @@ export default function ProfilePage() {
               levelKey="levelCurrent"
               imageItemKey="image"
               onClickItem={handleClickItem}
+              cb={fetchList}
             />
           </div>
         </div>
@@ -149,7 +152,6 @@ export default function ProfilePage() {
           item={currentItem.current}
           refInterval={refInterval}
           handleAction={handleModalAction}
-          handleFetchList={fetchList}
         />
       </CustomModal>
     </>

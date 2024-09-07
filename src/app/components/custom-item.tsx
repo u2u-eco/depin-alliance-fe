@@ -23,10 +23,11 @@ interface ItemProps {
   title: string
   item?: any
   status?: string
+  cb?: () => void
   children: ReactNode
 }
 
-const CustomItem = ({ type, image, icon, done, status, title, item, children }: ItemProps) => {
+const CustomItem = ({ type, image, icon, done, status, title, item, cb, children }: ItemProps) => {
   const getClassBySkill = (index: number) => {
     switch (index) {
       case 1:
@@ -125,7 +126,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, children }: 
         {type === LIST_TYPE.SKILL ? (
           <>
             {item.timeWaiting > Date.now() ? (
-              <CountdownTime time={item.timeWaiting} type="basic" />
+              <CountdownTime time={item.timeWaiting} type="basic" cb={cb} />
             ) : (
               <div className="size-7 overflow-hidden">
                 <motion.div

@@ -11,20 +11,18 @@ interface IUpgradeModal {
   item: any
   refInterval: any
   handleAction: (data: any) => void
-  handleFetchList: () => void
 }
 export default function UpgradeModal({
   activeType,
   UPGRADE_TYPE,
   item,
-  handleAction,
-  handleFetchList
+  handleAction
 }: IUpgradeModal) {
   const userInfo = useCommonStore((state) => state.userInfo)
   const [timeCountdown, setTimeCountdown] = useState<number>(item.timeWaiting)
 
   const handleClick = () => {
-    if (!userInfo?.pointSkill) {
+    if (!userInfo?.pointSkill || disableBtn) {
       return
     }
     handleAction(item.skillId)
@@ -32,7 +30,6 @@ export default function UpgradeModal({
 
   const cbReset = () => {
     setTimeCountdown(0)
-    handleFetchList()
   }
 
   const disableBtn =
@@ -55,11 +52,15 @@ export default function UpgradeModal({
         </div>
         <div className="space-y-3 xs:space-y-4">
           <div className="space-y-1 xs:space-y-2">
-            <p className="font-mona text-white text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] font-semibold">{item.name}</p>
+            <p className="font-mona text-white text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] font-semibold">
+              {item.name}
+            </p>
             {/* <p className="font-geist text-yellow-600 leading-[20px]">LV. {item.levelCurrent}</p> */}
           </div>
           <div className="space-y-1 xs:space-y-2 2xs:space-y-3 font-geist">
-            <p className="tracking-[-1px] text-title uppercase text-[13px] xs:text-sm !leading-[18px]">GROWTH:</p>
+            <p className="tracking-[-1px] text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
+              GROWTH:
+            </p>
             <div className="flex items-center space-x-1">
               <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-700 !leading-[20px] 2xs:!leading-[24px]">
                 LV. <span className="text-green-300 -ml-2">{item.levelCurrent}</span>
@@ -85,50 +86,61 @@ export default function UpgradeModal({
                 </motion.div>
               </div>
               <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-700 !leading-[20px] 2xs:!leading-[24px]">
-                LV. <span className="text-green-300 -ml-2">{item.levelUpgrade}</span>
+                LV.{' '}
+                <span className="text-green-300 -ml-2">
+                  {item.levelUpgrade || item.levelCurrent}
+                </span>
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="btn default cursor-default">
-        <div className="btn-border"></div>
-        <div className="btn-default !bg-white/5 !backdrop-blur-[8px]">
-          <div className="flex items-center justify-center space-x-4 font-geist">
-            <div className="flex items-center space-x-2">
-              <IconUpDown className={`size-5 xs:size-6 text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]`}/>
-              <p className="tracking-[-1px] text-title capitalize font-normal">{item?.description}:</p>
-            </div>
-            <div className="flex items-center space-x-1">
-              {/* <p className="text-lg font-semibold text-green-700 leading-[24px]">1%</p> */}
-              <div className="w-[20px] overflow-hidden">
-                <motion.div
-                  initial={{ x: -24 }}
-                  animate={{ x: 0 }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                >
-                  <div className="flex space-x-1">
-                    <img
-                      className="size-6"
-                      src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
-                      alt="Icon Double Arrow"
-                    />
-                    <img
-                      className="size-6"
-                      src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
-                      alt="Icon Double Arrow"
-                    />
-                  </div>
-                </motion.div>
+      {item.effectCurrent && item.rateEffect && (
+        <div className="btn default cursor-default">
+          <div className="btn-border"></div>
+          <div className="btn-default !bg-white/5 !backdrop-blur-[8px]">
+            <div className="flex items-center justify-center space-x-4 font-geist">
+              <div className="flex items-center space-x-2">
+                <IconUpDown
+                  className={`size-5 xs:size-6 text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]`}
+                />
+                <p className="tracking-[-1px] text-title capitalize font-normal">
+                  {item?.description}:
+                </p>
               </div>
-              <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-300 !leading-[20px] 2xs:!leading-[24px]">
-                {formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%
-              </p>
+              <div className="flex items-center space-x-1">
+                {/* <p className="text-lg font-semibold text-green-700 leading-[24px]">1%</p> */}
+                <div className="w-[20px] overflow-hidden">
+                  <motion.div
+                    initial={{ x: -24 }}
+                    animate={{ x: 0 }}
+                    transition={{ repeat: Infinity, duration: 1 }}
+                  >
+                    <div className="flex space-x-1">
+                      <img
+                        className="size-6"
+                        src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
+                        alt="Icon Double Arrow"
+                      />
+                      <img
+                        className="size-6"
+                        src="/assets/images/icons/icon-double-arrow-right-gradient.svg"
+                        alt="Icon Double Arrow"
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+                <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-300 !leading-[20px] 2xs:!leading-[24px]">
+                  {item.effectCurrent && item.rateEffect
+                    ? `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
+                    : null}
+                </p>
+              </div>
             </div>
           </div>
+          <div className="btn-border"></div>
         </div>
-        <div className="btn-border"></div>
-      </div>
+      )}
       <div className={`btn mt-6 ${disableBtn ? 'inactive' : ''}`}>
         {activeType === UPGRADE_TYPE.SKILL && item.timeWaiting > Date.now() && timeCountdown ? (
           <div className="btn-default flex items-center justify-center !py-2.5 !px-3">
@@ -145,19 +157,28 @@ export default function UpgradeModal({
                 onClick={handleClick}
               >
                 <span>{activeType === UPGRADE_TYPE.DEVICE ? 'Buy Now' : 'Level Up'}</span>
-                <div
-                  className={`w-5 xs:w-6 2xs:w-[30px] h-[1px] ${disableBtn ? 'bg-inactive' : 'bg-green-800'}`}
-                ></div>
-                <div className="flex items-center space-x-0.5 xs:space-x-1">
-                  <IconThunder className="size-4 xs:size-5" />
-                  <p className="font-geist font-semibold">{item.feeUpgrade}</p>
-                </div>
-                <div className="flex items-center space-x-0.5 xs:space-x-1">
-                  <IconPoint color className="size-4 xs:size-5" />
-                  <p className="font-geist font-semibold">
-                    {formatNumber(item.feePointUpgrade, 0, 0)}
-                  </p>
-                </div>
+                {item.feeUpgrade ||
+                  (item.feePointUpgrade && (
+                    <div
+                      className={`w-5 xs:w-6 2xs:w-[30px] h-[1px] ${disableBtn ? 'bg-inactive' : 'bg-green-800'}`}
+                    ></div>
+                  ))}
+
+                {item.feeUpgrade && (
+                  <div className="flex items-center space-x-0.5 xs:space-x-1">
+                    <IconThunder className="size-4 xs:size-5" />
+                    <p className="font-geist font-semibold">{item.feeUpgrade}</p>
+                  </div>
+                )}
+
+                {item.feePointUpgrade && (
+                  <div className="flex items-center space-x-0.5 xs:space-x-1">
+                    <IconPoint color className="size-4 xs:size-5" />
+                    <p className="font-geist font-semibold">
+                      {formatNumber(item.feePointUpgrade, 0, 0)}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="btn-border"></div>

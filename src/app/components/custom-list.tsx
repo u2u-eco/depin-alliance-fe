@@ -16,6 +16,7 @@ interface ListProps {
   imageDefault?: string
   imageUrlPath?: string
   partners?: boolean
+  cb?: () => void
   onClickItem?: (item: any) => void
 }
 
@@ -30,6 +31,7 @@ const CustomList = ({
   imageDefault,
   levelKey,
   partners,
+  cb,
   onClickItem
 }: ListProps) => {
   const handleClickItem = (item: any) => {
@@ -60,6 +62,7 @@ const CustomList = ({
             done={isDone(item)}
             key={item.code}
             item={item}
+            cb={cb}
           >
             {type === LIST_TYPE.SKILL ? (
               <div className="text-yellow-600 font-geist text-[13px] xs:text-sm !leading-[16px]">
