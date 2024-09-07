@@ -24,9 +24,9 @@ export default function ListPartner() {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
     }
-    if (count < length && count > 0) {
-      return LIST_STATUS_MISSION.VERIFY
-    }
+    // if (count < length && count > 0) {
+    //   return LIST_STATUS_MISSION.VERIFY
+    // }
     return LIST_STATUS_MISSION.LINK
   }
   const countTaskDone = (list: any, index: number) => {
