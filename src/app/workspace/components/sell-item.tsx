@@ -35,7 +35,7 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
       <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
       <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
         <div className="space-y-3">
-          <div className="font-mona text-title uppercase tracking-[-1px]">PROFIT:</div>
+          <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
           <div className="flex items-center space-x-2">
             <IconPoint className="size-7" />
             <span className="text-green-500 text-lg font-semibold">
