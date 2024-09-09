@@ -49,10 +49,12 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
     } else {
       switch (status) {
         case LIST_STATUS_MISSION.CHECK:
-          return <IconCheckCircle className="text-green-800" />
+          return <IconCheck className="text-green-500" />
         case LIST_STATUS_MISSION.VERIFY:
           return <IconLoader className="text-yellow-200" />
         case LIST_STATUS_MISSION.LINK:
+          return <IconOpenLink className="text-yellow-500" />
+        default:
           return <IconOpenLink className="text-yellow-500" />
       }
     }

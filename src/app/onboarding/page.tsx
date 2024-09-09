@@ -240,7 +240,7 @@ const Onboarding = () => {
                   <button className="btn" onClick={() => handleOnboarding(type)}>
                     <div className="btn-border"></div>
                     <div className="btn-primary">
-                      {type === ONBOARDING_TYPE.START ? 'Next' : 'Get Started'}
+                      {type === ONBOARDING_TYPE.START ? 'GET MY FIRST DEVICE' : 'Get Started'}
                     </div>
                     <div className="btn-border"></div>
                   </button>
