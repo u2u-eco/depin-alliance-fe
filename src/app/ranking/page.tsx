@@ -125,7 +125,7 @@ export default function RankingPage() {
                         height={0}
                         sizes="100vw"
                         style={{ width: '100%' }}
-                        src={item.avatar}
+                        src={item.avatar || '/assets/images/avatar/avatar-01@2x.png'}
                         alt=""
                       />
                     </div>
