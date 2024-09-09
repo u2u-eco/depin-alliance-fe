@@ -112,12 +112,7 @@ const CustomList = ({
                         <div className="w-[1px] h-[20px] bg-white/25"></div>
                       ) : null}
                       <div className="flex items-center space-x-1">
-                        <img
-                          className="size-4"
-                          src="/assets/images/icons/icon-thunder.svg"
-                          alt="xp"
-                        />
-                        <p className="text-primary font-geist font-semibold">{`${item.xp}`}</p>
+                        <p className="text-primary font-geist font-semibold">{`${formatNumber(item.xp, 0, 0)} XP`}</p>
                       </div>
                     </>
                   )}

@@ -2,7 +2,6 @@ import CustomButton from '@/app/components/button'
 import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { joinLeague } from '@/services/league'
-import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 interface IJoinLeague {
   item: ILeagueItem | null
@@ -10,7 +9,6 @@ interface IJoinLeague {
   joinCb: () => void
 }
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
-  const { userConfig } = useCommonStore()
   const handleJoin = async () => {
     if (item?.code) {
       const res = await joinLeague(item?.code)
@@ -32,9 +30,7 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
             height={0}
             sizes="100vw"
             className="w-full h-full [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)]"
-            src={
-              `${userConfig?.urlImage}${item?.avatar}` || '/assets/images/league/league-01@2x.png'
-            }
+            src={`${item?.avatar}` || '/assets/images/league/league-01@2x.png'}
             // srcSet="/assets/images/league/league-01.png 1x. /assets/images/league/league-01@2x.png 2x"
             alt=""
           />

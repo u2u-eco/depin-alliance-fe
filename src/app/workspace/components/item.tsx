@@ -35,6 +35,12 @@ export default function Item() {
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
+  const specialItem = useRef<any>([
+    {
+      name: '0.001',
+      type: 'USDT'
+    }
+  ])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -98,7 +104,8 @@ export default function Item() {
 
   const updateAmountSell = (amount: number) => {
     amountSell.current = amount
-    setTotalPriceSell(currentItem.current.price * amount)
+    console.log(currentItem.current.price)
+    setTotalPriceSell((currentItem.current.price / 2) * amount)
   }
 
   const handleClick = (type: string) => {
@@ -120,10 +127,13 @@ export default function Item() {
   }
 
   const handleSpecial = async () => {
-    if (paramUseKey.current) {
+    if (paramUseKey.current && !disableBtnSpecial) {
+      specialItem.current = []
+      onOpenSpecial()
       const res = await getUseKey(paramUseKey.current)
       if (res.status) {
-        toast.success('Special item successfully!')
+        specialItem.current = res.data
+        // toast.success('Special item successfully!')
         refetch && refetch()
         getUserInfo()
         onClose()
@@ -146,7 +156,7 @@ export default function Item() {
   }
 
   const updateAmountUseKey = async (amount: number) => {
-    if (amount) {
+    if (amount && currentItem?.current.code === 'CYBER_BOX') {
       paramUseKey.current = {
         amount,
         code: currentItem.current?.code
@@ -173,6 +183,8 @@ export default function Item() {
   }, [filterOptions])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
+  const disableBtnSpecial =
+    currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
   return (
     <>
       <div className="space-y-8">
@@ -346,7 +358,7 @@ export default function Item() {
           ) : null}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
             <motion.div
-              className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}
+              className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'inactive' : ''}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -354,13 +366,21 @@ export default function Item() {
               onClick={isSpecial ? handleSpecial : handleSell}
             >
               <div className="btn-border"></div>
-              <div className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : 'primary'}`}>
+              <div
+                className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'default' : 'primary'}`}
+              >
                 <div
-                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : 'text-green-900'}`}
+                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : disableBtnSpecial ? 'text-inactive' : 'text-green-900'}`}
                 >
-                  <p>{activeType === ITEM_TYPE.SELL ? 'SELL' : 'USE KEY'}</p>
+                  <p>
+                    {activeType === ITEM_TYPE.SELL
+                      ? 'SELL'
+                      : currentItem?.current.type === 'CYBER_BOX'
+                        ? 'USE KEY'
+                        : 'REDEEM'}
+                  </p>
                   <div
-                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL ? 'bg-title' : 'bg-green-900'}`}
+                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
                   ></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
@@ -413,6 +433,7 @@ export default function Item() {
         onOpen={onOpenSpecial}
         onOpenChange={onOpenChangeSpecial}
         onClose={onCloseSpecial}
+        listItem={specialItem.current}
       />
     </>
   )

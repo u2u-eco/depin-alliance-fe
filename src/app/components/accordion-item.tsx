@@ -39,7 +39,9 @@ export default function AccordionItem({
         // onClick={() => setExpanded(isOpen ? false : index)}
         className={`relative after:content-[''] after:right-0 after:bottom-0 after:absolute after:size-4 after:border-[8px] after:border-transparent ${isOpen ? 'after:border-r-green-500 after:border-b-green-500' : 'after:border-r-green-900 after:border-b-green-900'}`}
       >
-        <div className={`relative space-x-3 cursor-pointer [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 flex justify-between items-center ${isOpen ? 'bg-green-500 before:!bg-item-accordion before:!opacity-100 mb-3' : ''}`}>
+        <div
+          className={`relative space-x-3 cursor-pointer [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 flex justify-between items-center ${isOpen ? 'bg-green-500 before:!bg-item-accordion before:!opacity-100 mb-3' : ''}`}
+        >
           <div className="relative w-full flex items-center justify-center">
             <div
               onClick={() => {
@@ -79,7 +81,7 @@ export default function AccordionItem({
               >
                 <IconPoint className="size-4" />
                 <p className="text-green-500 font-semibold leading-[16px]">
-                  {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 0)}/h` : '0/h'}
+                  {item.totalMiningPower ? `${formatNumber(item.totalMiningPower, 0, 2)}/h` : '0/h'}
                 </p>
               </div>
             </div>
@@ -110,17 +112,12 @@ export default function AccordionItem({
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, maxHeight: "390px" },
-              collapsed: { opacity: 0, maxHeight: 0 },
+              open: { opacity: 1, maxHeight: '390px' },
+              collapsed: { opacity: 0, maxHeight: 0 }
             }}
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
-            <motion.div
-
-              className="content-placeholder"
-            >
-              {children}
-            </motion.div>
+            <motion.div className="content-placeholder">{children}</motion.div>
           </motion.section>
         )}
       </AnimatePresence>
