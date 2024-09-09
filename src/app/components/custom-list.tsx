@@ -73,22 +73,27 @@ const CustomList = ({
             ) : (
               type !== 'shop' && (
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-1">
-                    <img
-                      className="size-4"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt="Point"
-                    />
-                    <p className="text-primary font-geist font-semibold">
-                      {item.miningPower && '+'}
-                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '0') ||
-                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}{' '}
-                    </p>
-                  </div>
+                  {item.miningPower === 0 || (pointKey && item[pointKey]) ? (
+                    <div className="flex items-center space-x-1">
+                      <img
+                        className="size-4"
+                        src="/assets/images/point.png"
+                        srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                        alt="Point"
+                      />
+                      <p className="text-primary font-geist font-semibold">
+                        {item.miningPower && '+'}
+                        {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '0') ||
+                          (item.miningPower && formatNumber(item.miningPower, 0, 2))}{' '}
+                      </p>
+                    </div>
+                  ) : null}
+
                   {item.box > 0 && (
                     <>
-                      <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      {item.miningPower !== 0 && pointKey && item[pointKey] ? (
+                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      ) : null}
                       <div className="flex items-center space-x-1">
                         <img
                           className="size-5"
@@ -97,6 +102,22 @@ const CustomList = ({
                           alt="Box"
                         />
                         <p className="text-primary font-geist font-semibold">{`${item.box} box`}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {item.xp > 0 && (
+                    <>
+                      {(item.miningPower !== 0 && pointKey && item[pointKey]) || item.box ? (
+                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      ) : null}
+                      <div className="flex items-center space-x-1">
+                        <img
+                          className="size-4"
+                          src="/assets/images/icons/icon-thunder.svg"
+                          alt="xp"
+                        />
+                        <p className="text-primary font-geist font-semibold">{`${item.xp}`}</p>
                       </div>
                     </>
                   )}
