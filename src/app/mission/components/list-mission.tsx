@@ -1,6 +1,6 @@
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
-import { LIST_TYPE } from '@/constants'
+import { LIST_TYPE, SHARE_URL } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem, IMissionPartner } from '@/interfaces/i.missions'
@@ -24,7 +24,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
   const { webApp } = useTelegram()
-  const { getUserInfo } = useCommonStore()
+  const { getUserInfo, userInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
     isOpen: isOpenSpecial,
@@ -56,9 +56,14 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleShare = () => {
-    webApp?.shareToStory('https://game.u2w.io/assets/images/loading-background@2x.png', {
-      text: 'Hello'
-    })
+    if (userInfo) {
+      webApp?.shareToStory(
+        `${SHARE_URL}/${userInfo.devicePlatform === 'iOS' ? userInfo.devicePlatform.toUpperCase() : userInfo.devicePlatform}/${userInfo.devicePlatform.toLowerCase()}-${userInfo.pointBonus}.png`,
+        {
+          text: ''
+        }
+      )
+    }
   }
 
   const handleClaim = async () => {

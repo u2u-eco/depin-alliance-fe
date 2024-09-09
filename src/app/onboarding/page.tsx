@@ -138,6 +138,7 @@ const Onboarding = () => {
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
         if (userInfo?.pointUnClaimed) {
+          setDeviceName(userInfo?.detectDevice)
           setPointReward(userInfo.pointUnClaimed)
           onOpen()
         }

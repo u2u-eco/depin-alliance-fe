@@ -35,12 +35,7 @@ export default function Item() {
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
-  const specialItem = useRef<any>([
-    {
-      name: '0.001',
-      type: 'USDT'
-    }
-  ])
+  const specialItem = useRef<any>([])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -375,9 +370,9 @@ export default function Item() {
                   <p>
                     {activeType === ITEM_TYPE.SELL
                       ? 'SELL'
-                      : currentItem?.current.type === 'CYBER_BOX'
-                        ? 'USE KEY'
-                        : 'REDEEM'}
+                      : disableBtnSpecial
+                        ? 'REDEEM'
+                        : 'USE KEY'}
                   </p>
                   <div
                     className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}

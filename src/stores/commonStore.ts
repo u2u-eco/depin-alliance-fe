@@ -48,7 +48,7 @@ const useCommonStore = create<CommonState>((set) => ({
       if (response.data?.status) {
         Cookies.set(CURRENT_STATUS, response.data?.status)
       }
-      set(() => ({ userInfo: user, currentStatus: user.status }))
+      set(() => ({ userInfo: user }))
     }
     return response
   },

@@ -1,6 +1,6 @@
 import CustomModal from '@/app/components/custom-modal'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface OpenBoxProps {
   isOpen: boolean
@@ -56,7 +56,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
         ) : (
           <>
             <div className="flex flex-1 flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
-              <div className="relative py-4 xs:py-5 2xs:py-6 px-4 border border-green-500 drop-shadow-green w-full bg-[linear-gradient(to_bottom,#000,#00371f)]">
+              <div className="relative max-h-[360px] hidden-scrollbar overflow-y-auto py-4 xs:py-5 2xs:py-6 px-4 border border-green-500 drop-shadow-green w-full bg-[linear-gradient(to_bottom,#000,#00371f)]">
                 <div className="absolute top-0 left-0 right-0 opacity-50 w-full h-full">
                   <img
                     className="object-cover w-full h-full"
@@ -64,34 +64,39 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                     alt=""
                   />
                 </div>
-                {listItem.map((item: any, index: number) => {
-                  if (index < 2) {
+
+                <div
+                  className={`grid grid-cols-${listItem.length > 1 ? 2 : 1} gap-3 relative z-[1]`}
+                >
+                  {listItem.map((item: any, index: number) => {
                     return (
                       <div
                         key={index}
-                        className={`grid grid-cols-${listItem.length > 1 ? 2 : 1} gap-3 relative z-[1]`}
+                        className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green"
                       >
-                        <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
-                          <div className="[--shape:_24px] [--shape:_28px] xs:[--shape:_32px] relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
-                            <Image
-                              width={0}
-                              height={0}
-                              sizes="100vw"
-                              className="size-[80px] xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                              src={`/assets/images/upgrade/upgrade-${item.type.toLowerCase()}@2x.png`}
-                              alt=""
-                            />
-                            <div className="space-y-0.5 xs:space-y-1 text-center">
-                              <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
-                                {item.name}
-                              </p>
-                              {/* <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
-                              x2
+                        <div className="[--shape:_24px] [--shape:_28px] xs:[--shape:_32px] relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
+                          <Image
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            className="size-[80px] xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                            src={`/assets/images/upgrade/upgrade-${item.type.toLowerCase()}@2x.png`}
+                            alt=""
+                          />
+                          <div className="space-y-0.5 xs:space-y-1 text-center">
+                            <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
+                              {item.name}
+                            </p>
+                            {/* <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
+                              x{countRef.current[item.type]?.amount || 1}
                             </p> */}
-                            </div>
                           </div>
                         </div>
-                        {/* <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
+                      </div>
+                    )
+                  })}
+
+                  {/* <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
                         <div className="[--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
                           <img
                             className="size-[80px] xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
@@ -109,38 +114,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                           </div>
                         </div>
                       </div> */}
-                      </div>
-                    )
-                  }
-                })}
-                {listItem.map((item: any, index: number) => {
-                  if (index > 2) {
-                    return (
-                      <div
-                        key={index}
-                        className={`grid grid-cols-${listItem.length > 3 ? 2 : 1} gap-3 relative z-[1]`}
-                      >
-                        <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
-                          <div className="[--shape:_24px] [--shape:_28px] xs:[--shape:_32px] relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
-                            <Image
-                              width={0}
-                              height={0}
-                              sizes="100vw"
-                              className="size-[80px] xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                              src={`/assets/images/upgrade/upgrade-${item.type.toLowerCase()}@2x.png`}
-                              alt=""
-                            />
-                            <div className="space-y-0.5 xs:space-y-1 text-center">
-                              <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
-                                {item.name}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  }
-                })}
+                </div>
               </div>
               <div className="space-y-2 xs:space-y-3">
                 <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 ">
