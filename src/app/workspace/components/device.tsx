@@ -14,7 +14,7 @@ import {
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -173,7 +173,6 @@ export default function Device() {
   }
 
   const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
-
   return (
     <>
       <div className="flex flex-col justify-between h-full">
