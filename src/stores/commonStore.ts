@@ -22,7 +22,7 @@ interface CommonState {
   setUserConfig: ({ config }: { config: IUserConfig }) => void
   setDevice: ({ info }: { info: Array<IDeviceItem> }) => void
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
-  getUserInfo: () => void
+  getUserInfo: () => Promise<any>
   getUserConfig: () => void
   setCurrentLeague: ({ league }: { league: IUserLeague }) => void
 }
@@ -48,8 +48,9 @@ const useCommonStore = create<CommonState>((set) => ({
       if (response.data?.status) {
         Cookies.set(CURRENT_STATUS, response.data?.status)
       }
-      set(() => ({ userInfo: user }))
+      set(() => ({ userInfo: user, currentStatus: user.status }))
     }
+    return response
   },
   getUserConfig: async () => {
     const response = await getUserConfig()
