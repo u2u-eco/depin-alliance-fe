@@ -67,12 +67,12 @@ export default function Avatar() {
             <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Avatar</div>
             <div className="size-1.5 bg-green-800"></div>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex justify-between space-x-4">
             <div className="grid grid-cols-2 gap-1 xs:gap-2 2xs:gap-3 h-fit">
               {listImage.map((item: any) => (
                 <div
                   key={item}
-                  className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-2 xs:before:size-4 2xs:before:size-6 before:border-[6px] xs:before:border-[9px] 2xs:before:border-[12px] before:border-transparent before:transition-all ${selectedImage == item ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
+                  className={`relative max-w-[100px] before:content-[''] before:absolute before:top-0 before:left-0 before:size-2 xs:before:size-4 2xs:before:size-6 before:border-[6px] xs:before:border-[9px] 2xs:before:border-[12px] before:border-transparent before:transition-all ${selectedImage == item ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
                 >
                   <div
                     className={`[--path:_16px] xs:[--path:_24px] 2xs:[--path:_32px] [clip-path:_polygon(var(--path)_0,100%_0,100%_100%,0_100%,0_var(--path))] p-[1px] transition-all cursor-pointer ${selectedImage === item ? 'bg-green-500' : ''}`}
@@ -92,7 +92,7 @@ export default function Avatar() {
               ))}
             </div>
             <div className="text-center min-w-[170px] max-w-[175px]">
-              <div className="relative min-h-[320px] max-w-[120px] mx-auto">
+              <div className="relative max-w-[140px] mx-auto">
                 <div className="absolute bottom-[-5px] left-[50%] translate-x-[-50%] w-[160px] h-5 [clip-path:_ellipse(50%_50%_at_50%_50%)] bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] z-[-1]"></div>
                 <img
                   className="h-full object-cover"

@@ -126,11 +126,11 @@ export default function LevelPage() {
                             </p>
                           </div>
                         </div>
-                        <div className="h-[1px] w-full bg-white/10"></div>
+                        {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS RATE</div>
                           <p className="text-title">{userInfo?.rateBonusReward}%</p>
-                        </div>
+                        </div> */}
                         {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS REWARD</div>
