@@ -2,6 +2,7 @@ import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
 import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
+import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem, IMissionPartner } from '@/interfaces/i.missions'
 import { claimTask, getListMission, verifyMission } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
@@ -22,6 +23,7 @@ interface IListMission {
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
+  const { webApp } = useTelegram()
   const { getUserInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
@@ -53,6 +55,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     }
   }
 
+  const handleShare = () => {
+    webApp?.shareToStory('https://game.u2w.io/assets/images/loading-background@2x.png', {
+      text: 'Hello'
+    })
+  }
+
   const handleClaim = async () => {
     const res = await claimTask(currentItem.current.id)
     if (res.status) {
@@ -76,8 +84,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       handleVerifyMission(currentItem.current.id)
     } else {
       setCheckMission(true)
-      if (currentItem.current.url) {
-        window.open(currentItem.current.url, '_blank')
+      if (currentItem.current.type === 'SHARE_STORY') {
+        handleShare()
+      } else {
+        if (currentItem.current.url) {
+          window.open(currentItem.current.url, '_blank')
+        }
       }
     }
   }
@@ -130,7 +142,9 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                       src="/assets/images/point@2x.png"
                       alt="Point"
                     />
-                    <p className="text-green-500">{currentItem.current?.point}</p>
+                    <p className="text-green-500">
+                      {formatNumber(currentItem.current?.point, 0, 0)}
+                    </p>
                   </div>
                 ) : null}
                 {currentItem.current?.box > 0 && (
