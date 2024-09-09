@@ -9,6 +9,7 @@ import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
+import { motion } from 'framer-motion'
 
 export default function HomePage() {
   const { userInfo, token, getUserConfig } = useCommonStore()
@@ -90,22 +91,28 @@ export default function HomePage() {
     <>
       <CustomPage>
         {/* Point */}
-        <div className="relative">
+        <motion.div
+          className="relative"
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -25, opacity: 0 }}
+          transition={{ duration: 0.35 }}
+        >
           <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/home-frame.svg" alt="Frame" />
           </div>
-          <div className="relative mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]">
+          <Link href="/avatar" className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]">
             <Image
-              className="mx-auto max-h-[240px] xs:max-h-[260px]"
+              className="mx-auto min-h-[240px] max-h-[240px] xs:max-h-[260px]"
               width={0}
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: '100%' }}
-              src="/assets/images/figure@2x.png"
-              alt="Actor"
+              src={userInfo?.avatar?.replace(/avatar-/g, 'figure-') || '/assets/images/avatar/figure-01@2x.png'}
+              alt="Figure"
             />
-          </div>
-        </div>
+          </Link>
+        </motion.div>
         {/* Button */}
         <Mining />
         {/* Info */}

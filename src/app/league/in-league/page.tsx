@@ -11,7 +11,7 @@ import React from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
-  const { currentLeague, userConfig, setCurrentLeague } = useCommonStore()
+  const { currentLeague, setCurrentLeague } = useCommonStore()
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -55,7 +55,7 @@ export default function InLeaguePage() {
                   height={0}
                   sizes="100vw"
                   className="size-full [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
-                  src={`${userConfig?.urlImage && currentLeague?.avatar ? `${userConfig.urlImage}${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
+                  src={`${currentLeague?.avatar ? `${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
                   alt=""
                 />
               </div>

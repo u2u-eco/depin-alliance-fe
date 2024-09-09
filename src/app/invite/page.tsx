@@ -73,7 +73,7 @@ export default function InvitePage() {
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
               <div className="mt-2 mb-2 min-[344px]:mb-3 xs:mb-4 min-[400px]:mb-5 2xs:mb-6 text-center text-body text-xs min-[400px]:text-[13px] 2xs:text-sm font-geist tracking-[-1px]">
-                Earn 10,000 points each for the first 5 friends
+                Refer more friends to get rewards
               </div>
               <div className="flex items-center space-x-3 xs:space-x-4">
                 <div className="btn" onClick={handleShare}>

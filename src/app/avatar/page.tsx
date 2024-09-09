@@ -9,6 +9,11 @@ import { getListAvatar, updateAvatar } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
 
+const listAvatar = [
+  { id: 1, img: '/assets/images/avatar/avatar-01@2x.png', name: 'Jax', description: `Jax is the mastermind behind the DePIN whitepaper and one of the key architects of the network's infrastructure.` },
+  { id: 2, img: '/assets/images/avatar/avatar-02@2x.png', name: 'Lara', description: `Lara is the strategist and sometimes the muscle of the DePIN Alliance.` },
+]
+
 export default function Avatar() {
   const router = useRouter()
   const { token, userInfo, getUserInfo } = useCommonStore((state) => state)
@@ -38,6 +43,11 @@ export default function Avatar() {
     }
   }
 
+  const renderFigure = () => {
+    const figure = selectedImage.replace(/avatar-/g, 'figure-')
+    return figure
+  }
+
   useEffect(() => {
     if (userInfo?.avatar) {
       setSelectedImage(userInfo?.avatar)
@@ -45,7 +55,7 @@ export default function Avatar() {
     if (token) {
       getAvatar()
     }
-  }, [token])
+  }, [token, userInfo])
 
   return (
     <>
@@ -94,15 +104,18 @@ export default function Avatar() {
             <div className="text-center min-w-[170px] max-w-[175px]">
               <div className="relative max-w-[140px] mx-auto">
                 <div className="absolute bottom-[-5px] left-[50%] translate-x-[-50%] w-[160px] h-5 [clip-path:_ellipse(50%_50%_at_50%_50%)] bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] z-[-1]"></div>
-                <img
-                  className="h-full object-cover"
-                  src="/assets/images/figure.png"
-                  srcSet="/assets/images/figure.png 1x, /assets/images/figure@2x.png 2x"
-                  alt=""
+                <Image
+                  className="h-full"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: '100%', height: '100%' }}
+                  src={renderFigure() || '/assets/images/avatar/figure-01@2x.png'}
+                  alt="Figure"
                 />
               </div>
               <div className="mt-3 space-y-2 mb-6">
-                <div className="text-title font-mona text-base xs:text-lg font-semibold">Cyber Girl</div>
+                <div className="text-title font-mona text-base xs:text-lg font-semibold">Junior Engineer</div>
                 <div className="text-body text-xs tracking-[-1px]">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 </div>
