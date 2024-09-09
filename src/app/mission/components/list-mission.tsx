@@ -56,13 +56,18 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleShare = () => {
-    if (userInfo) {
-      webApp?.shareToStory(
-        `${SHARE_URL}/${userInfo.devicePlatform === 'iOS' ? userInfo.devicePlatform.toUpperCase() : userInfo.devicePlatform}/${userInfo.devicePlatform.toLowerCase()}-${userInfo.pointBonus}.png`,
-        {
-          text: ''
-        }
-      )
+    try {
+      if (userInfo) {
+        const link =
+          userInfo.detectDevice === 'Unknown Device'
+            ? `${SHARE_URL}/unknown-device.png`
+            : `${SHARE_URL}/${userInfo.devicePlatform === 'iOS' ? userInfo.devicePlatform.toUpperCase() : userInfo.devicePlatform}/${userInfo.devicePlatform.toLowerCase()}-${userInfo.pointBonus}.png`
+        webApp?.shareToStory(link, {
+          text: 'DePin Alliance'
+        })
+      }
+    } catch (ex) {
+      console.log(ex)
     }
   }
 

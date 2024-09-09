@@ -63,8 +63,8 @@ const Onboarding = () => {
       if (res.data.pointBonus) {
         setPointReward(res.data.pointBonus)
         setDeviceName(res.data.detectDevice)
-        setType(ONBOARDING_TYPE.DEVICE)
-        setTimeout(() => onOpen(), 3000)
+        setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        onOpen()
       }
     }
   }
@@ -80,8 +80,8 @@ const Onboarding = () => {
         checkStatusGetDevice()
         break
       case ONBOARDING_TYPE.SCHOLARSHIP:
-        getUserInfo()
         router.push('/home')
+        getUserInfo()
         break
     }
   }
@@ -192,69 +192,64 @@ const Onboarding = () => {
 
                   <img
                     className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[275px] xs:max-h-[300px] 2xs:max-h-[325px] mt-5 xs:mt-6 2xs:mt-7 mb-6 xs:mb-7 2xs:mb-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-8 xs:mt-10 2xs:mt-12 mb-4 max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px]' : 'max-h-[220px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
-                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png`}
-                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}@2x.png 2x`}
+                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-ios'}.png`}
+                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-ios'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-ios'}@2x.png 2x`}
                     alt="Device"
                   />
                 </div>
                 {/* Content */}
-                {type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
-                  <div className="text-center space-y-3">
-                    <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
-                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                      <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
-                        {type === ONBOARDING_TYPE.START
-                          ? 'contribute and earn rewards'
-                          : type === ONBOARDING_TYPE.LOADING
-                            ? 'getting info...'
-                            : type === ONBOARDING_TYPE.DEVICE
-                              ? 'Device Info'
-                              : 'newbie reward'}
+                {
+                  type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
+                    <div className="text-center space-y-3">
+                      <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
+                        <div className="size-1.5 min-w-1.5 bg-green-800"></div>
+                        <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
+                          {type === ONBOARDING_TYPE.START
+                            ? 'contribute and earn rewards'
+                            : type === ONBOARDING_TYPE.LOADING
+                              ? 'getting info...'
+                              : type === ONBOARDING_TYPE.DEVICE
+                                ? 'Device Info'
+                                : 'newbie reward'}
+                        </div>
+                        <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                       </div>
-                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                    </div>
-                    <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
-                      {type === ONBOARDING_TYPE.START ? (
-                        'Become a node contributor to build a decentralized world.'
-                      ) : type === ONBOARDING_TYPE.LOADING ? (
-                        <>
-                          <p>We’re getting your device information.</p>
-                          <p>Please wait...</p>
-                        </>
-                      ) : type === ONBOARDING_TYPE.DEVICE ? (
-                        'This is your device information. Use it to contribute and upgrade for more rewards'
-                      ) : (
-                        <>
-                          <p>You’ve received your first reward!</p>
-                          <p>Let’s go!!!</p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-4">
-                    <div className="btn default cursor-default">
-                      <div className="btn-border"></div>
-                      <div className="btn-default font-normal font-geist normal-case">
-                        {deviceName}
+                      <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
+                        {type === ONBOARDING_TYPE.START ? (
+                          'Become a node contributor to build a decentralized world.'
+                        ) : type === ONBOARDING_TYPE.LOADING ? (
+                          <>
+                            <p>We’re getting your device information.</p>
+                            <p>Please wait...</p>
+                          </>
+                        ) : type === ONBOARDING_TYPE.DEVICE ? (
+                          'This is your device information. Use it to contribute and upgrade for more rewards'
+                        ) : (
+                          <>
+                            <p>You’ve received your first reward!</p>
+                            <p>Let’s go!!!</p>
+                          </>
+                        )}
                       </div>
-                      <div className="btn-border"></div>
                     </div>
-                  </div>
-                )}
+                  ) : null
+                  // <div className="mt-4">
+                  //   <div className="btn default cursor-default">
+                  //     <div className="btn-border"></div>
+                  //     <div className="btn-default font-normal font-geist normal-case">
+                  //       {deviceName}
+                  //     </div>
+                  //     <div className="btn-border"></div>
+                  //   </div>
+                  // </div>
+                }
                 {/* Configuration */}
                 {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
               </div>
               {(type === ONBOARDING_TYPE.START ||
                 type === ONBOARDING_TYPE.SCHOLARSHIP ||
                 type === ONBOARDING_TYPE.LOADING) && (
-                <motion.div
-                  className="p-4 xs:p-6 2xs:p-8 w-full space-y-4 xs:space-y-5 2xs:space-y-6"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                >
+                <div className="p-4 xs:p-6 2xs:p-8 w-full space-y-4 xs:space-y-5 2xs:space-y-6">
                   {type === ONBOARDING_TYPE.SCHOLARSHIP && (
                     <div className="text-center text-body leading-[18px] tracking-[-1px]">
                       {`Everything is ready, let's get started!`}
@@ -271,7 +266,7 @@ const Onboarding = () => {
                     </div>
                     <div className="btn-border"></div>
                   </button>
-                </motion.div>
+                </div>
               )}
             </motion.div>
           </div>

@@ -1,13 +1,14 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
+import { IconChat, IconClipboard } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
@@ -16,7 +17,7 @@ export default function InLeaguePage() {
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=Hello! Welcome to Depin Alliance`,
+        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: https://t.me/DepinAllianceBot?start=${currentLeague.inviteLink}`,
         '_self'
       )
     }
@@ -40,6 +41,10 @@ export default function InLeaguePage() {
     }
   }
 
+  useEffect(() => {
+    _getUserLeague()
+  }, [])
+
   return (
     <>
       <CustomPage>
@@ -50,13 +55,10 @@ export default function InLeaguePage() {
           <div className="space-y-5">
             <div className="relative size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="size-full [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
+                <img
+                  className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
                   src={`${currentLeague?.avatar ? `${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
-                  alt=""
+                  alt="DePIN Alliance"
                 />
               </div>
             </div>
@@ -102,31 +104,27 @@ export default function InLeaguePage() {
               </div>
             </div>
           </div>
-          <div className="btn">
+          <div className="btn inactive">
             <div className="btn-border"></div>
-            <div className="btn-primary">MINING TOGETHER</div>
+            <div className="btn-inactive">MINING TOGETHER</div>
             <div className="btn-border"></div>
           </div>
           <div className="grid grid-cols-4 gap-3 mt-8">
-            <div className="btn default size-[90px] mx-auto">
+            <div className="btn inactive size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img
-                  className="size-8 mx-auto"
-                  src="/assets/images/icons/icon-task-green.svg"
-                  alt=""
-                />
-                <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-xs mt-1 whitespace-nowrap">
-                  Super Tasks
+              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconClipboard className="size-8 mx-auto"/>
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+                  Mission
                 </p>
               </div>
               <div className="btn-border"></div>
             </div>
-            <div className="btn default size-[90px] mx-auto">
+            <div className="btn inactive size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img className="size-8 mx-auto" src="/assets/images/icons/icon-chat.svg" alt="" />
-                <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconChat className="size-8" />
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
                   Chat
                 </p>
               </div>
