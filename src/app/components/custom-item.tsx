@@ -89,20 +89,17 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
                         ? `/assets/images/icons/icon-${icon}-gradient.svg`
                         : `/assets/images/icons/icon-mission-gradient.svg`
                   }
-                  alt=""
+                  alt="DePIN Alliance"
                 />
               ) : (
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{ width: '100%' }}
+                <img
+                  className="size-full object-cover"
                   src={
                     image.includes('assets') || image.includes('http')
                       ? image
                       : `/assets/images/${image}@2x.png`
                   }
-                  alt=""
+                  alt="DePIN Alliance"
                 />
               )}
             </>
@@ -112,7 +109,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
               width={0}
               height={0}
               src={`/assets/images/icons/icon-${icon}-gradient.svg`}
-              alt=""
+              alt="DePIN Alliance"
             />
           )}
         </div>

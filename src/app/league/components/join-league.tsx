@@ -25,14 +25,10 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
       </div>
       <div className="my-10 flex items-center justify-center space-x-5">
         <div className="p-[1px] bg-white [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)] size-[110px] flex items-center justify-center">
-          <Image
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-full [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)]"
+          <img
+            className="size-full object-cover [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)]"
             src={`${item?.avatar}` || '/assets/images/league/league-01@2x.png'}
-            // srcSet="/assets/images/league/league-01.png 1x. /assets/images/league/league-01@2x.png 2x"
-            alt=""
+            alt="DePIN Alliance"
           />
         </div>
         <div className="space-y-3">
