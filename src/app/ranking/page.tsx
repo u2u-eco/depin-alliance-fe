@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomList from '@/app/components/custom-list'
 import CustomPage from '@/app/components/custom-page'
 import { useQuery } from '@tanstack/react-query'
@@ -11,19 +11,37 @@ import { useRouter } from 'next/navigation'
 import { formatNumber } from '@/helper/common'
 import dayjs from 'dayjs'
 import { IconChevron } from '../components/icons'
-
-const RANKING_TYPE = {
-  ENGINER: 'enginer',
-  ALLIANCE: 'alliance'
-}
+import useCommonStore from '@/stores/commonStore'
 
 export default function RankingPage() {
   const router = useRouter()
-  // const [activeType, setActiveType] = useState(RANKING_TYPE.ENGINER)
-  const { data: listRanking } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
+  const { userInfo } = useCommonStore()
+  const [listRanking, setListRanking] = useState<any>({})
+  const { data: listRankingResponse } = useQuery({ queryKey: ['getRanking'], queryFn: getRanking })
   const handleBack = () => {
     router.back()
   }
+
+  useEffect(() => {
+    if (listRankingResponse?.data?.ranking) {
+      let list = listRankingResponse?.data
+      if (listRankingResponse?.data?.currentRank > listRankingResponse?.data?.ranking?.length) {
+        list = {
+          ...listRankingResponse?.data,
+          ranking: [
+            ...listRankingResponse?.data?.ranking,
+            {
+              avatar: userInfo?.avatar,
+              miningPower: userInfo?.miningPower,
+              username: userInfo?.username,
+              rank: listRankingResponse.data.currentRank
+            }
+          ]
+        }
+      }
+      setListRanking(list)
+    }
+  }, [listRankingResponse?.data, userInfo])
 
   const getBgByRank = (index: number) => {
     switch (index) {
@@ -92,13 +110,13 @@ export default function RankingPage() {
             imageItemKey={'avatar'}
           /> */}
           <div className="flex flex-col space-y-4">
-            {listRanking?.data.ranking?.map((item: any, index: number) => (
+            {listRanking?.ranking?.map((item: any, index: number) => (
               <div
-                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.data.currentRank > 3 && listRanking?.data.currentRank === index + 1 ? getBgByRank(99999) : getBgByRank(index)}`}
+                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.currentRank > 3 && (listRanking?.currentRank === index + 1 || listRanking.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)}`}
                 key={index}
               >
                 <div
-                  className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${listRanking?.data.currentRank > 3 && listRanking?.data.currentRank === index + 1 ? getBgByRank(99999) : getBgByRank(index)}`}
+                  className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${listRanking?.currentRank > 3 && (listRanking?.currentRank === index + 1 || listRanking.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)}`}
                 >
                   <div className="flex items-center space-x-3 xs:space-x-4">
                     <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
@@ -107,7 +125,7 @@ export default function RankingPage() {
                         height={0}
                         sizes="100vw"
                         style={{ width: '100%' }}
-                        src={item.avatar}
+                        src={item.avatar || '/assets/images/avatar/avatar-01@2x.png'}
                         alt=""
                       />
                     </div>
@@ -123,7 +141,7 @@ export default function RankingPage() {
                           alt="Point"
                         />
                         <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-                          {item.miningPower && formatNumber(item.miningPower, 0, 0)}
+                          {item.miningPower ? `${formatNumber(item.miningPower, 0, 2)}/h` : '0/h'}
                         </p>
                       </div>
                     </div>
@@ -131,7 +149,7 @@ export default function RankingPage() {
                   <div className="mr-1 xs:mr-2 2xs:mr-3">
                     {[0, 1, 2].indexOf(index) === -1 ? (
                       <div className="text-white font-geist text-base xs:text-lg size-12 xs:size-[60px] flex items-center justify-center">
-                        #{index + 1}
+                        #{item.rank ? item.rank : index + 1}
                       </div>
                     ) : (
                       <img

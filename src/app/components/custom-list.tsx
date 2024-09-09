@@ -73,19 +73,49 @@ const CustomList = ({
             ) : (
               type !== 'shop' && (
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-1">
-                    <img
-                      className="size-4"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt="Point"
-                    />
-                    <p className="text-primary font-geist font-semibold">
-                      {item.miningPower && '+'}
-                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '') ||
-                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}
-                    </p>
-                  </div>
+                  {item.miningPower === 0 || (pointKey && item[pointKey]) ? (
+                    <div className="flex items-center space-x-1">
+                      <img
+                        className="size-4"
+                        src="/assets/images/point.png"
+                        srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                        alt="Point"
+                      />
+                      <p className="text-primary font-geist font-semibold">
+                        {item.miningPower && '+'}
+                        {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '0') ||
+                          (item.miningPower && formatNumber(item.miningPower, 0, 2))}{' '}
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {item.box > 0 && (
+                    <>
+                      {item.miningPower !== 0 && pointKey && item[pointKey] ? (
+                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      ) : null}
+                      <div className="flex items-center space-x-1">
+                        <img
+                          className="size-5"
+                          src="/assets/images/item-special.png"
+                          srcSet="/assets/images/item-special.png 1x, /assets/images/item-special@2x.png 2x"
+                          alt="Box"
+                        />
+                        <p className="text-primary font-geist font-semibold">{`${item.box} box`}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {item.xp > 0 && (
+                    <>
+                      {(item.miningPower !== 0 && pointKey && item[pointKey]) || item.box ? (
+                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      ) : null}
+                      <div className="flex items-center space-x-1">
+                        <p className="text-primary font-geist font-semibold">{`${formatNumber(item.xp, 0, 0)} XP`}</p>
+                      </div>
+                    </>
+                  )}
                   {item.available ||
                     (item.complete && (
                       <>

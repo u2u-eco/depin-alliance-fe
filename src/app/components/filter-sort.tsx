@@ -45,11 +45,11 @@ export default function FilterSort({
   const checkActive = (sortBy: string, sortAscending: boolean, _type: string) => {
     if (type === FILTER_TYPE.SORT) {
       if (filterOptions.sortBy === sortBy && filterOptions.sortAscending === sortAscending) {
-        return '!bg-green-900 text-green-600'
+        return '!bg-green-500 text-green-500 before:bg-black/80 after:border-t-green-500 after:border-l-green-500 drop-shadow-green'
       }
     } else {
       if (filterOptions.type === _type) {
-        return '!bg-green-900 text-green-600'
+        return '!bg-green-500 text-green-500 before:bg-black/80 after:border-t-green-500 after:border-l-green-500 drop-shadow-green'
       }
     }
   }
@@ -90,36 +90,46 @@ export default function FilterSort({
         <div
           className={`grid gap-4 my-8 ${type === FILTER_TYPE.FILTER ? 'grid-cols-2' : 'grid-cols-1'}`}
         >
-          <div
-            onClick={() => handleSort('price', false, 'CPU')}
-            className={`bg-white/5 ${checkActive('price', false, 'CPU')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-          >
-            {type === FILTER_TYPE.FILTER ? 'CPU' : `High -> Low price`}
+          <div className={`${checkActive('price', false, 'CPU')} before:hidden relative !bg-transparent after:content-[''] after:absolute after:top-0 after:left-0 after:size-3 after:border-[6px] after:border-transparent`}>
+            <div
+              onClick={() => handleSort('price', false, 'CPU')}
+              className={`relative bg-white/5 ${checkActive('price', false, 'CPU')} hover:bg-white/10 flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-2px)] before:z-[-1] before:[clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)]`}
+            >
+              {type === FILTER_TYPE.FILTER ? 'CPU' : `High -> Low price`}
+            </div>
           </div>
-          <div
-            onClick={() => handleSort('price', true, 'GPU')}
-            className={`bg-white/5 ${checkActive('price', true, 'GPU')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-          >
-            {type === FILTER_TYPE.FILTER ? 'GPU' : `Low -> High price`}
+          <div className={`${checkActive('price', true, 'GPU')} before:hidden relative !bg-transparent after:content-[''] after:absolute after:top-0 after:left-0 after:size-3 after:border-[6px] after:border-transparent`}>
+            <div
+              onClick={() => handleSort('price', true, 'GPU')}
+              className={`relative bg-white/5 ${checkActive('price', true, 'GPU')} hover:bg-white/10 flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-2px)] before:z-[-1] before:[clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)]`}
+            >
+              {type === FILTER_TYPE.FILTER ? 'GPU' : `Low -> High price`}
+            </div>
           </div>
-          <div
-            onClick={() => handleSort('miningPower', false, 'RAM')}
-            className={`bg-white/5 ${checkActive('miningPower', false, 'RAM')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-          >
-            {type === FILTER_TYPE.FILTER ? 'RAM' : `High -> Low profit`}
+          <div className={`${checkActive('miningPower', false, 'RAM')} before:hidden relative !bg-transparent after:content-[''] after:absolute after:top-0 after:left-0 after:size-3 after:border-[6px] after:border-transparent`}>
+            <div
+              onClick={() => handleSort('miningPower', false, 'RAM')}
+              className={`relative bg-white/5 ${checkActive('miningPower', false, 'RAM')} hover:bg-white/10 flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-2px)] before:z-[-1] before:[clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)]`}
+            >
+              {type === FILTER_TYPE.FILTER ? 'RAM' : `High -> Low profit`}
+            </div>
           </div>
-          <div
-            onClick={() => handleSort('miningPower', true, 'STORAGE')}
-            className={`bg-white/5 ${checkActive('miningPower', true, 'STORAGE')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-          >
-            {type === FILTER_TYPE.FILTER ? 'STORAGE' : `Low -> High profit`}
+          <div className={`${checkActive('miningPower', true, 'STORAGE')} before:hidden relative !bg-transparent after:content-[''] after:absolute after:top-0 after:left-0 after:size-3 after:border-[6px] after:border-transparent`}>
+            <div
+              onClick={() => handleSort('miningPower', true, 'STORAGE')}
+              className={`relative bg-white/5 ${checkActive('miningPower', true, 'STORAGE')} hover:bg-white/10 flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-2px)] before:z-[-1] before:[clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)]`}
+            >
+              {type === FILTER_TYPE.FILTER ? 'STORAGE' : `Low -> High profit`}
+            </div>
           </div>
           {type === FILTER_TYPE.FILTER && (
-            <div
-              onClick={() => handleSort('miningPower', true, 'SPECIAL')}
-              className={`bg-white/5 ${checkActive('miningPower', true, 'SPECIAL')} hover:bg-white/10 transition-all flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5`}
-            >
-              SPECIAL
+            <div className={`${checkActive('miningPower', true, 'SPECIAL')} before:hidden relative !bg-transparent after:content-[''] after:absolute after:top-0 after:left-0 after:size-3 after:border-[6px] after:border-transparent`}>
+              <div
+                onClick={() => handleSort('miningPower', true, 'SPECIAL')}
+                className={`relative bg-white/5 ${checkActive('miningPower', true, 'SPECIAL')} hover:bg-white/10 flex items-center justify-center text-base leading-[20px] tracking-[-1px] text-body cursor-pointer [clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)] py-[18px] px-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-2px)] before:z-[-1] before:[clip-path:_polygon(16px_0,100%_0,100%_100%,0_100%,0_16px)]`}
+              >
+                SPECIAL
+              </div>
             </div>
           )}
         </div>

@@ -80,7 +80,7 @@ const Info = ({ profile, rank }: InfoProps) => {
             >
               <Image
                 className="size-full min-w-full"
-                src={userInfo?.avatar || '/assets/images/avatar.png'}
+                src={userInfo?.avatar?.replace(/-/g, '-main-') || '/assets/images/avatar/avatar-main-01@2x.png'}
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -194,7 +194,7 @@ const Info = ({ profile, rank }: InfoProps) => {
           </div>
         </div>
         <div
-          className={`absolute left-[50%] translate-x-[-50%] flex items-center ${profile || pathName === '/home' ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
+          className={`absolute left-[50%] translate-x-[-50%] flex items-center z-[1] ${profile || pathName === '/home' ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
         >
           {(pathName === '/home' || pathName === '/profile') && (
             <p className="font-geist uppercase text-white tracking-[-1px]">BALANCE:</p>
@@ -210,7 +210,7 @@ const Info = ({ profile, rank }: InfoProps) => {
               </div>
               <Image
                 className={
-                  profile || pathName === '/home' ? 'size-6 xs:size-7 2xs:size-8' : 'size-5'
+                  profile || pathName === '/home' ? 'size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8' : 'size-5'
                 }
                 src="/assets/images/point@2x.png"
                 // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"

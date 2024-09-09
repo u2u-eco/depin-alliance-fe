@@ -22,7 +22,7 @@ interface CommonState {
   setUserConfig: ({ config }: { config: IUserConfig }) => void
   setDevice: ({ info }: { info: Array<IDeviceItem> }) => void
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
-  getUserInfo: () => void
+  getUserInfo: () => Promise<any>
   getUserConfig: () => void
   setCurrentLeague: ({ league }: { league: IUserLeague }) => void
 }
@@ -50,6 +50,7 @@ const useCommonStore = create<CommonState>((set) => ({
       }
       set(() => ({ userInfo: user }))
     }
+    return response
   },
   getUserConfig: async () => {
     const response = await getUserConfig()

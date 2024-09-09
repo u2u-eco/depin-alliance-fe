@@ -41,3 +41,8 @@ export interface IFilterDevice {
   sortAscending: boolean
   type?: string
 }
+
+export interface IParamUseKey {
+  code: string
+  amount: number
+}

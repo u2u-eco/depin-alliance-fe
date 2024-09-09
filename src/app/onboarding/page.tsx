@@ -4,12 +4,13 @@
 import { redirect, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { claimRewardNewUser, detectDeviceInfo } from '../../services/user'
+import { claimRewardNewUser } from '../../services/user'
 import { CURRENT_STATUS } from '../../interfaces/i.user'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '../components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
 import { formatNumber } from '@/helper/common'
+import { DETECT_DEVICE_URL } from '@/constants'
 
 const ONBOARDING_TYPE = {
   SPLASH: 'splash',
@@ -21,25 +22,24 @@ const ONBOARDING_TYPE = {
 
 const Onboarding = () => {
   const router = useRouter()
-  const isDetectDevice = useRef<boolean>(false)
   const [pointReward, setPointReward] = useState<number>(0)
   const [deviceName, setDeviceName] = useState<string>('')
-  const { currentStatus, token, getUserInfo, setDevice, userInfo } = useCommonStore()
+  const { currentStatus, token, getUserInfo, userInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(ONBOARDING_TYPE.DEVICE)
-  const _getDeviceInfo = async () => {
-    try {
-      const res = await detectDeviceInfo()
-      if (res.status) {
-        // setDevice({ info: res.data })
-        setPointReward(res.data)
-        setType(ONBOARDING_TYPE.DEVICE)
-        setTimeout(() => onOpen(), 3000)
-      }
-    } catch (ex) {
-      setType(ONBOARDING_TYPE.SCHOLARSHIP)
-    }
-  }
+  // const _getDeviceInfo = async () => {
+  //   try {
+  //     const res = await detectDeviceInfo()
+  //     if (res.status) {
+  //       // setDevice({ info: res.data })
+  //       setPointReward(res.data)
+  //       setType(ONBOARDING_TYPE.DEVICE)
+  //       setTimeout(() => onOpen(), 3000)
+  //     }
+  //   } catch (ex) {
+  //     setType(ONBOARDING_TYPE.SCHOLARSHIP)
+  //   }
+  // }
 
   const handleClaim = async () => {
     const res = await claimRewardNewUser()
@@ -53,11 +53,31 @@ const Onboarding = () => {
     onClose()
   }
 
+  const openLinkDevice = () => {
+    window.open(`${DETECT_DEVICE_URL}?t=${token}`, '_blank')
+  }
+
+  const checkStatusGetDevice = async () => {
+    const res = await getUserInfo()
+    if (res.status) {
+      if (res.data.pointBonus) {
+        setPointReward(res.data.pointBonus)
+        setDeviceName(res.data.detectDevice)
+        setType(ONBOARDING_TYPE.DEVICE)
+        setTimeout(() => onOpen(), 3000)
+      }
+    }
+  }
+
   const handleOnboarding = (type: any) => {
     switch (type) {
       case ONBOARDING_TYPE.START:
-        _getDeviceInfo()
+        // _getDeviceInfo()
+        openLinkDevice()
         setType(ONBOARDING_TYPE.LOADING)
+        break
+      case ONBOARDING_TYPE.LOADING:
+        checkStatusGetDevice()
         break
       case ONBOARDING_TYPE.SCHOLARSHIP:
         getUserInfo()
@@ -66,46 +86,46 @@ const Onboarding = () => {
     }
   }
 
-  const detectDevice = () => {
-    if (isDetectDevice.current) return
-    isDetectDevice.current = true
-    const screenWidth = window.screen.width
-    const screenHeight = window.screen.height
-    const devicePixelRatio = window.devicePixelRatio
+  // const detectDevice = () => {
+  //   if (isDetectDevice.current) return
+  //   isDetectDevice.current = true
+  //   const screenWidth = window.screen.width
+  //   const screenHeight = window.screen.height
+  //   const devicePixelRatio = window.devicePixelRatio
 
-    const clientInfo = {
-      screenWidth: screenWidth,
-      screenHeight: screenHeight,
-      devicePixelRatio: devicePixelRatio,
-      viewportWidth: window.innerWidth,
-      viewportHeight: window.innerHeight,
-      userAgent: navigator.userAgent,
-      platform: /iPad|iPhone/.test(navigator.platform) ? 'iOS' : 'Unknown',
-      osVersion:
-        navigator.userAgent && navigator.userAgent.match(/OS (\d+_\d+)/i)
-          ? navigator.userAgent.match(/OS (\d+_\d+)/i)?.[1].replace('_', '.')
-          : 'Unknown',
-      isProMotion: window.matchMedia('(min-resolution: 120dpi)').matches,
-      dynamicIsland: false
-    }
+  //   const clientInfo = {
+  //     screenWidth: screenWidth,
+  //     screenHeight: screenHeight,
+  //     devicePixelRatio: devicePixelRatio,
+  //     viewportWidth: window.innerWidth,
+  //     viewportHeight: window.innerHeight,
+  //     userAgent: navigator.userAgent,
+  //     platform: /iPad|iPhone/.test(navigator.platform) ? 'iOS' : 'Unknown',
+  //     osVersion:
+  //       navigator.userAgent && navigator.userAgent.match(/OS (\d+_\d+)/i)
+  //         ? navigator.userAgent.match(/OS (\d+_\d+)/i)?.[1].replace('_', '.')
+  //         : 'Unknown',
+  //     isProMotion: window.matchMedia('(min-resolution: 120dpi)').matches,
+  //     dynamicIsland: false
+  //   }
 
-    fetch('https://detect-mobile.u2w.app/detect', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(clientInfo)
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        isDetectDevice.current = false
-        setDeviceName(data.detectedModel)
-      })
-      .catch((error) => {
-        isDetectDevice.current = false
-        console.error('Error:', error)
-      })
-  }
+  //   fetch('https://detect-mobile.u2w.app/detect', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(clientInfo)
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       isDetectDevice.current = false
+  //       setDeviceName(data.detectedModel)
+  //     })
+  //     .catch((error) => {
+  //       isDetectDevice.current = false
+  //       console.error('Error:', error)
+  //     })
+  // }
 
   useEffect(() => {
     switch (currentStatus) {
@@ -118,6 +138,7 @@ const Onboarding = () => {
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
         if (userInfo?.pointUnClaimed) {
+          setDeviceName(userInfo?.detectDevice)
           setPointReward(userInfo.pointUnClaimed)
           onOpen()
         }
@@ -128,9 +149,9 @@ const Onboarding = () => {
     }
   }, [currentStatus, token, userInfo])
 
-  useEffect(() => {
-    detectDevice()
-  }, [])
+  // useEffect(() => {
+  //   detectDevice()
+  // }, [])
 
   return (
     <AnimatePresence mode="wait">
@@ -142,7 +163,7 @@ const Onboarding = () => {
                 className="mx-auto object-cover min-[460px]:h-full w-full"
                 src={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png`}
                 srcSet={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background@2x.png 2x`}
-                alt=""
+                alt="Background"
               />
             </div>
             <motion.div
@@ -159,18 +180,21 @@ const Onboarding = () => {
                 </div>
                 {/* Image */}
                 <div className="relative">
-                  {(type === ONBOARDING_TYPE.DEVICE ||
-                    type === ONBOARDING_TYPE.LOADING ||
-                    type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+                  {type === ONBOARDING_TYPE.DEVICE ||
+                  type === ONBOARDING_TYPE.LOADING ||
+                  type === ONBOARDING_TYPE.SCHOLARSHIP ? (
                     <>
                       <div className="absolute top-[5%] left-[50%] translate-x-[-50%] rounded-[50%] size-[140px] blur-[75px] bg-green-500 z-[-1]"></div>
                     </>
+                  ) : (
+                    <div className="absolute top-0 left-[50%] translate-x-[-50%] rounded-[50%] xs:size-[200px] size-[180px] 2xs:size-[220px] blur-[50px] bg-green-800 z-[-1]"></div>
                   )}
+
                   <img
                     className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[275px] xs:max-h-[300px] 2xs:max-h-[325px] mt-5 xs:mt-6 2xs:mt-7 mb-6 xs:mb-7 2xs:mb-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-8 xs:mt-10 2xs:mt-12 mb-4 max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px]' : 'max-h-[220px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
-                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png`}
-                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding/onboarding-info'}@2x.png 2x`}
-                    alt="Computer"
+                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png`}
+                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}@2x.png 2x`}
+                    alt="Device"
                   />
                 </div>
                 {/* Content */}
@@ -221,7 +245,9 @@ const Onboarding = () => {
                 {/* Configuration */}
                 {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
               </div>
-              {(type === ONBOARDING_TYPE.START || type === ONBOARDING_TYPE.SCHOLARSHIP) && (
+              {(type === ONBOARDING_TYPE.START ||
+                type === ONBOARDING_TYPE.SCHOLARSHIP ||
+                type === ONBOARDING_TYPE.LOADING) && (
                 <motion.div
                   className="p-4 xs:p-6 2xs:p-8 w-full space-y-4 xs:space-y-5 2xs:space-y-6"
                   initial={{ opacity: 0 }}
@@ -237,7 +263,11 @@ const Onboarding = () => {
                   <button className="btn" onClick={() => handleOnboarding(type)}>
                     <div className="btn-border"></div>
                     <div className="btn-primary">
-                      {type === ONBOARDING_TYPE.START ? 'Next' : 'Get Started'}
+                      {type === ONBOARDING_TYPE.START
+                        ? 'GET MY FIRST DEVICE'
+                        : type === ONBOARDING_TYPE.START
+                          ? 'Get Started'
+                          : 'Next'}
                     </div>
                     <div className="btn-border"></div>
                   </button>

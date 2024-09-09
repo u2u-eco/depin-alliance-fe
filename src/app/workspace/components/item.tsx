@@ -3,11 +3,11 @@ import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { IDeviceTypeItem } from '@/interfaces/i.devices'
+import { IDeviceTypeItem, IParamUseKey } from '@/interfaces/i.devices'
 import Image from 'next/image'
 import { formatNumber } from '@/helper/common'
 import SellItem from './sell-item'
-import { listUserItemDevice, sellItem } from '@/services/devices'
+import { estimateUseKey, getUseKey, listUserItemDevice, sellItem } from '@/services/devices'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
@@ -19,11 +19,12 @@ import useCommonStore from '@/stores/commonStore'
 import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
+import AmountUseKey from './amount-use-key'
 
 const ITEM_TYPE = {
   INFO: 'info',
   SELL: 'sell',
-  SPECIAL: 'special'
+  SPECIAL: 'SPECIAL'
 }
 
 export default function Item() {
@@ -31,8 +32,10 @@ export default function Item() {
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
+  const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
+  const specialItem = useRef<any>([])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -62,6 +65,7 @@ export default function Item() {
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
+  const [useKey, setUseKey] = useState<number>(0)
   const { isLoading, refetch } = useQuery({
     queryKey: [
       'getUserItemDevice',
@@ -95,7 +99,8 @@ export default function Item() {
 
   const updateAmountSell = (amount: number) => {
     amountSell.current = amount
-    setTotalPriceSell(currentItem.current.price * amount)
+    console.log(currentItem.current.price)
+    setTotalPriceSell((currentItem.current.price / 2) * amount)
   }
 
   const handleClick = (type: string) => {
@@ -116,8 +121,19 @@ export default function Item() {
     }
   }
 
-  const handleSpecial = () => {
-    console.log(111)
+  const handleSpecial = async () => {
+    if (paramUseKey.current && !disableBtnSpecial) {
+      specialItem.current = []
+      onOpenSpecial()
+      const res = await getUseKey(paramUseKey.current)
+      if (res.status) {
+        specialItem.current = res.data
+        // toast.success('Special item successfully!')
+        refetch && refetch()
+        getUserInfo()
+        onClose()
+      }
+    }
   }
 
   const handleOnClose = () => {
@@ -134,6 +150,20 @@ export default function Item() {
     onOpenSpecial()
   }
 
+  const updateAmountUseKey = async (amount: number) => {
+    if (amount && currentItem?.current.code === 'CYBER_BOX') {
+      paramUseKey.current = {
+        amount,
+        code: currentItem.current?.code
+      }
+      const res = await estimateUseKey(paramUseKey.current)
+
+      if (res.status) {
+        setUseKey(res.data)
+      }
+    }
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -148,7 +178,8 @@ export default function Item() {
   }, [filterOptions])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
-
+  const disableBtnSpecial =
+    currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
   return (
     <>
       <div className="space-y-8">
@@ -190,7 +221,7 @@ export default function Item() {
                 className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
               >
                 <div
-                  className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 shadow-[0_0_16px_rgba(0,153,86,0.5)] before:border-l-green-500 before:border-t-green-500' : ''}`}
+                  className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
                   onClick={() => handleInfo(item)}
                 >
                   <ImageDevice
@@ -215,7 +246,13 @@ export default function Item() {
             {!isLoading && (
               <NoItem
                 title="No item"
-                link={filterOptions.type ? `/shop?type=${filterOptions.type}` : '/shop'}
+                link={
+                  filterOptions.type === ITEM_TYPE.SPECIAL
+                    ? undefined
+                    : filterOptions.type
+                      ? `/shop?type=${filterOptions.type}`
+                      : '/shop'
+                }
                 classNames={{
                   icon: 'text-body'
                 }}
@@ -288,7 +325,12 @@ export default function Item() {
                           <div className="text-xs text-white-50">
                             {isSpecial ? 'AMOUNT:' : 'TOTAL PROFIT:'}
                           </div>
-                          {isSpecial ? null : (
+                          {isSpecial ? (
+                            <AmountUseKey
+                              maxTotal={currentItem?.current.totalItem || 1}
+                              updateAmountUseKey={updateAmountUseKey}
+                            />
+                          ) : (
                             <div className="flex items-center space-x-1">
                               <IconPoint className="size-4" />
                               <span className="text-primary font-semibold leading-[16px]">
@@ -311,26 +353,34 @@ export default function Item() {
           ) : null}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
             <motion.div
-              className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}
+              className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'inactive' : ''}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              onClick={activeType === ITEM_TYPE.SELL ? handleSell : handleSpecial}
+              onClick={isSpecial ? handleSpecial : handleSell}
             >
               <div className="btn-border"></div>
-              <div className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : 'primary'}`}>
+              <div
+                className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'default' : 'primary'}`}
+              >
                 <div
-                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : 'text-green-900'}`}
+                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : disableBtnSpecial ? 'text-inactive' : 'text-green-900'}`}
                 >
-                  <p>{activeType === ITEM_TYPE.SELL ? 'SELL' : 'USE KEY'}</p>
+                  <p>
+                    {activeType === ITEM_TYPE.SELL
+                      ? 'SELL'
+                      : disableBtnSpecial
+                        ? 'REDEEM'
+                        : 'USE KEY'}
+                  </p>
                   <div
-                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL ? 'bg-title' : 'bg-green-900'}`}
+                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
                   ></div>
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
-                      {totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+                      {isSpecial ? useKey : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
                     </span>
                   </div>
                 </div>
@@ -378,6 +428,7 @@ export default function Item() {
         onOpen={onOpenSpecial}
         onOpenChange={onOpenChangeSpecial}
         onClose={onCloseSpecial}
+        listItem={specialItem.current}
       />
     </>
   )

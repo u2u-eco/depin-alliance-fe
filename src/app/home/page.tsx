@@ -9,16 +9,14 @@ import { useUserInfo } from '@/hooks/useUserInfo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
+import { motion } from 'framer-motion'
 
 export default function HomePage() {
   const { userInfo, token, getUserConfig } = useCommonStore()
+
   // const totalDevice = useRef<number>(0)
 
   useUserInfo()
-
-  // const handleShare = () => {
-  //   webApp?.shareToStory('https://story-images.depinalliance.xyz/giveaway.jpg?huongcoho')
-  // }
 
   // const _getListDevice = async () => {
   //   const listDevice: any = await getListDevice()
@@ -90,41 +88,32 @@ export default function HomePage() {
     <>
       <CustomPage>
         {/* Point */}
-        <div className="relative">
+        <motion.div
+          className="relative"
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -25, opacity: 0 }}
+          transition={{ duration: 0.35 }}
+        >
           <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/home-frame.svg" alt="Frame" />
           </div>
-          {/* <div className="flex items-center justify-center space-x-2">
-            <div className="relative">
-              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-6 xs:size-7 min-[400px]:size-8 rounded-[50%] bg-[rgba(0,255,144,0.15)] shadow-[0_0_12px_rgba(0,255,144,0.45)] z-[-1]">
-                <div className="size-full rounded-[50%] bg-[rgba(255,255,255,1)]/20 blur-[4px]"></div>
-              </div>
-              <Image
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="size-7 xs:size-8 min-[400px]:size-9"
-                src="/assets/images/point@2x.png"
-                // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                alt="Point"
-              />
-            </div>
-            <p className="text-white font-geist font-bold text-2xl xs:text-[26px] min-[400px]:text-3xl text-point">
-              {userInfo?.point ? formatNumber(userInfo.point, 0, 0) : 0}
-            </p>
-          </div> */}
-          <div className="mt-16 w-fit mx-auto cursor-pointer">
-            <Image
-              className="mx-auto max-w-[200px] min-w-[200px] xs:max-w-[240px] xs:min-w-[240px] xs:min-h-[260px]"
+          <Link href="/avatar" className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]">
+            <img className="mx-auto min-h-[240px] max-h-[240px] xs:min-h-[260px] xs:max-h-[260px]" src={userInfo?.avatar?.replace(/avatar-/g, 'figure-') || '/assets/images/avatar/figure-01@2x.png'} alt="Figure" />
+            {/* <Image
+              className="mx-auto min-h-[240px] max-h-[240px] xs:min-h-[260px] xs:max-h-[260px]"
               width={0}
-              height={240}
+              height={0}
               sizes="100vw"
-              style={{ width: '100%' }}
-              src="/assets/images/actor.png"
-              alt="Actor"
-            />
-          </div>
-        </div>
+              style={{ width: '100%', height: '100%' }}
+              src={
+                userInfo?.avatar?.replace(/avatar-/g, 'figure-') ||
+                '/assets/images/avatar/figure-01@2x.png'
+              }
+              alt="Figure"
+            /> */}
+          </Link>
+        </motion.div>
         {/* Button */}
         <Mining />
         {/* Info */}
@@ -157,7 +146,7 @@ export default function HomePage() {
                         <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
                           {userInfo?.miningPower
                             ? `${formatNumber(userInfo.miningPower, 0, 2)}/h`
-                            : null}
+                            : '0/h'}
                         </p>
                       </div>
                     </div>

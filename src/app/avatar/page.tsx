@@ -8,6 +8,12 @@ import Image from 'next/image'
 import { getListAvatar, updateAvatar } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
+import { motion } from 'framer-motion'
+
+const listAvatar = [
+  { id: 1, img: '/assets/images/avatar/avatar-01@2x.png', name: 'Jax', description: `Jax is the mastermind behind the DePIN whitepaper and one of the key architects of the network's infrastructure.` },
+  { id: 2, img: '/assets/images/avatar/avatar-02@2x.png', name: 'Lara', description: `Lara is the strategist and sometimes the muscle of the DePIN Alliance.` },
+]
 
 export default function Avatar() {
   const router = useRouter()
@@ -38,6 +44,11 @@ export default function Avatar() {
     }
   }
 
+  const renderFigure = () => {
+    const figure = selectedImage.replace(/avatar-/g, 'figure-')
+    return figure
+  }
+
   useEffect(() => {
     if (userInfo?.avatar) {
       setSelectedImage(userInfo?.avatar)
@@ -45,7 +56,7 @@ export default function Avatar() {
     if (token) {
       getAvatar()
     }
-  }, [token])
+  }, [token, userInfo])
 
   return (
     <>
@@ -67,12 +78,12 @@ export default function Avatar() {
             <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Avatar</div>
             <div className="size-1.5 bg-green-800"></div>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex justify-between space-x-4">
             <div className="grid grid-cols-2 gap-1 xs:gap-2 2xs:gap-3 h-fit">
               {listImage.map((item: any) => (
                 <div
                   key={item}
-                  className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-2 xs:before:size-4 2xs:before:size-6 before:border-[6px] xs:before:border-[9px] 2xs:before:border-[12px] before:border-transparent before:transition-all ${selectedImage == item ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
+                  className={`relative max-w-[100px] before:content-[''] before:absolute before:top-0 before:left-0 before:size-2 xs:before:size-4 2xs:before:size-6 before:border-[6px] xs:before:border-[9px] 2xs:before:border-[12px] before:border-transparent before:transition-all ${selectedImage == item ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
                 >
                   <div
                     className={`[--path:_16px] xs:[--path:_24px] 2xs:[--path:_32px] [clip-path:_polygon(var(--path)_0,100%_0,100%_100%,0_100%,0_var(--path))] p-[1px] transition-all cursor-pointer ${selectedImage === item ? 'bg-green-500' : ''}`}
@@ -91,22 +102,33 @@ export default function Avatar() {
                 </div>
               ))}
             </div>
-            <div className="text-center min-w-[170px] max-w-[175px]">
-              <div className="relative min-h-[320px] max-w-[120px] mx-auto">
-                <div className="absolute bottom-[-5px] left-[50%] translate-x-[-50%] w-[160px] h-5 [clip-path:_ellipse(50%_50%_at_50%_50%)] bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] z-[-1]"></div>
-                <img
-                  className="h-full object-cover"
-                  src="/assets/images/figure.png"
-                  srcSet="/assets/images/figure.png 1x, /assets/images/figure@2x.png 2x"
-                  alt=""
-                />
-              </div>
-              <div className="mt-3 space-y-2 mb-6">
-                <div className="text-title font-mona text-base xs:text-lg font-semibold">Cyber Girl</div>
-                <div className="text-body text-xs tracking-[-1px]">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            <div className="text-center min-w-[150px] xs:min-w-[170px] max-w-[160px] xs:max-w-[175px]">
+              {listAvatar.map((item: any) => selectedImage === item.img && (
+                <div key={item.id}>
+                  <div className="relative max-w-[140px] mx-auto">
+                    <motion.div
+                      className="absolute bottom-[-5px] left-[50%] translate-x-[-50%] w-[120px] xs:w-[140px] 2xs:w-[160px] h-5 [clip-path:_ellipse(50%_50%_at_50%_50%)] bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] z-[-1]"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1 }}
+                    ></motion.div>
+                    <motion.img
+                      className="min-h-[200px] xs:min-h-[250px] 2xs:min-h-[300px] max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px] mx-auto"
+                      src={renderFigure() || '/assets/images/avatar/figure-01@2x.png'}
+                      alt="Figure"
+                      initial={{ y: 25, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -25, opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                    />
+                  </div>
+                  <div className="mt-3 space-y-1 xs:space-y-2 mb-4 xs:mb-5 2xs:mb-6">
+                    <div className="text-title font-mona text-base xs:text-lg font-semibold">{item.name}</div>
+                    <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px]">{item.description}</div>
+                  </div>
                 </div>
-              </div>
+              ))}
               <div className="flex items-center justify-between space-x-2">
                 <div className="relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center cursor-pointer">
                   <IconDoubleArrow className="text-body size-6" />

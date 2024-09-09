@@ -3,15 +3,18 @@ import CustomList from '@/app/components/custom-list'
 import { IconGroupUser, IconPoint } from '@/app/components/icons'
 import Loader from '@/app/components/ui/loader'
 import NoItem from '@/app/components/ui/no-item'
-import { LIST_STATUS_MISSION, LIST_TYPE, QUERY_CONFIG } from '@/constants'
+import { LIST_STATUS_MISSION, LIST_TYPE, MISSION_STATUS, QUERY_CONFIG } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
 import useMissionStore from '@/stores/missionsStore'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useRef } from 'react'
-export default function ListPartner() {
+import { useEffect, useRef } from 'react'
+interface IListPartner {
+  updateListPartner: (count: number) => void
+}
+export default function ListPartner({ updateListPartner }: IListPartner) {
   const { data: listPartners, isLoading } = useQuery({
     queryKey: ['fetchListMissionByPartner'],
     queryFn: getListMissionByPartner,
@@ -32,7 +35,7 @@ export default function ListPartner() {
   const countTaskDone = (list: any, index: number) => {
     let count = 0
     list.forEach((item: any) => {
-      if (item.status === 'VERIFIED' || item.status === 'CLAIMED') {
+      if (item.status === MISSION_STATUS.VERIFIED || item.status === MISSION_STATUS.CLAIMED) {
         count += 1
       }
     })
@@ -45,6 +48,12 @@ export default function ListPartner() {
     setCurrentMission(item)
     router.push(`/mission/partners?id=${index}`)
   }
+
+  useEffect(() => {
+    if (listPartners?.data?.length > 0) {
+      updateListPartner(listPartners?.data?.length)
+    }
+  }, [listPartners])
 
   return (
     <>

@@ -1,6 +1,7 @@
 import CustomButton from '@/app/components/button'
 import CustomInput from '@/app/components/custom-input'
-import { createLeague, validateNameLeague } from '@/services/league'
+import { createLeague, userLeague, validateNameLeague } from '@/services/league'
+import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -12,10 +13,18 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
   const name = useRef<string>('')
   const router = useRouter()
   const timeoutCheckName = useRef<any>(0)
+  const { setCurrentLeague } = useCommonStore()
   const [isDisableCreate, disableCreate] = useState<boolean>(false)
   const [isExistName, existName] = useState<boolean>(false)
   const onChange = (e: any) => {
     file.current = e.target.files[0]
+  }
+
+  const _getUserLeague = async () => {
+    const res = await userLeague()
+    if (res.status && res.data) {
+      setCurrentLeague({ league: res.data })
+    }
   }
   const checkName = () => {
     disableCreate(true)
@@ -49,6 +58,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
     const res: any = await createLeague(formData)
     if (res.status && res.data) {
       toast.success('Create successfully')
+      _getUserLeague()
       router.push('/league/in-league')
       onClose()
     }
@@ -73,7 +83,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
           copy
         /> */}
 
-        <input id="files" type="file" onChange={onChange} />
+        <input id="files" accept="image/*" type="file" onChange={onChange} />
       </div>
       <CustomButton title="CREATE" onAction={create} disable={isDisableCreate} />
     </>

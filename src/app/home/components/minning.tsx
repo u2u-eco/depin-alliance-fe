@@ -146,7 +146,7 @@ export default function Mining() {
   }, [])
 
   useEffect(() => {
-    if (userInfo?.timeStartMining) {
+    if (userInfo?.status === 'MINING') {
       setType(HOME_TYPE.MINING)
       calculatorMining()
     } else {
@@ -155,14 +155,16 @@ export default function Mining() {
   }, [userInfo])
 
   return (
-    <div className="mt-8 ">
+    <div className="mt-6 xs:mt-8">
       <button
         className={`btn ${isLoading ? 'default' : ''}`}
         onClick={() => handleClick(type)}
         ref={refButton}
       >
         <div className="btn-border"></div>
-        {type === HOME_TYPE.MINING || !userInfo || userInfo?.miningPower === 0 ? (
+        {type === HOME_TYPE.MINING ||
+        (userInfo?.status === 'MINING' && userInfo?.miningPower === 0) ||
+        !userInfo ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
               <div>Mining</div>

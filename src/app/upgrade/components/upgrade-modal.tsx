@@ -32,6 +32,10 @@ export default function UpgradeModal({
     setTimeCountdown(0)
   }
 
+  const getBonusRate = () => {
+    return `${userInfo?.rateBonusReward ? userInfo?.rateBonusReward + item.rateEffect * 100 : item.rateEffect * 100}%`
+  }
+
   const disableBtn =
     activeType === UPGRADE_TYPE.SKILL &&
     (!userInfo?.pointSkill || item.levelCurrent === item.maxLevel)
@@ -102,7 +106,7 @@ export default function UpgradeModal({
             <div className="flex items-center justify-center space-x-4 font-geist">
               <div className="flex items-center space-x-2">
                 <IconUpDown
-                  className={`size-5 xs:size-6 text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]`}
+                  className={`size-5 xs:size-6 ${(item.effectCurrent + item.rateEffect) * 100 >= 100 ? 'text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]' : 'text-[#E53935] rotate-180 drop-shadow-[0_0_8px_rgba(229,57,53,0.8)]'} `}
                 />
                 <p className="tracking-[-1px] text-title capitalize font-normal">
                   {item?.description}:
@@ -132,7 +136,9 @@ export default function UpgradeModal({
                 </div>
                 <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-300 !leading-[20px] 2xs:!leading-[24px]">
                   {item.effectCurrent && item.rateEffect
-                    ? `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
+                    ? item.name === 'Data Analysis'
+                      ? getBonusRate()
+                      : `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
                     : null}
                 </p>
               </div>
