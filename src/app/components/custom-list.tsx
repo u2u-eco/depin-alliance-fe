@@ -82,10 +82,24 @@ const CustomList = ({
                     />
                     <p className="text-primary font-geist font-semibold">
                       {item.miningPower && '+'}
-                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '') ||
-                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}
+                      {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '0') ||
+                        (item.miningPower && formatNumber(item.miningPower, 0, 2))}{' '}
                     </p>
                   </div>
+                  {item.box > 0 && (
+                    <>
+                      <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      <div className="flex items-center space-x-1">
+                        <img
+                          className="size-5"
+                          src="/assets/images/item-special.png"
+                          srcSet="/assets/images/item-special.png 1x, /assets/images/item-special@2x.png 2x"
+                          alt="Box"
+                        />
+                        <p className="text-primary font-geist font-semibold">{`${item.box} box`}</p>
+                      </div>
+                    </>
+                  )}
                   {item.available ||
                     (item.complete && (
                       <>
