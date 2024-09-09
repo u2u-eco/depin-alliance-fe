@@ -68,6 +68,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                   if (index < 2) {
                     return (
                       <div
+                        key={index}
                         className={`grid grid-cols-${listItem.length > 1 ? 2 : 1} gap-3 relative z-[1]`}
                       >
                         <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
@@ -116,6 +117,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                   if (index > 2) {
                     return (
                       <div
+                        key={index}
                         className={`grid grid-cols-${listItem.length > 3 ? 2 : 1} gap-3 relative z-[1]`}
                       >
                         <div className="relative w-fit mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green">
