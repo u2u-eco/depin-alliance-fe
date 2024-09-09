@@ -101,8 +101,8 @@ export default function HomePage() {
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: '100%' }}
-              src="/assets/images/figure@2x.png"
-              alt="Actor"
+              src={userInfo?.avatar?.replace(/avatar-/g, 'figure-') || '/assets/images/avatar/figure-01@2x.png'}
+              alt="Figure"
             />
           </div>
         </div>

@@ -80,7 +80,7 @@ const Info = ({ profile, rank }: InfoProps) => {
             >
               <Image
                 className="size-full min-w-full"
-                src={userInfo?.avatar || '/assets/images/avatar.png'}
+                src={userInfo?.avatar?.replace(/-/g, '-main-') || '/assets/images/avatar/avatar-main-01@2x.png'}
                 width={0}
                 height={0}
                 sizes="100vw"

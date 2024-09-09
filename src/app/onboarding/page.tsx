@@ -162,7 +162,7 @@ const Onboarding = () => {
                 className="mx-auto object-cover min-[460px]:h-full w-full"
                 src={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png`}
                 srcSet={`/assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background.png 1x, /assets/images/onboarding/onboarding${type === ONBOARDING_TYPE.SCHOLARSHIP || type === ONBOARDING_TYPE.DEVICE ? '-scholarship' : ''}-background@2x.png 2x`}
-                alt=""
+                alt="Background"
               />
             </div>
             <motion.div
@@ -192,7 +192,7 @@ const Onboarding = () => {
                   <img
                     className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[275px] xs:max-h-[300px] 2xs:max-h-[325px] mt-5 xs:mt-6 2xs:mt-7 mb-6 xs:mb-7 2xs:mb-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-8 xs:mt-10 2xs:mt-12 mb-4 max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px]' : 'max-h-[220px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
                     src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png`}
-                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : 'onboarding/onboarding-info'}@2x.png 2x`}
+                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}@2x.png 2x`}
                     alt="Device"
                   />
                 </div>
