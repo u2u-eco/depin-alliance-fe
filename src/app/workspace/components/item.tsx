@@ -177,10 +177,6 @@ export default function Item() {
     setPage(1)
   }, [filterOptions])
 
-  useEffect(() => {
-    onOpenSpecial()
-  }, [])
-
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
     currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
