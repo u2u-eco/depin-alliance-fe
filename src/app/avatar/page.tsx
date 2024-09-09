@@ -123,9 +123,9 @@ export default function Avatar() {
                       transition={{ duration: 0.35 }}
                     />
                   </div>
-                  <div className="mt-3 space-y-2 mb-6">
+                  <div className="mt-3 space-y-1 xs:space-y-2 mb-4 xs:mb-5 2xs:mb-6">
                     <div className="text-title font-mona text-base xs:text-lg font-semibold">{item.name}</div>
-                    <div className="text-body text-xs tracking-[-1px]">{item.description}</div>
+                    <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px]">{item.description}</div>
                   </div>
                 </div>
               ))}
