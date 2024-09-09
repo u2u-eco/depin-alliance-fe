@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`${GeistMono.variable}`}>
         <Layout>{children}</Layout>
       </body>
-      <GoogleAnalytics gaId="G-QM3ZVFLQDK"/>
+      <GoogleAnalytics gaId="G-QM3ZVFLQDK" />
     </html>
   )
 }
