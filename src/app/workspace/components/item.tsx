@@ -3,11 +3,11 @@ import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { IDeviceTypeItem } from '@/interfaces/i.devices'
+import { IDeviceTypeItem, IParamUseKey } from '@/interfaces/i.devices'
 import Image from 'next/image'
 import { formatNumber } from '@/helper/common'
 import SellItem from './sell-item'
-import { listUserItemDevice, sellItem } from '@/services/devices'
+import { estimateUseKey, getUseKey, listUserItemDevice, sellItem } from '@/services/devices'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { FILTER_TYPE, QUERY_CONFIG } from '@/constants'
@@ -19,11 +19,12 @@ import useCommonStore from '@/stores/commonStore'
 import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
+import AmountUseKey from './amount-use-key'
 
 const ITEM_TYPE = {
   INFO: 'info',
   SELL: 'sell',
-  SPECIAL: 'special'
+  SPECIAL: 'SPECIAL'
 }
 
 export default function Item() {
@@ -31,6 +32,7 @@ export default function Item() {
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
+  const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
@@ -62,6 +64,7 @@ export default function Item() {
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
+  const [useKey, setUseKey] = useState<number>(0)
   const { isLoading, refetch } = useQuery({
     queryKey: [
       'getUserItemDevice',
@@ -116,8 +119,16 @@ export default function Item() {
     }
   }
 
-  const handleSpecial = () => {
-    console.log(111)
+  const handleSpecial = async () => {
+    if (paramUseKey.current) {
+      const res = await getUseKey(paramUseKey.current)
+      if (res.status) {
+        toast.success('Special item successfully!')
+        refetch && refetch()
+        getUserInfo()
+        onClose()
+      }
+    }
   }
 
   const handleOnClose = () => {
@@ -134,6 +145,20 @@ export default function Item() {
     onOpenSpecial()
   }
 
+  const updateAmountUseKey = async (amount: number) => {
+    if (amount) {
+      paramUseKey.current = {
+        amount,
+        code: currentItem.current?.code
+      }
+      const res = await estimateUseKey(paramUseKey.current)
+
+      if (res.status) {
+        setUseKey(res.data)
+      }
+    }
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -148,7 +173,6 @@ export default function Item() {
   }, [filterOptions])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
-
   return (
     <>
       <div className="space-y-8">
@@ -215,7 +239,13 @@ export default function Item() {
             {!isLoading && (
               <NoItem
                 title="No item"
-                link={filterOptions.type ? `/shop?type=${filterOptions.type}` : '/shop'}
+                link={
+                  filterOptions.type === ITEM_TYPE.SPECIAL
+                    ? undefined
+                    : filterOptions.type
+                      ? `/shop?type=${filterOptions.type}`
+                      : '/shop'
+                }
                 classNames={{
                   icon: 'text-body'
                 }}
@@ -288,7 +318,12 @@ export default function Item() {
                           <div className="text-xs text-white-50">
                             {isSpecial ? 'AMOUNT:' : 'TOTAL PROFIT:'}
                           </div>
-                          {isSpecial ? null : (
+                          {isSpecial ? (
+                            <AmountUseKey
+                              maxTotal={currentItem?.current.totalItem || 1}
+                              updateAmountUseKey={updateAmountUseKey}
+                            />
+                          ) : (
                             <div className="flex items-center space-x-1">
                               <IconPoint className="size-4" />
                               <span className="text-primary font-semibold leading-[16px]">
@@ -316,7 +351,7 @@ export default function Item() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              onClick={activeType === ITEM_TYPE.SELL ? handleSell : handleSpecial}
+              onClick={isSpecial ? handleSpecial : handleSell}
             >
               <div className="btn-border"></div>
               <div className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : 'primary'}`}>
@@ -330,7 +365,7 @@ export default function Item() {
                   <div className="flex items-center space-x-1">
                     <IconPoint className="size-5" color />
                     <span className="font-geist">
-                      {totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+                      {isSpecial ? useKey : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
                     </span>
                   </div>
                 </div>
