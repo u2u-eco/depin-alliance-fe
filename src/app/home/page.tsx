@@ -103,7 +103,7 @@ export default function HomePage() {
           </div>
           <Link href="/avatar" className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]">
             <Image
-              className="mx-auto max-h-[240px] xs:max-h-[260px]"
+              className="mx-auto min-h-[240px] max-h-[240px] xs:max-h-[260px]"
               width={0}
               height={0}
               sizes="100vw"

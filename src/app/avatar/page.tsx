@@ -9,12 +9,17 @@ import { getListAvatar, updateAvatar } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
 
+const listAvatar = [
+  { id: 1, img: '/assets/images/avatar/avatar-01@2x.png', name: 'Jax', description: `Jax is the mastermind behind the DePIN whitepaper and one of the key architects of the network's infrastructure.` },
+  { id: 2, img: '/assets/images/avatar/avatar-02@2x.png', name: 'Lara', description: `Lara is the strategist and sometimes the muscle of the DePIN Alliance.` },
+]
+
 export default function Avatar() {
   const router = useRouter()
   const { token, userInfo, getUserInfo } = useCommonStore((state) => state)
   const [listImage, setListImage] = useState<Array<string>>([])
   const [selectedImage, setSelectedImage] = useState<string>('')
-  console.log(selectedImage);
+
   const getAvatar = async () => {
     const res = await getListAvatar()
     if (res.status) {
@@ -50,7 +55,7 @@ export default function Avatar() {
     if (token) {
       getAvatar()
     }
-  }, [token])
+  }, [token, userInfo])
 
   return (
     <>
