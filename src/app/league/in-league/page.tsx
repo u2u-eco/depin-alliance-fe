@@ -8,7 +8,7 @@ import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
@@ -40,6 +40,10 @@ export default function InLeaguePage() {
       router.push('/league')
     }
   }
+
+  useEffect(() => {
+    _getUserLeague()
+  }, [])
 
   return (
     <>
