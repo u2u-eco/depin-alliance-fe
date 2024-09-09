@@ -138,6 +138,7 @@ const Onboarding = () => {
       case CURRENT_STATUS.DETECTED_DEVICE_INFO:
         setType(ONBOARDING_TYPE.SCHOLARSHIP)
         if (userInfo?.pointUnClaimed) {
+          setDeviceName(userInfo?.detectDevice)
           setPointReward(userInfo.pointUnClaimed)
           onOpen()
         }
@@ -191,8 +192,8 @@ const Onboarding = () => {
 
                   <img
                     className={`mx-auto ${type === ONBOARDING_TYPE.START ? 'max-h-[275px] xs:max-h-[300px] 2xs:max-h-[325px] mt-5 xs:mt-6 2xs:mt-7 mb-6 xs:mb-7 2xs:mb-8' : type === ONBOARDING_TYPE.LOADING ? 'mt-8 xs:mt-10 2xs:mt-12 mb-4 max-h-[200px] xs:max-h-[250px] 2xs:max-h-[300px]' : 'max-h-[220px] xs:max-h-[300px] 2xs:max-h-[380px] mt-8 xs:mt-10 2xs:mt-12 mb-4'}`}
-                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png`}
-                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/onboarding-ios'}@2x.png 2x`}
+                    src={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png`}
+                    srcSet={`/assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}.png 1x, /assets/images/${type === ONBOARDING_TYPE.START ? 'actor' : type === ONBOARDING_TYPE.LOADING ? 'onboarding/onboarding-info' : 'onboarding/device-unknown'}@2x.png 2x`}
                     alt="Device"
                   />
                 </div>
