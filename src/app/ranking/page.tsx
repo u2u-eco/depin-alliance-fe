@@ -24,18 +24,22 @@ export default function RankingPage() {
 
   useEffect(() => {
     if (listRankingResponse?.data?.ranking) {
-      setListRanking({
-        ...listRankingResponse?.data,
-        ranking: [
-          ...listRankingResponse?.data?.ranking,
-          {
-            avatar: userInfo?.avatar,
-            miningPower: userInfo?.miningPower,
-            username: userInfo?.username,
-            rank: listRankingResponse.data.currentRank
-          }
-        ]
-      })
+      let list = listRankingResponse?.data
+      if (listRankingResponse?.data?.currentRank > listRankingResponse?.data?.ranking?.length) {
+        list = {
+          ...listRankingResponse?.data,
+          ranking: [
+            ...listRankingResponse?.data?.ranking,
+            {
+              avatar: userInfo?.avatar,
+              miningPower: userInfo?.miningPower,
+              username: userInfo?.username,
+              rank: listRankingResponse.data.currentRank
+            }
+          ]
+        }
+      }
+      setListRanking(list)
     }
   }, [listRankingResponse?.data, userInfo])
 
