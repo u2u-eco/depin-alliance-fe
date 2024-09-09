@@ -15,9 +15,18 @@ const MISSION_TAB = {
 
 export default function MissionPage() {
   const [activeTab, setActiveTab] = useState(MISSION_TAB.PARTNERS)
-
+  const [partnerCount, setPartnerCount] = useState<number>(0)
+  const [rewardCount, setRewardCount] = useState<number>(0)
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
+  }
+
+  const updateListPartner = (count: number) => {
+    setPartnerCount(count)
+  }
+
+  const updateListReward = (count: number) => {
+    setRewardCount(count)
   }
 
   return (
@@ -51,21 +60,34 @@ export default function MissionPage() {
           }}
           onSelectionChange={handleChangeTab}
         >
-          <Tab key={MISSION_TAB.PARTNERS} title={`${MISSION_TAB.PARTNERS} (0)`}></Tab>
-          <Tab key={MISSION_TAB.REWARDS} title={`${MISSION_TAB.REWARDS} (4)`}></Tab>
+          <Tab key={MISSION_TAB.PARTNERS} title={`${MISSION_TAB.PARTNERS} (${partnerCount})`}></Tab>
+          <Tab key={MISSION_TAB.REWARDS} title={`${MISSION_TAB.REWARDS} (${rewardCount})`}></Tab>
         </Tabs>
-        {activeTab === MISSION_TAB.PARTNERS ? (
-          <ListPartner />
+        <div className={`${activeTab === MISSION_TAB.PARTNERS ? '' : 'hidden'}`}>
+          <ListPartner updateListPartner={updateListPartner} />
+        </div>
+        <div className={`${activeTab === MISSION_TAB.PARTNERS ? 'hidden' : ''}`}>
+          <>
+            <div className="space-y-4">
+              <DailyCheckIn />
+            </div>
+            <div>
+              <Missions updateListReward={updateListReward} />
+            </div>
+          </>
+        </div>
+        {/* {activeTab === MISSION_TAB.PARTNERS ? (
+          <ListPartner updateListPartner={updateListPartner} />
         ) : (
           <>
             <div className="space-y-4">
               <DailyCheckIn />
             </div>
             <div>
-              <Missions />
+              <Missions updateListReward={updateListReward} />
             </div>
           </>
-        )}
+        )} */}
       </CustomPage>
     </>
   )

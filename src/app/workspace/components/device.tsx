@@ -71,6 +71,7 @@ export default function Device() {
       setActiveItem(0)
       refetchListDevice()
       getDeviceItemDetail(currentIndex.current)
+      getUserInfo()
       onClose()
     }
   }
@@ -81,6 +82,7 @@ export default function Device() {
       toast.success('Unequipped successfully!')
       refetchListDevice()
       getDeviceItemDetail(currentIndex.current)
+      getUserInfo()
       onClose()
     }
   }

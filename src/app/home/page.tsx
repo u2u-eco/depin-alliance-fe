@@ -157,7 +157,7 @@ export default function HomePage() {
                         <p className="text-green-500 font-semibold text-[13px] xs:text-sm">
                           {userInfo?.miningPower
                             ? `${formatNumber(userInfo.miningPower, 0, 2)}/h`
-                            : null}
+                            : '0/h'}
                         </p>
                       </div>
                     </div>
