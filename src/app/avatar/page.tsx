@@ -14,7 +14,7 @@ export default function Avatar() {
   const { token, userInfo, getUserInfo } = useCommonStore((state) => state)
   const [listImage, setListImage] = useState<Array<string>>([])
   const [selectedImage, setSelectedImage] = useState<string>('')
-
+  console.log(selectedImage);
   const getAvatar = async () => {
     const res = await getListAvatar()
     if (res.status) {
@@ -36,6 +36,11 @@ export default function Avatar() {
       handleBack()
       getUserInfo()
     }
+  }
+
+  const renderFigure = () => {
+    const figure = selectedImage.replace(/avatar-/g, 'figure-')
+    return figure
   }
 
   useEffect(() => {
@@ -100,7 +105,7 @@ export default function Avatar() {
                   height={0}
                   sizes="100vw"
                   style={{ width: '100%', height: '100%' }}
-                  src={userInfo?.avatar?.replace(/avatar-/g, 'figure-') || '/assets/images/avatar/figure-01@2x.png'}
+                  src={renderFigure() || '/assets/images/avatar/figure-01@2x.png'}
                   alt="Figure"
                 />
               </div>
