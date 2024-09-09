@@ -63,7 +63,7 @@ const Onboarding = () => {
       if (res.data.pointBonus) {
         setPointReward(res.data.pointBonus)
         setDeviceName(res.data.detectDevice)
-        // setType(ONBOARDING_TYPE.DEVICE)
+        setType(ONBOARDING_TYPE.DEVICE)
         setTimeout(() => onOpen(), 3000)
       }
     }
