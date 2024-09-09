@@ -105,6 +105,22 @@ const CustomList = ({
                       </div>
                     </>
                   )}
+
+                  {item.xp > 0 && (
+                    <>
+                      {(item.miningPower !== 0 && pointKey && item[pointKey]) || item.box ? (
+                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                      ) : null}
+                      <div className="flex items-center space-x-1">
+                        <img
+                          className="size-4"
+                          src="/assets/images/icons/icon-thunder.svg"
+                          alt="xp"
+                        />
+                        <p className="text-primary font-geist font-semibold">{`${item.xp}`}</p>
+                      </div>
+                    </>
+                  )}
                   {item.available ||
                     (item.complete && (
                       <>

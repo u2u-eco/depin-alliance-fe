@@ -1,4 +1,4 @@
-import { IDeviceItemBuyParam, IFilterDevice } from '@/interfaces/i.devices'
+import { IDeviceItemBuyParam, IFilterDevice, IParamUseKey } from '@/interfaces/i.devices'
 import https from '../constants/https'
 
 export const getUserDevice = ({
@@ -74,4 +74,12 @@ export const changeNameDevice = (data: { index: number; name: string }) => {
 
 export const getNewDevice = () => {
   return https.get('/devices/add-device')
+}
+
+export const estimateUseKey = (data: IParamUseKey) => {
+  return https.post('/devices/estimate-use-key', data)
+}
+
+export const getUseKey = (data: IParamUseKey) => {
+  return https.post('/devices/use-key', data)
 }

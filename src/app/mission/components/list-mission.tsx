@@ -138,6 +138,21 @@ export default function ListMission({ title, missions, id, listMission, refetch 
                     </div>
                   </>
                 )}
+                {currentItem.current?.xp > 0 && (
+                  <>
+                    {currentItem.current?.point || currentItem.current?.box ? (
+                      <div className="w-[1px] h-[20px] mx-2 bg-white/25"></div>
+                    ) : null}
+                    <div className="flex items-center space-x-1">
+                      <img
+                        className="size-6"
+                        src="/assets/images/icons/icon-thunder.svg"
+                        alt="xp"
+                      />
+                      <p className="text-primary font-geist font-semibold">{`${currentItem.current.xp}`}</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

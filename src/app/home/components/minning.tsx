@@ -14,7 +14,6 @@ const HOME_TYPE = {
 }
 export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
-  console.log('🚀 ~ Mining ~ type:', type)
   const [bonusReward, setBonusReward] = useState<number>(0)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
