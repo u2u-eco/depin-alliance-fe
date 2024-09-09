@@ -106,7 +106,7 @@ export default function UpgradeModal({
             <div className="flex items-center justify-center space-x-4 font-geist">
               <div className="flex items-center space-x-2">
                 <IconUpDown
-                  className={`size-5 xs:size-6 text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]`}
+                  className={`size-5 xs:size-6 ${(item.effectCurrent + item.rateEffect) * 100 >= 100 ? 'text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]' : 'text-[#E53935] rotate-180 drop-shadow-[0_0_8px_rgba(229,57,53,0.8)]'} `}
                 />
                 <p className="tracking-[-1px] text-title capitalize font-normal">
                   {item?.description}:

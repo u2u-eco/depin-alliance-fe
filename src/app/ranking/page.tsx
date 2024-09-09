@@ -141,7 +141,7 @@ export default function RankingPage() {
                           alt="Point"
                         />
                         <p className="text-primary font-geist font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-                          {item.miningPower && formatNumber(item.miningPower, 0, 0)}
+                          {item.miningPower ? `${formatNumber(item.miningPower, 0, 2)}/h` : '0/h'}
                         </p>
                       </div>
                     </div>
