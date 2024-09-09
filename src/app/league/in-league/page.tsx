@@ -1,6 +1,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
+import { IconChat, IconClipboard } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
@@ -102,31 +103,27 @@ export default function InLeaguePage() {
               </div>
             </div>
           </div>
-          <div className="btn">
+          <div className="btn inactive">
             <div className="btn-border"></div>
-            <div className="btn-primary">MINING TOGETHER</div>
+            <div className="btn-inactive">MINING TOGETHER</div>
             <div className="btn-border"></div>
           </div>
           <div className="grid grid-cols-4 gap-3 mt-8">
-            <div className="btn default size-[90px] mx-auto">
+            <div className="btn inactive size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img
-                  className="size-8 mx-auto"
-                  src="/assets/images/icons/icon-task-green.svg"
-                  alt=""
-                />
-                <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-xs mt-1 whitespace-nowrap">
-                  Super Tasks
+              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconClipboard className="size-8 mx-auto"/>
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+                  Mission
                 </p>
               </div>
               <div className="btn-border"></div>
             </div>
-            <div className="btn default size-[90px] mx-auto">
+            <div className="btn inactive size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img className="size-8 mx-auto" src="/assets/images/icons/icon-chat.svg" alt="" />
-                <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconChat className="size-8" />
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
                   Chat
                 </p>
               </div>

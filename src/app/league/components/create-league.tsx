@@ -1,5 +1,6 @@
 import CustomButton from '@/app/components/button'
 import CustomInput from '@/app/components/custom-input'
+import { IconImageAdd } from '@/app/components/icons'
 import { createLeague, userLeague, validateNameLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
@@ -66,6 +67,13 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
   return (
     <>
       <div className="mt-8 mb-10 space-y-6">
+        <div className="relative space-y-2 w-fit mx-auto">
+          <div className="size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 overflow-hidden">
+            <IconImageAdd gradient/>
+          </div>
+          <p className="text-base text-body leading-[20px] tracking-[-1px] text-center">Upload Image</p>
+          <input className="absolute top-0 left-0 right-0 w-full h-full m-0 cursor-pointer opacity-0" id="files" accept="image/*" type="file" onChange={onChange} />
+        </div>
         <div className="mb-1">
           <CustomInput
             label="League Name:"
@@ -82,8 +90,6 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
           isDisabled
           copy
         /> */}
-
-        <input id="files" accept="image/*" type="file" onChange={onChange} />
       </div>
       <CustomButton title="CREATE" onAction={create} disable={isDisableCreate} />
     </>
