@@ -62,7 +62,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
     <div
       className={`relative cursor-pointer before:absolute before:top-0 before:left-0 before:content-[''] before:w-full before:h-full before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:opacity-20 before:z-[-1] after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent p-2 flex items-center justify-between
         ${
-          type === LIST_TYPE.MISSION
+          (type === LIST_TYPE.MISSION || type === LIST_TYPE.PARTNERS)
             ? done
               ? 'before:bg-white/5 after:border-b-white/5 after:border-r-white/5'
               : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900'
