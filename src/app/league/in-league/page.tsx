@@ -16,6 +16,7 @@ export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+console.log(currentLeague);
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -168,9 +169,24 @@ export default function InLeaguePage() {
         onClose={onClose}
         onOpenChange={onOpenChange}
       >
-        <div className="space-y-16">
+        <div>
           <div className=" text-body text-base tracking-[-1px] text-center">
-            <p>Do you want to leave this league?</p>
+            <p>Do you want to leave this league <span className="text-[#1AF7A8]">{`"${currentLeague?.name}"`}</span>?</p>
+          </div>
+          <div className="mt-8 mb-10 flex items-center justify-center space-x-4">
+            <div
+              className={`p-[1px] size-[110px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center`}
+            >
+              <img
+                className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                src={`${currentLeague?.avatar ? `${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
+                alt="DePIN Alliance"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-white font-semibold font-mona text-2xl leading-[28px]">{currentLeague?.name}</p>
+              <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">LV. {currentLeague?.level}</p>
+            </div>
           </div>
           <div className="flex items-center space-x-4">
             <div className="btn default" onClick={onClose}>
