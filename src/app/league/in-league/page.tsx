@@ -1,11 +1,13 @@
 'use client'
 
+import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { IconChat, IconClipboard } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
+import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -13,6 +15,7 @@ import React, { useEffect } from 'react'
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -141,7 +144,7 @@ export default function InLeaguePage() {
               <div className="btn-border"></div>
             </div>
             <div
-              onClick={handleLeave}
+              onClick={onOpen}
               className={`btn default size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
             >
               <div className="btn-border"></div>
@@ -158,6 +161,31 @@ export default function InLeaguePage() {
           </div>
         </div>
       </CustomPage>
+      <CustomModal
+        title="Leave League"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+      >
+        <div className="space-y-16">
+          <div className=" text-body text-base tracking-[-1px] text-center">
+            <p>Do you want to leave this league?</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="btn default" onClick={onClose}>
+              <div className="btn-border"></div>
+              <div className="btn-default">Cancel</div>
+              <div className="btn-border"></div>
+            </div>
+            <div className="btn error" onClick={handleLeave}>
+              <div className="btn-border"></div>
+              <div className="btn-error">Leave</div>
+              <div className="btn-border"></div>
+            </div>
+          </div>
+        </div>
+      </CustomModal>
     </>
   )
 }
