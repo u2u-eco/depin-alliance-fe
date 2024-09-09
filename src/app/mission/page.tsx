@@ -37,7 +37,7 @@ export default function MissionPage() {
             "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]"
         }}
       >
-        <div>
+        {/* <div>
           <Image
             width={0}
             height={0}
@@ -47,7 +47,7 @@ export default function MissionPage() {
             src="/assets/images/mission/mission-image@2x.png"
             alt="Mission Image"
           />
-        </div>
+        </div> */}
         <Tabs
           variant="underlined"
           classNames={{

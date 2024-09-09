@@ -26,7 +26,7 @@ const listLevel = [
 export default function LevelPage() {
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { userInfo } = useCommonStore()
+  const { userInfo, userConfig } = useCommonStore()
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
     if (userInfo) {
       const currentXp = userInfo.xp - userInfo.xpLevelFrom
@@ -126,11 +126,11 @@ export default function LevelPage() {
                             </p>
                           </div>
                         </div>
-                        {/* <div className="h-[1px] w-full bg-white/10"></div>
+                        <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
-                          <div className="text-body uppercase">BONUS RATE</div>
-                          <p className="text-title">{userInfo?.rateBonusReward}%</p>
-                        </div> */}
+                          <div className="text-body uppercase">MAXIMUM SLOT DEVICE</div>
+                          <p className="text-title">{userConfig?.maxDevice}</p>
+                        </div>
                         {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS REWARD</div>
