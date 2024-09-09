@@ -95,7 +95,10 @@ export default function Mining() {
         handleMining()
         break
       case HOME_TYPE.MINING:
-        if (userInfo?.miningPower && userInfo?.maximumPower > 0) {
+        if (
+          (userInfo?.miningPower && userInfo?.maximumPower > 0) ||
+          (userInfo?.pointUnClaimed && userInfo?.pointUnClaimed > 0)
+        ) {
           setType(HOME_TYPE.CLAIM)
         }
         break
@@ -163,7 +166,9 @@ export default function Mining() {
       >
         <div className="btn-border"></div>
         {type === HOME_TYPE.MINING ||
-        (userInfo?.status === 'MINING' && userInfo?.miningPower === 0) ||
+        (userInfo?.status === 'MINING' &&
+          userInfo?.miningPower === 0 &&
+          userInfo?.pointUnClaimed === 0) ||
         !userInfo ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
