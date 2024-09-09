@@ -119,9 +119,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           />
         )}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
-          {listItem?.map((item: any) => (
+          {listItem?.map((item: any, index: number) => (
             <div
-              key={item.id}
+              key={index}
               className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer`}
               onClick={() => handleClick(item)}
             >

@@ -23,7 +23,7 @@ import OpenBox from './open-box'
 const ITEM_TYPE = {
   INFO: 'info',
   SELL: 'sell',
-  SPECIAL: 'special'
+  SPECIAL: 'SPECIAL'
 }
 
 export default function Item() {
@@ -148,7 +148,6 @@ export default function Item() {
   }, [filterOptions])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
-
   return (
     <>
       <div className="space-y-8">
@@ -215,7 +214,13 @@ export default function Item() {
             {!isLoading && (
               <NoItem
                 title="No item"
-                link={filterOptions.type ? `/shop?type=${filterOptions.type}` : '/shop'}
+                link={
+                  filterOptions.type === ITEM_TYPE.SPECIAL
+                    ? undefined
+                    : filterOptions.type
+                      ? `/shop?type=${filterOptions.type}`
+                      : '/shop'
+                }
                 classNames={{
                   icon: 'text-body'
                 }}
@@ -309,6 +314,7 @@ export default function Item() {
               )}
             </>
           ) : null}
+          {isSpecial}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
             <motion.div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : ''}`}

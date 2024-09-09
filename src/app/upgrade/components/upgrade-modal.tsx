@@ -32,6 +32,10 @@ export default function UpgradeModal({
     setTimeCountdown(0)
   }
 
+  const getBonusRate = () => {
+    return `${userInfo?.rateBonusReward ? userInfo?.rateBonusReward + item.rateEffect * 100 : item.rateEffect * 100}%`
+  }
+
   const disableBtn =
     activeType === UPGRADE_TYPE.SKILL &&
     (!userInfo?.pointSkill || item.levelCurrent === item.maxLevel)
@@ -132,7 +136,9 @@ export default function UpgradeModal({
                 </div>
                 <p className="text-[15px] xs:text-base 2xs:text-lg font-semibold text-green-300 !leading-[20px] 2xs:!leading-[24px]">
                   {item.effectCurrent && item.rateEffect
-                    ? `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
+                    ? item.name === 'Data Analysis'
+                      ? getBonusRate()
+                      : `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
                     : null}
                 </p>
               </div>

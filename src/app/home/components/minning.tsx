@@ -14,6 +14,7 @@ const HOME_TYPE = {
 }
 export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
+  console.log('🚀 ~ Mining ~ type:', type)
   const [bonusReward, setBonusReward] = useState<number>(0)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
@@ -162,7 +163,7 @@ export default function Mining() {
         ref={refButton}
       >
         <div className="btn-border"></div>
-        {(type === HOME_TYPE.MINING && userInfo?.miningPower === 0) || !userInfo ? (
+        {type === HOME_TYPE.MINING || userInfo?.miningPower === 0 || !userInfo ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
               <div>Mining</div>

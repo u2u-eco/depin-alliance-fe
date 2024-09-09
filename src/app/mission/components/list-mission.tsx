@@ -109,19 +109,23 @@ export default function ListMission({ title, missions, id, listMission, refetch 
             <div className="space-y-2">
               <p className=" text-title font-semibold">REWARD:</p>
               <div className="flex items-center">
-                <div className="flex items-center space-x-2">
-                  <Image
-                    className="size-6"
-                    width={24}
-                    height={24}
-                    src="/assets/images/point@2x.png"
-                    alt="Point"
-                  />
-                  <p className="text-green-500">{currentItem.current?.point}</p>
-                </div>
+                {currentItem.current?.point ? (
+                  <div className="flex items-center space-x-2">
+                    <Image
+                      className="size-6"
+                      width={24}
+                      height={24}
+                      src="/assets/images/point@2x.png"
+                      alt="Point"
+                    />
+                    <p className="text-green-500">{currentItem.current?.point}</p>
+                  </div>
+                ) : null}
                 {currentItem.current?.box > 0 && (
                   <>
-                    <div className="w-[1px] h-[20px] mx-2 bg-white/25"></div>
+                    {currentItem.current?.point ? (
+                      <div className="w-[1px] h-[20px] mx-2 bg-white/25"></div>
+                    ) : null}
                     <div className="flex items-center space-x-1">
                       <Image
                         className="size-8"
