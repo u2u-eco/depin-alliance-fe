@@ -63,7 +63,7 @@ const Onboarding = () => {
       if (res.data.pointBonus) {
         setPointReward(res.data.pointBonus)
         setDeviceName(res.data.detectDevice)
-        setType(ONBOARDING_TYPE.DEVICE)
+        // setType(ONBOARDING_TYPE.DEVICE)
         setTimeout(() => onOpen(), 3000)
       }
     }
@@ -198,50 +198,51 @@ const Onboarding = () => {
                   />
                 </div>
                 {/* Content */}
-                {type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
-                  <div className="text-center space-y-3">
-                    <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
-                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                      <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
-                        {type === ONBOARDING_TYPE.START
-                          ? 'contribute and earn rewards'
-                          : type === ONBOARDING_TYPE.LOADING
-                            ? 'getting info...'
-                            : type === ONBOARDING_TYPE.DEVICE
-                              ? 'Device Info'
-                              : 'newbie reward'}
+                {
+                  type !== ONBOARDING_TYPE.DEVICE && type !== ONBOARDING_TYPE.SCHOLARSHIP ? (
+                    <div className="text-center space-y-3">
+                      <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
+                        <div className="size-1.5 min-w-1.5 bg-green-800"></div>
+                        <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
+                          {type === ONBOARDING_TYPE.START
+                            ? 'contribute and earn rewards'
+                            : type === ONBOARDING_TYPE.LOADING
+                              ? 'getting info...'
+                              : type === ONBOARDING_TYPE.DEVICE
+                                ? 'Device Info'
+                                : 'newbie reward'}
+                        </div>
+                        <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                       </div>
-                      <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                    </div>
-                    <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
-                      {type === ONBOARDING_TYPE.START ? (
-                        'Become a node contributor to build a decentralized world.'
-                      ) : type === ONBOARDING_TYPE.LOADING ? (
-                        <>
-                          <p>We’re getting your device information.</p>
-                          <p>Please wait...</p>
-                        </>
-                      ) : type === ONBOARDING_TYPE.DEVICE ? (
-                        'This is your device information. Use it to contribute and upgrade for more rewards'
-                      ) : (
-                        <>
-                          <p>You’ve received your first reward!</p>
-                          <p>Let’s go!!!</p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-4">
-                    <div className="btn default cursor-default">
-                      <div className="btn-border"></div>
-                      <div className="btn-default font-normal font-geist normal-case">
-                        {deviceName}
+                      <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
+                        {type === ONBOARDING_TYPE.START ? (
+                          'Become a node contributor to build a decentralized world.'
+                        ) : type === ONBOARDING_TYPE.LOADING ? (
+                          <>
+                            <p>We’re getting your device information.</p>
+                            <p>Please wait...</p>
+                          </>
+                        ) : type === ONBOARDING_TYPE.DEVICE ? (
+                          'This is your device information. Use it to contribute and upgrade for more rewards'
+                        ) : (
+                          <>
+                            <p>You’ve received your first reward!</p>
+                            <p>Let’s go!!!</p>
+                          </>
+                        )}
                       </div>
-                      <div className="btn-border"></div>
                     </div>
-                  </div>
-                )}
+                  ) : null
+                  // <div className="mt-4">
+                  //   <div className="btn default cursor-default">
+                  //     <div className="btn-border"></div>
+                  //     <div className="btn-default font-normal font-geist normal-case">
+                  //       {deviceName}
+                  //     </div>
+                  //     <div className="btn-border"></div>
+                  //   </div>
+                  // </div>
+                }
                 {/* Configuration */}
                 {/* {type === ONBOARDING_TYPE.DEVICE && <Card shadow={true} />} */}
               </div>
