@@ -33,8 +33,8 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
         }
       : {}
   }, [webApp])
-  // const disableDevice = ['desktop', 'web', 'macos']
-  const disableDevice: any = []
+  const disableDevice = ['desktop', 'web', 'macos']
+  // const disableDevice: any = []
   if (disableDevice.some((key: any) => webApp?.platform.toLowerCase().includes(key))) {
     console.error('Telegram Desktop is not supported.')
     return <GlobalError title={'Telegram Desktop is not supported!'} />
