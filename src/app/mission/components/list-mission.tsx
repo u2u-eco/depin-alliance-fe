@@ -3,8 +3,8 @@ import CustomModal from '@/app/components/custom-modal'
 import { LIST_TYPE, SHARE_URL } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
-import { IItemMissionPartner, IMissionItem, IMissionPartner } from '@/interfaces/i.missions'
-import { claimTask, getListMission, verifyMission } from '@/services/missions'
+import { IItemMissionPartner, IMissionItem } from '@/interfaces/i.missions'
+import { claimTask, verifyMission } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
@@ -62,13 +62,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           userInfo.detectDevice === 'Unknown Device'
             ? `${SHARE_URL}/unknown-device.png`
             : `${SHARE_URL}/${userInfo.devicePlatform === 'iOS' ? userInfo.devicePlatform.toUpperCase() : userInfo.devicePlatform}/${userInfo.devicePlatform.toLowerCase()}-${userInfo.pointBonus}.png`
-        alert(link)
         webApp?.shareToStory(link, {
           text: 'DePin Alliance'
         })
       }
     } catch (ex: any) {
-      alert(ex)
       toast.error(ex.message || 'Error')
       console.log(ex)
     }
@@ -122,8 +120,6 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           />
         </React.Fragment>
       ))}
-
-      <button onClick={handleShare}>Test</button>
 
       <CustomModal title={'Mission'} isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
