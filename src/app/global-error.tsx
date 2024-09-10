@@ -18,7 +18,7 @@ export default function GlobalError({
         }
       >
         <img className="size-[200px] 2xs:size-[240px] mx-auto rounded-lg" src="/assets/images/depin-pr-code.png" alt="DePIN Alliance" />
-        <h2>{title}!</h2>
+        <h2>{title}</h2>
         {/* <button onClick={() => reset()}>Try again</button> */}
       </body>
     </html>
