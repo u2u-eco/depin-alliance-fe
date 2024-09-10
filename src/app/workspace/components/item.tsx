@@ -28,7 +28,7 @@ const ITEM_TYPE = {
 }
 
 export default function Item() {
-  const { getUserInfo } = useCommonStore()
+  const { getUserInfo, userInfo } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -128,6 +128,10 @@ export default function Item() {
   const handleSpecial = async () => {
     if (paramUseKey.current && !disableBtnSpecial) {
       specialItem.current = []
+      if (userInfo && userInfo?.point < useKey) {
+        toast.error('User point not enough!')
+        return
+      }
       onOpenSpecial()
       const res = await getUseKey(paramUseKey.current)
       if (res.status) {
@@ -135,8 +139,8 @@ export default function Item() {
         // toast.success('Special item successfully!')
         refetch && refetch()
         getUserInfo()
-        onClose()
       }
+      onClose()
     }
   }
 
@@ -306,7 +310,13 @@ export default function Item() {
                     alt=""
                   />
                 </div>
-                <div className={activeType === ITEM_TYPE.INFO ? 'space-y-2 xs:space-y-3 2xs:space-y-4' : 'space-y-2'}>
+                <div
+                  className={
+                    activeType === ITEM_TYPE.INFO
+                      ? 'space-y-2 xs:space-y-3 2xs:space-y-4'
+                      : 'space-y-2'
+                  }
+                >
                   <p
                     className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}
                   >
