@@ -13,10 +13,10 @@ interface ICreateLeague {
 }
 export default function CreateLeague({ onClose }: ICreateLeague) {
   const file = useRef<any>()
-
   const name = useRef<string>('')
   const router = useRouter()
   const timeoutCheckName = useRef<any>(0)
+  const isDisableBtn = useRef<boolean>(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { setCurrentLeague } = useCommonStore()
   const [isDisableCreate, disableCreate] = useState<boolean>(false)
@@ -61,17 +61,24 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
     }
   }
   const create = async () => {
+    if (isDisableBtn.current) return
+    isDisableBtn.current = true
     const formData = new FormData()
     formData.append('name', name.current)
     if (file.current) {
       formData.append('image', file.current)
     }
-    const res: any = await createLeague(formData)
-    if (res.status && res.data) {
-      toast.success('Create successfully')
-      _getUserLeague()
-      router.push('/league/in-league')
-      onClose()
+    try {
+      const res: any = await createLeague(formData)
+      if (res.status && res.data) {
+        toast.success('Create successfully')
+        _getUserLeague()
+        router.push('/league/in-league')
+        onClose()
+      }
+      isDisableBtn.current = false
+    } catch (ex) {
+      isDisableBtn.current = false
     }
   }
   return (

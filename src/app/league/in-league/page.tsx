@@ -2,7 +2,7 @@
 
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
-import { IconChat, IconClipboard } from '@/app/components/icons'
+import { IconChat, IconClipboard, IconLeave } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
@@ -37,16 +37,23 @@ export default function InLeaguePage() {
   }
 
   const handleLeave = async () => {
-    setLoadingButton(true)
     if (currentLeague?.isOwner || loadingButton) {
       return
     }
-    const res = await leaveLeague()
-    if (res.status) {
-      _getUserLeague()
-      router.push('/league')
+    setLoadingButton(true)
+    try {
+      const res = await leaveLeague()
+      if (res.status) {
+        _getUserLeague()
+        toast.success('Leave League successfully')
+        router.push('/league')
+      }
+      setTimeout(() => {
+        setLoadingButton(false)
+      })
+    } catch (ex) {
+      setLoadingButton(false)
     }
-    setLoadingButton(false)
   }
 
   const handleCopy = () => {
@@ -169,7 +176,10 @@ export default function InLeaguePage() {
             >
               <div className="btn-border"></div>
               <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" />
+                {/* <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" /> */}
+                <IconLeave
+                  className={currentLeague?.isOwner ? 'text-inactive' : 'text-green-500'}
+                />
                 <p
                   className={`${currentLeague?.isOwner ? 'text-body' : 'text-gradient'}  capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1`}
                 >
