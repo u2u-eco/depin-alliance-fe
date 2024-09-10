@@ -148,6 +148,7 @@ export default function Device() {
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
+    currentIndex.current = index
   }
 
   const handleClick = (type: string, device?: IUserDeviceItem) => {
@@ -287,7 +288,13 @@ export default function Device() {
                     className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                   />
                 </div>
-                <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-2 xs:space-y-3 2xs:space-y-4' : 'space-y-2'}>
+                <div
+                  className={
+                    activeType === DEVICE_TYPE.INFO
+                      ? 'space-y-2 xs:space-y-3 2xs:space-y-4'
+                      : 'space-y-2'
+                  }
+                >
                   <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px]">
                     {activeType === DEVICE_TYPE.BUY ? 'NEW DEVICE' : detailDeviceItem.current?.name}
                   </p>
