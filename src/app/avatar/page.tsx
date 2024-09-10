@@ -15,13 +15,13 @@ const listAvatar = [
     id: 1,
     img: '/assets/images/avatar/avatar-01@2x.png',
     name: 'Jax',
-    description: `Jax is the mastermind behind the DePIN whitepaper and one of the key architects of the network's infrastructure.`
+    description: `Jax is the mastermind behind the DePIN whitepaper and one of the key architects of the network's infrastructure. His technical prowess and ability to think several steps ahead of the corporations make him invaluable to the cause.`
   },
   {
     id: 2,
     img: '/assets/images/avatar/avatar-02@2x.png',
     name: 'Lara',
-    description: `Lara is the strategist and sometimes the muscle of the DePIN Alliance.`
+    description: `Lara is the strategist and sometimes the muscle of the DePIN Alliance. Her expertise lies in network security and AI development, particularly in creating AI that can learn and adapt to protect the DePIN network. She's also the one who often interfaces with the public, rallying them with her charisma and conviction.`
   }
 ]
 
@@ -164,7 +164,7 @@ export default function Avatar() {
                         <div className="text-title font-mona text-base xs:text-lg font-semibold">
                           {item.name}
                         </div>
-                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px]">
+                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px] max-h-[80px] overflow-y-auto">
                           {item.description}
                         </div>
                       </div>
