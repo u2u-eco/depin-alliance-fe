@@ -275,7 +275,7 @@ export default function Item() {
         <div className="relative w-full">
           <div className=" text-body text-base tracking-[-1px] text-center">
             {activeType === ITEM_TYPE.INFO ? (
-              <p>{isSpecial ? 'You own this item!' : 'You are equipping this item!'} </p>
+              <p>{isSpecial ? 'You own this item!' : ''} </p>
             ) : (
               <p>
                 Are you sure you want to sell{' '}

@@ -14,9 +14,10 @@ export default function GlobalError({
     <html>
       <body
         className={
-          'text-1xl sm:text-3xl bg-black text-white flex items-center justify-center text-center w-screen h-screen'
+          'text-1xl sm:text-3xl bg-black text-white flex items-center justify-center flex-col text-center w-screen h-screen space-y-3'
         }
       >
+        <img className="size-[200px] 2xs:size-[240px] mx-auto rounded-lg" src="/assets/images/depin-pr-code.png" alt="DePIN Alliance" />
         <h2>{title}!</h2>
         {/* <button onClick={() => reset()}>Try again</button> */}
       </body>
