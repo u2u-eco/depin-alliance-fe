@@ -136,7 +136,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                 type={item.type}
               />
 
-              <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
+              <p className="font-mona font-semibold text-white mt-2 xs:mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
                 {item.name}
               </p>
               <div className="flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">

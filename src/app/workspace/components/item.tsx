@@ -286,7 +286,7 @@ export default function Item() {
           {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 2xs:my-8'}`}
+                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
               >
                 <div
                   className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'size-[90px] min-w-[90px]' : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
