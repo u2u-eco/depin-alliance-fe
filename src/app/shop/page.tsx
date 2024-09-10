@@ -11,7 +11,6 @@ import { useSearchParams } from 'next/navigation'
 
 export default function ShopPage() {
   const searchParams = useSearchParams()
-
   const type = searchParams.get('type')
   const [activeFilter, setActiveFilter] = useState(type ? FILTER_TYPE.FILTER : FILTER_TYPE.SORT)
 
@@ -75,6 +74,7 @@ export default function ShopPage() {
         onClose={onCloseFilter}
         type={activeFilter}
         filterType={filterOptions.type}
+        hideSpecial={true}
         cb={setFilterOptions}
       />
     </>

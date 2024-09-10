@@ -14,7 +14,7 @@ const MISSION_TAB = {
 }
 
 export default function MissionPage() {
-  const [activeTab, setActiveTab] = useState(MISSION_TAB.PARTNERS)
+  const [activeTab, setActiveTab] = useState(MISSION_TAB.REWARDS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
   const handleChangeTab = (tab: any) => {
@@ -48,7 +48,7 @@ export default function MissionPage() {
             alt="Mission Image"
           />
         </div> */}
-        <Tabs
+        {/* <Tabs
           variant="underlined"
           classNames={{
             base: 'w-full mt-6 xs:mt-7 2xs:mt-8',
@@ -62,7 +62,7 @@ export default function MissionPage() {
         >
           <Tab key={MISSION_TAB.PARTNERS} title={`${MISSION_TAB.PARTNERS} (${partnerCount})`}></Tab>
           <Tab key={MISSION_TAB.REWARDS} title={`${MISSION_TAB.REWARDS} (${rewardCount})`}></Tab>
-        </Tabs>
+        </Tabs> */}
         <div className={`${activeTab === MISSION_TAB.PARTNERS ? '' : 'hidden'}`}>
           <ListPartner updateListPartner={updateListPartner} />
         </div>

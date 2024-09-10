@@ -131,6 +131,11 @@ export default function LevelPage() {
                           <div className="text-body uppercase">MAXIMUM SLOT DEVICE</div>
                           <p className="text-title">{userConfig?.maxDevice}</p>
                         </div>
+                        <div className="h-[1px] w-full bg-white/10"></div>
+                        <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
+                          <div className="text-body uppercase">TOTAL SKILL POINT</div>
+                          <p className="text-title">{userInfo?.pointSkill}</p>
+                        </div>
                         {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS REWARD</div>

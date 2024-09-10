@@ -2,7 +2,7 @@
 
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
-import { IconChat, IconClipboard } from '@/app/components/icons'
+import { IconChat, IconClipboard, IconLeave } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
@@ -11,6 +11,8 @@ import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { toast } from 'sonner'
 
 export default function InLeaguePage() {
   const router = useRouter()
@@ -35,16 +37,29 @@ export default function InLeaguePage() {
   }
 
   const handleLeave = async () => {
-    setLoadingButton(true)
     if (currentLeague?.isOwner || loadingButton) {
       return
     }
-    const res = await leaveLeague()
-    if (res.status) {
-      _getUserLeague()
-      router.push('/league')
+    setLoadingButton(true)
+    try {
+      const res = await leaveLeague()
+      if (res.status) {
+        _getUserLeague()
+        toast.success('Leave League successfully')
+        router.push('/league')
+      }
+      setTimeout(() => {
+        setLoadingButton(false)
+      })
+    } catch (ex) {
+      setLoadingButton(false)
     }
-    setLoadingButton(false)
+  }
+
+  const handleCopy = () => {
+    if (currentLeague?.inviteLink) {
+      toast.success('Copied!')
+    }
   }
 
   useEffect(() => {
@@ -112,14 +127,14 @@ export default function InLeaguePage() {
           </div>
           <div className="btn inactive">
             <div className="btn-border"></div>
-            <div className="btn-inactive">MINING TOGETHER</div>
+            <div className="btn-inactive">Mining Together (Coming Soon)</div>
             <div className="btn-border"></div>
           </div>
           <div className="grid grid-cols-4 gap-3 mt-8">
             <div className="btn inactive size-[90px] mx-auto">
               <div className="btn-border"></div>
               <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
-                <IconClipboard className="size-8 mx-auto"/>
+                <IconClipboard className="size-8 mx-auto" />
                 <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
                   Mission
                 </p>
@@ -136,23 +151,35 @@ export default function InLeaguePage() {
               </div>
               <div className="btn-border"></div>
             </div>
-            <div className="btn default size-[90px] mx-auto" onClick={handleShare}>
-              <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img className="size-8 mx-auto" src="/assets/images/icons/icon-share.svg" alt="" />
-                <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
-                  Share
-                </p>
+            <CopyToClipboard
+              text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
+              onCopy={handleCopy}
+            >
+              <div className="btn default size-[90px] mx-auto">
+                <div className="btn-border"></div>
+                <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
+                  <img
+                    className="size-8 mx-auto"
+                    src="/assets/images/icons/icon-copy-gradient.svg"
+                    alt=""
+                  />
+                  <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+                    Invite
+                  </p>
+                </div>
+                <div className="btn-border"></div>
               </div>
-              <div className="btn-border"></div>
-            </div>
+            </CopyToClipboard>
             <div
               onClick={onOpen}
               className={`btn default size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
             >
               <div className="btn-border"></div>
               <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
-                <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" />
+                {/* <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" /> */}
+                <IconLeave
+                  className={currentLeague?.isOwner ? 'text-inactive' : 'text-green-500'}
+                />
                 <p
                   className={`${currentLeague?.isOwner ? 'text-body' : 'text-gradient'}  capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1`}
                 >
@@ -173,7 +200,10 @@ export default function InLeaguePage() {
       >
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">
-            <p>Do you want to leave this league <span className="text-[#1AF7A8]">{`"${currentLeague?.name}"`}</span>?</p>
+            <p>
+              Do you want to leave this league{' '}
+              <span className="text-[#1AF7A8]">{`"${currentLeague?.name}"`}</span>?
+            </p>
           </div>
           <div className="mt-8 mb-10 flex items-center justify-center space-x-4">
             <div
@@ -186,8 +216,12 @@ export default function InLeaguePage() {
               />
             </div>
             <div className="space-y-2">
-              <p className="text-white font-semibold font-mona text-2xl leading-[28px]">{currentLeague?.name}</p>
-              <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">LV. {currentLeague?.level}</p>
+              <p className="text-white font-semibold font-mona text-2xl leading-[28px]">
+                {currentLeague?.name}
+              </p>
+              <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
+                LV. {currentLeague?.level}
+              </p>
             </div>
           </div>
           <div className="flex items-center space-x-4">

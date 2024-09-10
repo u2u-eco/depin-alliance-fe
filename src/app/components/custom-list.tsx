@@ -83,8 +83,10 @@ const CustomList = ({
                       />
                       <p className="text-primary font-geist font-semibold">
                         {item.miningPower && '+'}
-                        {(pointKey && item[pointKey] ? formatNumber(item[pointKey], 0, 2) : '0') ||
-                          (item.miningPower && formatNumber(item.miningPower, 0, 2))}{' '}
+                        {(pointKey && item[pointKey]
+                          ? `${formatNumber(item[pointKey], 0, 2)}/h`
+                          : '0') ||
+                          (item.miningPower && `${formatNumber(item.miningPower, 0, 2)}/h`)}{' '}
                       </p>
                     </div>
                   ) : null}

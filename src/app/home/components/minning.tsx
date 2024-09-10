@@ -171,18 +171,19 @@ export default function Mining() {
           userInfo?.pointUnClaimed === 0) ||
         !userInfo ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
-            <div className="flex items-center space-x-2 xs:space-x-3 uppercase text-green-900 text-[15px] xs:text-base font-bold">
-              <div>Mining</div>
+            <div className="flex items-center space-x-1.5 xs:space-x-2 uppercase text-green-900 text-sm xs:text-[15px] 2xs:text-base font-bold">
+              <div className="max-[354px]:hidden">Mining</div>
               <div className="flex items-center space-x-1">
-                <img className="size-5 xs:size-6" src="/assets/images/point-dark.svg" alt="Point" />
-                <p className="font-geist text-green-900 min-[355px]:text-base xs:text-[18px] font-semibold">
-                  {miningCount ? formatNumber(miningCount, 0, 0) : 0}
+                <img className="size-4 xs:size-5" src="/assets/images/point-dark.svg" alt="Point" />
+                <p className="font-geist text-green-900 text-sm xs:text-[15px] 2xs:text-base font-semibold">
+                  {miningCount
+                    ? `${formatNumber(miningCount, 0, 0)}/${formatNumber(userInfo?.maximumPower || 0, 0, 0)}`
+                    : `0/${formatNumber(userInfo?.maximumPower || 0, 0, 0)}`}
                 </p>
               </div>
             </div>
-            <div className="min-h-6 xs:min-h-[28px]">
               {timeCountdown.length === 0 ? null : (
-                <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-green-900">
+                <div className="min-h-6 xs:min-h-[28px] flex items-center text-sm xs:text-[15px] 2xs:text-base font-geist font-semibold text-green-900">
                   {timeCountdown.map((item: any, index) => (
                     <React.Fragment key={index}>
                       <p className="px-[3px] flex items-center justify-center bg-black/15">
@@ -193,7 +194,6 @@ export default function Mining() {
                   ))}
                 </div>
               )}
-            </div>
           </div>
         ) : (
           <div
@@ -221,7 +221,7 @@ export default function Mining() {
         point={formatNumber(bonusReward, 0, 0)}
         text={
           <>
-            <p>You’ve received your first reward!</p>
+            <p>You’ve received your bonus reward!</p>
             <p>Claim it now!</p>
           </>
         }

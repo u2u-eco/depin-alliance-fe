@@ -1,4 +1,5 @@
 import CustomModal from '@/app/components/custom-modal'
+import Loader from '@/app/components/ui/loader'
 import { QUERY_CONFIG } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { IMissionItem } from '@/interfaces/i.missions'
@@ -8,13 +9,14 @@ import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 dayjs.extend(utc)
 
 export default function DailyCheckIn() {
   const { token, getUserInfo } = useCommonStore()
   const currentItem = useRef<any>()
+  const [isLoadingBtn, setLoadingBtn] = useState<boolean>(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { data: listDaily, refetch } = useQuery({
     queryKey: ['fetchDailyCheckIn'],
@@ -33,12 +35,19 @@ export default function DailyCheckIn() {
   }
 
   const handleClaim = async () => {
-    const res = await checkIn()
-    if (res.status) {
-      toast.success('Mission is completed')
-      refetch()
-      getUserInfo()
-      onClose()
+    if (isLoadingBtn) return
+    setLoadingBtn(true)
+    try {
+      const res = await checkIn()
+      if (res.status) {
+        toast.success('Mission is completed')
+        refetch()
+        getUserInfo()
+        onClose()
+      }
+      setLoadingBtn(false)
+    } catch (ex) {
+      setLoadingBtn(false)
     }
   }
   return (
@@ -109,13 +118,26 @@ export default function DailyCheckIn() {
                   srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                   alt="Point"
                 />
-                <p className="text-green-500">{currentItem.current?.point}</p>
+                <p className="text-green-500">
+                  {currentItem.current?.point ? formatNumber(currentItem.current?.point, 0, 0) : 0}
+                </p>
               </div>
             </div>
           </div>
           <div className="btn" onClick={handleClaim}>
             <div className="btn-border"></div>
-            <div className="btn-primary">Claim Now</div>
+            <div className="btn-primary flex justify-center items-center">
+              Claim Now{' '}
+              {isLoadingBtn && (
+                <Loader
+                  classNames={{
+                    icon: 'text-black',
+                    wrapper: 'max-w-[20px] ml-1'
+                  }}
+                />
+              )}
+            </div>
+
             <div className="btn-border"></div>
           </div>
         </div>

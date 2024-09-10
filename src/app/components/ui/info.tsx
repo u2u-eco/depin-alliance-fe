@@ -165,9 +165,9 @@ const Info = ({ profile, rank }: InfoProps) => {
                   <Link href="/profile" className="p-1 group">
                     <IconUser className="size-5 min-[400px]:size-6 text-green-800 group-hover:text-green-500 transition-colors" />
                   </Link>
-                  <div className="p-1">
+                  {/* <div className="p-1">
                     <IconSettings className="size-5 min-[400px]:size-6 text-green-800 group-hover:text-green-500 transition-colors" />
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>
