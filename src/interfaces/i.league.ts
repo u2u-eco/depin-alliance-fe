@@ -12,6 +12,7 @@ export interface IUserLeague {
   inviteLink: string
   isOwner: boolean
   name: string
+  level: number
   totalContributors: number
   totalMining: number
 }
