@@ -34,6 +34,7 @@ jobs:
       with:
         envkey_NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
         envkey_NEXT_PUBLIC_TELE_URI: ${{ vars.NEXT_PUBLIC_TELE_URI }}
+        envkey_NEXT_PUBLIC_SHARE_URL: ${{ vars.NEXT_PUBLIC_SHARE_URL }}
 
         directory: .
         file_name: .env
