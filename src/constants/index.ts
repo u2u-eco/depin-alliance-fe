@@ -6,7 +6,7 @@ export const INIT_DATA =
 export const TOKEN = 'depin-alliance-tk'
 export const CURRENT_STATUS = 'depin-alliance-user-status'
 export const TELE_URI = process.env.NEXT_PUBLIC_TELE_URI
-export const DETECT_DEVICE_URL = 'https://device.depinalliance.xyz'
+export const DETECT_DEVICE_URL = process.env.NEXT_PUBLIC_DEVICE_REGISTER // 'https://device.depinalliance.xyz'
 export const SHARE_URL = process.env.NEXT_PUBLIC_SHARE_URL
 export const UPGRADE_TAB = {
   RAM: 'RAM',
