@@ -26,6 +26,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   const [scrollTrigger, isInView] = useInView()
   const refList = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
+  const [loadingButton, setLoadingButton] = useState(false)
   const { isLoading } = useQuery({
     queryKey: [
       'getListDevice',
@@ -65,6 +66,8 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   }
 
   const buy = async () => {
+    setLoadingButton(true)
+    if(loadingButton) return
     if (currentItem?.current?.code) {
       const data: IDeviceItemBuyParam = {
         number: amount,
@@ -76,6 +79,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         setAmount(1)
         getUserInfo()
         onClose()
+        setLoadingButton(false)
       }
     }
   }

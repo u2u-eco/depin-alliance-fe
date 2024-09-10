@@ -18,7 +18,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   const initData = useMemo(() => {
     if (process.env.NODE_ENV === 'development') return INIT_DATA
-
+    webApp?.disableVerticalSwipes()
     return webApp?.initData
   }, [webApp?.initData])
 

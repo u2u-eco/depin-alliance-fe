@@ -1,3 +1,5 @@
+'use client'
+
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
 import { IconPoint } from '@/app/components/icons'
@@ -38,6 +40,7 @@ export default function Device() {
   const detailDeviceItem = useRef<any>()
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
+  const [loadingButton, setLoadingButton] = useState(false)
 
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
@@ -65,6 +68,7 @@ export default function Device() {
   }
 
   const handleAddItem = async () => {
+    setLoadingButton(true)
     const res = await addItem(currentIndex.current, activeItem)
     if (res.status) {
       toast.success('Equip item successfully!')
@@ -73,10 +77,12 @@ export default function Device() {
       getDeviceItemDetail(currentIndex.current)
       getUserInfo()
       onClose()
+      setLoadingButton(false)
     }
   }
 
   const handleRemoveItem = async () => {
+    setLoadingButton(true)
     const res = await removeItem(detailDeviceItem.current.id)
     if (res.status) {
       toast.success('Unequipped successfully!')
@@ -84,10 +90,12 @@ export default function Device() {
       getDeviceItemDetail(currentIndex.current)
       getUserInfo()
       onClose()
+      setLoadingButton(false)
     }
   }
 
   const handleChangeName = async () => {
+    setLoadingButton(true)
     if (currentName.current.trim().length > 0) {
       const res = await changeNameDevice({
         name: currentName.current.trim(),
@@ -98,11 +106,13 @@ export default function Device() {
         currentName.current = ''
         onClose()
         refetchListDevice()
+        setLoadingButton(false)
       }
     }
   }
 
   const handleConfirm = () => {
+    if (loadingButton) return
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
@@ -162,6 +172,7 @@ export default function Device() {
   }
 
   const handleAddNewDevice = async () => {
+    setLoadingButton(true)
     const res = await getNewDevice()
     if (res.status) {
       toast.success('Buy device successfully!!')
@@ -169,6 +180,7 @@ export default function Device() {
       getUserInfo()
       getUserConfig()
       onClose()
+      setLoadingButton(false)
     }
   }
 

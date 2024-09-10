@@ -27,6 +27,7 @@ export default function ProfilePage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const [rank, setRank] = useState<number>(0)
+  const [loadingButton, setLoadingButton] = useState(false)
 
   const _getSkills = async () => {
     const res = await getSkills()
@@ -59,6 +60,7 @@ export default function ProfilePage() {
   }
 
   const handleUpdateSkill = async (skillId: number) => {
+    setLoadingButton(true)
     const res: any = await updateSkill(skillId)
     if (res.status) {
       toast.success('Level Up successfully!')
@@ -66,10 +68,12 @@ export default function ProfilePage() {
       _getSkills()
       currentItem.current = {}
       onClose()
+      setLoadingButton(false)
     }
   }
 
   const handleModalAction = (data: any) => {
+    if(loadingButton) return
     handleUpdateSkill(data)
   }
 
