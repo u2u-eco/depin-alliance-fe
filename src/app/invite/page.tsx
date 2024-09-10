@@ -36,7 +36,7 @@ export default function InvitePage() {
   const handleShare = () => {
     if (userInfo) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: https://t.me/DepinAllianceBot?start=${userInfo.code}`,
+        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}`,
         '_self'
       )
     }

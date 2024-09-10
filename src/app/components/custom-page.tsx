@@ -15,7 +15,7 @@ interface Pageprops {
 
 const CustomPage = ({ children, classNames }: Pageprops) => {
   const pathName = usePathname()
-  const isShowInfo = pathName !== '/avatar' && pathName !== '/profile' && pathName !== '/level' && pathName !== '/mission/partners'
+  const isShowInfo = pathName !== '/avatar' && pathName !== '/profile' && pathName !== '/level' && pathName !== '/mission/partners' && pathName !== '/workspace'
   const isShowSidebar =
     pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting' && pathName !== '/workspace' && pathName !== '/avatar' && pathName !== '/profile' && pathName !== '/level'
   return (
