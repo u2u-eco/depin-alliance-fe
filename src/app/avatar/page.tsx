@@ -102,7 +102,7 @@ export default function Avatar() {
         }}
       >
         <div className="space-y-6 xs:space-y-8 2xs:space-y-10">
-          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
+          <div className="relative flex items-center justify-center space-x-4">
             <div
               className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
               onClick={handleBack}

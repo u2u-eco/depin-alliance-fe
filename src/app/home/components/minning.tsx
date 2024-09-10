@@ -180,9 +180,8 @@ export default function Mining() {
                 </p>
               </div>
             </div>
-            <div className="min-h-6 xs:min-h-[28px]">
               {timeCountdown.length === 0 ? null : (
-                <div className="flex items-center text-[15px] xs:text-base font-geist font-semibold text-green-900">
+                <div className="min-h-6 xs:min-h-[28px] flex items-center text-[15px] xs:text-base font-geist font-semibold text-green-900">
                   {timeCountdown.map((item: any, index) => (
                     <React.Fragment key={index}>
                       <p className="px-[3px] flex items-center justify-center bg-black/15">
@@ -193,7 +192,6 @@ export default function Mining() {
                   ))}
                 </div>
               )}
-            </div>
           </div>
         ) : (
           <div
