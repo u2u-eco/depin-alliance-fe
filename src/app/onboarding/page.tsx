@@ -44,13 +44,13 @@ const Onboarding = () => {
   const handleClaim = async () => {
     const res = await claimRewardNewUser()
     if (res.status) {
-      setType(ONBOARDING_TYPE.SCHOLARSHIP)
+      router.push('/home')
+      getUserInfo()
     }
   }
 
   const handleCloseModal = async () => {
     handleClaim()
-    onClose()
   }
 
   const openLinkDevice = () => {
@@ -63,7 +63,6 @@ const Onboarding = () => {
       if (res.data.pointBonus) {
         setPointReward(res.data.pointBonus)
         setDeviceName(res.data.detectDevice)
-        setType(ONBOARDING_TYPE.SCHOLARSHIP)
         onOpen()
       }
     }
@@ -74,14 +73,14 @@ const Onboarding = () => {
       case ONBOARDING_TYPE.START:
         // _getDeviceInfo()
         openLinkDevice()
-        setType(ONBOARDING_TYPE.LOADING)
+        setType(ONBOARDING_TYPE.SCHOLARSHIP)
         break
-      case ONBOARDING_TYPE.LOADING:
-        checkStatusGetDevice()
-        break
+      // case ONBOARDING_TYPE.LOADING:
+      //   checkStatusGetDevice()
+      //   break
       case ONBOARDING_TYPE.SCHOLARSHIP:
-        router.push('/home')
-        getUserInfo()
+        checkStatusGetDevice()
+
         break
     }
   }
@@ -252,7 +251,7 @@ const Onboarding = () => {
                 <div className="p-4 xs:p-6 2xs:p-8 w-full space-y-4 xs:space-y-5 2xs:space-y-6">
                   {type === ONBOARDING_TYPE.SCHOLARSHIP && (
                     <div className="text-center text-body leading-[18px] tracking-[-1px]">
-                      {`Everything is ready, let's get started!`}
+                      {/* {`Everything is ready, let's get started!`} */}
                     </div>
                   )}
                   <button className="btn" onClick={() => handleOnboarding(type)}>
