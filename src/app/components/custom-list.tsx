@@ -72,7 +72,7 @@ const CustomList = ({
               <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
             ) : (
               type !== 'shop' && (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center flex-wrap space-x-2 xs:space-x-3 2xs:space-x-4 text-[13px] xs:text-sm">
                   {item.miningPower === 0 || (pointKey && item[pointKey]) ? (
                     <div className="flex items-center space-x-1">
                       <img
@@ -94,7 +94,7 @@ const CustomList = ({
                   {item.box > 0 && (
                     <>
                       {item.miningPower !== 0 && pointKey && item[pointKey] ? (
-                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                        <div className="w-[1px] h-4 xs:h-5 bg-white/25"></div>
                       ) : null}
                       <div className="flex items-center space-x-1">
                         <img
@@ -111,7 +111,7 @@ const CustomList = ({
                   {item.xp > 0 && (
                     <>
                       {(item.miningPower !== 0 && pointKey && item[pointKey]) || item.box ? (
-                        <div className="w-[1px] h-[20px] bg-white/25"></div>
+                        <div className="w-[1px] h-4 xs:h-5 bg-white/25"></div>
                       ) : null}
                       <div className="flex items-center space-x-1">
                         <p className="text-primary font-geist font-semibold">{`${formatNumber(item.xp, 0, 0)} XP`}</p>

@@ -1,6 +1,6 @@
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
-import { LIST_TYPE, SHARE_URL } from '@/constants'
+import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem } from '@/interfaces/i.missions'
@@ -64,9 +64,21 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         // userInfo.detectDevice === 'Unknown Device'
         const folder = userInfo.devicePlatform === 'iOS' ? 'IOS' : 'Android'
         const link = `${SHARE_URL}/${folder}/${folder.toLowerCase()}-${userInfo.pointBonus}.png`
-        webApp?.shareToStory(link, {
-          text: 'DePin Alliance'
-        })
+
+        const shareLink = `${TELE_URI}?start=${userInfo?.code}`
+        if (userInfo.isPremium) {
+          webApp?.shareToStory(link, {
+            text: 'DePin Alliance',
+            widget_link: {
+              url: shareLink,
+              name: 'Invite friends'
+            }
+          })
+        } else {
+          webApp?.shareToStory(link, {
+            text: 'DePin Alliance'
+          })
+        }
       }
     } catch (ex: any) {
       toast.error(ex.message || 'Error')
