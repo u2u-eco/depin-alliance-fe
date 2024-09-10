@@ -133,14 +133,17 @@ export default function Item() {
         return
       }
       onOpenSpecial()
-      const res = await getUseKey(paramUseKey.current)
-      if (res.status) {
-        specialItem.current = res.data
-        // toast.success('Special item successfully!')
-        refetch && refetch()
-        getUserInfo()
+      try {
+        const res = await getUseKey(paramUseKey.current)
+        if (res.status) {
+          specialItem.current = res.data
+          refetch && refetch()
+          getUserInfo()
+        }
+        onClose()
+      } catch (ex) {
+        onClose()
       }
-      onClose()
     }
   }
 
@@ -388,15 +391,22 @@ export default function Item() {
                         ? 'REDEEM'
                         : 'USE KEY'}
                   </p>
-                  <div
-                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
-                  ></div>
-                  <div className="flex items-center space-x-1">
-                    <IconPoint className="size-5" color />
-                    <span className="font-geist">
-                      {isSpecial ? useKey : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
-                    </span>
-                  </div>
+                  {!disableBtnSpecial ? (
+                    <>
+                      <div
+                        className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
+                      ></div>
+
+                      <div className="flex items-center space-x-1">
+                        <IconPoint className="size-5" color />
+                        <span className="font-geist">
+                          {isSpecial
+                            ? useKey
+                            : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+                        </span>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
               </div>
               <div className="btn-border"></div>
