@@ -45,4 +45,5 @@ export interface IWebApp {
   }
   HapticFeedback: unknown
   shareToStory: (url: string, data: any) => void
+  disableVerticalSwipes: () => void
 }

@@ -164,7 +164,7 @@ export default function Avatar() {
                         <div className="text-title font-mona text-base xs:text-lg font-semibold">
                           {item.name}
                         </div>
-                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px]">
+                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px]">
                           {item.description}
                         </div>
                       </div>
@@ -173,10 +173,10 @@ export default function Avatar() {
               )}
               <div className="flex items-center justify-between space-x-2">
                 <div
-                  className="relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center cursor-pointer"
+                  className={`relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center  ${currentIndex.current === 0 ? 'text-inactive' : 'text-white cursor-pointer' }`}
                   onClick={() => handleChange(-1)}
                 >
-                  <IconDoubleArrow className="text-body size-6" />
+                  <IconDoubleArrow className="size-6"/>
                 </div>
                 <div className="btn w-fit" onClick={handleUpdateAvatar}>
                   <div className="btn-border"></div>
@@ -186,10 +186,10 @@ export default function Avatar() {
                   <div className="btn-border"></div>
                 </div>
                 <div
-                  className="relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center cursor-pointer"
+                  className={`relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center ${currentIndex.current === listAvatar.length - 1 ? 'text-inactive' : 'text-white cursor-pointer'}`}
                   onClick={() => handleChange(+1)}
                 >
-                  <IconDoubleArrow className="text-white size-6 rotate-[180deg]" />
+                  <IconDoubleArrow className="size-6 rotate-[180deg]" />
                 </div>
               </div>
             </div>

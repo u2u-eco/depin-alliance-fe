@@ -40,6 +40,7 @@ export default function Item() {
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
+  const [loadingButton, setLoadingButton] = useState(false)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -112,12 +113,15 @@ export default function Item() {
   }
 
   const handleSell = async () => {
+    setLoadingButton(true)
+    if(loadingButton) return
     const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
     if (res.status) {
       toast.success('Sell item successfully!')
       refetch && refetch()
       getUserInfo()
       onClose()
+      setLoadingButton(false)
     }
   }
 

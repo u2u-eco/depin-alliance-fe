@@ -3,18 +3,23 @@ import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { joinLeague } from '@/services/league'
 import Image from 'next/image'
+import { useState } from 'react'
 interface IJoinLeague {
   item: ILeagueItem | null
   onClose: () => void
   joinCb: () => void
 }
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
+  const [loadingButton, setLoadingButton] = useState(false)
   const handleJoin = async () => {
+    setLoadingButton(true)
+    if(loadingButton) return
     if (item?.code) {
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
         joinCb()
         onClose()
+        setLoadingButton(false)
       }
     }
   }

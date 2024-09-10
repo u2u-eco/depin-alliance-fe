@@ -13,5 +13,6 @@ export const MESSAGES: { [key: string]: string } = {
   MSG_USER_SKILL_MAX_LEVEL: 'User skill max level',
   MSG_USER_SKILL_WAITING_UPGRADE: 'User skill waiting upgrade',
   MSG_USER_SKILL_ANOTHER_WAITING_UPGRADE: 'User skill another waiting upgrade',
-  MSG_ITEM_OPEN_NOT_ENOUGH: 'Item open not enough'
+  MSG_ITEM_OPEN_NOT_ENOUGH: 'Item open not enough',
+  MSG_ITEM_SELL_NOT_ENOUGH: 'Item sell not enough'
 }
