@@ -378,7 +378,7 @@ export default function Device() {
                       <div className="h-[1px] w-full bg-white/10"></div>
                       <div className="flex items-center justify-between">
                         <div className="font-semibold text-body">STORAGE</div>
-                        <div className="text-title font-semibold font-geist">1 SLOT</div>
+                        <div className="text-title font-semibold font-geist">2 SLOT</div>
                       </div>
                     </div>
                   </div>
