@@ -14,7 +14,7 @@ export default function GlobalError({
     <html>
       <body
         className={
-          'text-1xl sm:text-3xl bg-black text-white flex items-center justify-center flex-col text-center w-screen h-screen space-y-3'
+          'text-base font-semibold bg-black text-white  flex items-center justify-center flex-col text-center w-screen h-screen space-y-3'
         }
       >
         <img className="size-[200px] 2xs:size-[240px] mx-auto rounded-lg" src="/assets/images/depin-pr-code.png" alt="DePIN Alliance" />

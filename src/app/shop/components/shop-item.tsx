@@ -197,11 +197,11 @@ export default function ShopItem({ filterOptions }: IShopItem) {
             transition={{ duration: 0.35 }}
           >
             <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
-            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between space-x-4 px-6 2xs:px-8">
               <div className="space-y-3">
                 <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
                 <div className="flex items-center space-x-2">
-                  <IconPoint className="size-7" />
+                  <IconPoint className="size-6 2xs:size-7" />
                   <span className="text-green-500 text-lg font-semibold">
                     {currentItem.current?.miningPower
                       ? `${formatNumber(currentItem.current?.miningPower * amount, 0, 2)}/h`
@@ -211,7 +211,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
               </div>
               <div className="space-y-3">
                 <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
-                <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-5">
                   <div
                     className="cursor-pointer"
                     onClick={() => {
@@ -220,7 +220,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   >
                     <IconMinusCircle className="text-green-500 size-6" />
                   </div>
-                  <span className="text-green-100 text-lg font-semibold">{amount}</span>
+                  <span className="text-green-100 text-center text-lg font-semibold min-w-[22px]">{amount}</span>
                   <div
                     className="cursor-pointer"
                     onClick={() => {
