@@ -114,7 +114,7 @@ export default function Item() {
 
   const handleSell = async () => {
     setLoadingButton(true)
-    if(loadingButton) return
+    if (loadingButton) return
     const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
     if (res.status) {
       toast.success('Sell item successfully!')
@@ -172,7 +172,7 @@ export default function Item() {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
-  }, [isInView, page])
+  }, [isInView])
 
   useEffect(() => {
     if (refList.current) {

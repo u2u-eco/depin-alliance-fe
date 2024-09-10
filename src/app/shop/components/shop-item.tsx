@@ -67,7 +67,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
 
   const buy = async () => {
     setLoadingButton(true)
-    if(loadingButton) return
+    if (loadingButton) return
     if (currentItem?.current?.code) {
       const data: IDeviceItemBuyParam = {
         number: amount,
@@ -93,12 +93,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
-  }, [isInView, page])
+  }, [isInView])
 
   useEffect(() => {
     if (refList.current) {
       refList.current?.scrollTo(0, 0)
     }
+    setListItem([])
     setPage(1)
   }, [filterOptions])
 

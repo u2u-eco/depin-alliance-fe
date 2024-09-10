@@ -13,7 +13,7 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
   const [loadingButton, setLoadingButton] = useState(false)
   const handleJoin = async () => {
     setLoadingButton(true)
-    if(loadingButton) return
+    if (loadingButton) return
     if (item?.code) {
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
@@ -48,7 +48,7 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
               alt="Point"
             />
             <span className="text-primary font-semibold text-lg">
-              {item?.totalMining ? formatNumber(item.totalMining, 0, 0) : 0}/h
+              {item?.totalMining ? formatNumber(item.totalMining, 0, 2) : 0}/h
             </span>
           </div>
         </div>

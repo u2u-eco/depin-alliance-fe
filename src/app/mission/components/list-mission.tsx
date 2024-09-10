@@ -56,16 +56,14 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       toast.error('Mission not completed')
     }
     setLoadingButton(false)
-
   }
 
   const handleShare = () => {
     try {
       if (userInfo) {
-        const link =
-          userInfo.detectDevice === 'Unknown Device'
-            ? `${SHARE_URL}/unknown-device.png`
-            : `${SHARE_URL}/${userInfo.devicePlatform === 'iOS' ? userInfo.devicePlatform.toUpperCase() : userInfo.devicePlatform}/${userInfo.devicePlatform.toLowerCase()}-${userInfo.pointBonus}.png`
+        // userInfo.detectDevice === 'Unknown Device'
+        const folder = userInfo.devicePlatform === 'iOS' ? 'IOS' : 'Android'
+        const link = `${SHARE_URL}/${folder}/${folder.toLowerCase()}-${userInfo.pointBonus}.png`
         webApp?.shareToStory(link, {
           text: 'DePin Alliance'
         })
@@ -93,7 +91,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleMission = () => {
-    if(loadingButton) return
+    if (loadingButton) return
     if (isVerified) {
       handleClaim()
       return

@@ -11,6 +11,9 @@ const https = axios.create({
 https.interceptors.request.use(
   function (config) {
     config.headers['Cache-Control'] = 'no-cache'
+    config.headers['Expires'] = '0'
+    config.headers['Pragma'] = 'no-cache'
+
     // Do something before request is sent
     return config
   },
