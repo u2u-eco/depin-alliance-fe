@@ -69,27 +69,35 @@ export default function Device() {
 
   const handleAddItem = async () => {
     setLoadingButton(true)
-    const res = await addItem(currentIndex.current, activeItem)
-    if (res.status) {
-      toast.success('Equip item successfully!')
-      setActiveItem(0)
-      refetchListDevice()
-      getDeviceItemDetail(currentIndex.current)
-      getUserInfo()
-      onClose()
+    try {
+      const res = await addItem(currentIndex.current, activeItem)
+      if (res.status) {
+        toast.success('Equip item successfully!')
+        setActiveItem(0)
+        refetchListDevice()
+        getDeviceItemDetail(currentIndex.current)
+        getUserInfo()
+        onClose()
+      }
+      setLoadingButton(false)
+    } catch (ex) {
       setLoadingButton(false)
     }
   }
 
   const handleRemoveItem = async () => {
     setLoadingButton(true)
-    const res = await removeItem(detailDeviceItem.current.id)
-    if (res.status) {
-      toast.success('Unequipped successfully!')
-      refetchListDevice()
-      getDeviceItemDetail(currentIndex.current)
-      getUserInfo()
-      onClose()
+    try {
+      const res = await removeItem(detailDeviceItem.current.id)
+      if (res.status) {
+        toast.success('Unequipped successfully!')
+        refetchListDevice()
+        getDeviceItemDetail(currentIndex.current)
+        getUserInfo()
+        onClose()
+      }
+      setLoadingButton(false)
+    } catch (ex) {
       setLoadingButton(false)
     }
   }
@@ -97,15 +105,19 @@ export default function Device() {
   const handleChangeName = async () => {
     if (currentName.current.trim().length > 0) {
       setLoadingButton(true)
-      const res = await changeNameDevice({
-        name: currentName.current.trim(),
-        index: currentDevice.current.index
-      })
-      if (res.status) {
-        toast.success('Device name changed successfully!')
-        currentName.current = ''
-        onClose()
-        refetchListDevice()
+      try {
+        const res = await changeNameDevice({
+          name: currentName.current.trim(),
+          index: currentDevice.current.index
+        })
+        if (res.status) {
+          toast.success('Device name changed successfully!')
+          currentName.current = ''
+          onClose()
+          refetchListDevice()
+        }
+        setLoadingButton(false)
+      } catch (ex) {
         setLoadingButton(false)
       }
     }
@@ -174,12 +186,16 @@ export default function Device() {
   const handleAddNewDevice = async () => {
     setLoadingButton(true)
     const res = await getNewDevice()
-    if (res.status) {
-      toast.success('Buy device successfully!!')
-      refetchListDevice()
-      getUserInfo()
-      getUserConfig()
-      onClose()
+    try {
+      if (res.status) {
+        toast.success('Buy device successfully!!')
+        refetchListDevice()
+        getUserInfo()
+        getUserConfig()
+        onClose()
+      }
+      setLoadingButton(false)
+    } catch (ex) {
       setLoadingButton(false)
     }
   }
@@ -333,7 +349,11 @@ export default function Device() {
                     placeholder="DEVICE MARS"
                     onValueChange={handleInputName}
                   />
-                  {currentName.current.trim().length === 0 && <p className="text-xs text-error mt-1 font-semibold">Devcie Name is required!</p>}
+                  {currentName.current.trim().length === 0 && (
+                    <p className="text-xs text-error mt-1 font-semibold">
+                      Devcie Name is required!
+                    </p>
+                  )}
                 </div>
               )}
               {activeType === DEVICE_TYPE.BUY && (

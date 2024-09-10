@@ -75,6 +75,7 @@ export default function ShopPage() {
         onClose={onCloseFilter}
         type={activeFilter}
         filterType={filterOptions.type}
+        hideSpecial={true}
         cb={setFilterOptions}
       />
     </>

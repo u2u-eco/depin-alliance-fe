@@ -176,7 +176,9 @@ export default function Mining() {
               <div className="flex items-center space-x-1">
                 <img className="size-5 xs:size-6" src="/assets/images/point-dark.svg" alt="Point" />
                 <p className="font-geist text-green-900 min-[355px]:text-base xs:text-[18px] font-semibold">
-                  {miningCount ? formatNumber(miningCount, 0, 0) : 0}
+                  {miningCount
+                    ? `${formatNumber(miningCount, 0, 0)}/${formatNumber(userInfo?.maximumPower || 0, 0, 0)}`
+                    : `0/${formatNumber(userInfo?.maximumPower || 0, 0, 0)}`}
                 </p>
               </div>
             </div>
@@ -219,7 +221,7 @@ export default function Mining() {
         point={formatNumber(bonusReward, 0, 0)}
         text={
           <>
-            <p>You’ve received your first reward!</p>
+            <p>You’ve received your bonus reward!</p>
             <p>Claim it now!</p>
           </>
         }
