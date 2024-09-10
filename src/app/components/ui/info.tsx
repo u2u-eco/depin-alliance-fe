@@ -161,7 +161,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 </div>
               </div>
               {!profile && (
-                <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 mr-2 2xs:mr-3">
+                <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 mr-3 2xs:mr-4">
                   <Link href="/profile" className="p-1 group">
                     <IconUser className="size-5 min-[400px]:size-6 text-green-800 group-hover:text-green-500 transition-colors" />
                   </Link>

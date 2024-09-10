@@ -120,7 +120,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
           {children}
         </div>
       </div>
-      <div className="mr-3">
+      <div className="mr-2 xs:mr-3">
         {type === LIST_TYPE.SKILL ? (
           <>
             {item.timeWaiting > Date.now() ? (

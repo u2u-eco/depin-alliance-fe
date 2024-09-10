@@ -60,7 +60,7 @@ export default function LeaguePage() {
   return (
     <>
       <CustomPage>
-        <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-green-300 before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
+        <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-green-300 before:w-[120px] xs:before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
           <Image
             width={0}
             height={0}
@@ -69,7 +69,7 @@ export default function LeaguePage() {
             alt="League Frame"
             style={{ width: '100%', height: 'auto' }}
           />
-          <div className="absolute top-0 left-0 right-0 w-full h-full border border-transparent before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:border-t-green-300 before:border-l-green-300 after:content-[''] after:absolute after:top-0 after:right-0 after:size-5 after:border-[10px] after:border-transparent after:border-t-green-300 after:border-r-green-300">
+          <div className="absolute top-0 left-0 right-0 w-full h-full border border-transparent before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:border-t-green-300 before:border-l-green-300 after:content-[''] after:absolute after:top-0 after:right-0 after:size-4 xs:after:size-5 after:border-[8px] xs:after:border-[10px] after:border-transparent after:border-t-green-300 after:border-r-green-300">
             <Image
               width={0}
               height={0}
