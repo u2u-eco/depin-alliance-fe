@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
@@ -112,7 +112,7 @@ export default function Device() {
   }
 
   const handleConfirm = () => {
-    if(loadingButton) return
+    if (loadingButton) return
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
