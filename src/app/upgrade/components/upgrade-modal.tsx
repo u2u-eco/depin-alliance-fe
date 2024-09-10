@@ -33,7 +33,7 @@ export default function UpgradeModal({
   }
 
   const getBonusRate = () => {
-    return `${userInfo?.rateBonusReward ? userInfo?.rateBonusReward + item.rateEffect * 100 : item.rateEffect * 100}%`
+    return `${userInfo?.rateBonusReward ? formatNumber(userInfo?.rateBonusReward + item.rateEffect * 100, 0, 2) : formatNumber(item.rateEffect * 100, 0, 2)}%`
   }
 
   const disableBtn =
@@ -138,7 +138,7 @@ export default function UpgradeModal({
                   {item.effectCurrent && item.rateEffect
                     ? item.name === 'Data Analysis'
                       ? getBonusRate()
-                      : `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 0)}%`
+                      : `${formatNumber((item.effectCurrent + item.rateEffect) * 100, 0, 2)}%`
                     : null}
                 </p>
               </div>

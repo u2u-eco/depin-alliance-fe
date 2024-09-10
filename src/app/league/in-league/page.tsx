@@ -127,7 +127,7 @@ export default function InLeaguePage() {
           </div>
           <div className="btn inactive">
             <div className="btn-border"></div>
-            <div className="btn-inactive">MINING TOGETHER</div>
+            <div className="btn-inactive">Mining Together (Coming Soon)</div>
             <div className="btn-border"></div>
           </div>
           <div className="grid grid-cols-4 gap-3 mt-8">
@@ -164,7 +164,7 @@ export default function InLeaguePage() {
                     alt=""
                   />
                   <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
-                    Copy
+                    Invite
                   </p>
                 </div>
                 <div className="btn-border"></div>

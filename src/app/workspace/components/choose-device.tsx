@@ -39,7 +39,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
-  }, [isInView, page])
+  }, [isInView])
 
   useEffect(() => {
     setPage(1)

@@ -67,7 +67,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
 
   const buy = async () => {
     setLoadingButton(true)
-    if(loadingButton) return
+    if (loadingButton) return
     if (currentItem?.current?.code) {
       const data: IDeviceItemBuyParam = {
         number: amount,
@@ -93,12 +93,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
-  }, [isInView, page])
+  }, [isInView])
 
   useEffect(() => {
     if (refList.current) {
       refList.current?.scrollTo(0, 0)
     }
+    setListItem([])
     setPage(1)
   }, [filterOptions])
 
@@ -197,37 +198,37 @@ export default function ShopItem({ filterOptions }: IShopItem) {
             transition={{ duration: 0.35 }}
           >
             <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
-            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
-              <div className="space-y-3">
-                <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
-                <div className="flex items-center space-x-2">
-                  <IconPoint className="size-7" />
-                  <span className="text-green-500 text-lg font-semibold">
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between space-x-4 px-5 xs:px-6 2xs:px-8">
+              <div className="space-y-2 xs:space-y-3">
+                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">TOTAL PROFIT:</div>
+                <div className="flex items-center space-x-1.5 xs:space-x-2">
+                  <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+                  <span className="text-green-500 text-[15px] xs:text-base 2xs:text-lg font-semibold">
                     {currentItem.current?.miningPower
                       ? `${formatNumber(currentItem.current?.miningPower * amount, 0, 2)}/h`
                       : 0}
                   </span>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
-                <div className="flex items-center space-x-6">
+              <div className="space-y-2 xs:space-y-3">
+                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">AMOUNT:</div>
+                <div className="flex items-center space-x-3 xs:space-x-4 2xs:space-x-5">
                   <div
                     className="cursor-pointer"
                     onClick={() => {
                       handleAmount(-1)
                     }}
                   >
-                    <IconMinusCircle className="text-green-500 size-6" />
+                    <IconMinusCircle className="text-green-500 size-5 xs:size-6" />
                   </div>
-                  <span className="text-green-100 text-lg font-semibold">{amount}</span>
+                  <span className="text-green-100 text-center text-[15px] xs:text-base 2xs:text-lg font-semibold min-w-[22px]">{amount}</span>
                   <div
                     className="cursor-pointer"
                     onClick={() => {
                       handleAmount(+1)
                     }}
                   >
-                    <IconPlusCircle className="text-green-500 size-6" />
+                    <IconPlusCircle className="text-green-500 size-5 xs:size-6" />
                   </div>
                 </div>
               </div>
@@ -235,13 +236,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           </motion.div>
           <div className="btn" onClick={buy}>
             <div className="btn-border"></div>
-            <div className="btn-primary">
-              <div className="flex items-center justify-center space-x-4 text-green-900">
+            <div className="btn-primary !px-3">
+              <div className="flex items-center justify-center text-sm xs:text-[15px] 2xs:text-base space-x-2 xs:space-x-3 2xs:space-x-4 text-green-900 whitespace-nowrap">
                 <p>BUY NOW</p>
-                <div className="w-[30px] h-[1px] bg-green-800"></div>
-                <div className="flex items-center space-x-2">
+                <div className="w-4 xs:w-6 2xs:w-8 h-[1px] bg-green-800"></div>
+                <div className="flex items-center space-x-1 xs:space-x-2">
                   <div className="flex items-center space-x-1">
-                    <IconPoint className="size-5" color />
+                    <IconPoint className="size-4 xs:size-5" color />
                     <span className="font-geist">
                       {totalAmount
                         ? `${formatNumber(userInfo?.ratePurchase ? userInfo.ratePurchase * totalAmount : totalAmount, 0, 0)}`
@@ -249,9 +250,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                     </span>
                   </div>
                   {userInfo?.ratePurchase && userInfo?.ratePurchase < 1 && (
-                    <div className="flex items-center space-x-1 opacity-65">
-                      <IconPoint className="size-4" color />
-                      <span className="font-geist text-xs line-through">
+                    <div className="flex items-center space-x-0.5 xs:space-x-1 opacity-65">
+                      <IconPoint className="size-[14px] xs:size-4" color />
+                      <span className="font-geist text-[11px] xs:text-xs line-through">
                         {totalAmount ? `${formatNumber(totalAmount, 0, 0)}` : 0}
                       </span>
                     </div>

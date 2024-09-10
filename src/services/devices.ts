@@ -14,7 +14,8 @@ export const getUserDevice = ({
     params: {
       index,
       type,
-      page: page || 1
+      page: page || 1,
+      size: 12
     }
   })
 }
@@ -29,11 +30,12 @@ export const getDevicesByType = ({
   filterOptions: IFilterDevice
 }) => {
   return https.get(`/devices/item`, {
+    headers: {},
     params: {
       type,
       page,
       ...filterOptions,
-      size: 16
+      size: 12
     }
   })
 }
@@ -64,7 +66,10 @@ export const listUserItemDevice = (params: {
   page: number
 }) => {
   return https.get(`/devices/user-item`, {
-    params
+    params: {
+      ...params,
+      size: 12
+    }
   })
 }
 
