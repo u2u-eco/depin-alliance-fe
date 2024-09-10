@@ -1,11 +1,13 @@
 'use client'
 
+import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { IconChat, IconClipboard } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
+import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -13,6 +15,8 @@ import React, { useEffect } from 'react'
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+console.log(currentLeague);
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -141,7 +145,7 @@ export default function InLeaguePage() {
               <div className="btn-border"></div>
             </div>
             <div
-              onClick={handleLeave}
+              onClick={onOpen}
               className={`btn default size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
             >
               <div className="btn-border"></div>
@@ -158,6 +162,46 @@ export default function InLeaguePage() {
           </div>
         </div>
       </CustomPage>
+      <CustomModal
+        title="Leave League"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+      >
+        <div>
+          <div className=" text-body text-base tracking-[-1px] text-center">
+            <p>Do you want to leave this league <span className="text-[#1AF7A8]">{`"${currentLeague?.name}"`}</span>?</p>
+          </div>
+          <div className="mt-8 mb-10 flex items-center justify-center space-x-4">
+            <div
+              className={`p-[1px] size-[110px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center`}
+            >
+              <img
+                className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                src={`${currentLeague?.avatar ? `${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
+                alt="DePIN Alliance"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="text-white font-semibold font-mona text-2xl leading-[28px]">{currentLeague?.name}</p>
+              <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">LV. {currentLeague?.level}</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="btn default" onClick={onClose}>
+              <div className="btn-border"></div>
+              <div className="btn-default">Cancel</div>
+              <div className="btn-border"></div>
+            </div>
+            <div className="btn error" onClick={handleLeave}>
+              <div className="btn-border"></div>
+              <div className="btn-error">Leave</div>
+              <div className="btn-border"></div>
+            </div>
+          </div>
+        </div>
+      </CustomModal>
     </>
   )
 }

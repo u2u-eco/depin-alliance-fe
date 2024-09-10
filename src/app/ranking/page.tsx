@@ -64,9 +64,9 @@ export default function RankingPage() {
           "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
       }}
     >
-      <div className="relative flex items-center justify-center space-x-4">
+      <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
         <div
-          className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
+          className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
           onClick={handleBack}
         >
           <IconChevron className="text-green-500" />
@@ -75,7 +75,7 @@ export default function RankingPage() {
         <div className="text-title font-airnt font-medium text-xl xs:text-2xl">RANKING</div>
         <div className="size-1.5 bg-green-800"></div>
       </div>
-      <div className="mt-6">
+      <div className="mt-4">
         <div className="btn default cursor-default font-geist">
           <div className="btn-border"></div>
           <div className="btn-default max-xs:!py-2.5 max-xs:!px-3">
@@ -125,7 +125,7 @@ export default function RankingPage() {
                         height={0}
                         sizes="100vw"
                         style={{ width: '100%' }}
-                        src={item.avatar || '/assets/images/avatar/avatar-01@2x.png'}
+                        src={item.avatar.replace(/-/g, '-main-') || '/assets/images/avatar/avatar-01@2x.png'}
                         alt=""
                       />
                     </div>

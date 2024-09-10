@@ -143,7 +143,8 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
             {type === 'mission' || type === 'partners' ? (
               getIconMission()
             ) : type === 'invite' ? (
-              <IconUserAdd gradient />
+              // <IconUserAdd gradient />
+              <></>
             ) : type === 'league' ? (
               <IconOpenLink gradient />
             ) : (
