@@ -118,7 +118,9 @@ export default function DailyCheckIn() {
                   srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                   alt="Point"
                 />
-                <p className="text-green-500">{formatNumber(currentItem.current?.point, 0, 0)}</p>
+                <p className="text-green-500">
+                  {currentItem.current?.point ? formatNumber(currentItem.current?.point, 0, 0) : 0}
+                </p>
               </div>
             </div>
           </div>
