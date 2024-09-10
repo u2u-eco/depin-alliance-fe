@@ -7,6 +7,8 @@ interface InputProps {
   placeholder: string
   copy?: boolean
   value?: string
+  errorMessage?: string
+  isInvalid?: boolean
   onValueChange?: (value: string) => void
 }
 
@@ -16,6 +18,8 @@ const CustomInput = ({
   value,
   placeholder,
   copy,
+  errorMessage,
+  isInvalid,
   onValueChange
 }: InputProps) => {
   return (
@@ -27,6 +31,8 @@ const CustomInput = ({
         labelPlacement="outside"
         placeholder={placeholder}
         onValueChange={onValueChange}
+        isInvalid={isInvalid}
+        errorMessage={errorMessage}
         classNames={{
           base: 'data-[has-label=true]:mt-6 opacity-100',
           label: 'group-data-[filled-within=true]:text-body',

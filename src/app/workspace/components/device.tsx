@@ -95,8 +95,8 @@ export default function Device() {
   }
 
   const handleChangeName = async () => {
-    setLoadingButton(true)
     if (currentName.current.trim().length > 0) {
+      setLoadingButton(true)
       const res = await changeNameDevice({
         name: currentName.current.trim(),
         index: currentDevice.current.index
@@ -333,6 +333,7 @@ export default function Device() {
                     placeholder="DEVICE MARS"
                     onValueChange={handleInputName}
                   />
+                  {currentName.current.trim().length === 0 && <p className="text-xs text-error mt-1 font-semibold">Devcie Name is required!</p>}
                 </div>
               )}
               {activeType === DEVICE_TYPE.BUY && (
