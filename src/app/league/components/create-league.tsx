@@ -109,9 +109,9 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
             placeholder="Enter your league's name..."
             onValueChange={onChangeName}
           />
-          {isExistName && name.current?.length > 0 ? (
+          {/* {isExistName && name.current?.length > 0 ? (
             <p className="!mt-[2px] text-[13px] text-[#E53935] absolute">League name is exist</p>
-          ) : null}
+          ) : null} */}
         </div>
         {/* <CustomInput
           label="Invite Link:"
