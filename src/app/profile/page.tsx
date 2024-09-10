@@ -111,9 +111,9 @@ export default function ProfilePage() {
         }}
       >
         <div>
-          <div className="relative flex items-center justify-center space-x-4">
+          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
             <div
-              className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
+              className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
               onClick={handleBack}
             >
               <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
