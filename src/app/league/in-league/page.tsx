@@ -10,13 +10,13 @@ import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-console.log(currentLeague);
+  const [loadingButton, setLoadingButton] = useState(false)
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -35,7 +35,8 @@ console.log(currentLeague);
   }
 
   const handleLeave = async () => {
-    if (currentLeague?.isOwner) {
+    setLoadingButton(true)
+    if (currentLeague?.isOwner || loadingButton) {
       return
     }
     const res = await leaveLeague()
@@ -43,6 +44,7 @@ console.log(currentLeague);
       _getUserLeague()
       router.push('/league')
     }
+    setLoadingButton(false)
   }
 
   useEffect(() => {

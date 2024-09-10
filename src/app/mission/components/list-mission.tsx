@@ -26,6 +26,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const { webApp } = useTelegram()
   const { getUserInfo, userInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [loadingButton, setLoadingButton] = useState(false)
   const {
     isOpen: isOpenSpecial,
     onOpen: onOpenSpecial,
@@ -46,6 +47,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleVerifyMission = async (id: number) => {
+    setLoadingButton(true)
     const res = await verifyMission(id)
     if (res.status && res.data) {
       setVerified(true)
@@ -53,6 +55,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     } else {
       toast.error('Mission not completed')
     }
+    setLoadingButton(false)
+
   }
 
   const handleShare = () => {
@@ -73,6 +77,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleClaim = async () => {
+    setLoadingButton(true)
     const res = await claimTask(currentItem.current.id)
     if (res.status) {
       if (currentItem.current.box > 0) {
@@ -83,10 +88,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       refetch && refetch()
       getUserInfo()
       onClose()
+      setLoadingButton(false)
     }
   }
 
   const handleMission = () => {
+    if(loadingButton) return
     if (isVerified) {
       handleClaim()
       return
