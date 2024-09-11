@@ -388,7 +388,7 @@ export default function Item() {
                     {activeType === ITEM_TYPE.SELL
                       ? 'SELL'
                       : disableBtnSpecial
-                        ? 'REDEEM'
+                        ? 'REDEEM (COMING SOON)'
                         : 'USE KEY'}
                   </p>
                   {!disableBtnSpecial ? (
