@@ -49,6 +49,12 @@ addEventListener('message', (event: any) => {
 
     // If the count down is finished, write some text
     if (distance <= 0 || miningCount >= max) {
+      postMessage(
+        JSON.stringify({
+          type: 'MINING_VALUE',
+          value: max
+        })
+      )
       clearInterval(refInterval)
       postMessage(
         JSON.stringify({
@@ -58,6 +64,7 @@ addEventListener('message', (event: any) => {
     }
   }
   update()
+  clearInterval(refInterval)
   refInterval = setInterval(update, 1000)
   // postMessage(pi(event.data));
 })
