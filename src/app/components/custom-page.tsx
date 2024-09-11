@@ -15,12 +15,23 @@ interface Pageprops {
 
 const CustomPage = ({ children, classNames }: Pageprops) => {
   const pathName = usePathname()
-  const isShowInfo = pathName !== '/avatar' && pathName !== '/profile' && pathName !== '/level' && pathName !== '/mission/partners' && pathName !== '/workspace'
+  const isShowInfo =
+    pathName !== '/avatar' &&
+    pathName !== '/profile' &&
+    pathName !== '/level' &&
+    pathName !== '/mission/partners' &&
+    pathName !== '/workspace'
   const isShowSidebar =
-    pathName !== '/inventory' && pathName !== '/ranking' && pathName !== '/setting' && pathName !== '/workspace' && pathName !== '/avatar' && pathName !== '/profile' && pathName !== '/level'
+    pathName !== '/inventory' &&
+    pathName !== '/ranking' &&
+    pathName !== '/setting' &&
+    pathName !== '/workspace' &&
+    pathName !== '/avatar' &&
+    pathName !== '/profile' &&
+    pathName !== '/level'
   return (
     <AnimatePresence mode="wait">
-      <div className={cn('section', classNames?.wrapper)}>
+      <div className={cn(classNames?.wrapper)}>
         <div
           className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
         >
@@ -32,7 +43,11 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
               transition={{ duration: 0.35 }}
             >
               {isShowInfo && <Info />}
-              <div className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}>{children}</div>
+              <div
+                className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
+              >
+                {children}
+              </div>
             </motion.div>
           </div>
           {isShowSidebar && <CustomNavbar />}
