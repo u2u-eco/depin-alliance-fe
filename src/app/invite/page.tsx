@@ -131,7 +131,7 @@ export default function InvitePage() {
           </div>
         </div>
         {listItem?.length > 0 ? (
-          <div className="max-h-[50vh] overflow-y-auto hide-scrollbar">
+          <div>
             <CustomList
               type="invite"
               title={`FRIEND LIST (${(listFriend as any)?.pagination?.totalRecord || 0})`}
