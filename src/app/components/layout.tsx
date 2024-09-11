@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 // import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
 import TelegramProvider from '../../contexts/telegram.context'
@@ -11,6 +11,15 @@ export default function Layout({ children }: any) {
   // const pathName = usePathname()
 
   const queryClient = new QueryClient()
+
+  useEffect(() => {
+    if (window.visualViewport) {
+      document.body.style.height = (window as any).visualViewport.height + 'px'
+      window.visualViewport.addEventListener('resize', () => {
+        document.body.style.height = (window as any).visualViewport.height + 'px'
+      })
+    }
+  })
   return (
     <div className="wrapper min-h-[100vh]">
       <Toaster
