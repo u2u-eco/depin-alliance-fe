@@ -14,6 +14,7 @@ import CreateLeague from './components/create-league'
 import JoinLeague from './components/join-league'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { useRouter } from 'next/navigation'
+import { useInView } from 'react-intersection-observer'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -25,10 +26,29 @@ export default function LeaguePage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(LEAGUE_TYPE.CREATE)
   const router = useRouter()
+  const [scrollTrigger, isInView] = useInView()
   const currentItem = useRef<ILeagueItem | null>(null)
-  const { data: listLeague, refetch } = useQuery({
-    queryKey: ['fetchListLeague'],
-    queryFn: () => getListLeague({ page: 1 }),
+  const maxPage = useRef<number>(0)
+  const [page, setPage] = useState<number>(1)
+  const dataList = useRef<ILeagueItem[]>([])
+  const [listItem, setListItem] = useState<ILeagueItem[]>([])
+  const { isLoading, refetch } = useQuery({
+    queryKey: ['fetchListLeague', page],
+    queryFn: async () => {
+      const res: any = await getListLeague({ page })
+      if (res.pagination?.totalPage) {
+        maxPage.current = res.pagination?.totalPage
+      }
+      if (page !== res.pagination.page) return []
+      let _listItem = res.data
+
+      if (page > 1) {
+        _listItem = [...dataList.current, ...res.data]
+      }
+      dataList.current = _listItem
+      setListItem(dataList.current)
+      return res
+    },
     enabled: Boolean(token)
   })
 
@@ -50,6 +70,12 @@ export default function LeaguePage() {
     setType(LEAGUE_TYPE.JOIN)
     onOpen()
   }
+
+  useEffect(() => {
+    if (isInView && page < maxPage.current && !isLoading) {
+      setPage(page + 1)
+    }
+  }, [isInView])
 
   useEffect(() => {
     if (token) {
@@ -94,16 +120,21 @@ export default function LeaguePage() {
             </div>
           </div>
         </div>
-        {listLeague?.data.length > 0 ? (
-          <CustomList
-            type="league"
-            title="All Leagues"
-            data={listLeague?.data}
-            titleItemKey="name"
-            imageItemKey="avatar"
-            pointKey="totalMining"
-            onClickItem={handleClickItem}
-          />
+        {listItem.length > 0 ? (
+          <div className="max-h-[50vh] overflow-y-auto hide-scrollbar">
+            <CustomList
+              type="league"
+              title="All Leagues"
+              data={listItem}
+              titleItemKey="name"
+              imageItemKey="avatar"
+              pointKey="totalMining"
+              onClickItem={handleClickItem}
+            />
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
+            </div>
+          </div>
         ) : null}
       </CustomPage>
 
