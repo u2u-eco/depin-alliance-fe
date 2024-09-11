@@ -31,28 +31,29 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/level'
   return (
     <AnimatePresence mode="wait">
-      <div className={cn(classNames?.wrapper)}>
-        <div
-          className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
-        >
-          <div className="container-custom">
-            <motion.div
-              initial={{ y: 25, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -25, opacity: 0 }}
-              transition={{ duration: 0.35 }}
+      {/* <div className={cn(classNames?.wrapper)}> */}
+      <div
+        className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
+      >
+        <div className="container-custom">
+          <motion.div
+            initial={{ y: 25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -25, opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            {isShowInfo && <Info />}
+            <div
+              className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
             >
-              {isShowInfo && <Info />}
-              <div
-                className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
-              >
-                {children}
-              </div>
-            </motion.div>
-          </div>
-          {isShowSidebar && <CustomNavbar />}
+              {children}
+            </div>
+          </motion.div>
         </div>
       </div>
+      {isShowSidebar && <CustomNavbar />}
+
+      {/* </div> */}
     </AnimatePresence>
   )
 }
