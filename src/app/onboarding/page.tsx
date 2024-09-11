@@ -274,7 +274,7 @@ const Onboarding = () => {
             onOpen={onOpen}
             onOpenChange={onOpenChange}
             onCloseModal={handleCloseModal}
-            title="newbie rewarRD"
+            title="newbie rewarD"
             point={formatNumber(pointReward, 0, 0)}
             text={
               <>
