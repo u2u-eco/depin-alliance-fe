@@ -68,12 +68,12 @@ export default function ProfilePage() {
       _getSkills()
       currentItem.current = {}
       onClose()
-      setLoadingButton(false)
     }
+    setLoadingButton(false)
   }
 
   const handleModalAction = (data: any) => {
-    if(loadingButton) return
+    if (loadingButton) return
     handleUpdateSkill(data)
   }
 

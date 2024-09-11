@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomList from '../components/custom-list'
 import CustomPage from '../components/custom-page'
 import Image from 'next/image'
@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 import { getUserFriend } from '@/services/user'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
+import { useInView } from 'react-intersection-observer'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [
@@ -22,9 +22,28 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 export default function InvitePage() {
   const { userInfo, token } = useCommonStore()
-  const { data: listFriend } = useQuery({
-    queryKey: ['fetchListFriend'],
-    queryFn: () => getUserFriend(),
+  const maxPage = useRef<number>(0)
+  const [page, setPage] = useState<number>(1)
+  const [scrollTrigger, isInView] = useInView()
+  const dataList = useRef<any[]>([])
+  const [listItem, setListItem] = useState<any[]>([])
+  const { data: listFriend, isLoading } = useQuery({
+    queryKey: ['fetchListFriend', page],
+    queryFn: async () => {
+      const res: any = await getUserFriend({ page, size: 10 })
+      if (res.pagination?.totalPage) {
+        maxPage.current = res.pagination?.totalPage
+      }
+      if (page !== res.pagination.page) return []
+      let _listItem = res.data
+
+      if (page > 1) {
+        _listItem = [...dataList.current, ...res.data]
+      }
+      dataList.current = _listItem
+      setListItem(dataList.current)
+      return res
+    },
     enabled: Boolean(token)
   })
 
@@ -42,6 +61,13 @@ export default function InvitePage() {
     }
     // webApp?.shareToStory('https://dogx.io/assets/images/layouts/giveaway.jpg')
   }
+
+  useEffect(() => {
+    if (isInView && page < maxPage.current && !isLoading) {
+      setPage(page + 1)
+    }
+  }, [isInView])
+
   return (
     <>
       <CustomPage>
@@ -104,15 +130,20 @@ export default function InvitePage() {
             </div>
           </div>
         </div>
-        {listFriend?.data.length > 0 ? (
-          <CustomList
-            type="invite"
-            title="FRIEND LIST"
-            data={listFriend?.data}
-            titleItemKey="username"
-            pointKey="pointRef"
-            imageItemKey="avatar"
-          />
+        {listItem?.length > 0 ? (
+          <div>
+            <CustomList
+              type="invite"
+              title={`FRIEND LIST (${(listFriend as any)?.pagination?.totalRecord || 0})`}
+              data={listItem}
+              titleItemKey="username"
+              pointKey="pointRef"
+              imageItemKey="avatar"
+            />
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
+            </div>
+          </div>
         ) : null}
       </CustomPage>
     </>
