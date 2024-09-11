@@ -11,6 +11,7 @@ export default function Layout({ children }: any) {
   // const pathName = usePathname()
   useEffect(() => {
     if (window.visualViewport) {
+      document.body.style.height = (window as any).visualViewport.height + 'px'
       window.visualViewport.addEventListener('resize', () => {
         alert((window as any).visualViewport.height)
         document.body.style.height = (window as any).visualViewport.height + 'px'
