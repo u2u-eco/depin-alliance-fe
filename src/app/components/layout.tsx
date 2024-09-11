@@ -9,19 +9,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 export default function Layout({ children }: any) {
   const queryClient = new QueryClient()
-  useEffect(() => {
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', () => {
-        document.body.style.height = (window as any).visualViewport.height + 'px'
-      })
-    }
-    // This will ensure user never overscroll the page
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 0) window.scrollTo(0, 0)
-    })
-  })
+
   return (
-    <div className="h-[100vh] overflow-x-auto scrollbar-hide">
+    <div className="wrapper min-h-[100vh]">
       <Toaster
         position="top-center"
         theme="dark"
