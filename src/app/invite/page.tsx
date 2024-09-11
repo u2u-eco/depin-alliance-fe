@@ -36,7 +36,7 @@ export default function InvitePage() {
   const handleShare = () => {
     if (userInfo) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: https://t.me/DepinAllianceBot?start=${userInfo.code}`,
+        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}?start=${userInfo.code}`,
         '_self'
       )
     }
@@ -45,7 +45,7 @@ export default function InvitePage() {
   return (
     <>
       <CustomPage>
-        <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-yellow-300 before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
+        <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-yellow-300 before:w-[120px] xs:before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
           <Image
             width={0}
             height={0}
@@ -54,7 +54,7 @@ export default function InvitePage() {
             alt="Invite Frame"
             style={{ width: '100%', height: 'auto' }}
           />
-          <div className="absolute top-0 left-0 right-0 w-full h-full border border-transparent before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:border-t-yellow-300 before:border-l-yellow-300 after:content-[''] after:absolute after:top-0 after:right-0 after:size-5 after:border-[10px] after:border-transparent after:border-t-yellow-300 after:border-r-yellow-300">
+          <div className="absolute top-0 left-0 right-0 w-full h-full border border-transparent before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:border-t-yellow-300 before:border-l-yellow-300 after:content-[''] after:absolute after:top-0 after:right-0 after:size-4 xs:after:size-5 after:border-[8px] xs:after:border-[10px] after:border-transparent after:border-t-yellow-300 after:border-r-yellow-300">
             <Image
               width={0}
               height={0}
@@ -64,15 +64,15 @@ export default function InvitePage() {
               // srcSet="/assets/images/invite/invite-image.png 1x, /assets/images/invite/invite-image@2x.png 2x"
               alt="Invite Image"
             />
-            <div className="px-3 xs:px-4 py-3 xs:py-4 min-[400px]:py-5 2xs:py-6">
+            <div className="px-3 xs:px-4 py-3 xs:py-4 2xs:py-5">
               <div className="flex items-center justify-between min-[400px]:justify-center space-x-1 min-[400px]:space-x-3 2xs:space-x-4">
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-                <p className="text-title font-airnt font-medium text-[15px] min-[355px]:text-base xs:text-lg 2xs:text-xl leading-[20px] 2xs:leading-[24px] text-center uppercase tracking-[1px]">
+                <p className="text-title font-airnt font-medium text-[15px] min-[355px]:text-base xs:text-lg 2xs:text-xl !leading-[20px] 2xs:!leading-[24px] text-center uppercase tracking-[1px]">
                   Invite friends and earn more rewards
                 </p>
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
-              <div className="mt-2 mb-2 min-[344px]:mb-3 xs:mb-4 min-[400px]:mb-5 2xs:mb-6 text-center text-body text-xs min-[400px]:text-[13px] 2xs:text-sm font-geist tracking-[-1px]">
+              <div className="mt-2 mb-2 min-[344px]:mb-3 xs:mb-3.5 2xs:mb-5 text-center text-body text-xs min-[400px]:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-geist tracking-[-1px]">
                 Refer your friends to get a luck box and earn 10% each time they claim mining.
               </div>
               <div className="flex items-center space-x-3 xs:space-x-4">

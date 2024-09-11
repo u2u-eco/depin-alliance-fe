@@ -28,7 +28,7 @@ const ITEM_TYPE = {
 }
 
 export default function Item() {
-  const { getUserInfo } = useCommonStore()
+  const { getUserInfo, userInfo } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -128,13 +128,20 @@ export default function Item() {
   const handleSpecial = async () => {
     if (paramUseKey.current && !disableBtnSpecial) {
       specialItem.current = []
+      if (userInfo && userInfo?.point < useKey) {
+        toast.error('User point not enough!')
+        return
+      }
       onOpenSpecial()
-      const res = await getUseKey(paramUseKey.current)
-      if (res.status) {
-        specialItem.current = res.data
-        // toast.success('Special item successfully!')
-        refetch && refetch()
-        getUserInfo()
+      try {
+        const res = await getUseKey(paramUseKey.current)
+        if (res.status) {
+          specialItem.current = res.data
+          refetch && refetch()
+          getUserInfo()
+        }
+        onClose()
+      } catch (ex) {
         onClose()
       }
     }
@@ -286,7 +293,7 @@ export default function Item() {
           {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 2xs:my-8'}`}
+                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
               >
                 <div
                   className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'size-[90px] min-w-[90px]' : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
@@ -306,7 +313,13 @@ export default function Item() {
                     alt=""
                   />
                 </div>
-                <div className={activeType === ITEM_TYPE.INFO ? 'space-y-2 xs:space-y-3 2xs:space-y-4' : 'space-y-2'}>
+                <div
+                  className={
+                    activeType === ITEM_TYPE.INFO
+                      ? 'space-y-2 xs:space-y-3 2xs:space-y-4'
+                      : 'space-y-2'
+                  }
+                >
                   <p
                     className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}
                   >
@@ -375,18 +388,25 @@ export default function Item() {
                     {activeType === ITEM_TYPE.SELL
                       ? 'SELL'
                       : disableBtnSpecial
-                        ? 'REDEEM'
+                        ? 'REDEEM (COMING SOON)'
                         : 'USE KEY'}
                   </p>
-                  <div
-                    className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
-                  ></div>
-                  <div className="flex items-center space-x-1">
-                    <IconPoint className="size-5" color />
-                    <span className="font-geist">
-                      {isSpecial ? useKey : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
-                    </span>
-                  </div>
+                  {!disableBtnSpecial ? (
+                    <>
+                      <div
+                        className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
+                      ></div>
+
+                      <div className="flex items-center space-x-1">
+                        <IconPoint className="size-5" color />
+                        <span className="font-geist">
+                          {isSpecial
+                            ? useKey
+                            : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+                        </span>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
               </div>
               <div className="btn-border"></div>

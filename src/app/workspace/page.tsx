@@ -29,12 +29,12 @@ export default function WorkspacePage() {
       <CustomPage
         classNames={{
           wrapper:
-            "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
+            "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-[linear-gradient(315deg,#000_0,#00331d_50%,#000_72%)] after:z-[-2]"
         }}
       >
-        <div className="relative flex items-center justify-center space-x-4">
+        <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
           <div
-            className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
+            className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
             onClick={handleBack}
           >
             <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />

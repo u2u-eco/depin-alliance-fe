@@ -148,6 +148,7 @@ export default function Device() {
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
+    currentIndex.current = index
   }
 
   const handleClick = (type: string, device?: IUserDeviceItem) => {
@@ -252,7 +253,7 @@ export default function Device() {
       >
         <div className="relative w-full">
           {activeType !== DEVICE_TYPE.EDIT && (
-            <div className=" text-body text-base tracking-[-1px] text-center">
+            <div className=" text-body xs:text-[15px] 2xs:text-base tracking-[-1px] text-center">
               {activeType === DEVICE_TYPE.INFO ? (
                 <p>You are equipping this item!</p>
               ) : activeType === DEVICE_TYPE.BUY ? (
@@ -270,10 +271,10 @@ export default function Device() {
           {activeType !== DEVICE_TYPE.EQUIP ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'mt-10 mb-14' : 'my-8'}`}
+                className={`space-x-4 flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
               >
                 <div
-                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'size-[90px] min-w-[90px]' : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
+                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'size-[80px] xs:size-[85px] 2xs:size-[90px] min-w-[80px] xs:min-w-[85px] 2xs:min-w-[90px]' : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
                 >
                   <ImageDevice
                     image={
@@ -287,8 +288,14 @@ export default function Device() {
                     className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                   />
                 </div>
-                <div className={activeType === DEVICE_TYPE.INFO ? 'space-y-4' : 'space-y-2'}>
-                  <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona leading-[20px] xs:leading-[22px]">
+                <div
+                  className={
+                    activeType === DEVICE_TYPE.INFO
+                      ? 'space-y-2 xs:space-y-3 2xs:space-y-4'
+                      : 'space-y-2'
+                  }
+                >
+                  <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px]">
                     {activeType === DEVICE_TYPE.BUY ? 'NEW DEVICE' : detailDeviceItem.current?.name}
                   </p>
                   {activeType !== DEVICE_TYPE.BUY && (
