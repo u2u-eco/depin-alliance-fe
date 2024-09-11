@@ -121,7 +121,7 @@ export default function LeaguePage() {
           </div>
         </div>
         {listItem.length > 0 ? (
-          <div className="max-h-[50vh] overflow-y-auto hide-scrollbar">
+          <>
             <CustomList
               type="league"
               title="All Leagues"
@@ -134,7 +134,7 @@ export default function LeaguePage() {
             <div ref={scrollTrigger} className="text-[transparent]">
               Loading...
             </div>
-          </div>
+          </>
         ) : null}
       </CustomPage>
 
