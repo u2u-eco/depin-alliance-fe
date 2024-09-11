@@ -30,7 +30,8 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/profile' &&
     pathName !== '/level'
   return (
-    <AnimatePresence mode="wait">
+    <>
+      {/* <AnimatePresence mode="wait"> */}
       {/* <div className={cn(classNames?.wrapper)}> */}
       <div
         className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-[100vh]'}  bg-gray-850  overflow-y-auto flex flex-col hide-scrollbar`}
@@ -51,10 +52,13 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
           </motion.div>
         </div>
       </div>
-      {isShowSidebar && <CustomNavbar />}
+      <div className={isShowSidebar ? '' : 'hidden'}>
+        <CustomNavbar />
+      </div>
 
       {/* </div> */}
-    </AnimatePresence>
+      {/* </AnimatePresence> */}
+    </>
   )
 }
 
