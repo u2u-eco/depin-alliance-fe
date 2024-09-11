@@ -107,7 +107,7 @@ export default function InvitePage() {
         {listFriend?.data.length > 0 ? (
           <CustomList
             type="invite"
-            title="FRIEND LIST"
+            title={`FRIEND LIST (${(listFriend as any)?.pagination?.totalRecord || 0})`}
             data={listFriend?.data}
             titleItemKey="username"
             pointKey="pointRef"
