@@ -806,7 +806,6 @@ body,
   height: 100vh;
   overflow: hidden;
   background: red;
-  overscroll-behavior: none;
 }
 
 #root {

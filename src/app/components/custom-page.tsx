@@ -36,6 +36,8 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
       <div
         className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-[100vh]'}  bg-gray-850  overflow-y-auto flex flex-col hide-scrollbar`}
       >
+        {pathName}
+
         <div className="container-custom">
           <motion.div
             initial={{ y: 25, opacity: 0 }}
