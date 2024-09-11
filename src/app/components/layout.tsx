@@ -9,11 +9,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 export default function Layout({ children }: any) {
   // const pathName = usePathname()
-
   useEffect(() => {
     if (window.visualViewport) {
       document.body.style.height = (window as any).visualViewport.height + 'px'
-      alert(document.body.style.height)
       window.visualViewport.addEventListener('resize', () => {
         alert((window as any).visualViewport.height)
         document.body.style.height = (window as any).visualViewport.height + 'px'

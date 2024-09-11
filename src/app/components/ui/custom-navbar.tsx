@@ -20,7 +20,7 @@ const CustomNavbar = () => {
   return (
     // <AnimatePresence mode="wait">
     <motion.div
-      className="fixed max-w-[480px] mx-auto bottom-0 left-0 right-0 z-20"
+      className="absolute max-w-[480px] mx-auto bottom-0 left-0 right-0 z-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       // exit={{ opacity: 0 }}
