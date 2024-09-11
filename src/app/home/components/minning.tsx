@@ -182,18 +182,16 @@ export default function Mining() {
                 </p>
               </div>
             </div>
-              {timeCountdown.length === 0 ? null : (
-                <div className="min-h-6 xs:min-h-[28px] flex items-center text-sm xs:text-[15px] 2xs:text-base font-geist font-semibold text-green-900">
-                  {timeCountdown.map((item: any, index) => (
-                    <React.Fragment key={index}>
-                      <p className="px-[3px] flex items-center justify-center bg-black/15">
-                        {item}
-                      </p>
-                      {index === timeCountdown.length - 1 ? null : <span>:</span>}
-                    </React.Fragment>
-                  ))}
-                </div>
-              )}
+            {timeCountdown.length === 0 ? null : (
+              <div className="min-h-6 xs:min-h-[28px] flex items-center text-sm xs:text-[15px] 2xs:text-base font-geist font-semibold text-green-900">
+                {timeCountdown.map((item: any, index) => (
+                  <React.Fragment key={index}>
+                    <p className="px-[3px] flex items-center justify-center bg-black/15">{item}</p>
+                    {index === timeCountdown.length - 1 ? null : <span>:</span>}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div
@@ -217,7 +215,7 @@ export default function Mining() {
         onOpen={onOpen}
         onOpenChange={onOpenChange}
         onCloseModal={onClose}
-        title="BONUS rewarRD"
+        title="BONUS rewarD"
         point={formatNumber(bonusReward, 0, 0)}
         text={
           <>
