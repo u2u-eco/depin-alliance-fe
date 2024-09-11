@@ -35,6 +35,9 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
       <div
         className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-[100vh]'}  bg-gray-850  overflow-y-auto flex flex-col hide-scrollbar`}
       >
+        <div className={isShowSidebar ? '' : 'hidden'}>
+          <CustomNavbar />
+        </div>
         <div className="container-custom">
           <motion.div
             initial={{ y: 25, opacity: 0 }}
@@ -50,9 +53,6 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
             </div>
           </motion.div>
         </div>
-      </div>
-      <div className={isShowSidebar ? '' : 'hidden'}>
-        <CustomNavbar />
       </div>
 
       {/* </div> */}
