@@ -88,23 +88,21 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
     <>
       <div className="mt-8 mb-10 space-y-6">
         <div className="relative space-y-2 w-fit mx-auto">
-          <div className={`size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}>
+          <div className="size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 overflow-hidden">
             {imagePreview ? (
-              <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] size-full">
-                <Image
-                  width={0}
-                  height={0}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  sizes="100vw"
-                  src={imagePreview}
-                  alt="preview"
-                />
-              </div>
+              <Image
+                width={0}
+                height={0}
+                style={{ width: '100%' }}
+                sizes="100vw"
+                src={imagePreview}
+                alt="preview"
+              />
             ) : (
               <IconImageAdd gradient />
             )}
           </div>
-          <p className="text-sm xs:text-[15px] 2xs:text-base text-body !leading-[18px] xs:!leading-[20px] tracking-[-1px] text-center">
+          <p className="text-base text-body leading-[20px] tracking-[-1px] text-center">
             Upload Image
           </p>
           <input

@@ -96,7 +96,7 @@ export default function RankingPage() {
           <div className="btn-border"></div>
         </div>
       </div>
-      <div className="mt-6 xs:mt-8 2xs:mt-10">
+      <div className="mt-10">
         <motion.div
           initial={{ y: 25, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

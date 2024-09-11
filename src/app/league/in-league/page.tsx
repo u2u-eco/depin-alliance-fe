@@ -23,7 +23,7 @@ export default function InLeaguePage() {
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
+        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: https://t.me/DepinAllianceBot?start=${currentLeague.inviteLink}`,
         '_self'
       )
     }

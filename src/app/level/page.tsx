@@ -79,7 +79,7 @@ export default function LevelPage() {
                           Level
                         </p>
                         <p
-                          className={` ${item.lock ? 'text-inactive' : 'text-gradient'} text-[32px] xs:text-4xl 2xs:text-[40px] font-bold leading-[50px]`}
+                          className={` ${item.lock ? 'text-inactive' : 'text-gradient'} text-[40px] font-bold leading-[50px]`}
                         >
                           {userInfo?.level}
                         </p>
@@ -115,7 +115,7 @@ export default function LevelPage() {
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">CAPACITY</div>
                           <div className="flex items-center space-x-1">
                             <IconPoint className="size-4" />
@@ -127,17 +127,17 @@ export default function LevelPage() {
                           </div>
                         </div>
                         <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">MAXIMUM SLOT DEVICE</div>
                           <p className="text-title">{userConfig?.maxDevice}</p>
                         </div>
                         <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">TOTAL SKILL POINT</div>
                           <p className="text-title">{userInfo?.pointSkill}</p>
                         </div>
                         {/* <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className="flex items-center justify-between font-semibold text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS REWARD</div>
                           <p className="text-title">15%</p>
                         </div> */}

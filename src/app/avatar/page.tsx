@@ -164,7 +164,7 @@ export default function Avatar() {
                         <div className="text-title font-mona text-base xs:text-lg font-semibold">
                           {item.name}
                         </div>
-                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px] max-h-[80px] overflow-y-auto hide-scrollbar">
+                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px] max-h-[80px] overflow-y-auto">
                           {item.description}
                         </div>
                       </div>

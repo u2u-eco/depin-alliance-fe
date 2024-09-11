@@ -220,7 +220,7 @@ export default function InventoryPage() {
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>You are equipping this item!</p>
           </div>
-          <div className="mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14 space-x-4 flex items-center justify-center">
+          <div className="mt-10 mb-14 space-x-4 flex items-center justify-center">
             <div className="p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] size-[90px] flex items-center justify-center">
               <img
                 className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
