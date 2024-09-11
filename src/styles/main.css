@@ -796,7 +796,6 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: theme("colors.gray.400");
-  background: var(--body-background);
   min-height: 100vh;
 }
 
@@ -804,8 +803,9 @@ html,
 body,
 #root {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
+  background: red;
   overscroll-behavior: none;
 }
 

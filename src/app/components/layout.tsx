@@ -12,13 +12,14 @@ export default function Layout({ children }: any) {
   useEffect(() => {
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', () => {
+        alert((window as any).visualViewport.height)
         document.body.style.height = (window as any).visualViewport.height + 'px'
       })
     }
   }, [])
   const queryClient = new QueryClient()
   return (
-    <div className="wrapper min-h-[100vh]">
+    <>
       <Toaster
         position="top-center"
         theme="dark"
@@ -44,6 +45,6 @@ export default function Layout({ children }: any) {
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
-    </div>
+    </>
   )
 }
