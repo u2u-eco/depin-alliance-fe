@@ -45,7 +45,7 @@ export default function AccordionItem({
           <div className="relative w-full flex items-center justify-center">
             <div
               onClick={() => {
-                handleSelectItem(item.index)
+                handleSelectItem(isOpen ? false : index)
               }}
               className="min-w-16 mr-[10px] xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10"
             >

@@ -86,7 +86,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                           return (
                             <div
                               key={index}
-                              className="flex items-center justify-center text-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] !leading-[16px] xs:!leading-[20px] 2xs:!leading-[24px] 2xs:text-sm"
+                              className="flex items-center justify-center text-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] !leading-[16px] xs:!leading-[20px] 2xs:!leading-[24px] 2xs:text-sm [word-break:_break-word;]"
                               onClick={() => handleInfo(item)}
                             >
                               {item?.name}
