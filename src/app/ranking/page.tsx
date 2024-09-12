@@ -136,7 +136,7 @@ export default function RankingPage() {
                       />
                     </div>
                     <div className="space-y-2 xs:space-y-3">
-                      <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px]">
+                      <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px] [word-break:_break-word;]">
                         {item.username}
                       </div>
                       <div className="flex items-center space-x-1">
