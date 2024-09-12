@@ -68,3 +68,7 @@ export const updateSkill = (id: number) => {
     skillId: id
   })
 }
+
+export const getNextLevel = () => {
+  return https.get('users/next-level')
+}
