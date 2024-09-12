@@ -7,7 +7,8 @@ import { useRouter } from 'next/navigation'
 import Device from './components/device'
 import Item from './components/item'
 
-import { IconChevron } from '../components/icons'
+import { IconChevron, IconHome } from '../components/icons'
+import Link from 'next/link'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -32,16 +33,21 @@ export default function WorkspacePage() {
             "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-[linear-gradient(315deg,#000_0,#00331d_50%,#000_72%)] after:z-[-2]"
         }}
       >
-        <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
+        <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
           <div
-            className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
+            className="cursor-pointer rotate-90"
             onClick={handleBack}
           >
             <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
           </div>
-          <div className="size-1.5 bg-green-800"></div>
-          <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Workspace</div>
-          <div className="size-1.5 bg-green-800"></div>
+          <div className="flex items-center space-x-3 xs:space-x-4">
+            <div className="size-1.5 bg-green-800"></div>
+            <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">Workspace</div>
+            <div className="size-1.5 bg-green-800"></div>
+          </div>
+          <Link href="/home">
+            <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+          </Link>
         </div>
         <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 mt-8">
           {Object.values(WORKSPACE_TYPE).map((item, index) => (
