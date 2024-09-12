@@ -33,7 +33,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     <AnimatePresence mode="wait">
       <div className={cn('section', classNames?.wrapper)}>
         <div
-          className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
+          className={`${isShowSidebar ? 'h-[calc(100%-75px)]' : 'h-full'}  overflow-y-auto flex flex-col hide-scrollbar`}
         >
           <div className="container-custom">
             <motion.div

@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
 import TelegramProvider from '../../contexts/telegram.context'
@@ -9,23 +9,29 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 export default function Layout({ children }: any) {
   // const pathName = usePathname()
+  const [listHeight, setHeight] = useState<any>([])
   useEffect(() => {
     if (window.visualViewport) {
       document.body.style.height = (window as any).visualViewport.height + 'px'
+      setHeight([...listHeight, document.body.style.height])
+
       setTimeout(() => {
         document.body.style.height = (window as any).visualViewport.height + 'px'
+        setHeight([...listHeight, document.body.style.height])
       }, 500)
       setTimeout(() => {
         document.body.style.height = (window as any).visualViewport.height + 'px'
-      }, 1000)
+        setHeight([...listHeight, document.body.style.height])
+      }, 3000)
       window.visualViewport.addEventListener('resize', () => {
         document.body.style.height = (window as any).visualViewport.height + 'px'
+        setHeight([...listHeight, document.body.style.height])
       })
     }
   }, [])
   const queryClient = new QueryClient()
   return (
-    <div className="wrapper min-h-[100vh]">
+    <div className="wrapper h-full">
       <Toaster
         position="top-center"
         theme="dark"
@@ -46,6 +52,7 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
+            <div className=" absolute z-10">{listHeight.toString()}</div>
             {children}
             {/* {pathName !== '/' && <CustomNavbar />} */}
           </NextUIProvider>
