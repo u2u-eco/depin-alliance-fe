@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
-import { IconChevron } from '../components/icons'
+import { IconChevron, IconHome } from '../components/icons'
 import { useRouter } from 'next/navigation'
 import CustomList from '../components/custom-list'
 import { ISkillItem } from '@/interfaces/i.user'
@@ -14,6 +14,7 @@ import CustomModal from '../components/custom-modal'
 import UpgradeModal from '../upgrade/components/upgrade-modal'
 import Info from '../components/ui/info'
 import { LIST_TYPE } from '@/constants'
+import Link from 'next/link'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -115,16 +116,21 @@ export default function ProfilePage() {
         }}
       >
         <div>
-          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
+          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
             <div
-              className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
+              className="cursor-pointer rotate-90"
               onClick={handleBack}
             >
               <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
             </div>
-            <div className="size-1.5 bg-green-800"></div>
-            <div className="text-title font-airnt font-medium text-xl xs:text-2xl">PROFILE</div>
-            <div className="size-1.5 bg-green-800"></div>
+            <div className="flex items-center space-x-3 xs:space-x-4">
+              <div className="size-1.5 bg-green-800"></div>
+              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">PROFILE</div>
+              <div className="size-1.5 bg-green-800"></div>
+            </div>
+            <Link href="/home">
+              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+            </Link>
           </div>
           <div className="mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-11 2xs:mb-12">
             <Info profile rank={rank} />

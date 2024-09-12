@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
-import { IconCheck, IconChevron, IconDoubleArrow } from '../components/icons'
+import { IconCheck, IconChevron, IconDoubleArrow, IconHome } from '../components/icons'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { getListAvatar, updateAvatar } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 const listAvatar = [
   {
@@ -102,16 +103,21 @@ export default function Avatar() {
         }}
       >
         <div className="space-y-6 xs:space-y-8 2xs:space-y-10">
-          <div className="relative flex items-center justify-center space-x-4">
+          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
             <div
-              className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
+              className="cursor-pointer rotate-90"
               onClick={handleBack}
             >
               <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
             </div>
-            <div className="size-1.5 bg-green-800"></div>
-            <div className="text-title font-airnt font-medium text-xl xs:text-2xl">Avatar</div>
-            <div className="size-1.5 bg-green-800"></div>
+            <div className="flex items-center space-x-3 xs:space-x-4">
+              <div className="size-1.5 bg-green-800"></div>
+              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">Avatar</div>
+              <div className="size-1.5 bg-green-800"></div>
+            </div>
+            <Link href="/home">
+              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+            </Link>
           </div>
           <div className="flex justify-between space-x-4">
             <div className="grid grid-cols-2 gap-1 xs:gap-2 2xs:gap-3 h-fit">
