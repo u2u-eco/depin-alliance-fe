@@ -74,7 +74,7 @@ export default function InLeaguePage() {
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
           </div>
           <div className="space-y-5">
-            <div className="relative size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
+            <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
                   className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
@@ -83,9 +83,9 @@ export default function InLeaguePage() {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-center space-x-6">
+            <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
               <div className="size-1.5 min-w-1.5 bg-white"></div>
-              <div className="font-airnt font-medium text-title text-2xl tracking-[1px] leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)]">
+              <div className="text-center font-airnt font-medium text-title text-lg xs:text-xl 2xs:text-2xl tracking-[1px] !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] [word-break:_break-word;]">
                 {currentLeague?.name}
               </div>
               <div className="size-1.5 min-w-1.5 bg-white"></div>
@@ -93,30 +93,30 @@ export default function InLeaguePage() {
           </div>
           <div className="relative w-fit mx-auto my-6">
             <img src="/assets/images/league/in-league-frame.svg" alt="" />
-            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
-              <div className="space-y-2">
-                <div className="text-title uppercase leading-[18px]">TOTAL MINING</div>
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
+              <div className="space-y-1 xs:space-y-2">
+                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">TOTAL MINING</div>
                 <div className="flex items-center space-x-2">
                   <img
-                    className="size-8"
+                    className="size-6 xs:size-7 2xs:size-8"
                     src="/assets/images/point.png"
                     srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                     alt=""
                   />
-                  <p className="text-green-500 font-semibold text-[28px] leading-[35px]">
+                  <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                     {currentLeague?.totalMining ? formatNumber(currentLeague.totalMining, 0, 0) : 0}
                   </p>
                 </div>
               </div>
-              <div className="space-y-2">
-                <div className="text-title uppercase leading-[18px]">CONTRIBUTORS</div>
+              <div className="space-y-1 xs:space-y-2">
+                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">CONTRIBUTORS</div>
                 <div className="flex items-center space-x-2">
                   <img
-                    className="size-8"
+                    className="size-6 xs:size-7 2xs:size-8"
                     src="/assets/images/icons/icon-group-user-white.svg"
                     alt=""
                   />
-                  <p className="text-green-500 font-semibold text-[28px] leading-[35px]">
+                  <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                     {currentLeague?.totalContributors
                       ? formatNumber(currentLeague.totalContributors, 0, 0)
                       : 0}
@@ -127,25 +127,25 @@ export default function InLeaguePage() {
           </div>
           <div className="btn inactive">
             <div className="btn-border"></div>
-            <div className="btn-inactive">Mining Together (Coming Soon)</div>
+            <div className="btn-inactive !px-3">Mining Together (Coming Soon)</div>
             <div className="btn-border"></div>
           </div>
-          <div className="grid grid-cols-4 gap-3 mt-8">
-            <div className="btn inactive size-[90px] mx-auto">
+          <div className="flex justify-between mt-8">
+            <div className="btn inactive size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
-                <IconClipboard className="size-8 mx-auto" />
-                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+              <div className="btn-inactive !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
                   Mission
                 </p>
               </div>
               <div className="btn-border"></div>
             </div>
-            <div className="btn inactive size-[90px] mx-auto">
+            <div className="btn inactive size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
               <div className="btn-border"></div>
-              <div className="btn-inactive !size-[80px] flex items-center justify-center flex-col !p-2">
-                <IconChat className="size-8" />
-                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+              <div className="btn-inactive !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
+                <IconChat className="size-6 xs:size-7 2xs:size-8" />
+                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
                   Chat
                 </p>
               </div>
@@ -155,15 +155,15 @@ export default function InLeaguePage() {
               text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
               onCopy={handleCopy}
             >
-              <div className="btn default size-[90px] mx-auto">
+              <div className="btn default size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
                 <div className="btn-border"></div>
-                <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
+                <div className="btn-default !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
                   <img
-                    className="size-8 mx-auto"
+                    className="size-6 xs:size-7 2xs:size-8 mx-auto"
                     src="/assets/images/icons/icon-copy-gradient.svg"
                     alt=""
                   />
-                  <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1">
+                  <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
                     Invite
                   </p>
                 </div>
@@ -172,16 +172,16 @@ export default function InLeaguePage() {
             </CopyToClipboard>
             <div
               onClick={onOpen}
-              className={`btn default size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
+              className={`btn default size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
             >
               <div className="btn-border"></div>
-              <div className="btn-default !size-[80px] flex items-center justify-center flex-col !p-2">
+              <div className="btn-default !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
                 {/* <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" /> */}
                 <IconLeave
-                  className={currentLeague?.isOwner ? 'text-inactive' : 'text-green-500'}
+                  className={`size-6 xs:size-7 2xs:size-8 ${currentLeague?.isOwner ? 'text-inactive' : 'text-green-500'}`}
                 />
                 <p
-                  className={`${currentLeague?.isOwner ? 'text-body' : 'text-gradient'}  capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-sm mt-1`}
+                  className={`${currentLeague?.isOwner ? 'text-body' : 'text-gradient'}  capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1`}
                 >
                   Leave
                 </p>
