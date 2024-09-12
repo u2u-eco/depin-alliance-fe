@@ -1,4 +1,5 @@
 import GlobalError from '@/app/global-error'
+import { IS_ONLY_SUPPORT_MOBILE } from '@/constants'
 import { ITelegramUser, IWebApp } from '@/interfaces/i.telegram'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
@@ -33,7 +34,7 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
         }
       : {}
   }, [webApp])
-  const disableDevice = ['desktop', 'web', 'macos']
+  const disableDevice = IS_ONLY_SUPPORT_MOBILE ? ['desktop', 'web', 'macos'] : []
   // const disableDevice: any = []
   if (disableDevice.some((key: any) => webApp?.platform.toLowerCase().includes(key))) {
     console.error('Telegram Desktop is not supported.')

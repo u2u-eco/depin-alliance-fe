@@ -12,15 +12,15 @@ interface IJoinLeague {
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
   const [loadingButton, setLoadingButton] = useState(false)
   const handleJoin = async () => {
-    setLoadingButton(true)
-    if (loadingButton) return
     if (item?.code) {
+      setLoadingButton(true)
+      if (loadingButton) return
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
         joinCb()
         onClose()
-        setLoadingButton(false)
       }
+      setLoadingButton(false)
     }
   }
   return (

@@ -68,19 +68,23 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   const buy = async () => {
     setLoadingButton(true)
     if (loadingButton) return
-    if (currentItem?.current?.code) {
-      const data: IDeviceItemBuyParam = {
-        number: amount,
-        code: currentItem?.current?.code || ''
-      }
-      const res: any = await buyDeviceItem(data)
-      if (res.status) {
-        toast.success('Buy successfully!')
-        setAmount(1)
-        getUserInfo()
-        onClose()
+    try {
+      if (currentItem?.current?.code) {
+        const data: IDeviceItemBuyParam = {
+          number: amount,
+          code: currentItem?.current?.code || ''
+        }
+        const res: any = await buyDeviceItem(data)
+        if (res.status) {
+          toast.success('Buy successfully!')
+          setAmount(1)
+          getUserInfo()
+          onClose()
+        }
         setLoadingButton(false)
       }
+    } catch (ex) {
+      setLoadingButton(false)
     }
   }
 
@@ -200,7 +204,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
             <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
             <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between space-x-4 px-5 xs:px-6 2xs:px-8">
               <div className="space-y-2 xs:space-y-3">
-                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">TOTAL PROFIT:</div>
+                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">
+                  TOTAL PROFIT:
+                </div>
                 <div className="flex items-center space-x-1.5 xs:space-x-2">
                   <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                   <span className="text-green-500 text-[15px] xs:text-base 2xs:text-lg font-semibold">
@@ -211,7 +217,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                 </div>
               </div>
               <div className="space-y-2 xs:space-y-3">
-                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">AMOUNT:</div>
+                <div className="font-mona text-title text-[13px] xs:text-sm uppercase tracking-[-1px]">
+                  AMOUNT:
+                </div>
                 <div className="flex items-center space-x-3 xs:space-x-4 2xs:space-x-5">
                   <div
                     className="cursor-pointer"
@@ -221,7 +229,9 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                   >
                     <IconMinusCircle className="text-green-500 size-5 xs:size-6" />
                   </div>
-                  <span className="text-green-100 text-center text-[15px] xs:text-base 2xs:text-lg font-semibold min-w-[22px]">{amount}</span>
+                  <span className="text-green-100 text-center text-[15px] xs:text-base 2xs:text-lg font-semibold min-w-[22px]">
+                    {amount}
+                  </span>
                   <div
                     className="cursor-pointer"
                     onClick={() => {
