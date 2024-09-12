@@ -99,8 +99,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       refetch && refetch()
       getUserInfo()
       onClose()
-      setLoadingButton(false)
     }
+    setLoadingButton(false)
   }
 
   const handleMission = () => {
