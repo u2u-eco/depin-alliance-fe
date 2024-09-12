@@ -115,10 +115,10 @@ export default function RankingPage() {
             titleItemKey={'username'}
             imageItemKey={'avatar'}
           /> */}
-          <div className="flex flex-col space-y-4">
+          <div className={`flex flex-col space-y-4 ${listRanking?.currentRank > listRanking?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}>
             {listRanking?.ranking?.map((item: any, index: number) => (
               <div
-                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.currentRank > 3 && (listRanking?.currentRank === index + 1 || listRanking.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)}`}
+                className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${listRanking?.currentRank > 3 && (listRanking?.currentRank === index + 1 || listRanking.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)} ${(listRanking?.currentRank > listRanking?.ranking?.length && listRanking.currentRank === item.rank) ? '!fixed bottom-0 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto' : ''}`}
                 key={index}
               >
                 <div
