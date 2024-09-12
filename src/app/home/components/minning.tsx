@@ -31,11 +31,14 @@ export default function Mining() {
       const remainingTimeBySecond = userInfo.pointUnClaimed
         ? (userInfo.maximumPower - userInfo.pointUnClaimed) / miningPowerPerSecond
         : userInfo.maximumPower / miningPowerPerSecond
-      const timeEnd = dayjs(userInfo.timeStartMining * 1000)
-        .add(remainingTimeBySecond, 'second')
-        .valueOf()
+      // const timeEnd = dayjs(userInfo.timeStartMining * 1000)
+      //   .add(remainingTimeBySecond, 'second')
+      //   .valueOf()
 
-      const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
+      // const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
+      const timeEnd = Math.floor((userInfo.timeStartMining + remainingTimeBySecond) * 1000)
+
+      const timeMining = userInfo.currentTime - userInfo.timeStartMining
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
       setMiningCount(currentPoint)
       workerRef.current?.postMessage(

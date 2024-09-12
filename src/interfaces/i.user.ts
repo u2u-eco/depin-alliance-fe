@@ -67,6 +67,7 @@ export type IUserInfo = {
   devicePlatform: string
   pointBonus: number
   isPremium: boolean
+  currentTime: number
 }
 
 export enum CURRENT_STATUS {
