@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react'
 import CustomPage from '../components/custom-page'
-import { IconCheck, IconChevron, IconLock, IconPoint } from '../components/icons'
+import { IconCheck, IconChevron, IconHome, IconLock, IconPoint } from '../components/icons'
 import { useRouter } from 'next/navigation'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
 import { IUserInfo } from '@/interfaces/i.user'
+import Link from 'next/link'
 
 const listLevel = [
   {
@@ -51,17 +52,22 @@ export default function LevelPage() {
         }}
       >
         <div className="space-y-10">
-          <div className="relative flex items-center justify-center space-x-4">
-            <div
-              className="absolute top-[50%] left-0 translate-y-[-50%] cursor-pointer rotate-90"
-              onClick={handleBack}
-            >
-              <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
-            </div>
-            <div className="size-1.5 bg-green-800"></div>
-            <div className="text-title font-airnt font-medium text-xl xs:text-2xl">LEVEL</div>
-            <div className="size-1.5 bg-green-800"></div>
-          </div>
+        <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
+        <div
+          className="cursor-pointer rotate-90"
+          onClick={handleBack}
+        >
+          <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
+        </div>
+        <div className="flex items-center space-x-3 xs:space-x-4">
+          <div className="size-1.5 bg-green-800"></div>
+          <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">LEVEL</div>
+          <div className="size-1.5 bg-green-800"></div>
+        </div>
+        <Link href="/home">
+          <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+        </Link>
+      </div>
           <div className="space-y-8">
             {listLevel.map((item: any) => (
               <div className="space-y-4" key={item.id}>

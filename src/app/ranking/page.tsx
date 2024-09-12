@@ -10,8 +10,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { formatNumber } from '@/helper/common'
 import dayjs from 'dayjs'
-import { IconChevron } from '../components/icons'
+import { IconChevron, IconHome } from '../components/icons'
 import useCommonStore from '@/stores/commonStore'
+import Link from 'next/link'
 
 export default function RankingPage() {
   const router = useRouter()
@@ -64,16 +65,21 @@ export default function RankingPage() {
           "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
       }}
     >
-      <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-center space-x-4 z-10 py-3 backdrop-blur-[8px]">
+      <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
         <div
-          className="absolute top-[50%] left-2.5 translate-y-[-50%] cursor-pointer rotate-90"
+          className="cursor-pointer rotate-90"
           onClick={handleBack}
         >
-          <IconChevron className="text-green-500" />
+          <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
         </div>
-        <div className="size-1.5 bg-green-800"></div>
-        <div className="text-title font-airnt font-medium text-xl xs:text-2xl">RANKING</div>
-        <div className="size-1.5 bg-green-800"></div>
+        <div className="flex items-center space-x-3 xs:space-x-4">
+          <div className="size-1.5 bg-green-800"></div>
+          <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">RANKING</div>
+          <div className="size-1.5 bg-green-800"></div>
+        </div>
+        <Link href="/home">
+          <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+        </Link>
       </div>
       <div className="mt-4">
         <div className="btn default cursor-default font-geist">

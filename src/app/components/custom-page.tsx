@@ -20,7 +20,8 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/profile' &&
     pathName !== '/level' &&
     pathName !== '/mission/partners' &&
-    pathName !== '/workspace'
+    pathName !== '/workspace' &&
+    pathName !== '/ranking'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
