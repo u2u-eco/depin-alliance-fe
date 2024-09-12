@@ -31,7 +31,7 @@ export default function Layout({ children }: any) {
   }, [])
   const queryClient = new QueryClient()
   return (
-    <div className="wrapper h-full">
+    <>
       <Toaster
         position="top-center"
         theme="dark"
@@ -52,12 +52,11 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
-            <div className=" absolute z-10">{listHeight.toString()}</div>
             {children}
             {/* {pathName !== '/' && <CustomNavbar />} */}
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
-    </div>
+    </>
   )
 }
