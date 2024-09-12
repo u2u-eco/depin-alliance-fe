@@ -115,12 +115,16 @@ export default function Item() {
   const handleSell = async () => {
     setLoadingButton(true)
     if (loadingButton) return
-    const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
-    if (res.status) {
-      toast.success('Sell item successfully!')
-      refetch && refetch()
-      getUserInfo()
-      onClose()
+    try {
+      const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
+      if (res.status) {
+        toast.success('Sell item successfully!')
+        refetch && refetch()
+        getUserInfo()
+        onClose()
+      }
+      setLoadingButton(false)
+    } catch (ex) {
       setLoadingButton(false)
     }
   }
