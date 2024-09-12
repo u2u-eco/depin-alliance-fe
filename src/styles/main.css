@@ -790,6 +790,11 @@
   --gradient: linear-gradient(to right, #00ff90, #f4fd36);
 }
 
+html {
+  background: var(--body-background);
+  height: 100%;
+}
+
 body {
   font-family: theme("fontFamily.geist");
   font-size: 14px;
@@ -798,15 +803,7 @@ body {
   color: theme("colors.gray.400");
   background: var(--body-background);
   min-height: 100vh;
-}
-
-html,
-body,
-#root {
-  width: 100%;
   height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
 }
 
 #root {
