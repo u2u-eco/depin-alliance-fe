@@ -104,7 +104,7 @@ export default function SettingPage() {
                           <div className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-3 bg-gradient transition-all opacity-0 ${activeSound ? 'opacity-100' : ''}`}></div>
                         </div>
                       ) : (
-                        <img className="size-9" src={`/assets/images/icons/icon-${item.icon}-green.svg`} alt="" />
+                        <img className="size-9" src={`/assets/images/icons/icon-${item.icon}-green.svg`} alt="DePIN Alliance" />
                       )}
                     </div>
                   </div>

@@ -145,27 +145,25 @@ export default function ListMission({ listMission, refetch }: IListMission) {
             <p>Complete the following task:</p>
             <p className="text-gradient">“{currentItem.current?.name}”</p>
           </div>
-          <div className="my-8 space-x-4 flex items-center justify-center">
-            <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[90px] flex items-center justify-center">
-              <Image
-                // className="size-10"
-                width={40}
-                height={40}
+          <div className="my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
+            <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[80px] xs:size-[85px] 2xs:size-[90px] min-w-[80px] xs:min-w-[85px] 2xs:min-w-[90px] flex items-center justify-center">
+              <img
+                className="size-8 xs:size-9 2xs:size-10"
                 src={
                   currentItem.current?.image
                     ? currentItem.current?.image
                     : `/assets/images/icons/icon-mission-gradient.svg`
                 }
-                alt=""
+                alt="DePIN Alliance"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1.5 xs:space-y-2">
               <p className=" text-title font-semibold">REWARD:</p>
-              <div className="flex items-center">
+              <div className="flex items-center flex-wrap space-x-1.5 xs:space-x-2">
                 {currentItem.current?.point ? (
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1.5 xs:space-x-2">
                     <Image
-                      className="size-6"
+                      className="size-4 xs:size-5 2xs:size-6"
                       width={24}
                       height={24}
                       src="/assets/images/point@2x.png"
@@ -179,11 +177,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                 {currentItem.current?.box > 0 && (
                   <>
                     {currentItem.current?.point ? (
-                      <div className="w-[1px] h-[20px] mx-2 bg-white/25"></div>
+                      <div className="w-[1px] h-[20px] bg-white/25"></div>
                     ) : null}
                     <div className="flex items-center space-x-1">
                       <Image
-                        className="size-8"
+                        className="size-6 xs:size-7 2xs:size-8"
                         width={30}
                         height={30}
                         src="/assets/images/item-special@2x.png"
@@ -196,7 +194,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                 {currentItem.current?.xp > 0 && (
                   <>
                     {currentItem.current?.point || currentItem.current?.box ? (
-                      <div className="w-[1px] h-[20px] mx-2 bg-white/25"></div>
+                      <div className="w-[1px] h-[20px] bg-white/25"></div>
                     ) : null}
                     <div className="flex items-center space-x-1">
                       <p className="text-primary font-geist font-semibold">{`${formatNumber(currentItem.current.xp, 0, 0)} XP`}</p>
