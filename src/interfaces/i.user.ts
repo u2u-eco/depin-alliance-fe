@@ -96,3 +96,14 @@ export interface ISkillItem {
   maxLevel: number
   timeWaiting: number
 }
+
+export interface IUserLevel {
+  level: number
+  lock: boolean
+  maxDevice: number
+  xp: number
+  maximumPower: number
+  xpLevelFrom: number
+  xpLevelTo: number
+  pointSkill: number
+}
