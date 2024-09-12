@@ -790,8 +790,7 @@
   --gradient: linear-gradient(to right, #00ff90, #f4fd36);
 }
 
-html,
-#root {
+html {
   background-color: var(--body-background) !important;
   height: 100%;
   overflow: hidden;
@@ -803,6 +802,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: theme("colors.gray.400");
+  background-color: var(--body-background) !important;
   min-height: 100vh;
   height: 100%;
   overflow: hidden;
