@@ -37,7 +37,7 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
   // const disableDevice: any = []
   if (disableDevice.some((key: any) => webApp?.platform.toLowerCase().includes(key))) {
     console.error('Telegram Desktop is not supported.')
-    return <GlobalError title={'@DepinAllianceBot'} />
+    return <GlobalError title={'@DePIN_Alliance_Bot'} />
   }
 
   return <TelegramContextValue.Provider value={value}>{children}</TelegramContextValue.Provider>

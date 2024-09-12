@@ -105,6 +105,7 @@ const config = {
         'blue': '0 0 16px rgba(0, 163, 255, 0.3)',
         'purple': '0 0 16px rgba(186, 58, 255, 0.3)',
         'orange': '0 0 16px rgba(255, 168, 0, 0.3)',
+        'yellow': '0 0 16px rgba(146, 152, 32, 0.5)',
       }
     },
   },

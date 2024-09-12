@@ -31,11 +31,14 @@ export default function Mining() {
       const remainingTimeBySecond = userInfo.pointUnClaimed
         ? (userInfo.maximumPower - userInfo.pointUnClaimed) / miningPowerPerSecond
         : userInfo.maximumPower / miningPowerPerSecond
-      const timeEnd = dayjs(userInfo.timeStartMining * 1000)
-        .add(remainingTimeBySecond, 'second')
-        .valueOf()
+      // const timeEnd = dayjs(userInfo.timeStartMining * 1000)
+      //   .add(remainingTimeBySecond, 'second')
+      //   .valueOf()
 
-      const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
+      // const timeMining = dayjs().diff(dayjs(userInfo.timeStartMining * 1000), 'seconds', true)
+      const timeEnd = Math.floor((userInfo.timeStartMining + remainingTimeBySecond) * 1000)
+
+      const timeMining = userInfo.currentTime - userInfo.timeStartMining
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
       setMiningCount(currentPoint)
       workerRef.current?.postMessage(
@@ -182,18 +185,16 @@ export default function Mining() {
                 </p>
               </div>
             </div>
-              {timeCountdown.length === 0 ? null : (
-                <div className="min-h-6 xs:min-h-[28px] flex items-center text-sm xs:text-[15px] 2xs:text-base font-geist font-semibold text-green-900">
-                  {timeCountdown.map((item: any, index) => (
-                    <React.Fragment key={index}>
-                      <p className="px-[3px] flex items-center justify-center bg-black/15">
-                        {item}
-                      </p>
-                      {index === timeCountdown.length - 1 ? null : <span>:</span>}
-                    </React.Fragment>
-                  ))}
-                </div>
-              )}
+            {timeCountdown.length === 0 ? null : (
+              <div className="min-h-6 xs:min-h-[28px] flex items-center text-sm xs:text-[15px] 2xs:text-base font-geist font-semibold text-green-900">
+                {timeCountdown.map((item: any, index) => (
+                  <React.Fragment key={index}>
+                    <p className="px-[3px] flex items-center justify-center bg-black/15">{item}</p>
+                    {index === timeCountdown.length - 1 ? null : <span>:</span>}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div
@@ -217,7 +218,7 @@ export default function Mining() {
         onOpen={onOpen}
         onOpenChange={onOpenChange}
         onCloseModal={onClose}
-        title="BONUS rewarRD"
+        title="BONUS rewarD"
         point={formatNumber(bonusReward, 0, 0)}
         text={
           <>
