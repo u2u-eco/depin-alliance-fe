@@ -134,7 +134,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setTimeout(() => {
         setCheckMission(true)
         setLoadingButton(false)
-      }, 500)
+      }, 2000)
     }
   }
 
