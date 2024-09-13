@@ -67,6 +67,7 @@ const config = {
         'white-50': '#ffffff80',
         'success': '#00FF90',
         'error': '#E53935',
+        'error-blur': '#E44A47',
         'inactive': '#666666',
         'body': '#9D9FAF',
         'title': '#F4F5F7',
@@ -105,6 +106,7 @@ const config = {
         'blue': '0 0 16px rgba(0, 163, 255, 0.3)',
         'purple': '0 0 16px rgba(186, 58, 255, 0.3)',
         'orange': '0 0 16px rgba(255, 168, 0, 0.3)',
+        'yellow': '0 0 16px rgba(146, 152, 32, 0.5)',
       }
     },
   },
