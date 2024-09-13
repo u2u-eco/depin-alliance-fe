@@ -53,7 +53,7 @@ export default function DailyCheckIn() {
   }
   return (
     <>
-      {listDaily?.data.length > 0 ? (
+      {listDaily?.data?.length > 0 ? (
         <>
           <div className="font-geist text-[15px] xs:text-base tracking-[-1px] leading-[20px] text-white-50 mt-8">
             DAILY CHECK-IN
@@ -75,7 +75,7 @@ export default function DailyCheckIn() {
                     {item.name}
                   </p>
                   <div className="flex items-center space-x-1">
-                    <IconPoint className="size-4 2xs:size-5"/>
+                    <IconPoint className="size-4 2xs:size-5" />
                     <p className="text-green-500 text-[13px] 2xs:text-sm">
                       {formatNumber(item.point, 0, 0)}
                     </p>
@@ -106,7 +106,9 @@ export default function DailyCheckIn() {
               />
             </div>
             <div className="space-y-1.5 xs:space-y-2">
-              <p className=" text-title font-semibold text-[13px] xs:text-sm !leading-[18px]">REWARD:</p>
+              <p className=" text-title font-semibold text-[13px] xs:text-sm !leading-[18px]">
+                REWARD:
+              </p>
               <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 text-[13px] xs:text-sm !leading-[18px]">
                 <div className="flex items-center space-x-1 xs:space-x-2">
                   <img
@@ -116,7 +118,9 @@ export default function DailyCheckIn() {
                     alt="Point"
                   />
                   <p className="text-green-500">
-                    {currentItem.current?.point ? formatNumber(currentItem.current?.point, 0, 0) : 0}
+                    {currentItem.current?.point
+                      ? formatNumber(currentItem.current?.point, 0, 0)
+                      : 0}
                   </p>
                 </div>
                 <div className="w-[1px] h-5 bg-white/25"></div>

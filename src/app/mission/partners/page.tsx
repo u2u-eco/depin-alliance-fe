@@ -1,7 +1,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconPoint } from '@/app/components/icons'
+import { IconChevron, IconGroupUser, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
@@ -30,7 +30,7 @@ export default function PartnersPage() {
     }
   }
   const handleBack = () => {
-    router.back()
+    router.push('/mission?tab=partners')
   }
 
   useEffect(() => {
@@ -94,10 +94,10 @@ export default function PartnersPage() {
                   <div className="flex-1 space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">PARTICIPANTS</p>
                     <div className="flex items-center justify-center space-x-1 font-geist">
-                      <IconPoint className="size-4" />
+                      <IconGroupUser className="size-4" />
                       <p className="text-title text-sm normal-case leading-[16px]">
                         {currentMission?.participants
-                          ? formatNumber(currentMission.participants)
+                          ? formatNumber(currentMission.participants, 0, 0)
                           : 0}
                       </p>
                     </div>
