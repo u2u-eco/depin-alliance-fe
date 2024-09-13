@@ -1,3 +1,4 @@
+import CustomButton from '@/app/components/button'
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
 import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
@@ -134,7 +135,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setTimeout(() => {
         setCheckMission(true)
         setLoadingButton(false)
-      }, 2000)
+      }, 1000)
     }
   }
 
@@ -219,14 +220,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               </div>
             </div>
           </div>
-          <div className="btn" onClick={handleMission}>
-            <div className="btn-border"></div>
-            <div className="btn-primary">
-              {' '}
-              {isVerified ? 'Claim Now' : isCheckMission ? 'CHECK MISSION' : 'START MISSION'}{' '}
-            </div>
-            <div className="btn-border"></div>
-          </div>
+          <CustomButton
+            isLoading={loadingButton}
+            title={isVerified ? 'Claim Now' : isCheckMission ? 'CHECK MISSION' : 'START MISSION'}
+            onAction={handleMission}
+          />
         </div>
       </CustomModal>
       <CustomModal
