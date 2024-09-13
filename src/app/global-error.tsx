@@ -24,6 +24,7 @@ export default function GlobalError({
           alt="DePIN Alliance"
         />
         <h2>{title}</h2>
+        {error ? <p className="text-lg">{error.message}</p> : null}
         {/* <button onClick={() => reset()}>Try again</button> */}
       </body>
     </html>

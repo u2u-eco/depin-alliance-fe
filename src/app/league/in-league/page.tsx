@@ -95,7 +95,9 @@ export default function InLeaguePage() {
             <img src="/assets/images/league/in-league-frame.svg" alt="" />
             <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
               <div className="space-y-1 xs:space-y-2">
-                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">TOTAL MINING</div>
+                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
+                  TOTAL MINING
+                </div>
                 <div className="flex items-center space-x-2">
                   <img
                     className="size-6 xs:size-7 2xs:size-8"
@@ -109,7 +111,9 @@ export default function InLeaguePage() {
                 </div>
               </div>
               <div className="space-y-1 xs:space-y-2">
-                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">CONTRIBUTORS</div>
+                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
+                  CONTRIBUTORS
+                </div>
                 <div className="flex items-center space-x-2">
                   <img
                     className="size-6 xs:size-7 2xs:size-8"

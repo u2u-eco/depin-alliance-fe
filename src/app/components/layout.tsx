@@ -12,7 +12,7 @@ export default function Layout({ children }: any) {
 
   const queryClient = new QueryClient()
   return (
-    <div className="wrapper min-h-[100vh]">
+    <>
       <Toaster
         position="top-center"
         theme="dark"
@@ -38,6 +38,6 @@ export default function Layout({ children }: any) {
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
-    </div>
+    </>
   )
 }

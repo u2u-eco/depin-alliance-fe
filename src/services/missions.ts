@@ -1,4 +1,5 @@
 import https from '@/constants/https'
+import { IMissionQuiz, IQuizItem } from '@/interfaces/i.missions'
 
 export const getDailyCheckIn = () => {
   return https.get('/missions/daily-checkin')
@@ -22,4 +23,8 @@ export const verifyMission = (id: number) => {
 
 export const claimTask = (id: number) => {
   return https.get(`/missions/claim-task/${id}`)
+}
+
+export const verifyMissionQuiz = (id: number, data: IQuizItem[]) => {
+  return https.post(`/missions/verify-task/${id}`, data)
 }

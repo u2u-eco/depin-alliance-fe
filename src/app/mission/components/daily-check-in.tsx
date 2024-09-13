@@ -53,14 +53,14 @@ export default function DailyCheckIn() {
   }
   return (
     <>
-      {listDaily?.data.length > 0 ? (
+      {listDaily?.data?.length > 0 ? (
         <>
           <div className="font-geist text-[15px] xs:text-base tracking-[-1px] leading-[20px] text-white-50 mt-8">
             DAILY CHECK-IN
           </div>
 
           <div className="grid grid-cols-3 xs:grid-cols-4 gap-1.5 2xs:gap-2">
-            {listDaily?.data.map((item: IMissionItem, index: number) => (
+            {listDaily?.data?.map((item: IMissionItem, index: number) => (
               <div
                 onClick={() => handleClick(item)}
                 key={index}
@@ -75,7 +75,7 @@ export default function DailyCheckIn() {
                     {item.name}
                   </p>
                   <div className="flex items-center space-x-1">
-                    <IconPoint className="size-4 2xs:size-5"/>
+                    <IconPoint className="size-4 2xs:size-5" />
                     <p className="text-green-500 text-[13px] 2xs:text-sm">
                       {formatNumber(item.point, 0, 0)}
                     </p>
@@ -97,25 +97,35 @@ export default function DailyCheckIn() {
             <p>Complete the following task:</p>
             <p className="text-gradient">“{currentItem.current?.name}”</p>
           </div>
-          <div className="my-8 space-x-4 flex items-center justify-center">
-            <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[90px] flex items-center justify-center">
+          <div className="my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
+            <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[80px] xs:size-[85px] 2xs:size-[90px] min-w-[80px] xs:min-w-[85px] 2xs:min-w-[90px] flex items-center justify-center">
               <img
-                className="size-10"
+                className="size-8 xs:size-9 2xs:size-10"
                 src="/assets/images/icons/icon-calendar-gradient.svg"
-                alt=""
+                alt="DePIN Alliance"
               />
             </div>
-            <div className="space-y-2">
-              <p className=" text-title font-semibold">REWARD:</p>
-              <div className="flex items-center space-x-2">
-                <img
-                  className="size-6"
-                  src="/assets/images/point.png"
-                  srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                  alt="Point"
-                />
+            <div className="space-y-1.5 xs:space-y-2">
+              <p className=" text-title font-semibold text-[13px] xs:text-sm !leading-[18px]">
+                REWARD:
+              </p>
+              <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 text-[13px] xs:text-sm !leading-[18px]">
+                <div className="flex items-center space-x-1 xs:space-x-2">
+                  <img
+                    className="size-4 xs:size-5 2xs:size-6"
+                    src="/assets/images/point.png"
+                    srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                    alt="Point"
+                  />
+                  <p className="text-green-500">
+                    {currentItem.current?.point
+                      ? formatNumber(currentItem.current?.point, 0, 0)
+                      : 0}
+                  </p>
+                </div>
+                <div className="w-[1px] h-5 bg-white/25"></div>
                 <p className="text-green-500">
-                  {currentItem.current?.point ? formatNumber(currentItem.current?.point, 0, 0) : 0}
+                  {currentItem.current?.xp ? formatNumber(currentItem.current?.xp, 0, 0) : 0} XP
                 </p>
               </div>
             </div>
@@ -133,7 +143,6 @@ export default function DailyCheckIn() {
                 />
               )}
             </div>
-
             <div className="btn-border"></div>
           </div>
         </div>

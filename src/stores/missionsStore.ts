@@ -1,13 +1,17 @@
 import { create } from 'zustand'
-import { IMissionPartner } from '@/interfaces/i.missions'
+import { IMissionPartner, IMissionQuiz } from '@/interfaces/i.missions'
 interface IMissionsState {
   currentMission: IMissionPartner | null
+  currentMissionQuiz: IMissionQuiz | null
   setCurrentMission: (item: IMissionPartner) => void
+  setCurrentMissionQuiz: (item: IMissionQuiz) => void
 }
 
 const useMissionStore = create<IMissionsState>((set) => ({
   currentMission: null,
-  setCurrentMission: (item) => set({ currentMission: item })
+  currentMissionQuiz: null,
+  setCurrentMission: (item) => set({ currentMission: item }),
+  setCurrentMissionQuiz: (item) => set({ currentMissionQuiz: item })
 }))
 
 export default useMissionStore
