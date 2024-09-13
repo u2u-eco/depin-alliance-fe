@@ -11,7 +11,6 @@ import useMissionStore from '@/stores/missionsStore'
 import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
 import { IQuizAnswerItem, IQuizItem } from '@/interfaces/i.missions'
-import Loader from '@/app/components/ui/loader'
 import CustomButton from '@/app/components/button'
 import { verifyMissionQuiz } from '@/services/missions'
 import { toast } from 'sonner'
@@ -47,8 +46,6 @@ export default function QuizPage() {
   }
 
   const sendQuiz = async () => {
-    console.log('🚀 ~ sendQuiz ~ currentMissionQuiz:', currentMissionQuiz)
-
     if (currentMissionQuiz?.id) {
       const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
       if (res.status) {
@@ -82,11 +79,6 @@ export default function QuizPage() {
       })
       setErrorById(_errorById)
       setIsChecking(true)
-      console.log(
-        '🚀 ~ setTimeout ~ Object.keys(_errorById)?.length:',
-        Object.keys(_errorById)?.length
-      )
-
       if (Object.keys(_errorById)?.length === 0) {
         sendQuiz()
       } else {
