@@ -18,8 +18,10 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
     // @ts-ignore
     const app = (window as unknown).Telegram?.WebApp
     if (app && !webApp) {
-      app.setBackgroundColor('#0f0f0f')
-      app.setHeaderColor('#0f0f0f')
+      try {
+        app.setBackgroundColor('#0f0f0f')
+        app.setHeaderColor('#0f0f0f')
+      } catch (ex) {}
       app.ready()
       app.expand()
       setWebApp(app)
