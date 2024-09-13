@@ -32,6 +32,7 @@ export interface IQuizAnswerItem {
 export interface IQuizItem {
   answers: Array<IQuizAnswerItem>
   index: number
+  isMultiple: boolean
   question: string
 }
 
