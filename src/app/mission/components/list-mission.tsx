@@ -116,21 +116,25 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     if (isCheckMission) {
       handleVerifyMission(currentItem.current.id)
     } else {
-      setCheckMission(true)
-      console.log(currentItem.current.type)
+      setLoadingButton(true)
       switch (currentItem.current.type) {
         case 'SHARE_STORY':
           handleShare()
           break
         case 'QUIZ':
-          setCurrentMissionQuiz(currentItem.current)
           router.push('/mission/quiz')
+          setCurrentMissionQuiz(currentItem.current)
+
         default:
           if (currentItem.current.url) {
             window.open(currentItem.current.url, '_blank')
           }
           break
       }
+      setTimeout(() => {
+        setCheckMission(true)
+        setLoadingButton(false)
+      }, 500)
     }
   }
 

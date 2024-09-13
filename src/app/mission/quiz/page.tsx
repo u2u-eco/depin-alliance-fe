@@ -11,9 +11,8 @@ import useMissionStore from '@/stores/missionsStore'
 import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
 import { IQuizAnswerItem, IQuizItem } from '@/interfaces/i.missions'
-import Loader from '@/app/components/ui/loader'
 import CustomButton from '@/app/components/button'
-import { verifyMissionQuiz } from '@/services/missions'
+import { claimTask, verifyMissionQuiz } from '@/services/missions'
 import { toast } from 'sonner'
 
 export default function QuizPage() {
@@ -24,6 +23,7 @@ export default function QuizPage() {
   const { currentMissionQuiz } = useMissionStore()
   const [isSelecting, setSelecting] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isVerified, setIsVerified] = useState<boolean>(false)
 
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
 
@@ -31,11 +31,16 @@ export default function QuizPage() {
     router.back()
   }
 
-  const handleSelectAnswer = (item: IQuizAnswerItem, id: number) => {
+  const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
     setSelecting(true)
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {
+      if (!isMultiple) {
+        _listChecked.current = _listChecked.current.filter((_id: string) => {
+          return !_id.startsWith(id.toString())
+        })
+      }
       _listChecked.current.push(keyId)
     } else {
       _listChecked.current.splice(indexOf, 1)
@@ -47,21 +52,39 @@ export default function QuizPage() {
   }
 
   const sendQuiz = async () => {
-    console.log('🚀 ~ sendQuiz ~ currentMissionQuiz:', currentMissionQuiz)
-
     if (currentMissionQuiz?.id) {
       const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
       if (res.status) {
-        toast.success('Mission is completed')
-        router.push('/mission')
+        setIsVerified(true)
       }
       setIsLoading(false)
+    }
+  }
+
+  const handleClaim = async () => {
+    if (currentMissionQuiz?.id) {
+      setIsLoading(true)
+      try {
+        const res = await claimTask(currentMissionQuiz.id)
+        if (res.status) {
+          toast.success('Mission is completed')
+          router.push('/mission')
+        }
+        setIsLoading(false)
+      } catch (ex) {
+        setIsLoading(false)
+      }
     }
   }
 
   const handleCheck = () => {
     if (isLoading) return
     setIsLoading(true)
+    if (isVerified) {
+      handleClaim()
+      return
+    }
+    setIsVerified(false)
     setTimeout(() => {
       const _errorById: any = {}
       currentMissionQuiz?.quizArrays.forEach((item: IQuizItem) => {
@@ -82,11 +105,6 @@ export default function QuizPage() {
       })
       setErrorById(_errorById)
       setIsChecking(true)
-      console.log(
-        '🚀 ~ setTimeout ~ Object.keys(_errorById)?.length:',
-        Object.keys(_errorById)?.length
-      )
-
       if (Object.keys(_errorById)?.length === 0) {
         sendQuiz()
       } else {
@@ -194,7 +212,7 @@ export default function QuizPage() {
                           <div
                             className="flex items-center space-x-1.5 xs:space-x-2 cursor-pointer"
                             key={el.index}
-                            onClick={() => handleSelectAnswer(el, item.index)}
+                            onClick={() => handleSelectAnswer(el, item.index, item.isMultiple)}
                           >
                             <motion.div
                               whileTap={{ scale: 0.8 }}
@@ -223,7 +241,11 @@ export default function QuizPage() {
                   </div>
                 ))}
               </div>
-              <CustomButton title="CHECK ANSWER" isLoading={isLoading} onAction={handleCheck} />
+              <CustomButton
+                title={isVerified ? 'CLAIM NOW' : `CHECK ANSWER`}
+                isLoading={isLoading}
+                onAction={handleCheck}
+              />
             </div>
           </div>
         )}

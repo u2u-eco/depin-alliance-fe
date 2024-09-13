@@ -29,10 +29,15 @@ export default function LevelPage() {
           maxDevice: userConfig?.maxDevice || 0,
           maximumPower: userInfo.maximumPower,
           xpLevelFrom: userInfo.xpLevelFrom,
-          xpLevelTo: userInfo.xpLevelTo,
-          pointSkill: userInfo.pointSkill
+          xpLevelTo: userInfo.xpLevelTo - 1,
+          pointSkill: userInfo.pointSkill,
+          lock: false
         },
-        ...(listNextLevel?.data ? listNextLevel.data : [])
+        ...(listNextLevel?.data
+          ? listNextLevel.data.map((item: IUserLevel) => {
+              return { ...item, lock: true, xpLevelTo: item.xpLevelTo - 1 }
+            })
+          : [])
       ]
     : listNextLevel?.data || []
 
@@ -77,7 +82,7 @@ export default function LevelPage() {
               <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
             </Link>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-6 xs:space-y-7 2xs:space-y-8">
             {listLevel?.map((item: IUserLevel, index: number) => (
               <div className="space-y-4" key={index}>
                 <div
@@ -120,46 +125,59 @@ export default function LevelPage() {
                 </div>
                 <div className="btn default cursor-default">
                   <div className="btn-border"></div>
-                  <div className="btn-default !p-4">
-                    {item.lock ? (
-                      <div className="min-h-[130px] flex items-center justify-center flex-col space-y-2 text-inactive">
-                        <IconLock className="size-[30px]" />
-                        <p className="tracking-[-1px] font-normal text-sm normal-case">
-                          Level up to unlock
+                  <div className="btn-default !p-4 relative">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className={`text-body uppercase ${item.lock ? '!text-inactive' : ''}`}>
+                          CAPACITY
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <IconPoint className="size-4" />
+                          <p
+                            className={`text-green-500 font-geist ${item.lock ? '!text-inactive' : ''}`}
+                          >
+                            {item?.maximumPower ? formatNumber(item?.maximumPower, 0, 0) : 0}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-[1px] w-full bg-white/10"></div>
+                      <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className={`text-body uppercase ${item.lock ? '!text-inactive' : ''}`}>
+                          MAXIMUM SLOT DEVICE
+                        </div>
+                        <p className={`text-title ${item.lock ? '!text-inactive' : ''}`}>
+                          {item?.maxDevice}
                         </p>
                       </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
-                          <div className="text-body uppercase">CAPACITY</div>
-                          <div className="flex items-center space-x-1">
-                            <IconPoint className="size-4" />
-                            <p className="text-green-500 font-geist">
-                              {item?.maximumPower ? formatNumber(item?.maximumPower, 0, 0) : 0}
+                      {item.pointSkill !== undefined && (
+                        <>
+                          <div className="h-[1px] w-full bg-white/10"></div>
+
+                          <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                            <div
+                              className={`text-body uppercase ${item.lock ? '!text-inactive' : ''}`}
+                            >
+                              TOTAL SKILL POINT
+                            </div>
+                            <p className={`text-title ${item.lock ? '!text-inactive' : ''}`}>
+                              {item?.pointSkill}
                             </p>
                           </div>
-                        </div>
-                        <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
-                          <div className="text-body uppercase">MAXIMUM SLOT DEVICE</div>
-                          <p className="text-title">{item?.maxDevice}</p>
-                        </div>
-                        {item.pointSkill !== undefined && (
-                          <>
-                            <div className="h-[1px] w-full bg-white/10"></div>
+                        </>
+                      )}
 
-                            <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
-                              <div className="text-body uppercase">TOTAL SKILL POINT</div>
-                              <p className="text-title">{item?.pointSkill}</p>
-                            </div>
-                          </>
-                        )}
-
-                        {/* <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
-                          <div className="text-body uppercase">BONUS REWARD</div>
-                          <p className="text-title">15%</p>
-                        </div> */}
+                      {/* <div className="h-[1px] w-full bg-white/10"></div>
+                      <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                        <div className="text-body uppercase">BONUS REWARD</div>
+                        <p className="text-title">15%</p>
+                      </div> */}
+                    </div>
+                    {item.lock && (
+                      <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center flex-col space-y-2 text-inactive bg-black/50 backdrop-blur-[4px]">
+                        <IconLock className="size-[30px]" />
+                        {/* <p className="tracking-[-1px] font-normal text-sm normal-case">
+                          Level up to unlock
+                        </p> */}
                       </div>
                     )}
                   </div>
@@ -173,9 +191,9 @@ export default function LevelPage() {
                   </div>
                 )} */}
                 {index !== listLevel?.length - 1 && (
-                  <div className="!mt-8">
+                  <div className="!mt-6 xs:!mt-7 2xs:!mt-8">
                     <img
-                      className="mx-auto max-w-[85px]"
+                      className="mx-auto max-h-[65px] xs:max-h-[75px] 2xs:max-h-[85px]"
                       src={`/assets/images/level/level-arrow${item.lock ? '' : '-color'}.png`}
                       srcSet={`/assets/images/level/level-arrow${item.lock ? '' : '-color'}.png 1x, /assets/images/level/level-arrow${item.lock ? '' : '-color'}@2x.png 2x`}
                       alt=""
