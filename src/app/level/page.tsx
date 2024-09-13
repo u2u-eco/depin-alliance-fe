@@ -29,13 +29,13 @@ export default function LevelPage() {
           maxDevice: userConfig?.maxDevice || 0,
           maximumPower: userInfo.maximumPower,
           xpLevelFrom: userInfo.xpLevelFrom,
-          xpLevelTo: userInfo.xpLevelTo,
+          xpLevelTo: userInfo.xpLevelTo - 1,
           pointSkill: userInfo.pointSkill,
           lock: false
         },
         ...(listNextLevel?.data
           ? listNextLevel.data.map((item: IUserLevel) => {
-              return { ...item, lock: true }
+              return { ...item, lock: true, xpLevelTo: item.xpLevelTo - 1 }
             })
           : [])
       ]
