@@ -30,14 +30,9 @@ export default function LevelPage() {
           maximumPower: userInfo.maximumPower,
           xpLevelFrom: userInfo.xpLevelFrom,
           xpLevelTo: userInfo.xpLevelTo,
-          pointSkill: userInfo.pointSkill,
-          lock: false
+          pointSkill: userInfo.pointSkill
         },
-        ...(listNextLevel?.data
-          ? listNextLevel.data.map((item: IUserLevel) => {
-              return { ...item, lock: true, xp: 0 }
-            })
-          : [])
+        ...(listNextLevel?.data ? listNextLevel.data : [])
       ]
     : listNextLevel?.data || []
 
@@ -106,7 +101,7 @@ export default function LevelPage() {
                       <div className="space-y-3 flex-1">
                         <div className="flex items-center justify-between tracking-[-1px] leading-[18px]">
                           <div className={item.lock ? `text-inactive` : `text-title`}>
-                            {item?.xp} XP
+                            {item?.xpLevelFrom} XP
                           </div>
                           <div className={item.lock ? `text-inactive` : `text-body`}>
                             {item?.xpLevelTo} XP
@@ -148,11 +143,17 @@ export default function LevelPage() {
                           <div className="text-body uppercase">MAXIMUM SLOT DEVICE</div>
                           <p className="text-title">{item?.maxDevice}</p>
                         </div>
-                        <div className="h-[1px] w-full bg-white/10"></div>
-                        <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
-                          <div className="text-body uppercase">TOTAL SKILL POINT</div>
-                          <p className="text-title">{item?.pointSkill}</p>
-                        </div>
+                        {item.pointSkill !== undefined && (
+                          <>
+                            <div className="h-[1px] w-full bg-white/10"></div>
+
+                            <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
+                              <div className="text-body uppercase">TOTAL SKILL POINT</div>
+                              <p className="text-title">{item?.pointSkill}</p>
+                            </div>
+                          </>
+                        )}
+
                         {/* <div className="h-[1px] w-full bg-white/10"></div>
                         <div className="flex items-center justify-between font-semibold text-[13px] xs:text-sm leading-[16px]">
                           <div className="text-body uppercase">BONUS REWARD</div>
