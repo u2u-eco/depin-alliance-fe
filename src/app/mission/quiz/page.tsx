@@ -21,7 +21,6 @@ export default function QuizPage() {
   const [isChecking, setIsChecking] = useState<boolean>(false)
   const _listChecked = useRef<Array<string>>([])
   const { currentMissionQuiz } = useMissionStore()
-  const [isSelecting, setSelecting] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
 
@@ -32,7 +31,6 @@ export default function QuizPage() {
   }
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
-    setSelecting(true)
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {
@@ -48,7 +46,6 @@ export default function QuizPage() {
     setErrorById({ ...errorById, [id]: false })
     setChecked([..._listChecked.current])
     setIsChecking(false)
-    setSelecting(false)
   }
 
   const sendQuiz = async () => {
@@ -222,7 +219,7 @@ export default function QuizPage() {
                                 className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-[3px] transition-background ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'bg-white/10 !border-error-blur' : 'bg-white/10') : ''}`}
                               >
                                 <div
-                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 && !isSelecting ? (!el.correct && isChecking ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
+                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
                                 ></div>
                               </div>
                             </motion.div>
