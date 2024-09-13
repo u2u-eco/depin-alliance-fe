@@ -6,8 +6,10 @@ import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem } from '@/interfaces/i.missions'
 import { claimTask, verifyMission } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
+import useMissionStore from '@/stores/missionsStore'
 import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
+import { redirect, useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
 interface IListMission {
@@ -23,8 +25,10 @@ interface IListMission {
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
+  const router = useRouter()
   const { webApp } = useTelegram()
   const { getUserInfo, userInfo } = useCommonStore()
+  const { setCurrentMissionQuiz } = useMissionStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
   const {
@@ -113,12 +117,19 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       handleVerifyMission(currentItem.current.id)
     } else {
       setCheckMission(true)
-      if (currentItem.current.type === 'SHARE_STORY') {
-        handleShare()
-      } else {
-        if (currentItem.current.url) {
-          window.open(currentItem.current.url, '_blank')
-        }
+      console.log(currentItem.current.type)
+      switch (currentItem.current.type) {
+        case 'SHARE_STORY':
+          handleShare()
+          break
+        case 'QUIZ':
+          setCurrentMissionQuiz(currentItem.current)
+          router.push('/mission/quiz')
+        default:
+          if (currentItem.current.url) {
+            window.open(currentItem.current.url, '_blank')
+          }
+          break
       }
     }
   }

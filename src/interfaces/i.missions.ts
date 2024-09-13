@@ -24,3 +24,27 @@ export interface IMissionPartner {
   participants: number
   rewards: string
 }
+export interface IQuizAnswerItem {
+  correct: boolean
+  index: number
+  text: string
+}
+export interface IQuizItem {
+  answers: Array<IQuizAnswerItem>
+  index: number
+  question: string
+}
+
+export interface IMissionQuiz {
+  box: number
+  description: string
+  id: number
+  image: string
+  name: string
+  point: number
+  quizArrays: IQuizItem[]
+  status: null | string
+  type: string
+  url: string
+  xp: number
+}
