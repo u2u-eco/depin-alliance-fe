@@ -21,7 +21,8 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/level' &&
     pathName !== '/mission/partners' &&
     pathName !== '/workspace' &&
-    pathName !== '/ranking'
+    pathName !== '/ranking' &&
+    pathName !== '/mission/quiz'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -29,7 +30,8 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/workspace' &&
     pathName !== '/avatar' &&
     pathName !== '/profile' &&
-    pathName !== '/level'
+    pathName !== '/level' &&
+    pathName !== '/mission/quiz'
   return (
     <AnimatePresence mode="wait">
       <div className={cn('section', classNames?.wrapper)}>
