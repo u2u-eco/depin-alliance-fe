@@ -27,7 +27,7 @@ export default function QuizPage() {
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
 
   const handleBack = () => {
-    router.back()
+    router.push(`/mission?tab=rewards`)
   }
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
@@ -65,7 +65,7 @@ export default function QuizPage() {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
           toast.success('Mission is completed')
-          router.push('/mission')
+          handleBack()
         }
         setIsLoading(false)
       } catch (ex) {
@@ -112,7 +112,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     if (!currentMissionQuiz || !currentMissionQuiz.id) {
-      router.push('/mission')
+      handleBack()
     }
   }, [currentMissionQuiz])
 

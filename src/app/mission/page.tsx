@@ -6,6 +6,7 @@ import DailyCheckIn from './components/daily-check-in'
 import Missions from './components/missions'
 import { Tab, Tabs } from '@nextui-org/react'
 import ListPartner from './components/list-partner'
+import { useSearchParams } from 'next/navigation'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
@@ -13,7 +14,9 @@ const MISSION_TAB = {
 }
 
 export default function MissionPage() {
-  const [activeTab, setActiveTab] = useState(MISSION_TAB.REWARDS)
+  const query = useSearchParams()
+  const tab = query.get('tab')
+  const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.PARTNERS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
   const handleChangeTab = (tab: any) => {
@@ -57,6 +60,7 @@ export default function MissionPage() {
             tabContent:
               'group-data-[selected=true]:bg-gradient group-data-[selected=true]:[-webkit-background-clip:_text] group-data-[selected=true]:[-webkit-text-fill-color:_transparent] text-white/25 font-mona font-semibold text-[15px] xs:text-base uppercase'
           }}
+          defaultSelectedKey={activeTab}
           onSelectionChange={handleChangeTab}
         >
           <Tab key={MISSION_TAB.PARTNERS} title={`${MISSION_TAB.PARTNERS} (${partnerCount})`}></Tab>
