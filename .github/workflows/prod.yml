@@ -36,6 +36,8 @@ jobs:
         envkey_NEXT_PUBLIC_TELE_URI: ${{ vars.NEXT_PUBLIC_TELE_URI }}
         envkey_NEXT_PUBLIC_SHARE_URL: ${{ vars.NEXT_PUBLIC_SHARE_URL }}
         envkey_NEXT_PUBLIC_DEVICE_REGISTER: ${{ vars.NEXT_PUBLIC_DEVICE_REGISTER }}
+        envkey_NEXT_PUBLIC_ONLY_SUPPORT_MOBILE: ${{ vars.NEXT_PUBLIC_ONLY_SUPPORT_MOBILE }}
+        envkey_NEXT_PUBLIC_INIT_DATA: ${{ vars.NEXT_PUBLIC_INIT_DATA }}
         
 
         directory: .
