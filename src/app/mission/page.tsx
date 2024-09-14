@@ -17,7 +17,7 @@ const MISSION_TAB = {
 export default function MissionPage() {
   const query = useSearchParams()
   const tab = query.get('tab')
-  const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.PARTNERS)
+  const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.REWARDS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
   const [isShowTab, setIsShowTab] = useState<boolean>(false)
