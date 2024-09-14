@@ -59,7 +59,7 @@ export default function PartnersPage() {
                   height={0}
                   sizes="100vw"
                   className="w-full h-full object-cover [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]"
-                  src={currentMission?.image || `/assets/images/mission/okx.png`}
+                  src={currentMission?.image || `/assets/images/partner-image@2x.png`}
                   // srcSet="/assets/images/mission/okx.png 1x, /assets/images/mission/okx@2x.png 2x"
                   alt="DePIN Alliance"
                 />

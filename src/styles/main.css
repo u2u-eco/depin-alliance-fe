@@ -794,6 +794,7 @@ html {
   background-color: var(--body-background) !important;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -806,6 +807,13 @@ body {
   min-height: 100vh;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  /* Preserve scrolling behavior */
+  overflow-y: auto;
+  overscroll-behavior: none;
 }
 
 a {
@@ -1045,7 +1053,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 10;
 }
 
 /* End Section */
