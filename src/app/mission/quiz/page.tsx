@@ -23,11 +23,12 @@ export default function QuizPage() {
   const { currentMissionQuiz } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
-
+  const refTimeoutCheck = useRef<any>()
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
 
   const handleBack = () => {
-    router.push(`/mission?tab=rewards`)
+    router.back()
+    // router.push(`/mission?tab=rewards`)
   }
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
@@ -39,6 +40,10 @@ export default function QuizPage() {
         _listChecked.current = _listChecked.current.filter((_id: string) => {
           return !_id.startsWith(id.toString())
         })
+        const newList = listAnswerOfUser.filter((_id: string) => {
+          return !_id.startsWith(id.toString())
+        })
+        setListAnswerOfUser(newList)
       }
       _listChecked.current.push(keyId)
     } else {
@@ -50,11 +55,15 @@ export default function QuizPage() {
 
   const sendQuiz = async () => {
     if (currentMissionQuiz?.id) {
-      const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
-      if (res.status) {
-        setIsVerified(true)
+      try {
+        const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
+        if (res.status) {
+          setIsVerified(true)
+        }
+        setIsLoading(false)
+      } catch (ex) {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
     setIsLoading(false)
   }
@@ -84,7 +93,8 @@ export default function QuizPage() {
     }
     setIsVerified(false)
     setListAnswerOfUser(_listChecked.current)
-    setTimeout(() => {
+    clearTimeout(refTimeoutCheck.current)
+    refTimeoutCheck.current = setTimeout(() => {
       const _errorById: any = {}
       currentMissionQuiz?.quizArrays.forEach((item: IQuizItem) => {
         let error = false

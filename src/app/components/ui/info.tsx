@@ -80,7 +80,10 @@ const Info = ({ profile, rank }: InfoProps) => {
             >
               <Image
                 className="size-full min-w-full"
-                src={userInfo?.avatar?.replace(/-/g, '-main-') || '/assets/images/avatar/avatar-main-01@2x.png'}
+                src={
+                  userInfo?.avatar?.replace(/-/g, '-main-') ||
+                  '/assets/images/avatar/avatar-main-01@2x.png'
+                }
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -187,7 +190,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                   <span className="text-title">
                     {userInfo?.xp && formatNumber(userInfo?.xp, 0, 0)} XP
                   </span>{' '}
-                  / {userInfo?.xpLevelTo && formatNumber(userInfo.xpLevelTo, 0, 0)} XP
+                  / {userInfo?.xpLevelTo && formatNumber(userInfo.xpLevelTo - 1, 0, 0)} XP
                 </div>
               )}
             </div>
@@ -210,7 +213,9 @@ const Info = ({ profile, rank }: InfoProps) => {
               </div>
               <Image
                 className={
-                  profile || pathName === '/home' ? 'size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8' : 'size-5'
+                  profile || pathName === '/home'
+                    ? 'size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8'
+                    : 'size-5'
                 }
                 src="/assets/images/point@2x.png"
                 // srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"

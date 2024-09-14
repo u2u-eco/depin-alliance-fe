@@ -8,8 +8,6 @@ import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 export default function Layout({ children }: any) {
-  // const pathName = usePathname()
-
   const queryClient = new QueryClient()
   return (
     <>
