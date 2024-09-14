@@ -3,7 +3,7 @@ import { IMissionPartner, IMissionQuiz } from '@/interfaces/i.missions'
 interface IMissionsState {
   currentMission: IMissionPartner | null
   currentMissionQuiz: IMissionQuiz | null
-  setCurrentMission: (item: IMissionPartner) => void
+  setCurrentMission: (item: IMissionPartner | null) => void
   setCurrentMissionQuiz: (item: IMissionQuiz) => void
 }
 

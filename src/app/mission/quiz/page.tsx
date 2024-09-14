@@ -20,13 +20,14 @@ export default function QuizPage() {
   const [listChecked, setChecked] = useState<Array<string>>([])
   const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
-  const { currentMissionQuiz } = useMissionStore()
+  const { currentMissionQuiz, setCurrentMission } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
   const refTimeoutCheck = useRef<any>()
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
 
   const handleBack = () => {
+    setCurrentMission(null)
     router.back()
     // router.push(`/mission?tab=rewards`)
   }
