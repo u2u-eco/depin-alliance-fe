@@ -227,10 +227,10 @@ export default function QuizPage() {
                 </div>
               </div>
               <div className="mt-10 xs:mt-12 2xs:mt-14 mb-6 xs:mb-8 2xs:mb-10 space-y-4 xs:space-y-5 2xs:space-y-6">
-                {currentMissionQuiz.quizArrays.map((item: IQuizItem) => (
+                {currentMissionQuiz.quizArrays.map((item: IQuizItem, index: number) => (
                   <div className="space-y-4 xs:space-y-5 2xs:space-y-6" key={item.index}>
                     <p className="text-title text-[15px] xs:text-base !leading-[20px] font-semibold font-mona">
-                      {item.question}
+                      {index + 1}. {item.question}
                     </p>
                     <div className="space-y-3 xs:space-y-4">
                       {item.answers.map((el: IQuizAnswerItem) => (
