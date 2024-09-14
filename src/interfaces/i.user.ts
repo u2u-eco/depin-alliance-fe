@@ -106,4 +106,5 @@ export interface IUserLevel {
   xpLevelFrom: number
   xpLevelTo: number
   pointSkill: number
+  isCurrent?: boolean
 }

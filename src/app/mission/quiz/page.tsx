@@ -18,7 +18,7 @@ import { toast } from 'sonner'
 export default function QuizPage() {
   const router = useRouter()
   const [listChecked, setChecked] = useState<Array<string>>([])
-  const [isChecking, setIsChecking] = useState<boolean>(false)
+  const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
   const { currentMissionQuiz } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -31,6 +31,7 @@ export default function QuizPage() {
   }
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
+    if (isVerified) return
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {
@@ -45,7 +46,6 @@ export default function QuizPage() {
     }
     setErrorById({ ...errorById, [id]: false })
     setChecked([..._listChecked.current])
-    setIsChecking(false)
   }
 
   const sendQuiz = async () => {
@@ -56,6 +56,7 @@ export default function QuizPage() {
       }
       setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   const handleClaim = async () => {
@@ -82,6 +83,7 @@ export default function QuizPage() {
       return
     }
     setIsVerified(false)
+    setListAnswerOfUser(_listChecked.current)
     setTimeout(() => {
       const _errorById: any = {}
       currentMissionQuiz?.quizArrays.forEach((item: IQuizItem) => {
@@ -101,7 +103,6 @@ export default function QuizPage() {
         }
       })
       setErrorById(_errorById)
-      setIsChecking(true)
       if (Object.keys(_errorById)?.length === 0) {
         sendQuiz()
       } else {
@@ -216,10 +217,10 @@ export default function QuizPage() {
                               className="relative size-5 xs:size-6 flex items-center justify-center"
                             >
                               <div
-                                className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-[3px] transition-background ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'bg-white/10 !border-error-blur' : 'bg-white/10') : ''}`}
+                                className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-[3px] transition-background ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && listAnswerOfUser.indexOf(`${item.index}-${el.index}`) !== -1 ? 'bg-white/10 !border-error-blur' : 'bg-white/10') : ''}`}
                               >
                                 <div
-                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
+                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && listAnswerOfUser.indexOf(`${item.index}-${el.index}`) !== -1 ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
                                 ></div>
                               </div>
                             </motion.div>

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserFriend } from '@/services/user'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useInView } from 'react-intersection-observer'
+import Loader from '../components/ui/loader'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [
@@ -130,6 +131,14 @@ export default function InvitePage() {
             </div>
           </div>
         </div>
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'absolute top-0 z-[1] left-[0] absolute bg-black/30',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         {listItem?.length > 0 ? (
           <div>
             <CustomList
