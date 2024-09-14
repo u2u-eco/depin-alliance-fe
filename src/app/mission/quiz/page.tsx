@@ -267,11 +267,13 @@ export default function QuizPage() {
                   </div>
                 ))}
               </div>
-              <CustomButton
-                title={isVerified ? 'CLAIM NOW' : `CHECK ANSWER`}
-                isLoading={isLoading}
-                onAction={handleCheck}
-              />
+              <div className="mb-10">
+                <CustomButton
+                  title={isVerified ? 'CLAIM NOW' : `CHECK ANSWER`}
+                  isLoading={isLoading}
+                  onAction={handleCheck}
+                />
+              </div>
             </div>
           )}
         </div>
