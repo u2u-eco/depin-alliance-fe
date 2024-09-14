@@ -35,7 +35,9 @@ export default function MissionPage() {
         setActiveTab(MISSION_TAB.PARTNERS)
       }
     } else {
-      setActiveTab(MISSION_TAB.REWARDS)
+      if (!tab) {
+        setActiveTab(MISSION_TAB.REWARDS)
+      }
       setIsShowTab(false)
     }
   }
