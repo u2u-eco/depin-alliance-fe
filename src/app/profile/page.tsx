@@ -15,6 +15,7 @@ import UpgradeModal from '../upgrade/components/upgrade-modal'
 import Info from '../components/ui/info'
 import { LIST_TYPE } from '@/constants'
 import Link from 'next/link'
+import Loader from '../components/ui/loader'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -29,12 +30,15 @@ export default function ProfilePage() {
   const [listSkill, setListSkill] = useState<ISkillItem[]>([])
   const [rank, setRank] = useState<number>(0)
   const [loadingButton, setLoadingButton] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const _getSkills = async () => {
+    setIsLoading(true)
     const res = await getSkills()
     if (res.status) {
       setListSkill(res.data.skill)
     }
+    setIsLoading(false)
   }
 
   const _getRank = async () => {
@@ -115,26 +119,34 @@ export default function ProfilePage() {
             "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
         }}
       >
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'h-[100vh] absolute z-[1] left-[0] bg-black/30',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         <div>
           <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
-            <div
-              className="cursor-pointer rotate-90"
-              onClick={handleBack}
-            >
+            <div className="cursor-pointer rotate-90" onClick={handleBack}>
               <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
             </div>
             <div className="flex items-center space-x-3 xs:space-x-4">
               <div className="size-1.5 bg-green-800"></div>
-              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">PROFILE</div>
+              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">
+                PROFILE
+              </div>
               <div className="size-1.5 bg-green-800"></div>
             </div>
             <Link href="/home">
-              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
+              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
             </Link>
           </div>
           <div className="mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-11 2xs:mb-12">
             <Info profile rank={rank} />
           </div>
+
           <div>
             <CustomList
               type={LIST_TYPE.SKILL}
