@@ -32,6 +32,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/profile' &&
     pathName !== '/level' &&
     pathName !== '/mission/quiz'
+
   return (
     <AnimatePresence mode="wait">
       <div className={cn('section', classNames?.wrapper)}>
