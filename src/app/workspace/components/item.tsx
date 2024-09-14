@@ -240,7 +240,7 @@ export default function Item() {
                   onClick={() => handleInfo(item)}
                 >
                   <ImageDevice
-                    className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                    className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                     image={item.image}
                     type={item.type}
                   />
