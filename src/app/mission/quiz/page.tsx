@@ -14,23 +14,28 @@ import { IQuizAnswerItem, IQuizItem } from '@/interfaces/i.missions'
 import CustomButton from '@/app/components/button'
 import { claimTask, verifyMissionQuiz } from '@/services/missions'
 import { toast } from 'sonner'
+import Loader from '@/app/components/ui/loader'
 
 export default function QuizPage() {
   const router = useRouter()
   const [listChecked, setChecked] = useState<Array<string>>([])
-  const [isChecking, setIsChecking] = useState<boolean>(false)
+  const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
-  const { currentMissionQuiz } = useMissionStore()
+  const { currentMissionQuiz, setCurrentMission } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
-
+  const refTimeoutCheck = useRef<any>()
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
+  const [isLoadingFake, setLoadingFake] = useState<boolean>(true)
 
   const handleBack = () => {
-    router.push(`/mission?tab=rewards`)
+    setCurrentMission(null)
+    router.back()
+    // router.push(`/mission?tab=rewards`)
   }
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
+    if (isVerified) return
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {
@@ -38,6 +43,10 @@ export default function QuizPage() {
         _listChecked.current = _listChecked.current.filter((_id: string) => {
           return !_id.startsWith(id.toString())
         })
+        const newList = listAnswerOfUser.filter((_id: string) => {
+          return !_id.startsWith(id.toString())
+        })
+        setListAnswerOfUser(newList)
       }
       _listChecked.current.push(keyId)
     } else {
@@ -45,17 +54,21 @@ export default function QuizPage() {
     }
     setErrorById({ ...errorById, [id]: false })
     setChecked([..._listChecked.current])
-    setIsChecking(false)
   }
 
   const sendQuiz = async () => {
     if (currentMissionQuiz?.id) {
-      const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
-      if (res.status) {
-        setIsVerified(true)
+      try {
+        const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
+        if (res.status) {
+          setIsVerified(true)
+        }
+        setIsLoading(false)
+      } catch (ex) {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   const handleClaim = async () => {
@@ -82,7 +95,9 @@ export default function QuizPage() {
       return
     }
     setIsVerified(false)
-    setTimeout(() => {
+    setListAnswerOfUser(_listChecked.current)
+    clearTimeout(refTimeoutCheck.current)
+    refTimeoutCheck.current = setTimeout(() => {
       const _errorById: any = {}
       currentMissionQuiz?.quizArrays.forEach((item: IQuizItem) => {
         let error = false
@@ -101,7 +116,6 @@ export default function QuizPage() {
         }
       })
       setErrorById(_errorById)
-      setIsChecking(true)
       if (Object.keys(_errorById)?.length === 0) {
         sendQuiz()
       } else {
@@ -116,31 +130,46 @@ export default function QuizPage() {
     }
   }, [currentMissionQuiz])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingFake(false)
+    }, 500)
+  }, [])
+
   return (
     <>
       <CustomPage
         classNames={{
           wrapper:
-            "before:content-[''] before:absolute before:top-[5%] before:left-[-68%] before:size-[355px] before:rounded-[50%] before:blur-[75px] before:bg-green-500 before:opacity-30 before:z-[-1] after:content-[''] after:absolute after:top-[5%] after:right-[-68%] after:size-[355px] after:rounded-[50%] after:blur-[75px] after:bg-yellow-500 after:opacity-30 after:z-[-1]"
+            "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
         }}
       >
-        {currentMissionQuiz && (
-          <div className="space-y-8">
-            <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
-              <div className="cursor-pointer rotate-90" onClick={handleBack}>
-                <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
-              </div>
-              <div className="flex items-center space-x-3 xs:space-x-4">
-                <div className="size-1.5 bg-green-800"></div>
-                <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">
-                  IQ QUIZ
-                </div>
-                <div className="size-1.5 bg-green-800"></div>
-              </div>
-              <Link href="/home">
-                <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
-              </Link>
+        {isLoadingFake && (
+          <Loader
+            classNames={{
+              wrapper: 'h-[100vh] absolute z-[1] left-[0] bg-black/30',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
+
+        <div className="space-y-8">
+          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
+            <div className="cursor-pointer rotate-90" onClick={handleBack}>
+              <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
             </div>
+            <div className="flex items-center space-x-3 xs:space-x-4">
+              <div className="size-1.5 bg-green-800"></div>
+              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">
+                IQ QUIZ
+              </div>
+              <div className="size-1.5 bg-green-800"></div>
+            </div>
+            <Link href="/home">
+              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
+            </Link>
+          </div>
+          {currentMissionQuiz && !isLoadingFake && (
             <div>
               <div className="relative flex items-center justify-center space-x-3 xs:space-x-4">
                 <div className="absolute top-0 left-0 right-0 w-full">
@@ -198,10 +227,10 @@ export default function QuizPage() {
                 </div>
               </div>
               <div className="mt-10 xs:mt-12 2xs:mt-14 mb-6 xs:mb-8 2xs:mb-10 space-y-4 xs:space-y-5 2xs:space-y-6">
-                {currentMissionQuiz.quizArrays.map((item: IQuizItem) => (
+                {currentMissionQuiz.quizArrays.map((item: IQuizItem, index: number) => (
                   <div className="space-y-4 xs:space-y-5 2xs:space-y-6" key={item.index}>
                     <p className="text-title text-[15px] xs:text-base !leading-[20px] font-semibold font-mona">
-                      {item.question}
+                      {index + 1}. {item.question}
                     </p>
                     <div className="space-y-3 xs:space-y-4">
                       {item.answers.map((el: IQuizAnswerItem) => (
@@ -216,10 +245,10 @@ export default function QuizPage() {
                               className="relative size-5 xs:size-6 flex items-center justify-center"
                             >
                               <div
-                                className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-[3px] transition-background ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'bg-white/10 !border-error-blur' : 'bg-white/10') : ''}`}
+                                className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-[3px] transition-background ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && listAnswerOfUser.indexOf(`${item.index}-${el.index}`) !== -1 ? 'bg-white/10 !border-error-blur' : 'bg-white/10') : ''}`}
                               >
                                 <div
-                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && isChecking ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
+                                  className={`size-full bg-gradient transition-opacity ${listChecked.indexOf(`${item.index}-${el.index}`) !== -1 ? (!el.correct && listAnswerOfUser.indexOf(`${item.index}-${el.index}`) !== -1 ? 'opacity-100 !bg-gradient-error' : 'opacity-100') : 'opacity-0'}`}
                                 ></div>
                               </div>
                             </motion.div>
@@ -238,14 +267,16 @@ export default function QuizPage() {
                   </div>
                 ))}
               </div>
-              <CustomButton
-                title={isVerified ? 'CLAIM NOW' : `CHECK ANSWER`}
-                isLoading={isLoading}
-                onAction={handleCheck}
-              />
+              <div className="mb-10">
+                <CustomButton
+                  title={isVerified ? 'CLAIM NOW' : `CHECK ANSWER`}
+                  isLoading={isLoading}
+                  onAction={handleCheck}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </CustomPage>
     </>
   )

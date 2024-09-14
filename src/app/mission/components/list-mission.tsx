@@ -10,7 +10,7 @@ import useCommonStore from '@/stores/commonStore'
 import useMissionStore from '@/stores/missionsStore'
 import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
 interface IListMission {
@@ -114,6 +114,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       handleClaim()
       return
     }
+    let timeOut = 1000
     if (isCheckMission) {
       handleVerifyMission(currentItem.current.id)
     } else {
@@ -123,6 +124,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           handleShare()
           break
         case 'QUIZ':
+          timeOut = 2000
           router.push('/mission/quiz')
           setCurrentMissionQuiz(currentItem.current)
 
@@ -135,7 +137,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setTimeout(() => {
         setCheckMission(true)
         setLoadingButton(false)
-      }, 1000)
+      }, timeOut)
     }
   }
 

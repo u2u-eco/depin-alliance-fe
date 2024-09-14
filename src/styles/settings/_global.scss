@@ -47,6 +47,7 @@ html {
   background-color: var(--body-background) !important;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -59,12 +60,14 @@ body {
   min-height: 100vh;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
-// #root {
-//   /* Preserve scrolling behavior */
-//   overflow-y: auto;
-// }
+#root {
+  /* Preserve scrolling behavior */
+  overflow-y: auto;
+  overscroll-behavior: none;
+}
 
 a {
   text-decoration: none;
