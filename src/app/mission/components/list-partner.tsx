@@ -51,7 +51,9 @@ export default function ListPartner({ updateListPartner }: IListPartner) {
 
   useEffect(() => {
     if (listPartners?.data) {
-      updateListPartner(listPartners?.data?.length)
+      updateListPartner(listPartners?.data?.length || 0)
+    } else {
+      updateListPartner(0)
     }
   }, [listPartners])
 
