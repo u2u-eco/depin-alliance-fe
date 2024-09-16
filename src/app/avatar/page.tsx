@@ -2,14 +2,14 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
-import { IconCheck, IconChevron, IconDoubleArrow, IconHome } from '../components/icons'
+import { IconCheck, IconDoubleArrow } from '../components/icons'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { getListAvatar, updateAvatar } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
+import { CustomHeader } from '../components/ui/custom-header'
 
 const listAvatar = [
   {
@@ -103,22 +103,7 @@ export default function Avatar() {
         }}
       >
         <div className="space-y-6 xs:space-y-8 2xs:space-y-10">
-          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
-            <div
-              className="cursor-pointer rotate-90"
-              onClick={handleBack}
-            >
-              <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
-            </div>
-            <div className="flex items-center space-x-3 xs:space-x-4">
-              <div className="size-1.5 bg-green-800"></div>
-              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">Avatar</div>
-              <div className="size-1.5 bg-green-800"></div>
-            </div>
-            <Link href="/home">
-              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient/>
-            </Link>
-          </div>
+          <CustomHeader title="Avatar" />
           <div className="flex justify-between space-x-4">
             <div className="grid grid-cols-2 gap-1 xs:gap-2 2xs:gap-3 h-fit">
               {listImage.map((item: any, index: number) => (
@@ -179,10 +164,10 @@ export default function Avatar() {
               )}
               <div className="flex items-center justify-between space-x-2">
                 <div
-                  className={`relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center  ${currentIndex.current === 0 ? 'text-inactive' : 'text-white cursor-pointer' }`}
+                  className={`relative size-10 bg-white/10 [clip-path:_polygon(50%_0%,100%_50%,50%_100%,0%_50%)] flex items-center justify-center  ${currentIndex.current === 0 ? 'text-inactive' : 'text-white cursor-pointer'}`}
                   onClick={() => handleChange(-1)}
                 >
-                  <IconDoubleArrow className="size-6"/>
+                  <IconDoubleArrow className="size-6" />
                 </div>
                 <div className="btn w-fit" onClick={handleUpdateAvatar}>
                   <div className="btn-border"></div>

@@ -1,4 +1,6 @@
 import CustomModal from '@/app/components/custom-modal'
+import { IconCongratulation } from '@/app/components/icons'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 interface ModalProps {
@@ -9,36 +11,38 @@ interface ModalProps {
 }
 
 const CongratulationModal = ({ isOpen, onOpen, onOpenChange, onClose }: ModalProps) => {
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push('/league/in-league')
+  }
+
   return (
-    <CustomModal
-      isOpen={isOpen}
-      onOpen={onOpen}
-      onOpenChange={onOpenChange}
-      onClose={onClose}
-      full
-    >
+    <CustomModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} onClose={onClose} full>
       <div className="h-full flex flex-col justify-between p-4">
         <div className="flex flex-1 flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
-          <div className="relative">
-            <div className="drop-shadow-[0_0_16px_rgba(0,153,86,0.5)]">
-              <img src="/assets/images/reward-frame.svg" alt="Frame" />
+          <div className="relative drop-shadow-green before:content-[''] before:absolute before:top-[8px] before:left-[8px] before:border-transparent before:size-[14px] before:border-[7px] before:border-t-green-500 before:border-l-green-500 before:z-[-1] after:content-[''] after:absolute after:bottom-0 after:right-0 after:border-transparent after:size-5 after:border-[10px] after:border-b-green-500 after:border-r-green-500 after:z-[-1]">
+            <div className="[--shape:_30px] p-[1px] size-[110px] xs:size-[120px] 2xs:size-[130px] bg-gradient [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))]">
+              <div className="[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] bg-[linear-gradient(to_bottom,#000,#00331d)] size-full flex items-center justify-center">
+                <IconCongratulation className="size-12 xs:size-14 2xs:size-16" gradient />
+              </div>
             </div>
           </div>
           <div className="text-center mb-6 space-y-3">
-            <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
+            <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 mx-auto">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
                 Create new league
               </div>
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
             </div>
-            <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
+            <div className="xs:text-[15px] 2xs:text-base text-body font-geist !leading-[20px] tracking-[-1px]">
               {`Congratulations! You’ve created new league. Let's invite more engineers to help the world better.`}
             </div>
           </div>
         </div>
         <div className="m-4 xs:m-6 2xs:m-8">
-          <div className="btn" onClick={onClose}>
+          <div className="btn" onClick={handleClick}>
             <div className="btn-border"></div>
             <div className="btn-primary">OK</div>
             <div className="btn-border"></div>

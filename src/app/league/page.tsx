@@ -16,6 +16,7 @@ import { ILeagueItem } from '@/interfaces/i.league'
 import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
+import CongratulationModal from './components/congratulation'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -33,6 +34,12 @@ export default function LeaguePage() {
   const [page, setPage] = useState<number>(1)
   const dataList = useRef<ILeagueItem[]>([])
   const [listItem, setListItem] = useState<ILeagueItem[]>([])
+  const {
+    isOpen: isOpenCongratulation,
+    onOpen: onOpenCongratulation,
+    onClose: onCloseCongratulation,
+    onOpenChange: onOpenChangeCongratulation
+  } = useDisclosure()
   const { isLoading, refetch } = useQuery({
     queryKey: ['fetchListLeague', page],
     queryFn: async () => {
@@ -64,6 +71,10 @@ export default function LeaguePage() {
   const handleCreateLeague = () => {
     setType(LEAGUE_TYPE.CREATE)
     onOpen()
+  }
+
+  const handleAction = () => {
+    onOpenCongratulation()
   }
 
   const handleClickItem = (item: any) => {
@@ -158,10 +169,16 @@ export default function LeaguePage() {
           {type === LEAGUE_TYPE.JOIN ? (
             <JoinLeague item={currentItem.current} onClose={onClose} joinCb={getUserLeague} />
           ) : (
-            <CreateLeague onClose={onClose} />
+            <CreateLeague onClose={onClose} onAction={handleAction} />
           )}
         </div>
       </CustomModal>
+      <CongratulationModal
+        isOpen={isOpenCongratulation}
+        onOpen={onOpenCongratulation}
+        onClose={onCloseCongratulation}
+        onOpenChange={onOpenChangeCongratulation}
+      />
     </>
   )
 }

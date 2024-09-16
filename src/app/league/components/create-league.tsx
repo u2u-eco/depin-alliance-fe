@@ -8,10 +8,13 @@ import { toast } from 'sonner'
 import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
 import Image from 'next/image'
 import InputNameLeague from './input-name-league'
+
 interface ICreateLeague {
   onClose: () => void
+  onAction: () => void
 }
-export default function CreateLeague({ onClose }: ICreateLeague) {
+
+export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   const file = useRef<any>()
   const name = useRef<string>('')
   const router = useRouter()
@@ -75,8 +78,8 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
       if (res.status && res.data) {
         toast.success('Create successfully')
         _getUserLeague()
-        router.push('/league/in-league')
         onClose()
+        onAction()
       }
       isDisableBtn.current = false
     } catch (ex) {
@@ -89,7 +92,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
       <div className="mt-8 mb-10 space-y-6">
         <div className="relative space-y-2 w-fit mx-auto">
           <div
-            className={`size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}
+            className={`size-[85px] xs:size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}
           >
             {imagePreview ? (
               <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] size-full">
@@ -103,7 +106,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
                 />
               </div>
             ) : (
-              <IconImageAdd gradient />
+              <IconImageAdd className="size-10 xs:size-11" gradient />
             )}
           </div>
           <p className="text-sm xs:text-[15px] 2xs:text-base text-body !leading-[18px] xs:!leading-[20px] tracking-[-1px] text-center">
