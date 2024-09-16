@@ -358,7 +358,7 @@ export default function Device() {
                   />
                   {currentName.current.trim().length === 0 && (
                     <p className="text-xs text-error mt-1 font-semibold">
-                      Devcie Name is required!
+                      Device Name is required!
                     </p>
                   )}
                 </div>
