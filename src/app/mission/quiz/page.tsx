@@ -144,6 +144,7 @@ export default function QuizPage() {
           wrapper:
             "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
         }}
+        disableOverscroll
       >
         {isLoadingFake && (
           <Loader

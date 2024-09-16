@@ -62,6 +62,7 @@ const CustomList = ({
             done={isDone(item)}
             key={item.code}
             item={item}
+            status={item.status}
             cb={cb}
           >
             {type === LIST_TYPE.SKILL ? (
