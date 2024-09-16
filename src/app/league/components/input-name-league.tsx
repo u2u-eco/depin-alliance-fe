@@ -13,9 +13,9 @@ export default function InputNameLeague({ disableCreate, updateName }: IInputNam
   const checkName = () => {
     disableCreate(true)
     existName(false)
-    clearInterval(timeoutCheckName.current)
     const formData = new FormData()
     formData.append('name', name.current)
+    clearInterval(timeoutCheckName.current)
     timeoutCheckName.current = setTimeout(async () => {
       try {
         const res = await validateNameLeague(formData)
@@ -32,6 +32,7 @@ export default function InputNameLeague({ disableCreate, updateName }: IInputNam
       checkName()
     } else {
       existName(false)
+      disableCreate(true)
     }
     setInputName(name.current)
     updateName(name.current)
