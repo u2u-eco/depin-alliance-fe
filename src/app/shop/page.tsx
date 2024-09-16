@@ -41,6 +41,7 @@ export default function ShopPage() {
           wrapper:
             "before:content-[''] before:absolute before:bottom-[-10%] before:left-[-320px] before:size-[400px] before:rounded-[50%] before:opacity-30 before:bg-gradient before:blur-[50px] before:translate-y-[-50%] before:z-[-1] after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
         }}
+        disableOverscroll
       >
         <div className="space-y-5 xs:space-y-6">
           <div className="flex items-center justify-between">
