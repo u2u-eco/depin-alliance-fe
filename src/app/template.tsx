@@ -12,11 +12,9 @@ import Loading from './components/loading'
 import { toast } from 'sonner'
 import { CURRENT_STATUS } from '@/interfaces/i.user'
 import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const router = useRouter()
-  const path = usePathname()
   const isProgressLogin = useRef<boolean>(false)
   const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
     useCommonStore((state) => state)
