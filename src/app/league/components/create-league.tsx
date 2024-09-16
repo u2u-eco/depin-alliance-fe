@@ -1,5 +1,4 @@
 import CustomButton from '@/app/components/button'
-import CustomInput from '@/app/components/custom-input'
 import { IconImageAdd } from '@/app/components/icons'
 import { createLeague, userLeague, validateNameLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
@@ -19,7 +18,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
   const isDisableBtn = useRef<boolean>(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { setCurrentLeague } = useCommonStore()
-  const [isDisableCreate, disableCreate] = useState<boolean>(false)
+  const [isDisableCreate, disableCreate] = useState<boolean>(true)
   const onChange = (e: any) => {
     file.current = e.target.files[0]
     filetoDataURL(file.current).then((res) => {
@@ -84,11 +83,14 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
       isDisableBtn.current = false
     }
   }
+
   return (
     <>
       <div className="mt-8 mb-10 space-y-6">
         <div className="relative space-y-2 w-fit mx-auto">
-          <div className={`size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}>
+          <div
+            className={`size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}
+          >
             {imagePreview ? (
               <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] size-full">
                 <Image
@@ -134,7 +136,7 @@ export default function CreateLeague({ onClose }: ICreateLeague) {
           copy
         /> */}
       </div>
-      <CustomButton title="CREATE" onAction={create} disable={isDisableCreate} />
+      <CustomButton title="CREATE" onAction={create} disable={isDisableCreate || !imagePreview} />
     </>
   )
 }

@@ -14,6 +14,7 @@ export default function Layout({ children }: any) {
       <Toaster
         position="top-center"
         theme="dark"
+        visibleToasts={1}
         toastOptions={{
           classNames: {
             toast:
