@@ -35,10 +35,10 @@ const CustomInput = ({
         errorMessage={errorMessage}
         classNames={{
           base: 'data-[has-label=true]:mt-6 opacity-100',
-          label: 'group-data-[filled-within=true]:text-body',
+          label: '!text-body group-data-[filled-within=true]:!text-body',
           inputWrapper:
             'rounded-none bg-white/5 data-[hover=true]:bg-white/10 group-data-[focus=true]:bg-white/10',
-          input: 'text-body group-data-[has-value=true]:text-body placeholder:text-inactive'
+          input: '!text-body group-data-[has-value=true]:!text-body placeholder:!text-inactive'
         }}
       />
       {copy && (
