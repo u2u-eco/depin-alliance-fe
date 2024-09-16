@@ -10,11 +10,12 @@ import { getListMissionByPartner } from '@/services/missions'
 import useMissionStore from '@/stores/missionsStore'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 interface IListPartner {
   updateListPartner: (count: number) => void
+  showTabPartner: (status: boolean) => void
 }
-export default function ListPartner({ updateListPartner }: IListPartner) {
+export default function ListPartner({ updateListPartner, showTabPartner }: IListPartner) {
   const { data: listPartners, isLoading } = useQuery({
     queryKey: ['fetchListMissionByPartner'],
     queryFn: getListMissionByPartner,
@@ -22,6 +23,7 @@ export default function ListPartner({ updateListPartner }: IListPartner) {
   })
   const router = useRouter()
   const listTaskStatus = useRef<{ [key: number]: string }>({})
+  const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
   const { setCurrentMission } = useMissionStore()
   const getStatus = (count: number, length: number) => {
     if (count === length) {
@@ -32,16 +34,25 @@ export default function ListPartner({ updateListPartner }: IListPartner) {
     // }
     return LIST_STATUS_MISSION.LINK
   }
-  const countTaskDone = (list: any, index: number) => {
-    let count = 0
-    list.forEach((item: any) => {
-      if (item.status === MISSION_STATUS.VERIFIED || item.status === MISSION_STATUS.CLAIMED) {
-        count += 1
+  const countTaskDone = (list: any) => {
+    const _listTaskDone: { [key: number]: number } = {}
+    let _missionUnDone = 0
+    list.forEach((partnerItem: any, index: number) => {
+      let count = 0
+      partnerItem.missions.forEach((item: any) => {
+        if (item.status === MISSION_STATUS.VERIFIED || item.status === MISSION_STATUS.CLAIMED) {
+          count += 1
+        }
+      })
+      _listTaskDone[index] = count
+      if (count < partnerItem.missions?.length) {
+        _missionUnDone += 1
       }
+      updateListPartner(_missionUnDone)
+      listTaskStatus.current[index] = getStatus(count, partnerItem.missions.length)
     })
-    listTaskStatus.current[index] = getStatus(count, list.length)
 
-    return count
+    setListTaskDone(_listTaskDone)
   }
 
   const handleLinkMission = (item: IMissionPartner, index: number) => {
@@ -51,9 +62,10 @@ export default function ListPartner({ updateListPartner }: IListPartner) {
 
   useEffect(() => {
     if (listPartners?.data) {
-      updateListPartner(listPartners?.data?.length || 0)
+      showTabPartner(true)
+      countTaskDone(listPartners.data)
     } else {
-      updateListPartner(0)
+      showTabPartner(false)
     }
   }, [listPartners])
 
@@ -89,7 +101,7 @@ export default function ListPartner({ updateListPartner }: IListPartner) {
                         <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
                           <div className="flex items-center leading-[16px] space-x-1">
                             <p className="text-title font-semibold text-[13px] xs:text-sm">
-                              {countTaskDone(item.missions, index)}/{item.missions?.length}
+                              {`${listTaskDone[index]}/${item.missions?.length}`}
                             </p>
                             <p className="text-body text-xs">
                               {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE

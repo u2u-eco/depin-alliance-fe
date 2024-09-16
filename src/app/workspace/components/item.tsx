@@ -405,7 +405,7 @@ export default function Item() {
                         <IconPoint className="size-5" color />
                         <span className="font-geist">
                           {isSpecial
-                            ? useKey
+                            ? formatNumber(useKey, 0, 0)
                             : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
                         </span>
                       </div>

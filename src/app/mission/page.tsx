@@ -26,18 +26,23 @@ export default function MissionPage() {
     setActiveTab(tab)
   }
 
-  const updateListPartner = (count: number) => {
-    setPartnerCount(count)
+  const showTabPartner = (status: boolean) => {
     setIsLoading(false)
-    if (count > 0) {
+    if (status) {
       setIsShowTab(true)
       if (!tab) {
         setActiveTab(MISSION_TAB.PARTNERS)
       }
     } else {
-      setActiveTab(MISSION_TAB.REWARDS)
+      if (!tab) {
+        setActiveTab(MISSION_TAB.REWARDS)
+      }
       setIsShowTab(false)
     }
+  }
+
+  const updateListPartner = (count: number) => {
+    setPartnerCount(count)
   }
 
   const updateListReward = (count: number) => {
@@ -51,6 +56,7 @@ export default function MissionPage() {
           wrapper:
             "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]"
         }}
+        disableOverscroll
       >
         {isLoading && (
           <Loader
@@ -90,17 +96,17 @@ export default function MissionPage() {
             >
               <Tab
                 key={MISSION_TAB.PARTNERS}
-                title={`${MISSION_TAB.PARTNERS} (${partnerCount})`}
+                title={`${MISSION_TAB.PARTNERS} ${partnerCount ? `(${partnerCount})` : ''}`}
               ></Tab>
               <Tab
                 key={MISSION_TAB.REWARDS}
-                title={`${MISSION_TAB.REWARDS} (${rewardCount})`}
+                title={`${MISSION_TAB.REWARDS} ${rewardCount ? `(${rewardCount})` : ''}`}
               ></Tab>
             </Tabs>
           )}
 
           <div className={`${activeTab === MISSION_TAB.PARTNERS ? '' : 'hidden'}`}>
-            <ListPartner updateListPartner={updateListPartner} />
+            <ListPartner updateListPartner={updateListPartner} showTabPartner={showTabPartner} />
           </div>
           <div className={`${activeTab === MISSION_TAB.PARTNERS ? 'hidden' : ''}`}>
             <>

@@ -27,14 +27,14 @@ export default function InputNameLeague({ disableCreate, updateName }: IInputNam
     }, 400)
   }
   const onChangeName = (value: string) => {
-    name.current = value
+    name.current = value.trim()
     if (value.length > 0) {
       checkName()
     } else {
       existName(false)
     }
-    setInputName(value)
-    updateName(value)
+    setInputName(name.current)
+    updateName(name.current)
   }
 
   return (

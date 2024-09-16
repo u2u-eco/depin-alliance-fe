@@ -87,15 +87,15 @@ export default function LeaguePage() {
   return (
     <>
       <CustomPage>
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'z-[1] left-[0] absolute bg-black/30 h-[100vh] top-0',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         <div className="relative w-full max-w-[400px] mx-auto before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:bg-green-300 before:w-[120px] xs:before:w-[145px] before:h-[5px] before:z-[2] before:[clip-path:_polygon(0_0,100%_0,calc(100%_-_5px)_100%,5px_100%)]">
-          {isLoading && (
-            <Loader
-              classNames={{
-                wrapper: 'z-[1] left-[0] absolute bg-black/30',
-                icon: 'w-[45px] h-[45px] text-white'
-              }}
-            />
-          )}
           <Image
             width={0}
             height={0}
