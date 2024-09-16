@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
@@ -12,9 +12,11 @@ interface Pageprops {
     wrapper?: ClassValue
   }
   disableOverscroll?: boolean
+  wrapHidden?: boolean
 }
 
-const CustomPage = ({ children, classNames, disableOverscroll }: Pageprops) => {
+const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
+  const [heightNav, setHeightNav] = useState<number>(72)
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -38,7 +40,8 @@ const CustomPage = ({ children, classNames, disableOverscroll }: Pageprops) => {
     <AnimatePresence>
       <div className={cn('section', classNames?.wrapper)}>
         <div
-          className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto ${disableOverscroll ? 'overscroll-y-none' : ''} flex flex-col hide-scrollbar`}
+          style={{ height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh' }}
+          className={`overflow-y-auto ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? 'overflow-y-hidden' : ''} flex flex-col hide-scrollbar`}
         >
           <div className="container-custom">
             <motion.div
@@ -58,7 +61,7 @@ const CustomPage = ({ children, classNames, disableOverscroll }: Pageprops) => {
           </div>
         </div>
       </div>
-      {isShowSidebar && <CustomNavbar />}
+      {isShowSidebar && <CustomNavbar setHeightNav={setHeightNav} />}
     </AnimatePresence>
   )
 }

@@ -5,10 +5,13 @@ import useCommonStore from '@/stores/commonStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
-
-const CustomNavbar = () => {
+import React, { useEffect, useRef } from 'react'
+interface ICustomNavbar {
+  setHeightNav: (height: number) => void
+}
+const CustomNavbar = ({ setHeightNav }: ICustomNavbar) => {
   const pathName = usePathname()
+  const navRef = useRef<any>(null)
   const currentLeague = useCommonStore((state) => state.currentLeague)
   const listMenu = [
     { id: 1, link: '/shop', title: 'shop' },
@@ -17,17 +20,29 @@ const CustomNavbar = () => {
     { id: 4, link: '/invite', title: 'invite' },
     { id: 5, link: currentLeague?.code ? '/league/in-league' : '/league', title: 'league' }
   ]
+
+  useEffect(() => {
+    if (navRef?.current?.clientHeight) {
+      setHeightNav(navRef?.current?.clientHeight)
+    }
+  }, [])
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" key="nav">
       <motion.div
         className="fixed max-w-[480px] mx-auto bottom-0 left-0 right-0 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.35 }}
+        ref={navRef}
       >
         <div className="relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:opacity-20 before:w-full before:h-2.5 before:bg-[linear-gradient(to_bottom,rgba(0,51,29,00),rgba(0,51,29,1))]">
-          <img className="mx-auto" src="/assets/images/navbar-frame.svg" alt="Navbar Frame" />
+          <img
+            className="mx-auto h-[10px]"
+            src="/assets/images/navbar-frame.svg"
+            alt="Navbar Frame"
+          />
         </div>
         <div className="relative  flex items-end justify-between before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-navbar before:opacity-20 p-2 xs:p-3 space-x-4 xs:space-x-6 2xs:space-x-8">
           {listMenu.map((item) => (
