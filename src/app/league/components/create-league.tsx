@@ -66,7 +66,7 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   //   }
   // }
   const create = async () => {
-    if (isDisableBtn.current) return
+    if (isDisableBtn.current || isDisableCreate || !imagePreview) return
     isDisableBtn.current = true
     const formData = new FormData()
     formData.append('name', name.current)
@@ -76,10 +76,9 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
     try {
       const res: any = await createLeague(formData)
       if (res.status && res.data) {
-        toast.success('Create successfully')
+        onAction()
         _getUserLeague()
         onClose()
-        onAction()
       }
       isDisableBtn.current = false
     } catch (ex) {
