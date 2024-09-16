@@ -35,7 +35,7 @@ const CustomPage = ({ children, classNames, disableOverscroll }: Pageprops) => {
     pathName !== '/mission/quiz'
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <div className={cn('section', classNames?.wrapper)}>
         <div
           className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto ${disableOverscroll ? 'overscroll-y-none' : ''} flex flex-col hide-scrollbar`}
@@ -46,6 +46,7 @@ const CustomPage = ({ children, classNames, disableOverscroll }: Pageprops) => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
+              key="custom-page"
             >
               {isShowInfo && <Info />}
               <div

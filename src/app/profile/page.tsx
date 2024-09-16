@@ -16,6 +16,7 @@ import Info from '../components/ui/info'
 import { LIST_TYPE } from '@/constants'
 import Link from 'next/link'
 import Loader from '../components/ui/loader'
+import { CustomHeader } from '../components/ui/custom-header'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -128,21 +129,7 @@ export default function ProfilePage() {
           />
         )}
         <div>
-          <div className="sticky top-0 left-0 bg-white/10 flex items-center justify-between space-x-3 z-10 py-3 px-3 backdrop-blur-[8px]">
-            <div className="cursor-pointer rotate-90" onClick={handleBack}>
-              <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
-            </div>
-            <div className="flex items-center space-x-3 xs:space-x-4">
-              <div className="size-1.5 bg-green-800"></div>
-              <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl">
-                PROFILE
-              </div>
-              <div className="size-1.5 bg-green-800"></div>
-            </div>
-            <Link href="/home">
-              <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
-            </Link>
-          </div>
+          <CustomHeader title="PROFILE" />
           <div className="mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-11 2xs:mb-12">
             <Info profile rank={rank} />
           </div>
