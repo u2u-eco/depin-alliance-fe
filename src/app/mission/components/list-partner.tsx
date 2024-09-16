@@ -83,9 +83,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
                     <CustomItem
                       type={LIST_TYPE.PARTNERS}
                       title={item.name}
-                      image={
-                        item.image ? item.image : '/assets/images/icons/icon-mission-gradient.svg'
-                      }
+                      image={item.image ? item.image : '/assets/images/partner-image@2x.png'}
                       done={listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE}
                       status={listTaskStatus.current[index]}
                       key={index}

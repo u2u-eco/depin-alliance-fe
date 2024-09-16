@@ -78,7 +78,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
         <div className="flex items-center justify-center size-[60px] min-[355px]:size-16 xs:size-[68px] 2xs:size-[72px] min-w-[60px] min-[355px]:min-w-16 xs:min-w-[68px] 2xs:min-w-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
           {image ? (
             <>
-              {type === LIST_TYPE.MISSION || type === LIST_TYPE.PARTNERS ? (
+              {type === LIST_TYPE.MISSION ? (
                 <Image
                   className="size-7 xs:size-8 2xs:size-9"
                   width={0}

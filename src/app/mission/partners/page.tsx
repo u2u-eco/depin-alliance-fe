@@ -80,22 +80,22 @@ export default function PartnersPage() {
             <div className="btn default cursor-default">
               <div className="btn-border"></div>
               <div className="btn-default !p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="flex-1 min-w-[180px] space-y-2 text-center">
+                <div className="flex xs:items-center space-x-2 xs:space-x-3">
+                  <div className="flex-1 xs:min-w-[180px] space-y-1.5 xs:space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">REWARDS</p>
-                    <div className="flex items-center justify-center space-x-1 font-geist">
-                      <IconPoint className="size-4" />
-                      <p className="text-green-500 text-sm normal-case leading-[16px] whitespace-nowrap">
+                    <div className="flex justify-center space-x-1 font-geist">
+                      <IconPoint className="size-3.5 xs:size-4" />
+                      <p className="text-green-500 text-[13px] xs:text-sm normal-case !leading-[18px] max-xs:text-left">
                         {currentMission?.rewards}
                       </p>
                     </div>
                   </div>
                   <div className="w-[1px] h-[50px] bg-white/25"></div>
-                  <div className="flex-1 space-y-2 text-center">
+                  <div className="flex-1 space-y-1.5 xs:space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">PARTICIPANTS</p>
                     <div className="flex items-center justify-center space-x-1 font-geist">
-                      <IconGroupUser className="size-4" />
-                      <p className="text-title text-sm normal-case leading-[16px]">
+                      <IconGroupUser className="size-3.5 xs:size-4" />
+                      <p className="text-title text-[13px] xs:text-sm normal-case !leading-[18px]">
                         {currentMission?.participants
                           ? formatNumber(currentMission.participants, 0, 0)
                           : 0}
