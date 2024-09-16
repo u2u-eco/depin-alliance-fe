@@ -114,7 +114,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
             />
           )}
         </div>
-        <div className="space-y-2 2xs:space-y-2.5">
+        <div className="space-y-1.5 xs:space-y-2 2xs:space-y-2.5">
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold leading-[18px] min-[355px]:leading-[20px] 2xs:leading-[22px] [word-break:_break-word;]">
             {title}
           </div>
@@ -147,7 +147,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
               // <IconUserAdd gradient />
               <></>
             ) : type === 'league' ? (
-              <IconOpenLink gradient />
+              <IconOpenLink className="size-7 xs:size-8 2xs:size-9" gradient />
             ) : (
               <IconPlus gradient />
             )}
