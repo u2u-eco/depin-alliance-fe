@@ -46,10 +46,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
         await getUserInfo()
         await getUserConfig()
         if (
-          res.data.currentStatus === CURRENT_STATUS.CLAIMED ||
-          res.data.currentStatus === CURRENT_STATUS.MINING
+          res.data.currentStatus !== CURRENT_STATUS.CLAIMED &&
+          res.data.currentStatus !== CURRENT_STATUS.MINING
         ) {
-          router.push('/home')
+          router.push('/')
         }
         _getUserLeague()
         Cookies.set(CURRENT_STATUS_STORAGE, res.data?.currentStatus)
