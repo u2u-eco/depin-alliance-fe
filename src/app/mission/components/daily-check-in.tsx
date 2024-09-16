@@ -80,9 +80,9 @@ export default function DailyCheckIn() {
                       {formatNumber(item.point, 0, 0)}
                     </p>
                   </div>
-                  <p className="text-green-500 text-[13px] 2xs:text-sm !leading-[18px]">
+                  {/* <p className="text-green-500 text-[13px] 2xs:text-sm !leading-[18px]">
                     {item.xp ? formatNumber(item.xp, 0, 0) : 0} XP
-                  </p>
+                  </p> */}
                 </div>
               </div>
             ))}

@@ -10,10 +10,13 @@ import useCommonStore from '@/stores/commonStore'
 import { userLeague } from '@/services/league'
 import Loading from './components/loading'
 import { toast } from 'sonner'
+import { CURRENT_STATUS } from '@/interfaces/i.user'
 import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const router = useRouter()
+  const path = usePathname()
   const isProgressLogin = useRef<boolean>(false)
   const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
     useCommonStore((state) => state)
@@ -44,6 +47,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
         setCurrentStatus({ status: res.data.currentStatus })
         await getUserInfo()
         await getUserConfig()
+        if (
+          res.data.currentStatus !== CURRENT_STATUS.CLAIMED &&
+          res.data.currentStatus !== CURRENT_STATUS.MINING
+        ) {
+          router.push('/')
+        }
         _getUserLeague()
         Cookies.set(CURRENT_STATUS_STORAGE, res.data?.currentStatus)
         setToken({ token: res.data?.accessToken })
