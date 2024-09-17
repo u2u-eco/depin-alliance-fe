@@ -6,7 +6,7 @@ import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
 import useMissionStore from '@/stores/missionsStore'
-
+import parse from 'html-react-parser'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import ListMission from '../components/list-mission'
@@ -51,8 +51,8 @@ export default function PartnersPage() {
           <div className="absolute top-0 left-0 cursor-pointer rotate-90" onClick={handleBack}>
             <IconChevron className="text-green-500" />
           </div>
-          <div className="space-y-6">
-            <div className="text-center relative size-[110px] xs:size-[120px] 2xs:size-[130px] mx-auto">
+          <div className="space-y-5 xs:space-y-6">
+            <div className="text-center relative size-[100px] xs:size-[115px] 2xs:size-[130px] mx-auto">
               <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]">
                 <Image
                   width={0}
@@ -73,8 +73,8 @@ export default function PartnersPage() {
                 </div>
                 <div className="size-1.5 bg-green-100"></div>
               </div>
-              <p className="text-base leading-[20px] tracking-[-1px] text-body">
-                {currentMission?.description}
+              <p className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-body whitespace-pre-line">
+                {currentMission?.description && parse(currentMission?.description)}
               </p>
             </div>
             <div className="btn default cursor-default">
