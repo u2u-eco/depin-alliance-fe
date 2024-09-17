@@ -205,7 +205,7 @@ export default function Device() {
   return (
     <>
       <div className="flex flex-col justify-between h-full">
-        <div className="space-y-4 mb-12">
+        <div className="space-y-4">
           {listDevice?.data.map((item: IUserDeviceItem) => {
             return (
               <AccordionItem
@@ -228,12 +228,10 @@ export default function Device() {
           })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto z-10">
-            <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
-              <div className="btn-border"></div>
-              <div className="btn-primary">buy more device</div>
-              <div className="btn-border"></div>
-            </div>
+          <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
+            <div className="btn-border"></div>
+            <div className="btn-primary">buy more device</div>
+            <div className="btn-border"></div>
           </div>
         )}
       </div>
@@ -283,7 +281,7 @@ export default function Device() {
                       activeType === DEVICE_TYPE.EDIT
                         ? '/assets/images/workspace/device-image-01@2x.png'
                         : activeType === DEVICE_TYPE.BUY
-                          ? '/assets/images/shop/device-01@2x.png'
+                          ? '/assets/images/workspace/device-image-01@2x.png'
                           : detailDeviceItem.current?.image
                     }
                     type={detailDeviceItem.current?.type?.toLowerCase()}
