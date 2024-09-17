@@ -2,13 +2,12 @@
 
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
-import { IconChat, IconClipboard, IconLeave } from '@/app/components/icons'
+import { IconChat, IconClipboard, IconLeave, IconPoint } from '@/app/components/icons'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -224,9 +223,15 @@ export default function InLeaguePage() {
               <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
                 {currentLeague?.name}
               </p>
-              <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
+              <div className="flex items-center space-x-1.5 xs:space-x-2">
+                <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+                <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
+                  {currentLeague?.totalMining ? formatNumber(currentLeague.totalMining, 0, 2) : 0}/h
+                </span>
+              </div>
+              {/* <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
                 LV. {currentLeague?.level}
-              </p>
+              </p> */}
             </div>
           </div>
           <div className="flex items-center space-x-4">

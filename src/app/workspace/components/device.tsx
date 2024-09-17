@@ -23,7 +23,6 @@ import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
-import { motion } from 'framer-motion'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -229,19 +228,13 @@ export default function Device() {
           })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="fixed bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto z-10"
-          >
+          <div className="fixed bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto z-10">
             <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
               <div className="btn-border"></div>
               <div className="btn-primary">buy more device</div>
               <div className="btn-border"></div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
 
