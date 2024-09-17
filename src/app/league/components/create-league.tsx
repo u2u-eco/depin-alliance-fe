@@ -2,9 +2,7 @@ import CustomButton from '@/app/components/button'
 import { IconImageAdd } from '@/app/components/icons'
 import { createLeague, userLeague, validateNameLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
-import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
-import { toast } from 'sonner'
 import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
 import Image from 'next/image'
 import InputNameLeague from './input-name-league'
@@ -17,8 +15,7 @@ interface ICreateLeague {
 export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   const file = useRef<any>()
   const name = useRef<string>('')
-  const router = useRouter()
-  const isDisableBtn = useRef<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { setCurrentLeague } = useCommonStore()
   const [isDisableCreate, disableCreate] = useState<boolean>(true)
@@ -66,8 +63,8 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   //   }
   // }
   const create = async () => {
-    if (isDisableBtn.current || isDisableCreate || !imagePreview) return
-    isDisableBtn.current = true
+    if (isLoading || isDisableCreate || !imagePreview) return
+    setIsLoading(true)
     const formData = new FormData()
     formData.append('name', name.current)
     if (file.current) {
@@ -80,9 +77,9 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
         _getUserLeague()
         onClose()
       }
-      isDisableBtn.current = false
+      setIsLoading(false)
     } catch (ex) {
-      isDisableBtn.current = false
+      setIsLoading(false)
     }
   }
 
@@ -138,7 +135,11 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
           copy
         /> */}
       </div>
-      <CustomButton title="CREATE" onAction={create} disable={isDisableCreate || !imagePreview} />
+      <CustomButton
+        title="CREATE"
+        onAction={create}
+        disable={isLoading || isDisableCreate || !imagePreview}
+      />
     </>
   )
 }
