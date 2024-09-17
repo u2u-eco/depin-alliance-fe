@@ -66,12 +66,12 @@ const CustomNavbar = ({ setHeightNav }: ICustomNavbar) => {
               ) : (
                 <img
                   className="size-5 xs:size-6 2xs:size-7 mx-auto"
-                  src={`/assets/images/icons/icon-${item.title}${pathName === item.link ? '-gradient' : ''}.svg`}
+                  src={`/assets/images/icons/icon-${item.title}${pathName.split('/')[1] === item.title ? '-gradient' : ''}.svg`}
                   alt={`Icon ${item.title}`}
                 />
               )}
               <p
-                className={`text-xs font-geist uppercase tracking-[-1px] ${pathName === item.link || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
+                className={`text-xs font-geist uppercase tracking-[-1px] ${pathName.split('/')[1] === item.title || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
               >
                 {item.title}
               </p>
