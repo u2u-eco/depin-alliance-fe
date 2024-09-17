@@ -1,4 +1,6 @@
 import CustomModal from '@/app/components/custom-modal'
+import { IconPoint } from '@/app/components/icons'
+import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -74,7 +76,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                         key={index}
                         className="relative w-full mx-auto before:content-[''] before:absolute before:top-0 before:left-0 before:size-4 xs:before:size-5 before:border-[8px] xs:before:border-[10px] before:border-transparent before:transition-all before:border-l-green-500 before:border-t-green-500 drop-shadow-green"
                       >
-                        <div className="[--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
+                        <div className="flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full relative bg-green-500 space-y-2 xs:space-y-3 p-4 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape))] before:bg-black/80 before:blur-[4px] before:z-[-1]">
                           <Image
                             width={0}
                             height={0}
@@ -83,7 +85,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                             src={`/assets/images/upgrade/upgrade-${item.type.toLowerCase()}@2x.png`}
                             alt=""
                           />
-                          <div className="space-y-0.5 xs:space-y-1 text-center">
+                          <div className="space-y-0.5 xs:space-y-1 text-center !mb-1">
                             <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
                               {item.name}
                             </p>
@@ -91,6 +93,15 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                               x{countRef.current[item.type]?.amount || 1}
                             </p> */}
                           </div>
+                          {item.type.toLowerCase() !== 'usdt' &&
+                            item.type.toLowerCase() !== 'u2u' && (
+                              <div className="flex items-center justify-center space-x-1 mt-auto">
+                                <IconPoint className="size-4" />
+                                <p className="text-green-500 font-semibold text-[13px] xs:text-sm !leading-[16px]">
+                                  {formatNumber(item.point, 0, 0)}
+                                </p>
+                              </div>
+                            )}
                         </div>
                       </div>
                     )
