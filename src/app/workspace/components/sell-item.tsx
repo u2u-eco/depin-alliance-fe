@@ -45,13 +45,15 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
         </div>
         <div className="space-y-3">
           <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-2 xs:space-x-4 2xs:space-x-6">
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(-1)}>
-              <IconMinusCircle className="text-green-500 size-6" />
+              <IconMinusCircle
+                className={`text-green-500 size-5 xs:size-6 ${amount === 1 ? 'opacity-30' : ''}`}
+              />
             </div>
             <span className="text-green-100 text-lg font-semibold">{amount}</span>
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(1)}>
-              <IconPlusCircle className="text-green-500 size-6" />
+              <IconPlusCircle className="text-green-500 size-5 xs:size-6" />
             </div>
           </div>
         </div>

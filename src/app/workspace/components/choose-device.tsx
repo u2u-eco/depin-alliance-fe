@@ -1,5 +1,7 @@
+import { IconPoint } from '@/app/components/icons'
 import ImageDevice from '@/app/components/image-device'
 import NoItem from '@/app/components/ui/no-item'
+import { formatNumber } from '@/helper/common'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { getUserDevice, listUserItemDevice } from '@/services/devices'
 import { useQuery } from '@tanstack/react-query'
@@ -64,10 +66,10 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
             <div
               key={index}
-              className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
+              className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all h-full ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
             >
               <div
-                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 before:border-l-green-500 before:border-t-green-500' : ''}`}
+                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] h-full transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-[#143828] after:z-[-1] after:[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'bg-green-500 before:border-l-green-500 before:border-t-green-500' : ''}`}
                 onClick={() => setActiveItem(item.id)}
               >
                 <ImageDevice
@@ -75,9 +77,16 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
                   type={item.type?.toLowerCase()}
                   className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
                 />
-                <p className="font-mona font-semibold text-white mt-3 mb-1 leading-[16px]">
+                <p className="font-mona font-semibold text-white mt-3 mb-1 text-[13px] xs:text-sm !leading-[16px]">
                   {item.name}
                 </p>
+                <div className="flex items-center justify-center space-x-1 mt-1.5">
+                  <IconPoint className="size-3 xs:size-4" />
+                  <span className="text-primary font-semibold text-[11px] min-[355px]:text-xs xs:text-sm">
+                    {item?.miningPower ? formatNumber(item?.miningPower, 0, 2) : 0}
+                    /h
+                  </span>
+                </div>
                 {/* <p className="text-green-500">x{item.totalItem}</p> */}
               </div>
             </div>

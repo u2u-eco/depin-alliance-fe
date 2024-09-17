@@ -769,6 +769,36 @@
   src: url("/assets/fonts/Airnt-Bold.otf");
   font-weight: 700;
 }
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-SemiBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-ExtraBold.ttf");
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/Mona-Sans-Black.ttf");
+  font-weight: 900;
+}
 :root {
   --ff-airnt: "Airnt", sans-serif;
   --ff-mona: "Mona Sans", sans-serif;

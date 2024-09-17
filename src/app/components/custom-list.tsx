@@ -62,14 +62,17 @@ const CustomList = ({
             done={isDone(item)}
             key={item.code}
             item={item}
+            status={item.status}
             cb={cb}
           >
             {type === LIST_TYPE.SKILL ? (
-              <div className="text-yellow-600 font-geist text-[13px] xs:text-sm !leading-[16px]">
+              <div
+                className={`text-yellow-600 ${type === LIST_TYPE.SKILL ? 'text-[13px] xs:text-sm !leading-[16px]' : 'text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]'}`}
+              >
                 LV. {levelKey ? item[levelKey] : item.level}
               </div>
             ) : item.text ? (
-              <div className="text-body font-geist text-base tracking-[-1px]">{item.text}</div>
+              <div className="text-body text-base tracking-[-1px]">{item.text}</div>
             ) : (
               type !== 'shop' && (
                 <div className="flex items-center flex-wrap space-x-2 xs:space-x-3 2xs:space-x-4 text-[13px] xs:text-sm">

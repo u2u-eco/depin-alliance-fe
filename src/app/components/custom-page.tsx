@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
@@ -11,9 +11,12 @@ interface Pageprops {
   classNames?: {
     wrapper?: ClassValue
   }
+  disableOverscroll?: boolean
+  wrapHidden?: boolean
 }
 
-const CustomPage = ({ children, classNames }: Pageprops) => {
+const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
+  const [heightNav, setHeightNav] = useState<number>(72)
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -34,17 +37,20 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
     pathName !== '/mission/quiz'
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <div className={cn('section', classNames?.wrapper)}>
         <div
-          className={`${isShowSidebar ? 'h-[calc(100vh-75px)]' : 'h-full'}  overflow-y-auto overscroll-y-none flex flex-col hide-scrollbar`}
+          style={{ height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh' }}
+          className={`overflow-y-auto ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? 'overflow-y-hidden' : ''} flex flex-col hide-scrollbar`}
         >
+          <div className=" absolute"></div>
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
+              key="custom-page"
             >
               {isShowInfo && <Info />}
               <div
@@ -56,7 +62,7 @@ const CustomPage = ({ children, classNames }: Pageprops) => {
           </div>
         </div>
       </div>
-      {isShowSidebar && <CustomNavbar />}
+      {isShowSidebar && <CustomNavbar setHeightNav={setHeightNav} />}
     </AnimatePresence>
   )
 }

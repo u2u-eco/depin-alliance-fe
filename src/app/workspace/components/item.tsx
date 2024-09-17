@@ -227,7 +227,7 @@ export default function Item() {
         )}
         {listDeviceItem?.length > 0 ? (
           <div
-            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[49vh] overflow-y-auto hide-scrollbar"
+            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[64vh] overflow-y-auto hide-scrollbar"
             ref={refList}
           >
             {listDeviceItem?.map((item: any) => (
@@ -405,7 +405,7 @@ export default function Item() {
                         <IconPoint className="size-5" color />
                         <span className="font-geist">
                           {isSpecial
-                            ? useKey
+                            ? formatNumber(useKey, 0, 0)
                             : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
                         </span>
                       </div>

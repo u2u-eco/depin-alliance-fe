@@ -3,6 +3,7 @@ export interface IMissionItem {
   name: string
   point: number
   time: number
+  xp: number
 }
 
 export interface IItemMissionPartner {

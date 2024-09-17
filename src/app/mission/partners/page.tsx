@@ -1,16 +1,17 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconGroupUser, IconPoint } from '@/app/components/icons'
+import { IconChevron, IconGroupUser, IconHome, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
 import useMissionStore from '@/stores/missionsStore'
-
+import parse from 'html-react-parser'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import ListMission from '../components/list-mission'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function PartnersPage() {
   const router = useRouter()
@@ -49,10 +50,10 @@ export default function PartnersPage() {
       >
         <div className="relative">
           <div className="absolute top-0 left-0 cursor-pointer rotate-90" onClick={handleBack}>
-            <IconChevron className="text-green-500" />
+            <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
           </div>
-          <div className="space-y-6">
-            <div className="text-center relative size-[110px] xs:size-[120px] 2xs:size-[130px] mx-auto">
+          <div className="space-y-5 xs:space-y-6">
+            <div className="text-center relative size-[100px] xs:size-[115px] 2xs:size-[130px] mx-auto">
               <div className="p-[1px] bg-green-100 [clip-path:_polygon(30px_0%,100%_0,100%_calc(100%_-_30px),calc(100%_-_30px)_100%,0_100%,0%_30px)]">
                 <Image
                   width={0}
@@ -73,29 +74,29 @@ export default function PartnersPage() {
                 </div>
                 <div className="size-1.5 bg-green-100"></div>
               </div>
-              <p className="text-base leading-[20px] tracking-[-1px] text-body">
-                {currentMission?.description}
+              <p className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-body whitespace-pre-line">
+                {currentMission?.description && parse(currentMission?.description)}
               </p>
             </div>
             <div className="btn default cursor-default">
               <div className="btn-border"></div>
               <div className="btn-default !p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="flex-1 min-w-[180px] space-y-2 text-center">
+                <div className="flex xs:items-center space-x-2 xs:space-x-3">
+                  <div className="flex-1 xs:min-w-[180px] space-y-1.5 xs:space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">REWARDS</p>
-                    <div className="flex items-center justify-center space-x-1 font-geist">
-                      <IconPoint className="size-4" />
-                      <p className="text-green-500 text-sm normal-case leading-[16px] whitespace-nowrap">
+                    <div className="flex justify-center space-x-1 font-geist">
+                      <IconPoint className="size-3.5 xs:size-4" />
+                      <p className="text-green-500 text-[13px] xs:text-sm normal-case !leading-[18px] max-xs:text-left">
                         {currentMission?.rewards}
                       </p>
                     </div>
                   </div>
                   <div className="w-[1px] h-[50px] bg-white/25"></div>
-                  <div className="flex-1 space-y-2 text-center">
+                  <div className="flex-1 space-y-1.5 xs:space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">PARTICIPANTS</p>
                     <div className="flex items-center justify-center space-x-1 font-geist">
-                      <IconGroupUser className="size-4" />
-                      <p className="text-title text-sm normal-case leading-[16px]">
+                      <IconGroupUser className="size-3.5 xs:size-4" />
+                      <p className="text-title text-[13px] xs:text-sm normal-case !leading-[18px]">
                         {currentMission?.participants
                           ? formatNumber(currentMission.participants, 0, 0)
                           : 0}
@@ -112,6 +113,9 @@ export default function PartnersPage() {
               refetch={getCurrentMissionById}
             />
           </div>
+          <Link href="/home" className="absolute top-0 right-0">
+            <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
+          </Link>
         </div>
       </CustomPage>
     </>

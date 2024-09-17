@@ -4,6 +4,7 @@ export interface ILeagueItem {
   name: string
   totalContributors: number
   totalMining: number
+  level: number
 }
 
 export interface IUserLeague {
