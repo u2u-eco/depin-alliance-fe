@@ -1,7 +1,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconGroupUser, IconPoint } from '@/app/components/icons'
+import { IconChevron, IconGroupUser, IconHome, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import ListMission from '../components/list-mission'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function PartnersPage() {
   const router = useRouter()
@@ -49,7 +50,7 @@ export default function PartnersPage() {
       >
         <div className="relative">
           <div className="absolute top-0 left-0 cursor-pointer rotate-90" onClick={handleBack}>
-            <IconChevron className="text-green-500" />
+            <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
           </div>
           <div className="space-y-5 xs:space-y-6">
             <div className="text-center relative size-[100px] xs:size-[115px] 2xs:size-[130px] mx-auto">
@@ -112,6 +113,9 @@ export default function PartnersPage() {
               refetch={getCurrentMissionById}
             />
           </div>
+          <Link href="/home" className="absolute top-0 right-0">
+            <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
+          </Link>
         </div>
       </CustomPage>
     </>
