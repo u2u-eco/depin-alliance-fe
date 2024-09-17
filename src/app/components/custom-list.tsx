@@ -65,7 +65,7 @@ const CustomList = ({
             status={item.status}
             cb={cb}
           >
-            {type === LIST_TYPE.SKILL || type === LIST_TYPE.LEAGUE ? (
+            {type === LIST_TYPE.SKILL ? (
               <div
                 className={`text-yellow-600 ${type === LIST_TYPE.SKILL ? 'text-[13px] xs:text-sm !leading-[16px]' : 'text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]'}`}
               >

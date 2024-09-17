@@ -41,9 +41,15 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
           <p className=" text-title font-semibold text-base xs:text-xl 2xs:text-2xl font-mona !leading-[24px] xs:!leading-[28px] 2xs:!leading-[30px] [word-break:_break-word;]">
             {item?.name}
           </p>
-          <p className="text-yellow-600 text-sm xs:text-base 2xs:text-lg !leading-[18px] xs:!leading-[20px] 2xs:!leading-[22px]">
+          <div className="flex items-center space-x-1.5 xs:space-x-2">
+            <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+            <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
+              {item?.totalMining ? formatNumber(item.totalMining, 0, 2) : 0}/h
+            </span>
+          </div>
+          {/* <p className="text-yellow-600 text-sm xs:text-base 2xs:text-lg !leading-[18px] xs:!leading-[20px] 2xs:!leading-[22px]">
             LV. {item?.level}
-          </p>
+          </p> */}
         </div>
       </div>
       <CustomButton title="JOIN LEAGUE" onAction={handleJoin} />
