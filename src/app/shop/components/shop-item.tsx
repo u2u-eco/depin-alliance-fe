@@ -131,7 +131,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           {listItem?.map((item: any, index: number) => (
             <div
               key={index}
-              className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer`}
+              className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
               onClick={() => handleClick(item)}
             >
               <ImageDevice
@@ -143,7 +143,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
               <p className="font-mona font-semibold text-white mt-2 xs:mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
                 {item.name}
               </p>
-              <div className="flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+              <div className="mt-auto flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                 <IconPoint className="size-4" />
                 <p className="text-green-500 text-[13px] xs:text-sm">
                   {' '}
