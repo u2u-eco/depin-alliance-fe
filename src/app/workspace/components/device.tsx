@@ -228,7 +228,7 @@ export default function Device() {
           })}
         </div>
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="fixed bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto z-10">
+          <div className="bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto z-10">
             <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
               <div className="btn-border"></div>
               <div className="btn-primary">buy more device</div>
