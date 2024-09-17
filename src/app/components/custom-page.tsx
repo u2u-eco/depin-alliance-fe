@@ -43,6 +43,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
           style={{ height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh' }}
           className={`overflow-y-auto ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? 'overflow-y-hidden' : ''} flex flex-col hide-scrollbar`}
         >
+          <div className=" absolute"></div>
           <div className="container-custom">
             <motion.div
               initial={{ y: 25, opacity: 0 }}
