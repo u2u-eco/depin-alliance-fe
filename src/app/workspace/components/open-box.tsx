@@ -34,18 +34,18 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
       background={
         <img
           className="absolute top-0 left-0 right-0 mx-auto min-[460px]:h-full object-cover w-full z-[-1]"
-          src={`/assets/images/workspace/special-background-${activeType === BOX_TYPE.OPEN ? '01' : '02'}.png`}
-          srcSet={`/assets/images/workspace/special-background-${activeType === BOX_TYPE.OPEN ? '01' : '02'}.png 1x, /assets/images/workspace/special-background-${BOX_TYPE.OPEN ? '01' : '02'}@2x.png 2x`}
+          src={`/assets/images/workspace/special-background-02.png`}
+          srcSet={`/assets/images/workspace/special-background-02.png 1x, /assets/images/workspace/special-background-02@2x.png 2x`}
           alt="DePIN Alliance"
         />
       }
     >
       <div
-        className={`h-full flex p-4 ${activeType === BOX_TYPE.OPEN ? 'items-center justify-center' : 'flex-col justify-between'}`}
+        className={`h-full flex p-4 ${activeType === BOX_TYPE.OPEN ? 'justify-center mt-16 xs:mt-20 2xs:mt-24' : 'flex-col justify-between'}`}
       >
         {activeType === BOX_TYPE.OPEN ? (
-          <div className="relative size-[250px]">
-            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] size-full bg-[rgba(0,255,144,0.5)] z-[-1] blur-[75px]"></div>
+          <div className="relative size-[220px] xs:size-[260px] 2xs:size-[300px] drop-shadow-[0_0_75px_rgba(0,255,144,0.9)]">
+            {/* <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] size-full bg-[rgba(0,255,144,0.5)] z-[-1] blur-[75px]"></div> */}
             <img
               src="/assets/images/item-special.png"
               srcSet="/assets/images/item-special.png 1x, /assets/images/item-special@2x.png 2x"
