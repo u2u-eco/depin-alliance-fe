@@ -249,7 +249,7 @@ export default function QuizPage() {
                       ))}
                       {errorById[item.index] && (
                         <p className="text-error text-xs tracking-[-1px] leading-[16px] !mt-2.5 xs:!mt-3">
-                          Wrong anwser. Please try again!
+                          Wrong answer. Please try again!
                         </p>
                       )}
                     </div>
