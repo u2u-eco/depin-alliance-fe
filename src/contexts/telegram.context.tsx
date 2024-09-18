@@ -1,4 +1,4 @@
-import GlobalError from '@/app/global-error'
+import DeviceError from '@/app/device-error'
 import { IS_ONLY_SUPPORT_MOBILE } from '@/constants'
 import { ITelegramUser, IWebApp } from '@/interfaces/i.telegram'
 import { createContext, useEffect, useMemo, useState } from 'react'
@@ -42,7 +42,7 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
   // const disableDevice: any = []
   if (disableDevice.some((key: any) => webApp?.platform.toLowerCase().includes(key))) {
     console.error('Telegram Desktop is not supported.')
-    return <GlobalError title={'@DePIN_Alliance_Bot'} />
+    return <DeviceError title={'@DePIN_Alliance_Bot'} />
   }
 
   return <TelegramContextValue.Provider value={value}>{children}</TelegramContextValue.Provider>
