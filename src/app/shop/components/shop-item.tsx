@@ -111,7 +111,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   useEffect(() => {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
     if (offsetTop) {
-      const heightTopBottom = offsetTop + heightNav + 60
+      const heightTopBottom = offsetTop + heightNav + 40
       setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
     }
   }, [])
