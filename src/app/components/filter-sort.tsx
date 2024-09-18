@@ -86,7 +86,7 @@ export default function FilterSort({
     >
       <div className="relative w-full">
         <div className=" text-body text-base tracking-[-1px] text-center">
-          <p>Select option to {FILTER_TYPE.FILTER ? 'filter' : 'sort'} item</p>
+          <p>Select option to {type === FILTER_TYPE.FILTER ? 'filter' : 'sort'} item</p>
         </div>
 
         <div
