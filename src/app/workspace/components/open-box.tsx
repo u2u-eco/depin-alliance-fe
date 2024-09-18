@@ -85,14 +85,17 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                             src={`/assets/images/upgrade/upgrade-${item.type.toLowerCase()}@2x.png`}
                             alt=""
                           />
-                          <div className="space-y-0.5 xs:space-y-1 text-center !mb-1">
-                            <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
-                              {item.name}
-                            </p>
-                            {/* <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
-                              x{countRef.current[item.type]?.amount || 1}
-                            </p> */}
-                          </div>
+                          {item.type.toLowerCase() !== 'point' && (
+                            <div className="space-y-0.5 xs:space-y-1 text-center !mb-1">
+                              <p className="text-white font-mona font-semibold text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
+                                {item.name}
+                              </p>
+                              {/* <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm !leading-[16px]">
+			 x{countRef.current[item.type]?.amount || 1}
+		 </p> */}
+                            </div>
+                          )}
+
                           {item.type.toLowerCase() !== 'usdt' &&
                             item.type.toLowerCase() !== 'u2u' && (
                               <div className="flex items-center justify-center space-x-1 mt-auto">
