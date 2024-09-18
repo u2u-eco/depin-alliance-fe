@@ -28,7 +28,10 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/mission/partners' &&
     pathName !== '/workspace' &&
     pathName !== '/ranking' &&
-    pathName !== '/mission/quiz'
+    pathName !== '/mission/quiz' &&
+    pathName !== '/league/member' &&
+    pathName !== '/league/join-request' &&
+    pathName !== '/league/mission'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -37,7 +40,9 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/avatar' &&
     pathName !== '/profile' &&
     pathName !== '/level' &&
-    pathName !== '/mission/quiz'
+    pathName !== '/mission/quiz' &&
+    pathName !== '/league/member' &&
+    pathName !== '/league/join-request'
 
   return (
     <AnimatePresence>
