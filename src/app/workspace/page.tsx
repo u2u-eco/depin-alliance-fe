@@ -34,7 +34,8 @@ export default function WorkspacePage() {
         <CustomHeader title="Workspace" />
         <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 mt-8">
           {Object.values(WORKSPACE_TYPE).map((item, index) => (
-            <div
+            <motion.div
+              whileTap={{ scale: 0.95 }}
               key={index}
               className="relative cursor-pointer"
               onClick={() => handleSelectTab(item)}
@@ -49,7 +50,7 @@ export default function WorkspacePage() {
               >
                 {item}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         <div className="mt-6">
@@ -59,6 +60,7 @@ export default function WorkspacePage() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
+              key={WORKSPACE_TYPE.DEVICE}
             >
               <Device />
             </motion.div>
@@ -68,6 +70,7 @@ export default function WorkspacePage() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
+              key={WORKSPACE_TYPE.ITEM}
             >
               <Item />
             </motion.div>
