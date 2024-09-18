@@ -202,16 +202,16 @@ export default function Item() {
           <p className="text-body text-base tracking-[-1px] uppercase">
             {filterOptions.type || 'ALL ITEMS'}
           </p>
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
               <IconSort
-                className="size-[30px] text-green-800"
+                className="size-6 xs:size-7 2xs:size-8 text-green-800"
                 gradient={activeFilter === FILTER_TYPE.SORT}
               />
             </div>
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.FILTER)}>
               <IconFilter
-                className="size-[30px] text-green-800"
+                className="size-6 xs:size-7 2xs:size-8 text-green-800"
                 gradient={activeFilter === FILTER_TYPE.FILTER}
               />
             </div>
@@ -225,7 +225,21 @@ export default function Item() {
             }}
           />
         )}
-        {listDeviceItem?.length > 0 ? (
+        {listDeviceItem?.length === 0 && !isLoading ? (
+          <NoItem
+            title="No item"
+            link={
+              filterOptions.type === ITEM_TYPE.SPECIAL
+                ? undefined
+                : filterOptions.type
+                  ? `/shop?type=${filterOptions.type}`
+                  : '/shop'
+            }
+            classNames={{
+              icon: 'text-body'
+            }}
+          />
+        ) : (
           <div
             className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[64vh] overflow-y-auto hide-scrollbar"
             ref={refList}
@@ -256,24 +270,6 @@ export default function Item() {
               Loading...
             </div>
           </div>
-        ) : (
-          <>
-            {!isLoading && (
-              <NoItem
-                title="No item"
-                link={
-                  filterOptions.type === ITEM_TYPE.SPECIAL
-                    ? undefined
-                    : filterOptions.type
-                      ? `/shop?type=${filterOptions.type}`
-                      : '/shop'
-                }
-                classNames={{
-                  icon: 'text-body'
-                }}
-              />
-            )}
-          </>
         )}
       </div>
       <CustomModal
@@ -297,10 +293,10 @@ export default function Item() {
           {activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SELL ? (
             <>
               <div
-                className={`space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
+                className={`space-x-3 xs:space-x-4 flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? 'mt-6 xs:mt-8 2xs:mt-10 mb-8 xs:mb-10 2xs:mb-12' : 'my-6 xs:my-8'}`}
               >
                 <div
-                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? `${isSpecial ? '!bg-transparent' : ''} size-[90px] min-w-[90px]` : 'size-[110px] xs:size-[120px] 2xs:size-[130px] min-w-[110px] xs:min-w-[120px] 2xs:min-w-[130px]'}`}
+                  className={`p-[1px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${activeType === ITEM_TYPE.INFO || activeType === ITEM_TYPE.SPECIAL ? `${isSpecial ? '!bg-transparent' : ''} size-[80px] xs:size-[85px] 2xs:size-[90px] min-w-[80px] xs:min-w-[85px] 2xs:min-w-[90px]` : 'size-[100px] xs:size-[115px] 2xs:size-[130px] min-w-[100px] xs:min-w-[115px] 2xs:min-w-[130px]'}`}
                 >
                   <Image
                     width={0}
@@ -318,21 +314,17 @@ export default function Item() {
                   />
                 </div>
                 <div
-                  className={
-                    activeType === ITEM_TYPE.INFO
-                      ? 'space-y-2 xs:space-y-3 2xs:space-y-4'
-                      : 'space-y-2'
-                  }
+                  className={activeType === ITEM_TYPE.INFO ? 'space-y-2 xs:space-y-3' : 'space-y-2'}
                 >
                   <p
-                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-lg leading-[22px]'}`}
+                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px]'}`}
                   >
                     {currentItem.current?.name}
                   </p>
 
-                  <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+                  <div className="flex items-center space-x-2.5 xs:space-x-4 2xs:space-x-6">
                     <div className="flex items-center space-x-1">
-                      <p className="text-base text-title font-semibold leading-[20px]">
+                      <p className="text-[15px] xs:text-base text-title font-semibold !leading-[20px]">
                         {currentItem.current?.totalItem}
                       </p>
                       <div className="text-xs text-white-50 tracking-[-1px] leading-[16px]">
@@ -341,8 +333,8 @@ export default function Item() {
                     </div>
                     {activeType === ITEM_TYPE.INFO && (
                       <>
-                        <div className="w-[1px] h-9 bg-white/25"></div>
-                        <div className="space-y-2">
+                        <div className="w-[1px] h-8 xs:h-9 bg-white/25"></div>
+                        <div className="space-y-1.5 xs:space-y-2">
                           <div className="text-xs text-white-50">
                             {isSpecial ? 'AMOUNT:' : 'TOTAL PROFIT:'}
                           </div>
@@ -383,10 +375,10 @@ export default function Item() {
             >
               <div className="btn-border"></div>
               <div
-                className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'default' : 'primary'}`}
+                className={`btn-${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'default' : 'primary'} !px-3`}
               >
                 <div
-                  className={`flex items-center justify-center space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : disableBtnSpecial ? 'text-inactive' : 'text-green-900'}`}
+                  className={`flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 ${activeType === ITEM_TYPE.SELL ? 'text-title' : disableBtnSpecial ? 'text-inactive' : 'text-green-900'}`}
                 >
                   <p>
                     {activeType === ITEM_TYPE.SELL
@@ -398,16 +390,16 @@ export default function Item() {
                   {!disableBtnSpecial ? (
                     <>
                       <div
-                        className={`w-[30px] h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
+                        className={`w-4 xs:w-6 2xs:w-8 h-[1px] ${activeType === ITEM_TYPE.SELL || disableBtnSpecial ? 'bg-title' : 'bg-green-900'}`}
                       ></div>
 
                       <div className="flex items-center space-x-1">
-                        <IconPoint className="size-5" color />
-                        <span className="font-geist">
+                        <IconPoint className="size-4 xs:size-5" color />
+                        <p>
                           {isSpecial
                             ? formatNumber(useKey, 0, 0)
                             : totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
-                        </span>
+                        </p>
                       </div>
                     </>
                   ) : null}
@@ -416,7 +408,7 @@ export default function Item() {
               <div className="btn-border"></div>
             </motion.div>
           ) : (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 xs:space-x-4">
               {(activeType !== ITEM_TYPE.INFO ||
                 (activeType === ITEM_TYPE.INFO && currentItem.current?.isCanSell)) && (
                 <div

@@ -48,7 +48,7 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
           <div className="flex items-center space-x-2 xs:space-x-4 2xs:space-x-6">
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(-1)}>
               <IconMinusCircle
-                className={`text-green-500 size-5 xs:size-6 ${amount === 1 ? 'opacity-30' : ''}`}
+                className={`size-5 xs:size-6 ${amount === 1 ? 'text-green-800' : 'text-green-500'}`}
               />
             </div>
             <span className="text-green-100 text-lg font-semibold">{amount}</span>
