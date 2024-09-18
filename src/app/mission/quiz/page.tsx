@@ -2,7 +2,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconHome, IconPoint, IconQuiz } from '@/app/components/icons'
+import { IconCheckCircle, IconChevron, IconCloseHexagon, IconHome, IconPoint, IconQuiz } from '@/app/components/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -78,7 +78,19 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
-          toast.success('Mission is completed')
+          toast.success(
+            <div className="font-geist flex items-center justify-between text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] w-full">
+              <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+                <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
+                <p className="text-title tracking-[-1px]">Mission is completed</p>
+              </div>
+              <div className="w-5 xs:w-6 h-[1px] bg-green-800 ml-auto mr-5 xs:mr-6"></div>
+              <div className="flex items-center space-x-1">
+                <IconPoint className="size-5 xs:size-6" />
+                <p className="text-green-500">+{currentMissionQuiz?.point && formatNumber(currentMissionQuiz?.point || 0, 0, 0)}</p>
+              </div>
+            </div>
+          )
           handleBack()
         }
         setIsLoading(false)
@@ -121,6 +133,12 @@ export default function QuizPage() {
         sendQuiz()
       } else {
         setIsLoading(false)
+        toast.error(
+          <div className="font-geist flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]">
+            <IconCloseHexagon className="size-5 xs:size-6 text-error"/>
+            <p className="text-title tracking-[-1px]">Your answer is wrong. Try again.</p>
+          </div>
+        )
       }
     }, 500)
   }

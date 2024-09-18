@@ -6,6 +6,8 @@ import useCommonStore from '@/stores/commonStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
 import Loader from '@/app/components/ui/loader'
+import { toast } from 'sonner'
+import { IconCheckCircle, IconPoint } from '@/app/components/icons'
 
 const HOME_TYPE = {
   START: 'start',
@@ -79,6 +81,19 @@ export default function Mining() {
     try {
       const res = await claim()
       if (res.status) {
+        toast.success(
+          <div className="font-geist flex items-center justify-between text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] w-full">
+            <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+              <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
+              <p className="text-title tracking-[-1px]">Claim successfully</p>
+            </div>
+            <div className="w-5 xs:w-6 h-[1px] bg-green-800 ml-auto mr-5 xs:mr-6"></div>
+            <div className="flex items-center space-x-1">
+              <IconPoint className="size-5 xs:size-6" />
+              <p className="text-green-500">+{res?.data?.point && formatNumber(res?.data?.point, 0, 0)}</p>
+            </div>
+          </div>
+        )
         if (res.data.bonusReward > 0) {
           setBonusReward(res.data.bonusReward)
           onOpen()
@@ -175,7 +190,7 @@ export default function Mining() {
         !userInfo ? (
           <div className="btn-primary flex items-center justify-between !py-2.5 !px-3">
             <div className="flex items-center space-x-1.5 xs:space-x-2 uppercase text-green-900 text-sm xs:text-[15px] 2xs:text-base font-bold">
-              <div className="max-[354px]:hidden">Mining</div>
+              <div className="max-[354px]:hidden">Claim</div>
               <div className="flex items-center space-x-1">
                 <img className="size-4 xs:size-5" src="/assets/images/point-dark.svg" alt="Point" />
                 <p className="font-geist text-green-900 text-sm xs:text-[15px] 2xs:text-base font-semibold">
@@ -204,8 +219,8 @@ export default function Mining() {
             {isLoading && (
               <Loader
                 classNames={{
-                  icon: 'text-white',
-                  wrapper: 'bg-transparent max-w-[20px] ml-1'
+                  icon: 'text-white size-full',
+                  wrapper: 'bg-transparent !size-5 ml-1'
                 }}
               />
             )}
