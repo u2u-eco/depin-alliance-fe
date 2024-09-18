@@ -29,7 +29,8 @@ const DEVICE_TYPE = {
   INFO: 'info',
   EDIT: 'edit',
   EQUIP: 'equip',
-  BUY: 'buy'
+  BUY: 'buy',
+  SWAP: 'swap'
 }
 
 export default function Device() {
@@ -142,7 +143,14 @@ export default function Device() {
       case DEVICE_TYPE.BUY:
         handleAddNewDevice()
         break
+      case DEVICE_TYPE.SWAP:
+        onClose()
+        break
     }
+  }
+
+  const handleSwap = () => {
+    setActiveType(DEVICE_TYPE.SWAP)
   }
 
   const handleClickItem = (index: number) => {
@@ -202,7 +210,10 @@ export default function Device() {
     }
   }
 
-  const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
+  const disableBtn =
+    (activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP) && !activeItem
+      ? true
+      : false
   return (
     <>
       <div className="flex flex-col justify-between h-full">
@@ -245,7 +256,9 @@ export default function Device() {
               ? 'equip item'
               : activeType === DEVICE_TYPE.BUY
                 ? 'Buy Device'
-                : 'DEVICE NAME'
+                : activeType === DEVICE_TYPE.SWAP
+                  ? 'Swap Item'
+                  : 'DEVICE NAME'
         }
         isOpen={isOpen}
         onClose={handleClose}
@@ -269,7 +282,7 @@ export default function Device() {
               )}
             </div>
           )}
-          {activeType !== DEVICE_TYPE.EQUIP ? (
+          {activeType !== DEVICE_TYPE.EQUIP && activeType !== DEVICE_TYPE.SWAP ? (
             <>
               <div
                 className={`space-x-4 flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
@@ -401,37 +414,46 @@ export default function Device() {
               activeItem={activeItem}
             />
           )}
-          <div
-            className={`btn z-[2] ${disableBtn ? 'inactive' : ''} ${activeType === DEVICE_TYPE.INFO ? 'error' : ''}`}
-            onClick={handleConfirm}
-          >
-            <div className="btn-border"></div>
-            <div
-              className={`${disableBtn ? 'btn-inactive' : `btn-${activeType === DEVICE_TYPE.INFO ? 'error' : 'primary'}`}`}
-            >
-              {activeType === DEVICE_TYPE.INFO ? (
-                'UNEQUIPPED'
-              ) : activeType === DEVICE_TYPE.EQUIP ? (
-                'CONFIRM'
-              ) : activeType === DEVICE_TYPE.BUY ? (
-                <div className="flex items-center justify-center space-x-4 text-green-900">
-                  <p>BUY NOW</p>
-                  <div className="w-[30px] h-[1px] bg-green-800"></div>
-                  <div className="flex items-center space-x-1">
-                    <IconPoint className="size-5" color />
-                    <span className="font-geist">
-                      {userConfig?.pointBuyDevice
-                        ? formatNumber(userConfig?.pointBuyDevice, 0, 0)
-                        : 0}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                'SAVE'
-              )}
+          {/* Button */}
+          {activeType === DEVICE_TYPE.INFO ? (
+            <div className="flex justify-between space-x-3 xs:space-x-4">
+              <div className="btn error z-[2]" onClick={handleConfirm}>
+                <div className="btn-border"></div>
+                <div className="btn-error">UNEQUIPPED</div>
+                <div className="btn-border"></div>
+              </div>
+              <div className="btn z-[2]" onClick={handleSwap}>
+                <div className="btn-border"></div>
+                <div className="btn-primary">SWAP</div>
+                <div className="btn-border"></div>
+              </div>
             </div>
-            <div className="btn-border"></div>
-          </div>
+          ) : (
+            <div className={`btn z-[2] ${disableBtn ? 'inactive' : ''}`} onClick={handleConfirm}>
+              <div className="btn-border"></div>
+              <div className={`btn-${disableBtn ? 'inactive' : 'primary'}`}>
+                {activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP ? (
+                  'CONFIRM'
+                ) : activeType === DEVICE_TYPE.BUY ? (
+                  <div className="flex items-center justify-center space-x-4 text-green-900">
+                    <p>BUY NOW</p>
+                    <div className="w-[30px] h-[1px] bg-green-800"></div>
+                    <div className="flex items-center space-x-1">
+                      <IconPoint className="size-5" color />
+                      <span className="font-geist">
+                        {userConfig?.pointBuyDevice
+                          ? formatNumber(userConfig?.pointBuyDevice, 0, 0)
+                          : 0}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  'SAVE'
+                )}
+              </div>
+              <div className="btn-border"></div>
+            </div>
+          )}
         </div>
       </CustomModal>
     </>
