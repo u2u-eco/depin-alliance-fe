@@ -17,7 +17,9 @@ interface CommonState {
   currentStatus: I_CURRENT_STATUS
   currentLeague: IUserLeague | null
   heightNav: number
+  safeAreaBottom: number
   userConfig: IUserConfig | null
+  setSafeAreaBottom: (height: number) => void
   setHeightNav: (height: number) => void
   setToken: ({ token }: { token: string }) => void
   setUserInfo: ({ info }: { info: IUserInfo }) => void
@@ -37,7 +39,9 @@ const useCommonStore = create<CommonState>((set) => ({
   currentLeague: null,
   userConfig: null,
   heightNav: 70,
+  safeAreaBottom: 0,
   currentStatus: I_CURRENT_STATUS.STARTED,
+  setSafeAreaBottom: (height: number) => set({ safeAreaBottom: height }),
   setHeightNav: (height: number) => set({ heightNav: height }),
   setCurrentLeague: ({ league }) => set({ currentLeague: league }),
   setToken: ({ token }) => set({ token }),

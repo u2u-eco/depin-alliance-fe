@@ -18,7 +18,7 @@ interface Pageprops {
 }
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
-  const heightNav = useCommonStore((state) => state.heightNav)
+  const { heightNav, safeAreaBottom } = useCommonStore()
   const { webApp } = useTelegram()
   const pathName = usePathname()
   const isShowInfo =
@@ -44,7 +44,11 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
       <div className={cn('section', classNames?.wrapper)}>
         <div
           style={{
-            height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : webApp?.viewportStableHeight
+            height: isShowSidebar
+              ? `calc(100vh - ${heightNav}px)`
+              : webApp?.viewportStableHeight
+                ? webApp.viewportStableHeight + safeAreaBottom
+                : webApp?.viewportStableHeight
           }}
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col hide-scrollbar`}
         >
