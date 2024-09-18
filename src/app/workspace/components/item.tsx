@@ -42,6 +42,7 @@ export default function Item() {
   const [maxHeightListContent, setMaxHeightListContent] = useState<string>('64vh')
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -68,7 +69,7 @@ export default function Item() {
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
   const [useKey, setUseKey] = useState<number>(0)
-  const { isLoading, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryKey: [
       'getUserItemDevice',
       filterOptions.sortAscending,
@@ -77,18 +78,27 @@ export default function Item() {
       page
     ],
     queryFn: async () => {
-      const res: any = await listUserItemDevice({ ...filterOptions, page })
-      if (res.pagination?.totalPage) {
-        maxPage.current = res.pagination?.totalPage
+      try {
+        setIsLoading(true)
+        const res: any = await listUserItemDevice({ ...filterOptions, page })
+        if (res.pagination?.totalPage) {
+          maxPage.current = res.pagination?.totalPage
+        }
+        if (page !== res.pagination.page) {
+          setIsLoading(false)
+          return []
+        }
+        let _listItem = res.data
+        if (page > 1) {
+          _listItem = [...dataList.current, ...res.data]
+        }
+        dataList.current = _listItem
+        setListDeviceItem(_listItem)
+        setIsLoading(false)
+        return res
+      } catch (ex) {
+        setIsLoading(false)
       }
-      if (page !== res.pagination.page) return []
-      let _listItem = res.data
-      if (page > 1) {
-        _listItem = [...dataList.current, ...res.data]
-      }
-      dataList.current = _listItem
-      setListDeviceItem(_listItem)
-      return res
     },
     ...QUERY_CONFIG
   })
@@ -196,7 +206,7 @@ export default function Item() {
   useEffect(() => {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
     if (offsetTop) {
-      const heightTopBottom = offsetTop + 35
+      const heightTopBottom = offsetTop + 37
       setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
     }
   }, [])
@@ -226,62 +236,64 @@ export default function Item() {
             </div>
           </div>
         </div>
-        {isLoading && (
-          <Loader
-            style={{ height: maxHeightListContent }}
-            classNames={{
-              wrapper: ' z-[1] left-[0] absolute bg-black/65 backdrop-blur-[4px]',
-              icon: 'size-10 text-white'
-            }}
-          />
-        )}
-        {listDeviceItem?.length === 0 && !isLoading ? (
-          <NoItem
-            title="No item"
-            link={
-              filterOptions.type === ITEM_TYPE.SPECIAL
-                ? undefined
-                : filterOptions.type
-                  ? `/shop?type=${filterOptions.type}`
-                  : '/shop'
-            }
-            classNames={{
-              icon: 'text-body'
-            }}
-          />
-        ) : (
-          <div
-            style={{ maxHeight: maxHeightListContent }}
-            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 overflow-y-auto hide-scrollbar"
-            ref={refList}
-          >
-            {listDeviceItem?.map((item: any) => (
-              <div
-                key={item.code}
-                className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
-              >
+        <div
+          className="overflow-y-auto hide-scrollbar mt-8"
+          ref={refList}
+          style={{ maxHeight: maxHeightListContent }}
+        >
+          {isLoading && (
+            <Loader
+              style={{ height: maxHeightListContent }}
+              classNames={{
+                wrapper: ' z-[1] left-[0] absolute bg-black/30 backdrop-blur-[4px]',
+                icon: 'size-10 text-white'
+              }}
+            />
+          )}
+          {listDeviceItem?.length === 0 && !isLoading ? (
+            <NoItem
+              title="No item"
+              link={
+                filterOptions.type === ITEM_TYPE.SPECIAL
+                  ? undefined
+                  : filterOptions.type
+                    ? `/shop?type=${filterOptions.type}`
+                    : '/shop'
+              }
+              classNames={{
+                icon: 'text-body'
+              }}
+            />
+          ) : (
+            <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
+              {listDeviceItem?.map((item: any) => (
                 <div
-                  className={`flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
-                  onClick={() => handleInfo(item)}
+                  key={item.code}
+                  className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                 >
-                  <ImageDevice
-                    className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                    image={item.image}
-                    type={item.type}
-                  />
+                  <div
+                    className={`flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
+                    onClick={() => handleInfo(item)}
+                  >
+                    <ImageDevice
+                      className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                      image={item.image}
+                      type={item.type}
+                    />
 
-                  <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px]">
-                    {item.name}
-                  </p>
-                  <p className="text-green-500 mt-auto">x{item.totalItem || 1}</p>
+                    <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px]">
+                      {item.name}
+                    </p>
+                    <p className="text-green-500 mt-auto">x{item.totalItem || 1}</p>
+                  </div>
                 </div>
+              ))}
+              <div ref={scrollTrigger} className="text-[transparent]">
+                Loading...
               </div>
-            ))}
-            <div ref={scrollTrigger} className="text-[transparent]">
-              Loading...
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <CustomModal
         title={activeType === ITEM_TYPE.SELL ? 'SELL ITEM' : 'ITEM Info'}
