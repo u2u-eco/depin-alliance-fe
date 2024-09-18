@@ -44,7 +44,9 @@ const CustomNavbar = ({ setHeightNav }: ICustomNavbar) => {
             alt="Navbar Frame"
           />
         </div>
-        <div className="relative  flex items-end justify-between before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-navbar before:opacity-20 p-2 xs:p-3 space-x-4 xs:space-x-6 2xs:space-x-8">
+        <div
+          className={`relative flex items-end justify-between before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-navbar p-2 xs:p-3 space-x-4 xs:space-x-6 2xs:space-x-8 ${pathName === '/shop' ? 'bg-[var(--black)] before:blur-[20px] before:opacity-50' : 'before:opacity-20'}`}
+        >
           {listMenu.map((item) => (
             <Link
               href={item.link}
