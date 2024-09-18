@@ -20,6 +20,7 @@ import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
+import { useTelegram } from '@/hooks/useTelegram'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -28,9 +29,10 @@ const ITEM_TYPE = {
 }
 
 export default function Item() {
-  const { getUserInfo, userInfo } = useCommonStore()
+  const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
+  const { webApp } = useTelegram()
   const [scrollTrigger, isInView] = useInView()
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
@@ -39,7 +41,7 @@ export default function Item() {
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
-  const [maxHeightListContent, setMaxHeightListContent] = useState<string>('64vh')
+  const [maxHeightListContent, setMaxHeightListContent] = useState<number>(0)
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -93,7 +95,7 @@ export default function Item() {
           _listItem = [...dataList.current, ...res.data]
         }
         dataList.current = _listItem
-        setListDeviceItem(_listItem)
+        setListDeviceItem(dataList.current)
         setIsLoading(false)
         return res
       } catch (ex) {
@@ -205,11 +207,18 @@ export default function Item() {
 
   useEffect(() => {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
-    if (offsetTop) {
-      const heightTopBottom = offsetTop + 37
-      setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
+    const wrapChidden = document.getElementById('jsWrapContainer')
+
+    if (offsetTop && webApp?.viewportHeight) {
+      let margin = 0
+      if (wrapChidden) {
+        const marginOfWrap = window.getComputedStyle(wrapChidden)
+        margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+      }
+      const heightTopBottom = offsetTop + margin
+      setMaxHeightListContent(webApp?.viewportHeight + safeAreaBottom - heightTopBottom)
     }
-  }, [])
+  }, [webApp?.viewportHeight])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
@@ -236,35 +245,12 @@ export default function Item() {
             </div>
           </div>
         </div>
-        <div
-          className="overflow-y-auto hide-scrollbar mt-8"
-          ref={refList}
-          style={{ maxHeight: maxHeightListContent }}
-        >
-          {isLoading && (
-            <Loader
-              style={{ height: maxHeightListContent }}
-              classNames={{
-                wrapper: ' z-[1] left-[0] absolute bg-black/30 backdrop-blur-[4px]',
-                icon: 'size-10 text-white'
-              }}
-            />
-          )}
-          {listDeviceItem?.length === 0 && !isLoading ? (
-            <NoItem
-              title="No item"
-              link={
-                filterOptions.type === ITEM_TYPE.SPECIAL
-                  ? undefined
-                  : filterOptions.type
-                    ? `/shop?type=${filterOptions.type}`
-                    : '/shop'
-              }
-              classNames={{
-                icon: 'text-body'
-              }}
-            />
-          ) : (
+        <div className="relative mt-8" ref={refList} style={{ minHeight: maxHeightListContent }}>
+          <div className=" absolute"></div>
+          <div
+            className="overflow-y-auto hide-scrollbar"
+            style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
+          >
             <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
               {listDeviceItem?.map((item: any) => (
                 <div
@@ -292,6 +278,29 @@ export default function Item() {
                 Loading...
               </div>
             </div>
+          </div>
+          {listDeviceItem?.length === 0 && !isLoading ? (
+            <NoItem
+              title="No item"
+              link={
+                filterOptions.type === ITEM_TYPE.SPECIAL
+                  ? undefined
+                  : filterOptions.type
+                    ? `/shop?type=${filterOptions.type}`
+                    : '/shop'
+              }
+              classNames={{
+                icon: 'text-body'
+              }}
+            />
+          ) : null}
+          {isLoading && (
+            <Loader
+              classNames={{
+                wrapper: 'top-0  z-[1] left-[0] absolute bg-black/30 backdrop-blur-[4px]',
+                icon: 'size-10 text-white'
+              }}
+            />
           )}
         </div>
       </div>
