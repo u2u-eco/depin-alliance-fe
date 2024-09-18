@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
+import useCommonStore from '@/stores/commonStore'
 
 interface Pageprops {
   children: ReactNode
@@ -16,7 +17,7 @@ interface Pageprops {
 }
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
-  const [heightNav, setHeightNav] = useState<number>(72)
+  const heightNav = useCommonStore((state) => state.heightNav)
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -62,7 +63,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
           </div>
         </div>
       </div>
-      {isShowSidebar && <CustomNavbar setHeightNav={setHeightNav} />}
+      {isShowSidebar && <CustomNavbar />}
     </AnimatePresence>
   )
 }

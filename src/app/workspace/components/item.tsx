@@ -39,6 +39,7 @@ export default function Item() {
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
+  const [maxHeightListContent, setMaxHeightListContent] = useState<string>('64vh')
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [filterOptions, setFilterOptions] = useState<{
@@ -192,6 +193,14 @@ export default function Item() {
     setPage(1)
   }, [filterOptions])
 
+  useEffect(() => {
+    const offsetTop = refList.current?.getBoundingClientRect()?.top
+    if (offsetTop) {
+      const heightTopBottom = offsetTop + 35
+      setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
+    }
+  }, [])
+
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
     currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
@@ -219,8 +228,9 @@ export default function Item() {
         </div>
         {isLoading && (
           <Loader
+            style={{ height: maxHeightListContent }}
             classNames={{
-              wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/65 backdrop-blur-[4px]',
+              wrapper: ' z-[1] left-[0] absolute bg-black/65 backdrop-blur-[4px]',
               icon: 'size-10 text-white'
             }}
           />
@@ -241,7 +251,8 @@ export default function Item() {
           />
         ) : (
           <div
-            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 max-h-[64vh] overflow-y-auto hide-scrollbar"
+            style={{ maxHeight: maxHeightListContent }}
+            className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8 overflow-y-auto hide-scrollbar"
             ref={refList}
           >
             {listDeviceItem?.map((item: any) => (

@@ -33,8 +33,8 @@ export default function ProfilePage() {
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const _getSkills = async () => {
-    setIsLoading(true)
+  const _getSkills = async (disableLoading?: boolean) => {
+    setIsLoading(disableLoading ? false : true)
     const res = await getSkills()
     if (res.status) {
       setListSkill(res.data.skill)
@@ -85,7 +85,7 @@ export default function ProfilePage() {
 
   const fetchList = () => {
     const update = () => {
-      _getSkills()
+      _getSkills(true)
       if (currentItem.current.skillId) {
         handleClickItem(currentItem.current)
       }
