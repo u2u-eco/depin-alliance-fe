@@ -6,13 +6,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
-interface ICustomNavbar {
-  setHeightNav: (height: number) => void
-}
-const CustomNavbar = ({ setHeightNav }: ICustomNavbar) => {
+
+const CustomNavbar = () => {
   const pathName = usePathname()
   const navRef = useRef<any>(null)
-  const currentLeague = useCommonStore((state) => state.currentLeague)
+  const { currentLeague, setHeightNav } = useCommonStore()
   const listMenu = [
     { id: 1, link: '/shop', title: 'shop' },
     { id: 2, link: '/mission', title: 'mission' },

@@ -8,15 +8,17 @@ interface LoaderProps {
     wrapper?: ClassValue
     icon?: ClassValue
   }
+  style?: any
 }
 
-const Loader = ({ classNames }: LoaderProps) => {
+const Loader = ({ classNames, style }: LoaderProps) => {
   return (
     <div
       className={cn(
         'flex items-center justify-center w-full h-full  bg-transparent',
         classNames?.wrapper
       )}
+      style={style}
     >
       <IconLoader className={cn('size-6 text-green-600 animate-spin', classNames?.icon)} />
     </div>

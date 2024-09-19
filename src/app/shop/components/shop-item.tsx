@@ -18,12 +18,13 @@ interface IShopItem {
 export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { getUserInfo, token, userInfo } = useCommonStore()
+  const { getUserInfo, token, userInfo, heightNav } = useCommonStore()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
+  const [maxHeightListContent, setMaxHeightListContent] = useState<string>('60vh')
   const refList = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [loadingButton, setLoadingButton] = useState(false)
@@ -107,6 +108,14 @@ export default function ShopItem({ filterOptions }: IShopItem) {
     setPage(1)
   }, [filterOptions])
 
+  useEffect(() => {
+    const offsetTop = refList.current?.getBoundingClientRect()?.top
+    if (offsetTop) {
+      const heightTopBottom = offsetTop + heightNav + 40
+      setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
+    }
+  }, [])
+
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
   return (
@@ -116,13 +125,15 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -25, opacity: 0 }}
         transition={{ duration: 0.35 }}
-        className="max-h-[60vh] overflow-y-auto hide-scrollbar"
+        style={{ maxHeight: maxHeightListContent }}
+        className="overflow-y-auto hide-scrollbar"
         ref={refList}
       >
         {isLoading && (
           <Loader
+            style={{ height: maxHeightListContent }}
             classNames={{
-              wrapper: 'h-[60vh] z-[1] left-[0] absolute bg-black/30',
+              wrapper: ' z-[1] left-[0] absolute bg-black/30',
               icon: 'w-[45px] h-[45px] text-white'
             }}
           />
@@ -228,7 +239,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
                     }}
                   >
                     <IconMinusCircle
-                      className={`text-green-500 size-5 xs:size-6 ${amount === 1 ? 'opacity-30' : ''}`}
+                      className={`size-5 xs:size-6 ${amount === 1 ? 'text-green-800' : 'text-green-500'}`}
                     />
                   </div>
                   <span className="text-green-100 text-center text-[15px] xs:text-base 2xs:text-lg font-semibold min-w-[22px]">

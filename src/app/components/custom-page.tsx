@@ -1,10 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
+import useCommonStore from '@/stores/commonStore'
+import { useTelegram } from '@/hooks/useTelegram'
 
 interface Pageprops {
   children: ReactNode
@@ -16,7 +18,8 @@ interface Pageprops {
 }
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
-  const [heightNav, setHeightNav] = useState<number>(72)
+  const { heightNav, safeAreaBottom } = useCommonStore()
+  const { webApp } = useTelegram()
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -40,7 +43,13 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     <AnimatePresence>
       <div className={cn('section', classNames?.wrapper)}>
         <div
-          style={{ height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh' }}
+          style={{
+            height: isShowSidebar
+              ? `calc(100vh - ${heightNav}px)`
+              : webApp?.viewportStableHeight
+                ? webApp.viewportStableHeight + safeAreaBottom
+                : webApp?.viewportStableHeight
+          }}
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col hide-scrollbar`}
         >
           <div className=" absolute"></div>
@@ -54,6 +63,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
             >
               {isShowInfo && <Info />}
               <div
+                id="jsWrapContainer"
                 className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
               >
                 {children}
@@ -62,7 +72,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
           </div>
         </div>
       </div>
-      {isShowSidebar && <CustomNavbar setHeightNav={setHeightNav} />}
+      {isShowSidebar && <CustomNavbar />}
     </AnimatePresence>
   )
 }

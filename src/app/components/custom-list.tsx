@@ -75,7 +75,7 @@ const CustomList = ({
               <div className="text-body text-base tracking-[-1px]">{item.text}</div>
             ) : (
               type !== 'shop' && (
-                <div className="flex items-center flex-wrap space-x-2 xs:space-x-3 2xs:space-x-4 text-[13px] xs:text-sm">
+                <div className="flex items-center flex-wrap space-x-2 xs:space-x-2.5 2xs:space-x-3 text-[13px] xs:text-sm">
                   {item.miningPower === 0 || (pointKey && item[pointKey]) ? (
                     <div className="flex items-center space-x-1">
                       <img

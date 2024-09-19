@@ -1,14 +1,25 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 // import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
 import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
+import useCommonStore from '@/stores/commonStore'
 export default function Layout({ children }: any) {
+  const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
+  useEffect(() => {
+    const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
+      '--sab'
+    )
+    if (_safeAreaBottom) {
+      const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
+      setSafeAreaBottom(_safeAreaBottomNumber)
+    }
+  }, [])
   return (
     <>
       <Toaster

@@ -45,18 +45,18 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
 
   const getIconMission = () => {
     if (done) {
-      return <IconCheckCircle className="text-green-800" />
+      return <IconCheckCircle className="text-green-800 size-full" />
     } else {
       switch (status) {
         case LIST_STATUS_MISSION.CHECK:
         case 'VERIFIED':
-          return <IconCheck className="text-green-500" />
+          return <IconCheck className="text-green-500 size-full" />
         case LIST_STATUS_MISSION.VERIFY:
-          return <IconLoader className="text-yellow-200" />
+          return <IconLoader className="text-yellow-200 size-full" />
         case LIST_STATUS_MISSION.LINK:
-          return <IconOpenLink className="text-yellow-500" />
+          return <IconOpenLink className="text-yellow-500 size-full" />
         default:
-          return <IconOpenLink className="text-yellow-500" />
+          return <IconOpenLink className="text-yellow-500 size-full" />
       }
     }
   }
@@ -121,7 +121,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
           {children}
         </div>
       </div>
-      <div className="mr-2 xs:mr-3">
+      <div className="ml-1 xs:ml-2 mr-1 xs:mr-2 2xs:mr-3">
         {type === LIST_TYPE.SKILL ? (
           <>
             {item.timeWaiting > Date.now() ? (
@@ -140,16 +140,16 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
             )}
           </>
         ) : (
-          <div className="cursor-pointer size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8">
+          <div className="cursor-pointer size-6 xs:size-7 2xs:size-[30px] min-w-6 xs:min-w-7 2xs:min-w-[30px]">
             {type === 'mission' || type === 'partners' ? (
               getIconMission()
             ) : type === 'invite' ? (
-              // <IconUserAdd gradient />
+              // <IconUserAdd className="size-full" gradient />
               <></>
             ) : type === 'league' ? (
-              <IconOpenLink className="size-7 xs:size-8 2xs:size-9" gradient />
+              <IconOpenLink className="size-full" gradient />
             ) : (
-              <IconPlus gradient />
+              <IconPlus className="size-full" gradient />
             )}
           </div>
         )}
