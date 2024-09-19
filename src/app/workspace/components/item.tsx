@@ -56,6 +56,7 @@ export default function Item() {
     type: ''
   })
   const refList = useRef<any>()
+  const refListScroll = useRef<any>()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const {
     isOpen: isOpenFilter,
@@ -114,7 +115,6 @@ export default function Item() {
 
   const updateAmountSell = (amount: number) => {
     amountSell.current = amount
-    console.log(currentItem.current.price)
     setTotalPriceSell((currentItem.current.price / 2) * amount)
   }
 
@@ -135,8 +135,14 @@ export default function Item() {
         toast.success(
           <CustomToast type="success" title="Sell successfully!" point={totalPriceSell} />
         )
-        setPage(1)
-        refetch && refetch()
+        if (page === 1) {
+          refetch && refetch()
+        } else {
+          setPage(1)
+          if (refListScroll.current) {
+            refListScroll.current?.scrollTo(0, 0)
+          }
+        }
         getUserInfo()
         onClose()
       }
@@ -203,8 +209,8 @@ export default function Item() {
   }, [isInView])
 
   useEffect(() => {
-    if (refList.current) {
-      refList.current?.scrollTo(0, 0)
+    if (refListScroll.current) {
+      refListScroll.current?.scrollTo(0, 0)
     }
     setPage(1)
   }, [filterOptions])
@@ -252,6 +258,7 @@ export default function Item() {
         <div className="relative mt-8" ref={refList} style={{ minHeight: maxHeightListContent }}>
           <div className=" absolute"></div>
           <div
+            ref={refListScroll}
             className="overflow-y-auto hide-scrollbar"
             style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
           >
