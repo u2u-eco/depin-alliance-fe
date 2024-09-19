@@ -14,6 +14,7 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useTelegram } from '@/hooks/useTelegram'
+import NotificationModal from './notification'
 interface IShopItem {
   filterOptions: IFilterDevice
 }
@@ -32,6 +33,12 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   const refListScroll = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [loadingButton, setLoadingButton] = useState(false)
+  const {
+    isOpen: isOpenNotification,
+    onOpen: onOpenNotification,
+    onClose: onCloseNotification,
+    onOpenChange: onOpenChangeNotification
+  } = useDisclosure()
   const { isLoading } = useQuery({
     queryKey: [
       'getListDevice',
@@ -85,6 +92,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           setAmount(1)
           getUserInfo()
           onClose()
+          // onOpenNotification()
         }
         setLoadingButton(false)
       }
@@ -289,6 +297,13 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           </div>
         </div>
       </CustomModal>
+      <NotificationModal
+        isOpen={isOpenNotification}
+        onOpen={onOpenNotification}
+        onClose={onCloseNotification}
+        onOpenChange={onOpenChangeNotification}
+        item={currentItem.current}
+      />
     </>
   )
 }
