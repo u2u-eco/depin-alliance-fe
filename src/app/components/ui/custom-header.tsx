@@ -5,12 +5,16 @@ import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
   title: string
+  cb?: () => void
 }
 
-export const CustomHeader = ({ title }: HeaderProps) => {
+export const CustomHeader = ({ title, cb }: HeaderProps) => {
   const router = useRouter()
 
   const handleBack = () => {
+    if (cb) {
+      cb()
+    }
     router.back()
   }
 

@@ -139,6 +139,7 @@ export default function Item() {
             point={totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
           />
         )
+        setPage(1)
         refetch && refetch()
         getUserInfo()
         onClose()

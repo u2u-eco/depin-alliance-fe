@@ -172,7 +172,7 @@ export default function QuizPage() {
           />
         )}
         <div className="space-y-8">
-          <CustomHeader title="IQ QUIZ" />
+          <CustomHeader title="IQ QUIZ" cb={() => setCurrentMission(null)} />
           {currentMissionQuiz && !isLoadingFake && (
             <div>
               <div className="relative">
