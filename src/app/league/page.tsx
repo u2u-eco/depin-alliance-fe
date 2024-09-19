@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
 import CongratulationModal from './components/congratulation'
+import CustomInputSearch from '../components/ui/custom-input-search'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -142,7 +143,9 @@ export default function LeaguePage() {
             </div>
           </div>
         </div>
-
+        <div className="mt-6 xs:mt-7 2xs:mt-8">
+          <CustomInputSearch placeholder="Search league..." />
+        </div>
         {listItem.length > 0 ? (
           <div>
             <CustomList

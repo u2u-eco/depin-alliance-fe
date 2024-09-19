@@ -9,6 +9,7 @@ import RankingMember from './components/ranking-member'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
+import CustomInputSearch from '@/app/components/ui/custom-input-search'
 
 const MEMBER_TYPE = {
   ALL: 'all',
@@ -91,6 +92,7 @@ export default function MemberPage() {
                   </motion.div>
                 ))}
               </div>
+              <CustomInputSearch placeholder="Search member..." />
               {activeType === MEMBER_TYPE.RANKING ? (
                 <RankingMember />
               ) : (
