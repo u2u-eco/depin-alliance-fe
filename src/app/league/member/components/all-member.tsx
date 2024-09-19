@@ -65,15 +65,14 @@ const AllMember = ({ setTotalMember }: IMember) => {
     onOpen()
   }
   const handleUpdateData = async (index: number) => {
-    const currentPage = Math.floor(index / PAGE_SIZE)
     setIsLoading(true)
     const res: any = await getListMemberOfLeague({
-      page: currentPage + 1,
-      size: PAGE_SIZE,
+      page: 1,
+      size: page * PAGE_SIZE,
       username: search
     })
     if (res.status) {
-      dataList.current.splice(currentPage * PAGE_SIZE, PAGE_SIZE, ...res.data)
+      dataList.current = res.data
       setTotalMember(res.pagination?.totalRecord || 0)
       setListItem(dataList.current)
     }
@@ -118,40 +117,41 @@ const AllMember = ({ setTotalMember }: IMember) => {
   return (
     <>
       <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
-
-      {isLoading && (
-        <Loader
-          classNames={{
-            wrapper: 'z-[1] left-[0] absolute bg-black/30 h-[100vh] top-0',
-            icon: 'w-[45px] h-[45px] text-white'
-          }}
-        />
-      )}
-      {listItem.length === 0 && !isLoading ? (
-        <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
-      ) : (
-        <motion.div
-          initial={{ y: 25, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -25, opacity: 0 }}
-          transition={{ duration: 0.35 }}
-          key="all"
-        >
-          <div className="flex flex-col space-y-3 2xs:space-y-4">
-            {listItem.map((item: any, index: number) => (
-              <MemberItem
-                key={index}
-                item={item}
-                type="member"
-                handleKick={(item) => handleCancel(item, index)}
-              />
-            ))}
-            <div ref={scrollTrigger} className="text-[transparent]">
-              Loading...
+      <div>
+        {listItem.length === 0 && !isLoading ? (
+          <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
+        ) : (
+          <motion.div
+            initial={{ y: 25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -25, opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            key="all"
+          >
+            <div className="flex flex-col space-y-3 2xs:space-y-4">
+              {listItem.map((item: any, index: number) => (
+                <MemberItem
+                  key={index}
+                  item={item}
+                  type="member"
+                  handleKick={(item) => handleCancel(item, index)}
+                />
+              ))}
+              <div ref={scrollTrigger} className="text-[transparent]">
+                Loading...
+              </div>
             </div>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'z-[1] left-[0] absolute bg-black/30  top-0',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
+      </div>
       <CustomModal title="Kick member" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">

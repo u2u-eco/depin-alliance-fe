@@ -26,12 +26,14 @@ import { CustomHeader } from '@/app/components/ui/custom-header'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useDisclosure } from '@nextui-org/react'
 import SpecialBoxModal from '../components/special-box'
+import useCommonStore from '@/stores/commonStore'
 
 export default function QuizPage() {
   const router = useRouter()
   const [listChecked, setChecked] = useState<Array<string>>([])
   const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
+  const { getUserInfo } = useCommonStore()
   const { currentMissionQuiz, setCurrentMission } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
@@ -104,6 +106,7 @@ export default function QuizPage() {
               point={currentMissionQuiz?.point}
             />
           )
+          getUserInfo()
           handleBack()
         }
         setIsLoading(false)

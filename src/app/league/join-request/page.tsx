@@ -56,12 +56,11 @@ export default function JoinRequestPage() {
   })
 
   const handleUpdateData = async (index: number) => {
-    const currentPage = Math.floor(index / PAGE_SIZE)
     setIsLoading(true)
-    const res: any = await getListJoinRequest({ page: currentPage + 1, size: PAGE_SIZE })
+    const res: any = await getListJoinRequest({ page: 1, size: PAGE_SIZE * page })
     if (res.status) {
       setTotal(res?.pagination?.totalRecord || 0)
-      dataList.current.splice(currentPage * PAGE_SIZE, PAGE_SIZE, ...res.data)
+      dataList.current = res.data
       setListItem(dataList.current)
     }
     setIsLoading(false)

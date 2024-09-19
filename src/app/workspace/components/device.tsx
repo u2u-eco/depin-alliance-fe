@@ -25,6 +25,7 @@ import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
 import CustomToast from '@/app/components/ui/custom-toast'
+import Loader from '@/app/components/ui/loader'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -35,7 +36,7 @@ const DEVICE_TYPE = {
 }
 
 export default function Device() {
-  const { token, userConfig, getUserConfig, getUserInfo } = useCommonStore()
+  const { userConfig, getUserConfig, getUserInfo } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -49,11 +50,14 @@ export default function Device() {
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
-  const { data: listDevice, refetch: refetchListDevice } = useQuery({
+  const {
+    data: listDevice,
+    isLoading,
+    refetch: refetchListDevice
+  } = useQuery({
     queryKey: ['fetchListDevice'],
     queryFn: getListDevice,
-    ...QUERY_CONFIG,
-    enabled: Boolean(token)
+    ...QUERY_CONFIG
   })
 
   const getDeviceItemDetail = async (index: number) => {
@@ -228,7 +232,15 @@ export default function Device() {
       : false
   return (
     <>
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex flex-col justify-between h-full ">
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'z-[1] min-h-[300px] left-[0] absolute  top-0',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         <div className="space-y-4">
           {listDevice?.data.map((item: IUserDeviceItem) => {
             return (

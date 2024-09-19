@@ -29,6 +29,8 @@ const ITEM_TYPE = {
   SPECIAL: 'SPECIAL'
 }
 
+const PAGE_SIZE = 12
+
 export default function Item() {
   const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
   const maxPage = useRef<number>(0)
@@ -84,7 +86,7 @@ export default function Item() {
     queryFn: async () => {
       try {
         setIsLoading(true)
-        const res: any = await listUserItemDevice({ ...filterOptions, page })
+        const res: any = await listUserItemDevice({ ...filterOptions, page, size: PAGE_SIZE })
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
@@ -126,6 +128,20 @@ export default function Item() {
     onOpen()
   }
 
+  const handleUpdateData = async () => {
+    setIsLoading(true)
+    const res: any = await listUserItemDevice({
+      ...filterOptions,
+      page: 1,
+      size: page * PAGE_SIZE
+    })
+    if (res.status) {
+      dataList.current = res.data
+      setListDeviceItem(dataList.current)
+    }
+    setIsLoading(false)
+  }
+
   const handleSell = async () => {
     setLoadingButton(true)
     if (loadingButton) return
@@ -135,14 +151,7 @@ export default function Item() {
         toast.success(
           <CustomToast type="success" title="Sell successfully!" point={totalPriceSell} />
         )
-        if (page === 1) {
-          refetch && refetch()
-        } else {
-          setPage(1)
-          if (refListScroll.current) {
-            refListScroll.current?.scrollTo(0, 0)
-          }
-        }
+        handleUpdateData()
         getUserInfo()
         onClose()
       }
@@ -263,7 +272,7 @@ export default function Item() {
             style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
           >
             <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
-              {listDeviceItem?.map((item: any) => (
+              {listDeviceItem?.map((item: any, index: number) => (
                 <div
                   key={item.code}
                   className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
