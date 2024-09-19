@@ -1,5 +1,5 @@
 import CustomModal from '@/app/components/custom-modal'
-import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
+import { IconCheckCircle, IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -21,6 +21,7 @@ import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import { useTelegram } from '@/hooks/useTelegram'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -131,7 +132,13 @@ export default function Item() {
     try {
       const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
       if (res.status) {
-        toast.success('Sell item successfully!')
+        toast.success(
+          <CustomToast
+            type="success"
+            title="Sell successfully!"
+            point={totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+          />
+        )
         refetch && refetch()
         getUserInfo()
         onClose()
@@ -146,7 +153,7 @@ export default function Item() {
     if (paramUseKey.current && !disableBtnSpecial) {
       specialItem.current = []
       if (userInfo && userInfo?.point < useKey) {
-        toast.error('User point not enough!')
+        toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
       onOpenSpecial()
@@ -349,7 +356,7 @@ export default function Item() {
                   className={activeType === ITEM_TYPE.INFO ? 'space-y-2 xs:space-y-3' : 'space-y-2'}
                 >
                   <p
-                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px]'}`}
+                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-base xs:text-xl 2xs:text-2xl !leading-[20px] xs:!leading-[24px] 2xs:!leading-[28px]' : 'text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px]'}`}
                   >
                     {currentItem.current?.name}
                   </p>
@@ -380,7 +387,7 @@ export default function Item() {
                               <IconPoint className="size-4" />
                               <span className="text-primary font-semibold leading-[16px]">
                                 {currentItem.current?.miningPower
-                                  ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
+                                  ? `${formatNumber(currentItem.current?.miningPower * currentItem.current?.totalItem, 0, 2)}/h`
                                   : null}
                               </span>
                             </div>

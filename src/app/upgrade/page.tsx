@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { getSkillInfo, getSkills, updateSkill } from '@/services/user'
 import { ISkillItem } from '@/interfaces/i.user'
 import { useSearchParams } from 'next/navigation'
+import CustomToast from '../components/ui/custom-toast'
 
 const UPGRADE_TYPE = {
   DEVICE: 'device',
@@ -85,7 +86,7 @@ export default function UpgradePage() {
   const handleUpdateSkill = async (skillId: number) => {
     const res: any = await updateSkill(skillId)
     if (res.status) {
-      toast.success('Level Up successfully!')
+      toast.success(<CustomToast type="success" title="Level Up successfully!" />)
       _getSkills()
       currentItem.current = {}
       onClose()

@@ -2,7 +2,7 @@
 
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
-import { IconPoint } from '@/app/components/icons'
+import { IconCheckCircle, IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
@@ -23,6 +23,7 @@ import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -72,7 +73,7 @@ export default function Device() {
     try {
       const res = await addItem(currentIndex.current, activeItem)
       if (res.status) {
-        toast.success('Equip item successfully!')
+        toast.success(<CustomToast type="success" title="Equip item successfully!" />)
         setActiveItem(0)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
@@ -90,7 +91,7 @@ export default function Device() {
     try {
       const res = await removeItem(detailDeviceItem.current.id)
       if (res.status) {
-        toast.success('Unequipped successfully!')
+        toast.success(<CustomToast type="success" title="Unequipped successfully!" />)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
         getUserInfo()
@@ -111,7 +112,7 @@ export default function Device() {
           index: currentDevice.current.index
         })
         if (res.status) {
-          toast.success('Device name changed successfully!')
+          toast.success(<CustomToast type="success" title="Device name changed successfully!" />)
           currentName.current = ''
           onClose()
           refetchListDevice()
@@ -189,7 +190,7 @@ export default function Device() {
     const res = await getNewDevice()
     try {
       if (res.status) {
-        toast.success('Buy device successfully!!')
+        toast.success(<CustomToast type="success" title="Buy device successfully!" />)
         refetchListDevice()
         getUserInfo()
         getUserConfig()

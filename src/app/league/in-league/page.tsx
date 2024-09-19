@@ -3,6 +3,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { IconChat, IconClipboard, IconLeave, IconPoint } from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { leaveLeague, userLeague } from '@/services/league'
@@ -44,7 +45,7 @@ export default function InLeaguePage() {
       const res = await leaveLeague()
       if (res.status) {
         _getUserLeague()
-        toast.success('Leave League successfully')
+        toast.success(<CustomToast type="success" title="Leave League successfully!" />)
         router.push('/league')
       }
       setTimeout(() => {

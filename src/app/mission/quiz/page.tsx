@@ -2,7 +2,14 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconHome, IconPoint, IconQuiz } from '@/app/components/icons'
+import {
+  IconCheckCircle,
+  IconChevron,
+  IconCloseHexagon,
+  IconHome,
+  IconPoint,
+  IconQuiz
+} from '@/app/components/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -16,6 +23,7 @@ import { claimTask, verifyMissionQuiz } from '@/services/missions'
 import { toast } from 'sonner'
 import Loader from '@/app/components/ui/loader'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 export default function QuizPage() {
   const router = useRouter()
@@ -78,7 +86,15 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
-          toast.success('Mission is completed')
+          toast.success(
+            <CustomToast
+              type="success"
+              title="Mission is completed!"
+              point={
+                currentMissionQuiz?.point && formatNumber(currentMissionQuiz?.point || 0, 0, 0)
+              }
+            />
+          )
           handleBack()
         }
         setIsLoading(false)
@@ -121,6 +137,7 @@ export default function QuizPage() {
         sendQuiz()
       } else {
         setIsLoading(false)
+        toast.error(<CustomToast type="error" title="Your answer is wrong. Try again." />)
       }
     }, 500)
   }

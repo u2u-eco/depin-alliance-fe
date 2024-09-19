@@ -33,27 +33,27 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
       transition={{ duration: 0.35 }}
     >
       <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
-      <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-center space-x-20">
-        <div className="space-y-3">
+      <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between space-x-3 py-3 px-4 xs:px-6 2xs:px-8">
+        <div className="space-y-2 xs:space-y-3">
           <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
-          <div className="flex items-center space-x-2">
-            <IconPoint className="size-7" />
-            <span className="text-green-500 text-lg font-semibold">
+          <div className="flex items-center space-x-1.5 xs:space-x-2">
+            <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+            <span className="text-green-500 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">
               {item.miningPower ? `${formatNumber(item.miningPower * amount, 0, 2)}/h` : ''}
             </span>
           </div>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2 xs:space-y-3">
           <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
-          <div className="flex items-center space-x-2 xs:space-x-4 2xs:space-x-6">
+          <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(-1)}>
               <IconMinusCircle
                 className={`size-5 xs:size-6 ${amount === 1 ? 'text-green-800' : 'text-green-500'}`}
               />
             </div>
-            <span className="text-green-100 text-lg font-semibold">{amount}</span>
+            <span className="text-green-100 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">{amount}</span>
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(1)}>
-              <IconPlusCircle className="text-green-500 size-5 xs:size-6" />
+              <IconPlusCircle className={`size-5 xs:size-6 ${amount === item.totalItem ? 'text-green-800' : 'text-green-500'}`} />
             </div>
           </div>
         </div>

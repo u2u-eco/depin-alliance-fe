@@ -1,6 +1,7 @@
 import CustomButton from '@/app/components/button'
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
+import CustomToast from '@/app/components/ui/custom-toast'
 import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
@@ -58,7 +59,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setVerified(true)
       refetch && refetch()
     } else {
-      toast.error('Mission not completed')
+      toast.error(<CustomToast type="error" title="Mission not completed!" />)
     }
     setLoadingButton(false)
   }
@@ -87,7 +88,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         }
       }
     } catch (ex: any) {
-      toast.error(ex.message || 'Error')
+      toast.error(<CustomToast type="error" title={ex.message || 'Error'} />)
       console.log(ex)
     }
   }
@@ -99,7 +100,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       if (currentItem.current.box > 0) {
         onOpenSpecial()
       } else {
-        toast.success('Mission is completed')
+        toast.success(<CustomToast type="success" title="Mission is completed!" />)
       }
       refetch && refetch()
       getUserInfo()

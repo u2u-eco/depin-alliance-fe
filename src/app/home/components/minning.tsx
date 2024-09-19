@@ -6,6 +6,9 @@ import useCommonStore from '@/stores/commonStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
 import Loader from '@/app/components/ui/loader'
+import { toast } from 'sonner'
+import { IconCheckCircle, IconPoint } from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const HOME_TYPE = {
   START: 'start',
@@ -79,6 +82,13 @@ export default function Mining() {
     try {
       const res = await claim()
       if (res.status) {
+        toast.success(
+          <CustomToast
+            type="success"
+            title="Claim successfully"
+            point={res?.data?.point && formatNumber(res?.data?.point, 0, 0)}
+          />
+        )
         if (res.data.bonusReward > 0) {
           setBonusReward(res.data.bonusReward)
           onOpen()
@@ -204,8 +214,8 @@ export default function Mining() {
             {isLoading && (
               <Loader
                 classNames={{
-                  icon: 'text-white',
-                  wrapper: 'bg-transparent max-w-[20px] ml-1'
+                  icon: 'text-white size-full',
+                  wrapper: 'bg-transparent !size-5 ml-1'
                 }}
               />
             )}

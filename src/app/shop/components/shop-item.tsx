@@ -12,6 +12,7 @@ import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
+import CustomToast from '@/app/components/ui/custom-toast'
 interface IShopItem {
   filterOptions: IFilterDevice
 }
@@ -77,7 +78,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         }
         const res: any = await buyDeviceItem(data)
         if (res.status) {
-          toast.success('Buy successfully!')
+          toast.success(<CustomToast type="success" title="Buy successfully!" />)
           setAmount(1)
           getUserInfo()
           onClose()
