@@ -23,8 +23,8 @@ export default function JoinRequestPage() {
   const dataList = useRef<IJoinRequest[]>([])
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  const { data: listJoinRequest } = useQuery({
+  const [total, setTotal] = useState<number>(0)
+  useQuery({
     queryKey: ['getListDevice', page],
     queryFn: async () => {
       try {
@@ -33,6 +33,7 @@ export default function JoinRequestPage() {
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
+        setTotal(res?.pagination?.totalRecord || 0)
         if (page !== res.pagination.page) {
           setIsLoading(false)
           return []
@@ -55,8 +56,9 @@ export default function JoinRequestPage() {
   const handleUpdateData = async (index: number) => {
     const currentPage = Math.floor(index / PAGE_SIZE)
     setIsLoading(true)
-    const res = await getListJoinRequest({ page: currentPage + 1, size: PAGE_SIZE })
+    const res: any = await getListJoinRequest({ page: currentPage + 1, size: PAGE_SIZE })
     if (res.status) {
+      setTotal(res?.pagination?.totalRecord || 0)
       dataList.current.splice(currentPage * PAGE_SIZE, PAGE_SIZE, ...res.data)
       setListItem(dataList.current)
     }
@@ -97,7 +99,7 @@ export default function JoinRequestPage() {
           <CustomHeader title="JOIN REQUEST" />
           <div className="space-y-5 xs:space-y-6">
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              ALL REQUESTS ({listJoinRequest?.pagination?.totalRecord || 0})
+              ALL REQUESTS ({total})
             </p>
             {isLoading && (
               <Loader

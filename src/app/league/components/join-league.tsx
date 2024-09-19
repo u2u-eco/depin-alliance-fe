@@ -55,11 +55,7 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
           </p> */}
         </div>
       </div>
-      <CustomButton
-        title="JOIN LEAGUE"
-        disable={currentLeague?.isPendingRequest}
-        onAction={handleJoin}
-      />
+      <CustomButton title="JOIN LEAGUE" onAction={handleJoin} />
     </>
   )
 }
