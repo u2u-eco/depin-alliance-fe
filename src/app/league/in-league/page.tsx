@@ -34,7 +34,6 @@ export default function InLeaguePage() {
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest
   })
-  console.log('🚀 ~ InLeaguePage ~ totalJoinRequest:', totalJoinRequest)
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       window.open(

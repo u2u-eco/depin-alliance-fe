@@ -3,6 +3,7 @@ import { IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { joinLeague } from '@/services/league'
+import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 import { useState } from 'react'
 interface IJoinLeague {
@@ -11,8 +12,10 @@ interface IJoinLeague {
   joinCb: () => void
 }
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
+  const { currentLeague } = useCommonStore()
   const [loadingButton, setLoadingButton] = useState(false)
   const handleJoin = async () => {
+    if (currentLeague?.isPendingRequest) return
     if (item?.code) {
       setLoadingButton(true)
       if (loadingButton) return
@@ -52,7 +55,11 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
           </p> */}
         </div>
       </div>
-      <CustomButton title="JOIN LEAGUE" onAction={handleJoin} />
+      <CustomButton
+        title="JOIN LEAGUE"
+        disable={currentLeague?.isPendingRequest}
+        onAction={handleJoin}
+      />
     </>
   )
 }

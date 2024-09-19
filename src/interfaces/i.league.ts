@@ -14,6 +14,7 @@ export interface IUserLeague {
   isOwner: boolean
   name: string
   level: number
+  isPendingRequest: boolean
   totalContributors: number
   totalMining: number
 }

@@ -64,7 +64,9 @@ export default function LeaguePage() {
     const res = await userLeague()
     if (res.status && res.data) {
       setCurrentLeague({ league: res.data })
-      router.push('/league/in-league')
+      if (!res.data.isPendingRequest) {
+        router.push('/league/in-league')
+      }
     }
   }
 
