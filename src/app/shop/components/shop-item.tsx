@@ -92,7 +92,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
           setAmount(1)
           getUserInfo()
           onClose()
-          onOpenNotification()
+          // onOpenNotification()
         }
         setLoadingButton(false)
       }
@@ -302,6 +302,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         onOpen={onOpenNotification}
         onClose={onCloseNotification}
         onOpenChange={onOpenChangeNotification}
+        item={currentItem.current}
       />
     </>
   )
