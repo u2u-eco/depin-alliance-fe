@@ -9,6 +9,7 @@ interface ItemProps {
   item: IJoinRequest
   handleCheck?: (id: number) => void
   handleCancel?: (id: number) => void
+  handleKick?: (item: IJoinRequest) => void
 }
 
 const ITEM_TYPE = {
@@ -16,7 +17,7 @@ const ITEM_TYPE = {
   MEMBER: 'member'
 }
 
-const MemberItem = ({ item, type, handleCheck, handleCancel }: ItemProps) => {
+const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemProps) => {
   return (
     <div className="relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent after:border-b-green-900 after:border-r-green-900">
       <div className="relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 flex items-center justify-between">
@@ -57,7 +58,7 @@ const MemberItem = ({ item, type, handleCheck, handleCancel }: ItemProps) => {
           <div
             className="cursor-pointer"
             onClick={() => {
-              handleCancel && handleCancel(item.userId)
+              handleKick ? handleKick(item) : handleCancel && handleCancel(item.userId)
             }}
           >
             <IconClose

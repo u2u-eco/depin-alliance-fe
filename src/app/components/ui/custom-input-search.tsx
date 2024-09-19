@@ -4,9 +4,10 @@ import { IconClose, IconSearch } from '../icons'
 
 interface InputProps {
   placeholder: string
+  onValueChange?: (value: string) => void
 }
 
-const CustomInputSearch = ({ placeholder }: InputProps) => {
+const CustomInputSearch = ({ placeholder, onValueChange }: InputProps) => {
   return (
     <>
       <Input
@@ -21,6 +22,7 @@ const CustomInputSearch = ({ placeholder }: InputProps) => {
             'font-geist text-[15px] xs:text-base tracking-[-1px] !leading-[20px] !text-title placeholder:text-body/50 group-data-[has-value=true]:text-title !pl-1.5 xs:!pl-2 !pr-6'
         }}
         placeholder={placeholder}
+        onValueChange={onValueChange}
         startContent={
           <IconSearch className="text-green-500 size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8" />
         }

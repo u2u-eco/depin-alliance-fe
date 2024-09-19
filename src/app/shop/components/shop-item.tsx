@@ -130,15 +130,6 @@ export default function ShopItem({ filterOptions }: IShopItem) {
         className="overflow-y-auto hide-scrollbar"
         ref={refList}
       >
-        {isLoading && (
-          <Loader
-            style={{ height: maxHeightListContent }}
-            classNames={{
-              wrapper: ' z-[1] left-[0] absolute bg-black/30',
-              icon: 'w-[45px] h-[45px] text-white'
-            }}
-          />
-        )}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
           {listItem?.map((item: any, index: number) => (
             <div
@@ -168,6 +159,14 @@ export default function ShopItem({ filterOptions }: IShopItem) {
             Loading...
           </div>
         </div>
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: ' z-[1] left-[0] absolute bg-black/30',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
       </motion.div>
       <CustomModal
         title="BUY ITEM"

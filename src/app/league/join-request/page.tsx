@@ -14,6 +14,7 @@ import { IJoinRequest } from '@/interfaces/i.league'
 import { toast } from 'sonner'
 import { PAGE_SIZE } from '@/constants'
 import Loader from '@/app/components/ui/loader'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 export default function JoinRequestPage() {
   const maxPage = useRef<number>(0)
@@ -65,7 +66,7 @@ export default function JoinRequestPage() {
   const handleApprove = async (id: number, index: number) => {
     const res = await approveJoinLeague(id)
     if (res?.status) {
-      toast.success('Accept member successfully')
+      toast.success(<CustomToast title="Accept member successfully" type="success" />)
       handleUpdateData(index)
     }
   }
@@ -73,7 +74,7 @@ export default function JoinRequestPage() {
   const handleReject = async (id: number, index: number) => {
     const res = await rejectJoinLeague(id)
     if (res?.status) {
-      toast.success('Decline member successfully')
+      toast.success(<CustomToast title="Decline member successfully" type="success" />)
       handleUpdateData(index)
     }
   }

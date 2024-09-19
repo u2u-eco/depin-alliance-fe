@@ -7,10 +7,14 @@ import { useDisclosure } from '@nextui-org/react'
 import { IconPoint } from '@/app/components/icons'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { useQuery } from '@tanstack/react-query'
-import { getListMemberOfLeague } from '@/services/league'
+import { getListMemberOfLeague, kickUserInLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
 import { PAGE_SIZE } from '@/constants'
+import CustomInputSearch from '@/app/components/ui/custom-input-search'
+import { formatNumber } from '@/helper/common'
+import { toast } from 'sonner'
+import CustomToast from '@/app/components/ui/custom-toast'
 interface IMember {
   setTotalMember: (total: number) => void
 }
@@ -20,14 +24,18 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const [page, setPage] = useState<number>(1)
   const [listItem, setListItem] = useState<IJoinRequest[]>([])
   const dataList = useRef<IJoinRequest[]>([])
+  const timeoutSearch = useRef<any>(null)
+  const [search, setSearch] = useState<string>('')
   const [scrollTrigger, isInView] = useInView()
+  const currentUser = useRef<IJoinRequest | null>(null)
+  const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   useQuery({
-    queryKey: ['getListMemberOfLeague', page],
+    queryKey: ['getListMemberOfLeague', page, search],
     queryFn: async () => {
       try {
         setIsLoading(true)
-        const res: any = await getListMemberOfLeague({ page, size: PAGE_SIZE })
+        const res: any = await getListMemberOfLeague({ page, size: PAGE_SIZE, username: search })
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
@@ -50,11 +58,43 @@ const AllMember = ({ setTotalMember }: IMember) => {
       }
     }
   })
-  const handleCancel = () => {
+  const handleCancel = (item: IJoinRequest, index: number) => {
+    currentUser.current = { ...item, index }
     onOpen()
   }
-  const handleKick = () => {
-    onClose()
+  const handleUpdateData = async (index: number) => {
+    const currentPage = Math.floor(index / PAGE_SIZE)
+    setIsLoading(true)
+    const res = await getListMemberOfLeague({
+      page: currentPage + 1,
+      size: PAGE_SIZE,
+      username: search
+    })
+    if (res.status) {
+      dataList.current.splice(currentPage * PAGE_SIZE, PAGE_SIZE, ...res.data)
+      setListItem(dataList.current)
+    }
+    setIsLoading(false)
+  }
+  const handleKick = async () => {
+    if (isLoadingAction) return
+    if (currentUser?.current?.id) {
+      setIsLoadingAction(true)
+      const res = await kickUserInLeague(currentUser.current.id)
+      if (res.status) {
+        handleUpdateData(currentUser.current.index || 0)
+        toast.success(<CustomToast title="Kick member successfully" type="success" />)
+        onClose()
+      }
+      setIsLoadingAction(false)
+    }
+  }
+
+  const handleUpdateText = (text: string) => {
+    clearTimeout(timeoutSearch.current)
+    timeoutSearch.current = setTimeout(() => {
+      setSearch(text)
+    }, 300)
   }
 
   useEffect(() => {
@@ -65,6 +105,8 @@ const AllMember = ({ setTotalMember }: IMember) => {
 
   return (
     <>
+      <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
+
       {isLoading && (
         <Loader
           classNames={{
@@ -85,7 +127,12 @@ const AllMember = ({ setTotalMember }: IMember) => {
         >
           <div className="flex flex-col space-y-3 2xs:space-y-4">
             {listItem.map((item: any, index: number) => (
-              <MemberItem key={index} item={item} type="member" handleCancel={handleCancel} />
+              <MemberItem
+                key={index}
+                item={item}
+                type="member"
+                handleKick={(item) => handleCancel(item, index)}
+              />
             ))}
             <div ref={scrollTrigger} className="text-[transparent]">
               Loading...
@@ -98,7 +145,8 @@ const AllMember = ({ setTotalMember }: IMember) => {
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>
               Are you sure you want to kick this member{' '}
-              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"Hehe"`}</span>?
+              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${currentUser.current?.username}"`}</span>
+              ?
             </p>
           </div>
           <div className="mt-8 mb-10 flex items-center justify-center space-x-3 xs:space-x-4">
@@ -107,17 +155,17 @@ const AllMember = ({ setTotalMember }: IMember) => {
             >
               <img
                 className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                src="/assets/images/league/league-04@2x.png"
+                src={currentUser.current?.avatar || '/assets/images/league/league-04@2x.png'}
                 alt="DePIN Alliance"
               />
             </div>
             <div className="space-y-1.5 xs:space-y-2">
               <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
-                DonCarlo111
+                {currentUser.current?.username}
               </p>
               <div className="flex items-center space-x-1.5 xs:space-x-2">
                 <IconPoint className="size-5 xs:size-6" />
-                <span className="text-primary font-semibold">10,000/h</span>
+                <span className="text-primary font-semibold">{`${formatNumber(currentUser?.current?.miningPower || 0, 0, 2)}/h`}</span>
               </div>
             </div>
           </div>

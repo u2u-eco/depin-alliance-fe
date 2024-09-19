@@ -29,4 +29,6 @@ export interface IJoinRequest {
   userId: number
   username: string
   avatar: string
+  id?: number
+  index?: number
 }

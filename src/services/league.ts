@@ -1,10 +1,19 @@
 import https from '@/constants/https'
 
-export const getListLeague = ({ page, size }: { page?: number; size?: number }) => {
+export const getListLeague = ({
+  page,
+  size,
+  name
+}: {
+  page?: number
+  size?: number
+  name?: string
+}) => {
   return https.get('/league', {
     params: {
       page: page || 1,
-      size: size || 10
+      size: size || 10,
+      name
     }
   })
 }
@@ -56,6 +65,10 @@ export const approveJoinLeague = (id: number) => {
 
 export const rejectJoinLeague = (id: number) => {
   return https.get(`/league/reject/${id}`)
+}
+
+export const kickUserInLeague = (id: number) => {
+  return https.get(`/league/kick/${id}`)
 }
 
 export const getListMemberOfLeague = (params: {
