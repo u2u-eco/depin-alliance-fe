@@ -88,3 +88,7 @@ export const estimateUseKey = (data: IParamUseKey) => {
 export const getUseKey = (data: IParamUseKey) => {
   return https.post('/devices/use-key', data)
 }
+
+export const swapDevice = (removeId: number, addId: number) => {
+  return https.get(`/devices/swap-item/${removeId}/${addId}`)
+}
