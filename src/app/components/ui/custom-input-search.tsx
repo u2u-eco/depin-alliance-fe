@@ -1,6 +1,6 @@
 import { Input } from '@nextui-org/react'
 import React from 'react'
-import { IconSearch } from '../icons'
+import { IconClose, IconSearch } from '../icons'
 
 interface InputProps {
   placeholder: string
@@ -18,12 +18,13 @@ const CustomInputSearch = ({ placeholder }: InputProps) => {
           innerWrapper:
             '[clip-path:_polygon(0_0,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,var(--shape)_100%,0%_calc(100%_-_var(--shape)));] bg-[var(--black)] py-2 px-3 xs:px-4',
           input:
-            'font-geist text-[15px] xs:text-base tracking-[-1px] !leading-[20px] !text-title placeholder:text-body/50 group-data-[has-value=true]:text-title !pl-1 xs:!pl-2'
+            'font-geist text-[15px] xs:text-base tracking-[-1px] !leading-[20px] !text-title placeholder:text-body/50 group-data-[has-value=true]:text-title !pl-1.5 xs:!pl-2 !pr-6'
         }}
         placeholder={placeholder}
         startContent={
           <IconSearch className="text-green-500 size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8" />
         }
+        endContent={<IconClose className="text-body size-5" />}
       />
     </>
   )
