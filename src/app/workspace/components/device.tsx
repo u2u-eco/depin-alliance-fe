@@ -11,7 +11,8 @@ import {
   getListDevice,
   getNewDevice,
   getUserDevice,
-  removeItem
+  removeItem,
+  swapDevice
 } from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
@@ -125,6 +126,14 @@ export default function Device() {
     }
   }
 
+  const handleSwapItem = async () => {
+    const res = await swapDevice(detailDeviceItem.current.id, activeItem)
+    if (res.status) {
+      toast.success(<CustomToast type="success" title="Swap item successfully" />)
+      onClose()
+    }
+  }
+
   const handleConfirm = () => {
     if (loadingButton) return
     switch (activeType) {
@@ -144,12 +153,13 @@ export default function Device() {
         handleAddNewDevice()
         break
       case DEVICE_TYPE.SWAP:
-        onClose()
+        handleSwapItem()
         break
     }
   }
 
   const handleSwap = () => {
+    equipType.current = detailDeviceItem.current.type
     setActiveType(DEVICE_TYPE.SWAP)
   }
 
