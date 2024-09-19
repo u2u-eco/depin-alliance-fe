@@ -108,3 +108,11 @@ export interface IUserLevel {
   pointSkill: number
   isCurrent?: boolean
 }
+
+export interface IRankingItem {
+  avatar: string
+  miningPower: number
+  username: string
+  pointEarned?: number
+  rank?: number
+}
