@@ -63,6 +63,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
             >
               {isShowInfo && <Info />}
               <div
+                id="jsWrapContainer"
                 className={`${isShowInfo ? 'my-8 xs:my-10' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
               >
                 {children}
