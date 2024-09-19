@@ -24,7 +24,7 @@ const CustomToast = ({ type, title, point, description }: ToastProps) => {
         )}
         <p className="text-title tracking-[-1px]">{title}</p>
       </div>
-      {point && (
+      {point ? (
         <>
           <div className="w-full max-w-4 xs:max-w-5 2xs:max-w-6 h-[1px] bg-green-800 ml-auto mr-4 xs:mr-5 2xs:mr-6"></div>
           <div className="flex items-center space-x-1">
@@ -32,7 +32,7 @@ const CustomToast = ({ type, title, point, description }: ToastProps) => {
             <p className="text-green-500">+{point}</p>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   )
 }
