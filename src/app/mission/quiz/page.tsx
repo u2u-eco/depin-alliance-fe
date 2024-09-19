@@ -24,6 +24,8 @@ import { toast } from 'sonner'
 import Loader from '@/app/components/ui/loader'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { useDisclosure } from '@nextui-org/react'
+import SpecialBoxModal from '../components/special-box'
 
 export default function QuizPage() {
   const router = useRouter()
@@ -36,6 +38,12 @@ export default function QuizPage() {
   const refTimeoutCheck = useRef<any>()
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
   const [isLoadingFake, setLoadingFake] = useState<boolean>(true)
+  const {
+    isOpen: isOpenSpecial,
+    onOpen: onOpenSpecial,
+    onOpenChange: onOpenChangeSpecial,
+    onClose: onCloseSpecial
+  } = useDisclosure()
 
   const handleBack = () => {
     setCurrentMission(null)
@@ -86,13 +94,14 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
+          if (currentMissionQuiz.box > 0) {
+            onOpenSpecial()
+          }
           toast.success(
             <CustomToast
               type="success"
               title="Mission is completed!"
-              point={
-                currentMissionQuiz?.point && formatNumber(currentMissionQuiz?.point || 0, 0, 0)
-              }
+              point={currentMissionQuiz?.point}
             />
           )
           handleBack()
@@ -284,6 +293,12 @@ export default function QuizPage() {
           )}
         </div>
       </CustomPage>
+      <SpecialBoxModal
+        isOpen={isOpenSpecial}
+        onOpen={onOpenSpecial}
+        onClose={onCloseSpecial}
+        onOpenChange={onOpenChangeSpecial}
+      />
     </>
   )
 }

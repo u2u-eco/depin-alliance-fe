@@ -86,11 +86,7 @@ export default function Mining() {
           <CustomToast
             type="success"
             title="Claim successfully"
-            point={
-              res?.data?.point && res?.data?.point > 1
-                ? formatNumber(res?.data?.point, 0, 0)
-                : false
-            }
+            point={res?.data?.point && res?.data?.point > 1 ? res?.data?.point : false}
           />
         )
         if (res.data.bonusReward > 0) {

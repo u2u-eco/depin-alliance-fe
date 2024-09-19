@@ -42,7 +42,13 @@ export default function DailyCheckIn() {
     try {
       const res = await checkIn()
       if (res.status) {
-        toast.success(<CustomToast type="success" title="Mission is completed!" />)
+        toast.success(
+          <CustomToast
+            type="success"
+            title="Mission is completed!"
+            point={currentItem.current?.point}
+          />
+        )
         refetch()
         getUserInfo()
         onClose()

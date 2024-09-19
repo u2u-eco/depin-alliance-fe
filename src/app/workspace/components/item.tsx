@@ -133,11 +133,7 @@ export default function Item() {
       const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
       if (res.status) {
         toast.success(
-          <CustomToast
-            type="success"
-            title="Sell successfully!"
-            point={totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
-          />
+          <CustomToast type="success" title="Sell successfully!" point={totalPriceSell} />
         )
         setPage(1)
         refetch && refetch()
