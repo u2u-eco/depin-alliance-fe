@@ -10,16 +10,18 @@ import { useQuery } from '@tanstack/react-query'
 import { getListMemberOfLeague, kickUserInLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
-import { PAGE_SIZE } from '@/constants'
+import { PAGE_SIZE, TELE_URI } from '@/constants'
 import CustomInputSearch from '@/app/components/ui/custom-input-search'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import useCommonStore from '@/stores/commonStore'
 interface IMember {
   setTotalMember: (total: number) => void
 }
 const AllMember = ({ setTotalMember }: IMember) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [listItem, setListItem] = useState<IJoinRequest[]>([])
@@ -65,13 +67,14 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const handleUpdateData = async (index: number) => {
     const currentPage = Math.floor(index / PAGE_SIZE)
     setIsLoading(true)
-    const res = await getListMemberOfLeague({
+    const res: any = await getListMemberOfLeague({
       page: currentPage + 1,
       size: PAGE_SIZE,
       username: search
     })
     if (res.status) {
       dataList.current.splice(currentPage * PAGE_SIZE, PAGE_SIZE, ...res.data)
+      setTotalMember(res.pagination?.totalRecord || 0)
       setListItem(dataList.current)
     }
     setIsLoading(false)
@@ -97,6 +100,15 @@ const AllMember = ({ setTotalMember }: IMember) => {
     }, 300)
   }
 
+  const handleInvite = () => {
+    if (currentLeague?.inviteLink) {
+      window.open(
+        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
+        '_self'
+      )
+    }
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -116,7 +128,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
         />
       )}
       {listItem.length === 0 && !isLoading ? (
-        <NoItem title="No member yet" textLink="INVITE NOW" />
+        <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
       ) : (
         <motion.div
           initial={{ y: 25, opacity: 0 }}

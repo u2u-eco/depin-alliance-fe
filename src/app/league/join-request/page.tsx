@@ -12,12 +12,14 @@ import { approveJoinLeague, getListJoinRequest, rejectJoinLeague } from '@/servi
 import { useInView } from 'react-intersection-observer'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { toast } from 'sonner'
-import { PAGE_SIZE } from '@/constants'
+import { PAGE_SIZE, TELE_URI } from '@/constants'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
+import useCommonStore from '@/stores/commonStore'
 
 export default function JoinRequestPage() {
   const maxPage = useRef<number>(0)
+  const { currentLeague } = useCommonStore()
   const [page, setPage] = useState<number>(1)
   const [listItem, setListItem] = useState<IJoinRequest[]>([])
   const dataList = useRef<IJoinRequest[]>([])
@@ -81,6 +83,15 @@ export default function JoinRequestPage() {
     }
   }
 
+  const handleInvite = () => {
+    if (currentLeague?.inviteLink) {
+      window.open(
+        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
+        '_self'
+      )
+    }
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -110,7 +121,7 @@ export default function JoinRequestPage() {
               />
             )}
             {listItem.length === 0 && !isLoading ? (
-              <NoItem title="No request yet" textLink="INVITE NOW" />
+              <NoItem title="Not a request yet" action={handleInvite} textLink="INVITE NOW" />
             ) : (
               <motion.div
                 initial={{ y: 25, opacity: 0 }}

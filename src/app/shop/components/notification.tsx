@@ -48,7 +48,7 @@ const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: Moda
         <div className="flex space-x-3 xs:space-x-4 my-3 xs:my-4">
           <div className="btn default" onClick={onClose}>
             <div className="btn-border"></div>
-            <div className="btn-default !p-3 xs:!p-[14px]">CANCEL</div>
+            <div className="btn-default !p-3 xs:!p-[14px]">BACK TO SHOP</div>
             <div className="btn-border"></div>
           </div>
           <div className="btn" onClick={handleClick}>

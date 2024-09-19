@@ -129,6 +129,7 @@ export default function Device() {
   const handleSwapItem = async () => {
     const res = await swapDevice(detailDeviceItem.current.id, activeItem)
     if (res.status) {
+      refetchListDevice()
       getDeviceItemDetail(currentIndex.current)
       toast.success(<CustomToast type="success" title="Swap item successfully" />)
       onClose()
