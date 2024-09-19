@@ -14,6 +14,7 @@ export interface IUserLeague {
   isOwner: boolean
   name: string
   level: number
+  isPendingRequest: boolean
   totalContributors: number
   totalMining: number
 }
@@ -21,4 +22,13 @@ export interface IUserConfig {
   maxDevice: number
   pointBuyDevice: number
   urlImage: string
+}
+
+export interface IJoinRequest {
+  miningPower: number
+  userId: number
+  username: string
+  avatar: string
+  id?: number
+  index?: number
 }

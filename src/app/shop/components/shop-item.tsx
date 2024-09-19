@@ -13,20 +13,23 @@ import { toast } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { useTelegram } from '@/hooks/useTelegram'
 interface IShopItem {
   filterOptions: IFilterDevice
 }
 export default function ShopItem({ filterOptions }: IShopItem) {
   const maxPage = useRef<number>(0)
+  const { webApp } = useTelegram()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { getUserInfo, token, userInfo, heightNav } = useCommonStore()
+  const { getUserInfo, token, userInfo, heightNav, safeAreaBottom } = useCommonStore()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
-  const [maxHeightListContent, setMaxHeightListContent] = useState<string>('60vh')
+  const [maxHeightListContent, setMaxHeightListContent] = useState<number>(0)
   const refList = useRef<any>()
+  const refListScroll = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [loadingButton, setLoadingButton] = useState(false)
   const { isLoading } = useQuery({
@@ -102,8 +105,8 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   }, [isInView])
 
   useEffect(() => {
-    if (refList.current) {
-      refList.current?.scrollTo(0, 0)
+    if (refListScroll.current) {
+      refListScroll.current?.scrollTo(0, 0)
     }
     setListItem([])
     setPage(1)
@@ -111,64 +114,62 @@ export default function ShopItem({ filterOptions }: IShopItem) {
 
   useEffect(() => {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
-    if (offsetTop) {
-      const heightTopBottom = offsetTop + heightNav + 40
-      setMaxHeightListContent(`calc(100vh - ${heightTopBottom}px`)
+    if (offsetTop && webApp?.viewportHeight) {
+      const heightTopBottom = offsetTop + heightNav
+      setMaxHeightListContent(webApp?.viewportHeight - heightTopBottom)
     }
-  }, [])
+  }, [webApp?.viewportHeight])
 
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
   return (
     <>
-      <motion.div
-        initial={{ y: 25, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -25, opacity: 0 }}
-        transition={{ duration: 0.35 }}
-        style={{ maxHeight: maxHeightListContent }}
-        className="overflow-y-auto hide-scrollbar"
-        ref={refList}
-      >
-        {isLoading && (
-          <Loader
-            style={{ height: maxHeightListContent }}
-            classNames={{
-              wrapper: ' z-[1] left-[0] absolute bg-black/30',
-              icon: 'w-[45px] h-[45px] text-white'
-            }}
-          />
-        )}
-        <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
-          {listItem?.map((item: any, index: number) => (
-            <div
-              key={index}
-              className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
-              onClick={() => handleClick(item)}
-            >
-              <ImageDevice
-                image={item.image}
-                className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                type={item.type}
-              />
+      <div className="relative" ref={refList} style={{ minHeight: maxHeightListContent }}>
+        <div className=" absolute"></div>
+        <div
+          className="overflow-y-auto hide-scrollbar"
+          ref={refListScroll}
+          style={{ maxHeight: maxHeightListContent }}
+        >
+          <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4">
+            {listItem?.map((item: any, index: number) => (
+              <div
+                key={index}
+                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
+                onClick={() => handleClick(item)}
+              >
+                <ImageDevice
+                  image={item.image}
+                  className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                  type={item.type}
+                />
 
-              <p className="font-mona font-semibold text-white mt-2 xs:mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
-                {item.name}
-              </p>
-              <div className="mt-auto flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
-                <IconPoint className="size-4" />
-                <p className="text-green-500 text-[13px] xs:text-sm">
-                  {' '}
-                  {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
+                <p className="font-mona font-semibold text-white mt-2 xs:mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
+                  {item.name}
                 </p>
+                <div className="mt-auto flex items-center justify-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+                  <IconPoint className="size-4" />
+                  <p className="text-green-500 text-[13px] xs:text-sm">
+                    {' '}
+                    {item?.price ? `${formatNumber(item.price, 0, 0)}` : 0}
+                  </p>
+                </div>
               </div>
+            ))}
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
             </div>
-          ))}
-          <div ref={scrollTrigger} className="text-[transparent]">
-            Loading...
           </div>
+          {isLoading && (
+            <Loader
+              classNames={{
+                wrapper: 'top-0  z-[1] left-[0] absolute bg-black/30 backdrop-blur-[4px]',
+                icon: 'size-10 text-white'
+              }}
+            />
+          )}
         </div>
-      </motion.div>
+      </div>
       <CustomModal
         title="BUY ITEM"
         isOpen={isOpen}

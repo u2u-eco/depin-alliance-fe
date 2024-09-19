@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
 import CongratulationModal from './components/congratulation'
+import CustomInputSearch from '../components/ui/custom-input-search'
+import NoItem from '../components/ui/no-item'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -33,6 +35,8 @@ export default function LeaguePage() {
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const dataList = useRef<ILeagueItem[]>([])
+  const timeoutSearch = useRef<any>(null)
+  const [search, setSearch] = useState<string>('')
   const [listItem, setListItem] = useState<ILeagueItem[]>([])
   const {
     isOpen: isOpenCongratulation,
@@ -40,10 +44,10 @@ export default function LeaguePage() {
     onClose: onCloseCongratulation,
     onOpenChange: onOpenChangeCongratulation
   } = useDisclosure()
-  const { isLoading, refetch } = useQuery({
-    queryKey: ['fetchListLeague', page],
+  const { isLoading } = useQuery({
+    queryKey: ['fetchListLeague', page, search],
     queryFn: async () => {
-      const res: any = await getListLeague({ page })
+      const res: any = await getListLeague({ page, name: search })
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
@@ -64,7 +68,9 @@ export default function LeaguePage() {
     const res = await userLeague()
     if (res.status && res.data) {
       setCurrentLeague({ league: res.data })
-      router.push('/league/in-league')
+      if (!res.data.isPendingRequest) {
+        router.push('/league/in-league')
+      }
     }
   }
 
@@ -81,6 +87,13 @@ export default function LeaguePage() {
     currentItem.current = item
     setType(LEAGUE_TYPE.JOIN)
     onOpen()
+  }
+
+  const handleUpdateText = (text: string) => {
+    clearTimeout(timeoutSearch.current)
+    timeoutSearch.current = setTimeout(() => {
+      setSearch(text)
+    }, 300)
   }
 
   useEffect(() => {
@@ -140,8 +153,12 @@ export default function LeaguePage() {
             </div>
           </div>
         </div>
-
-        {listItem.length > 0 ? (
+        <div className="mt-6 xs:mt-7 2xs:mt-8">
+          <CustomInputSearch placeholder="Search league..." onValueChange={handleUpdateText} />
+        </div>
+        {listItem.length === 0 && !isLoading ? (
+          <NoItem title="No league" />
+        ) : (
           <div>
             <CustomList
               type="league"
@@ -156,7 +173,7 @@ export default function LeaguePage() {
               Loading...
             </div>
           </div>
-        ) : null}
+        )}
       </CustomPage>
 
       <CustomModal
