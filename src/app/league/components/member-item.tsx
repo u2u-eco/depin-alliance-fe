@@ -1,17 +1,14 @@
 import { IconCheck, IconClose, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
+import { IJoinRequest } from '@/interfaces/i.league'
 import Image from 'next/image'
 import React from 'react'
 
 interface ItemProps {
   type?: string
-  item: {
-    avatar: string
-    username: string
-    miningPower: number
-  }
-  handleCheck?: () => void
-  handleCancel?: () => void
+  item: IJoinRequest
+  handleCheck?: (id: number) => void
+  handleCancel?: (id: number) => void
 }
 
 const ITEM_TYPE = {
@@ -48,11 +45,21 @@ const MemberItem = ({ item, type, handleCheck, handleCancel }: ItemProps) => {
         </div>
         <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
           {type === ITEM_TYPE.REQUEST && (
-            <div className="cursor-pointer" onClick={handleCheck}>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                handleCheck && handleCheck(item.userId)
+              }}
+            >
               <IconCheck className="size-6 xs:size-7 2xs:size-8 text-green-500" />
             </div>
           )}
-          <div className="cursor-pointer" onClick={handleCancel}>
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              handleCancel && handleCancel(item.userId)
+            }}
+          >
             <IconClose
               className={`size-6 xs:size-7 2xs:size-8 ${type === ITEM_TYPE.REQUEST ? 'text-error-blur' : 'text-yellow-800'}`}
             />

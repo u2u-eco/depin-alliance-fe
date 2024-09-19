@@ -10,7 +10,7 @@ export const DETECT_DEVICE_URL = process.env.NEXT_PUBLIC_DEVICE_REGISTER // 'htt
 export const SHARE_URL = process.env.NEXT_PUBLIC_SHARE_URL
 export const IS_ONLY_SUPPORT_MOBILE =
   process.env.NEXT_PUBLIC_ONLY_SUPPORT_MOBILE === 'true' ? true : false
-
+export const PAGE_SIZE = 10
 export const UPGRADE_TAB = {
   RAM: 'RAM',
   CPU: 'CPU',

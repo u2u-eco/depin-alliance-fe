@@ -11,11 +11,13 @@ import {
   IconShare,
   IconUserAddCircle
 } from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { leaveLeague, userLeague } from '@/services/league'
+import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -28,6 +30,11 @@ export default function InLeaguePage() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
 
+  const { data: totalJoinRequest } = useQuery({
+    queryKey: ['getTotalJoinRequest'],
+    queryFn: getTotalJoinRequest
+  })
+  console.log('🚀 ~ InLeaguePage ~ totalJoinRequest:', totalJoinRequest)
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       window.open(
@@ -222,7 +229,8 @@ export default function InLeaguePage() {
                   <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                     <IconUserAddCircle className="size-6 xs:size-7 2xs:size-8 text-body" />
                     <p className="text-body text-[15px] xs:text-base !leading-[20px] font-normal tracking-[-1px]">
-                      JOIN REQUEST <span className="text-green-500 ml-1">(6)</span>
+                      JOIN REQUEST{' '}
+                      <span className="text-green-500 ml-1">({totalJoinRequest?.data})</span>
                     </p>
                   </div>
                 </div>

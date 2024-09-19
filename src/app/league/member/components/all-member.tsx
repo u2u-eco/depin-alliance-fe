@@ -1,13 +1,55 @@
 import NoItem from '@/app/components/ui/no-item'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import MemberItem from '../../components/member-item'
 import CustomModal from '@/app/components/custom-modal'
 import { useDisclosure } from '@nextui-org/react'
 import { IconPoint } from '@/app/components/icons'
-
-const AllMember = ({ data }: any) => {
+import { IJoinRequest } from '@/interfaces/i.league'
+import { useQuery } from '@tanstack/react-query'
+import { getListMemberOfLeague } from '@/services/league'
+import { useInView } from 'react-intersection-observer'
+import Loader from '@/app/components/ui/loader'
+import { PAGE_SIZE } from '@/constants'
+interface IMember {
+  setTotalMember: (total: number) => void
+}
+const AllMember = ({ setTotalMember }: IMember) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const maxPage = useRef<number>(0)
+  const [page, setPage] = useState<number>(1)
+  const [listItem, setListItem] = useState<IJoinRequest[]>([])
+  const dataList = useRef<IJoinRequest[]>([])
+  const [scrollTrigger, isInView] = useInView()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  useQuery({
+    queryKey: ['getListMemberOfLeague', page],
+    queryFn: async () => {
+      try {
+        setIsLoading(true)
+        const res: any = await getListMemberOfLeague({ page, size: PAGE_SIZE })
+        if (res.pagination?.totalPage) {
+          maxPage.current = res.pagination?.totalPage
+        }
+        setTotalMember(res.pagination?.totalRecord || 0)
+        if (page !== res.pagination.page) {
+          setIsLoading(false)
+          return []
+        }
+        let _listItem = res.data
+
+        if (page > 1) {
+          _listItem = [...dataList.current, ...res.data]
+        }
+        dataList.current = _listItem
+        setListItem(dataList.current)
+        setIsLoading(false)
+        return res
+      } catch (ex) {
+        setIsLoading(false)
+      }
+    }
+  })
   const handleCancel = () => {
     onOpen()
   }
@@ -15,10 +57,24 @@ const AllMember = ({ data }: any) => {
     onClose()
   }
 
+  useEffect(() => {
+    if (isInView && page < maxPage.current && !isLoading) {
+      setPage(page + 1)
+    }
+  }, [isInView])
+
   return (
     <>
-      {data.length === 0 ? (
-        <NoItem title="No member yet" link="/invite" textLink="INVITE NOW" />
+      {isLoading && (
+        <Loader
+          classNames={{
+            wrapper: 'z-[1] left-[0] absolute bg-black/30 h-[100vh] top-0',
+            icon: 'w-[45px] h-[45px] text-white'
+          }}
+        />
+      )}
+      {listItem.length === 0 && !isLoading ? (
+        <NoItem title="No member yet" textLink="INVITE NOW" />
       ) : (
         <motion.div
           initial={{ y: 25, opacity: 0 }}
@@ -28,9 +84,12 @@ const AllMember = ({ data }: any) => {
           key="all"
         >
           <div className="flex flex-col space-y-3 2xs:space-y-4">
-            {data.map((item: any, index: number) => (
+            {listItem.map((item: any, index: number) => (
               <MemberItem key={index} item={item} type="member" handleCancel={handleCancel} />
             ))}
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
+            </div>
           </div>
         </motion.div>
       )}

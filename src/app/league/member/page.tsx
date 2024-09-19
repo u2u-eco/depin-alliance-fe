@@ -3,45 +3,22 @@
 import CustomPage from '@/app/components/custom-page'
 import { IconAdmin, IconPoint } from '@/app/components/icons'
 import { motion } from 'framer-motion'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import AllMember from './components/all-member'
 import RankingMember from './components/ranking-member'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import useCommonStore from '@/stores/commonStore'
+import { formatNumber } from '@/helper/common'
 
 const MEMBER_TYPE = {
   ALL: 'all',
   RANKING: 'ranking'
 }
 
-const listMember = [
-  {
-    id: 1,
-    avatar: '/assets/images/avatar/avatar-01@2x.png',
-    username: 'DojaDoja26',
-    miningPower: 2014
-  },
-  {
-    id: 2,
-    avatar: '/assets/images/avatar/avatar-01@2x.png',
-    username: 'DojaDoja26',
-    miningPower: 2014
-  },
-  {
-    id: 3,
-    avatar: '/assets/images/avatar/avatar-01@2x.png',
-    username: 'DojaDoja26',
-    miningPower: 2014
-  },
-  {
-    id: 4,
-    avatar: '/assets/images/avatar/avatar-01@2x.png',
-    username: 'DojaDoja26',
-    miningPower: 2014
-  }
-]
-
 export default function MemberPage() {
   const [activeType, setActiveType] = useState(MEMBER_TYPE.ALL)
+  const { userInfo } = useCommonStore()
+  const [totalMember, setTotalMember] = useState<number>(0)
 
   const handleSelectTab = (tab: string) => {
     setActiveType(tab)
@@ -69,18 +46,18 @@ export default function MemberPage() {
                     <div className="[--shape:_20px] size-[80px] xs:size-[85px] 2xs:size-[90px] p-[1px] bg-yellow-500 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape));]">
                       <img
                         className="[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape));] size-full"
-                        src="/assets/images/avatar/avatar-main-01@2x.png"
+                        src={userInfo?.avatar || '/assets/images/avatar/avatar-main-01@2x.png'}
                         alt="Avatar"
                       />
                     </div>
                   </div>
                   <div className="space-y-1.5 xs:space-y-2">
                     <p className="text-white font-mona text-base xs:text-lg font-semibold leading-[22px] [word-break:_break-word;]">
-                      DojaDoja26
+                      {userInfo?.username}
                     </p>
                     <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                       <IconPoint className="size-4 xs:size-5 2xs:size-6" />
-                      <p className="text-green-500 font-semibold">10,000/h</p>
+                      <p className="text-green-500 font-semibold">{`${formatNumber(userInfo?.miningPower || 0, 0, 2)}/h`}</p>
                     </div>
                   </div>
                 </div>
@@ -90,7 +67,7 @@ export default function MemberPage() {
           </div>
           <div className="space-y-3 xs:space-y-4">
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              MEMBERS <span className="text-title">({listMember.length})</span>
+              MEMBERS <span className="text-title">({totalMember})</span>
             </p>
             <div className="space-y-6">
               <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
@@ -117,7 +94,7 @@ export default function MemberPage() {
               {activeType === MEMBER_TYPE.RANKING ? (
                 <RankingMember />
               ) : (
-                <AllMember data={listMember} />
+                <AllMember setTotalMember={setTotalMember} />
               )}
             </div>
           </div>

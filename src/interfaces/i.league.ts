@@ -22,3 +22,10 @@ export interface IUserConfig {
   pointBuyDevice: number
   urlImage: string
 }
+
+export interface IJoinRequest {
+  miningPower: number
+  userId: number
+  username: string
+  avatar: string
+}
