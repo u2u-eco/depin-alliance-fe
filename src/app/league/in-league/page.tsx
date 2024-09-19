@@ -48,9 +48,6 @@ export default function InLeaguePage() {
     const res = await userLeague()
     if (res.status) {
       setCurrentLeague({ league: res.data })
-      if (!res.data.isOwner) {
-        router.push('/league')
-      }
     } else {
       router.push('/league')
     }
@@ -192,7 +189,7 @@ export default function InLeaguePage() {
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Chat</p>
               </div>
               <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              <div className="space-y-1 text-center text-inactive cursor-pointer transition-colors hover:text-green-500">
+              <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
                 <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Mission</p>
               </div>

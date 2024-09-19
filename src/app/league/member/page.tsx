@@ -70,7 +70,7 @@ export default function MemberPage() {
               MEMBERS <span className="text-title">({totalMember})</span>
             </p>
             <div className="space-y-6">
-              <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
+              {/* <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
                 {Object.values(MEMBER_TYPE).map((item, index) => (
                   <motion.div
                     whileTap={{ scale: 0.95 }}
@@ -90,7 +90,7 @@ export default function MemberPage() {
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </div> */}
               {activeType === MEMBER_TYPE.RANKING ? (
                 <RankingMember />
               ) : (

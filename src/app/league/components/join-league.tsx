@@ -4,7 +4,6 @@ import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { joinLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
-import Image from 'next/image'
 import { useState } from 'react'
 interface IJoinLeague {
   item: ILeagueItem | null
