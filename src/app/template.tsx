@@ -12,6 +12,7 @@ import Loading from './components/loading'
 import { toast } from 'sonner'
 import { CURRENT_STATUS } from '@/interfaces/i.user'
 import { useRouter } from 'next/navigation'
+import CustomToast from './components/ui/custom-toast'
 export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const router = useRouter()
@@ -58,7 +59,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         isProgressLogin.current = false
       }
     } catch (ex: any) {
-      toast.error(ex?.message || 'Something went wrong!')
+      toast.error(<CustomToast type="error" title={ex?.message || 'Something went wrong!'} />)
       setIsLoginError(true)
       setIsLoading(false)
       isProgressLogin.current = false

@@ -12,6 +12,7 @@ import { getUserFriend } from '@/services/user'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
+import CustomToast from '../components/ui/custom-toast'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [

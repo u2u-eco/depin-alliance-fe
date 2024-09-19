@@ -21,6 +21,7 @@ import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import { useTelegram } from '@/hooks/useTelegram'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -132,17 +133,11 @@ export default function Item() {
       const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
       if (res.status) {
         toast.success(
-          <div className="font-geist flex items-center justify-between text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] w-full">
-            <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
-              <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
-              <p className="text-title tracking-[-1px]">Sell successfully</p>
-            </div>
-            <div className="w-5 xs:w-6 h-[1px] bg-green-800 ml-auto mr-5 xs:mr-6"></div>
-            <div className="flex items-center space-x-1">
-              <IconPoint className="size-5 xs:size-6" />
-              <p className="text-green-500">+{totalPriceSell && formatNumber(totalPriceSell, 0, 0)}</p>
-            </div>
-          </div>
+          <CustomToast
+            type="success"
+            title="Sell successfully!"
+            point={totalPriceSell && formatNumber(totalPriceSell, 0, 0)}
+          />
         )
         refetch && refetch()
         getUserInfo()
@@ -158,7 +153,7 @@ export default function Item() {
     if (paramUseKey.current && !disableBtnSpecial) {
       specialItem.current = []
       if (userInfo && userInfo?.point < useKey) {
-        toast.error('User point not enough!')
+        toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
       onOpenSpecial()

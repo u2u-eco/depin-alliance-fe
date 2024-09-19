@@ -10,6 +10,7 @@ import useCommonStore from '@/stores/commonStore'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { CustomHeader } from '../components/ui/custom-header'
+import CustomToast from '../components/ui/custom-toast'
 
 const listAvatar = [
   {
@@ -50,7 +51,7 @@ export default function Avatar() {
   const handleUpdateAvatar = async () => {
     const res = await updateAvatar(selectedImage)
     if (res.status) {
-      toast.success('Update successfully')
+      toast.success(<CustomToast type="success" title="Update successfully!" />)
       handleBack()
       getUserInfo()
     }

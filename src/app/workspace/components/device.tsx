@@ -23,6 +23,7 @@ import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -72,12 +73,7 @@ export default function Device() {
     try {
       const res = await addItem(currentIndex.current, activeItem)
       if (res.status) {
-        toast.success(
-          <div className="font-geist flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]">
-            <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
-            <p className="text-title tracking-[-1px]">Equip item successfully!</p>
-          </div>
-        )
+        toast.success(<CustomToast type="success" title="Equip item successfully!" />)
         setActiveItem(0)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
@@ -95,12 +91,7 @@ export default function Device() {
     try {
       const res = await removeItem(detailDeviceItem.current.id)
       if (res.status) {
-        toast.success(
-          <div className="font-geist flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]">
-            <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
-            <p className="text-title tracking-[-1px]">Unequipped successfully!</p>
-          </div>
-        )
+        toast.success(<CustomToast type="success" title="Unequipped successfully!" />)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
         getUserInfo()
@@ -121,12 +112,7 @@ export default function Device() {
           index: currentDevice.current.index
         })
         if (res.status) {
-          toast.success(
-            <div className="font-geist flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]">
-              <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
-              <p className="text-title tracking-[-1px]">Device name changed successfully!</p>
-            </div>
-          )
+          toast.success(<CustomToast type="success" title="Device name changed successfully!" />)
           currentName.current = ''
           onClose()
           refetchListDevice()
@@ -204,12 +190,7 @@ export default function Device() {
     const res = await getNewDevice()
     try {
       if (res.status) {
-        toast.success(
-          <div className="font-geist flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]">
-            <IconCheckCircle className="size-5 xs:size-6 text-green-500"/>
-            <p className="text-title tracking-[-1px]">Buy device successfully!</p>
-          </div>
-        )
+        toast.success(<CustomToast type="success" title="Buy device successfully!" />)
         refetchListDevice()
         getUserInfo()
         getUserConfig()
