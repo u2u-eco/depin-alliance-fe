@@ -48,6 +48,8 @@ export default function Item() {
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const currentIndex = useRef<number>(0)
+  const isUpdatePage = useRef<boolean>(false)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -85,6 +87,7 @@ export default function Item() {
     ],
     queryFn: async () => {
       try {
+        if (isUpdatePage.current) return
         setIsLoading(true)
         const res: any = await listUserItemDevice({ ...filterOptions, page, size: PAGE_SIZE })
         if (res.pagination?.totalPage) {
@@ -109,7 +112,8 @@ export default function Item() {
     ...QUERY_CONFIG
   })
 
-  const handleInfo = (item: IDeviceTypeItem) => {
+  const handleInfo = (item: IDeviceTypeItem, index: number) => {
+    currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
     onOpen()
@@ -130,15 +134,20 @@ export default function Item() {
 
   const handleUpdateData = async () => {
     setIsLoading(true)
+    isUpdatePage.current = true
+    const currentPage = Math.floor(currentIndex.current / PAGE_SIZE)
+    setPage(currentPage + 1)
     const res: any = await listUserItemDevice({
       ...filterOptions,
-      page: 1,
-      size: page * PAGE_SIZE
+      page: currentPage + 1,
+      size: PAGE_SIZE
     })
+
     if (res.status) {
-      dataList.current = res.data
+      dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
       setListDeviceItem(dataList.current)
     }
+    isUpdatePage.current = false
     setIsLoading(false)
   }
 
@@ -279,7 +288,7 @@ export default function Item() {
                 >
                   <div
                     className={`flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
-                    onClick={() => handleInfo(item)}
+                    onClick={() => handleInfo(item, index)}
                   >
                     <ImageDevice
                       className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
