@@ -18,6 +18,9 @@ export interface IUserLeague {
   isPendingRequest: boolean
   totalContributors: number
   totalMining: number
+  adminMiningPower: number
+  adminUsername: string
+  adminAvatar: string
 }
 export interface IUserConfig {
   maxDevice: number

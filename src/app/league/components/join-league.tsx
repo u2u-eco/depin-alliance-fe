@@ -22,7 +22,9 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
         toast.success(<CustomToast type="success" title="Request join league successfully" />)
-        joinCb(item.code, true)
+        setTimeout(() => {
+          joinCb(item.code, true)
+        }, 500)
         onClose()
       }
       setLoadingButton(false)
@@ -36,7 +38,9 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
       const res = await cancelJoinLeague(item?.code)
       if (res.status && res.data) {
         toast.success(<CustomToast type="success" title="Cancel join league successfully" />)
-        joinCb(item.code, false)
+        setTimeout(() => {
+          joinCb(item.code, false)
+        })
         onClose()
       }
       setLoadingButton(false)

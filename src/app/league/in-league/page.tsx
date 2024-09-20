@@ -227,7 +227,7 @@ export default function InLeaguePage() {
                     <IconUserAddCircle className="size-6 xs:size-7 2xs:size-8 text-body" />
                     <p className="text-body text-[15px] xs:text-base !leading-[20px] font-normal tracking-[-1px]">
                       JOIN REQUEST{' '}
-                      <span className="text-green-500 ml-1">({totalJoinRequest?.data})</span>
+                      <span className="text-green-500 ml-1">({totalJoinRequest?.data || 0})</span>
                     </p>
                   </div>
                 </div>

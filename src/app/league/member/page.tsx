@@ -2,7 +2,7 @@
 
 import CustomPage from '@/app/components/custom-page'
 import { IconAdmin, IconPoint } from '@/app/components/icons'
-import { motion } from 'framer-motion'
+
 import React, { useRef, useState } from 'react'
 import AllMember from './components/all-member'
 import RankingMember from './components/ranking-member'
@@ -17,7 +17,7 @@ const MEMBER_TYPE = {
 
 export default function MemberPage() {
   const [activeType, setActiveType] = useState(MEMBER_TYPE.ALL)
-  const { userInfo } = useCommonStore()
+  const { userInfo, currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
 
   const handleSelectTab = (tab: string) => {
@@ -46,18 +46,21 @@ export default function MemberPage() {
                     <div className="[--shape:_20px] size-[80px] xs:size-[85px] 2xs:size-[90px] p-[1px] bg-yellow-500 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape));]">
                       <img
                         className="[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape));] size-full"
-                        src={userInfo?.avatar || '/assets/images/avatar/avatar-main-01@2x.png'}
+                        src={
+                          currentLeague?.adminAvatar ||
+                          '/assets/images/avatar/avatar-main-01@2x.png'
+                        }
                         alt="Avatar"
                       />
                     </div>
                   </div>
                   <div className="space-y-1.5 xs:space-y-2">
                     <p className="text-white font-mona text-base xs:text-lg font-semibold leading-[22px] [word-break:_break-word;]">
-                      {userInfo?.username}
+                      {currentLeague?.adminUsername}
                     </p>
                     <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                       <IconPoint className="size-4 xs:size-5 2xs:size-6" />
-                      <p className="text-green-500 font-semibold">{`${formatNumber(userInfo?.miningPower || 0, 0, 2)}/h`}</p>
+                      <p className="text-green-500 font-semibold">{`${formatNumber(currentLeague?.adminMiningPower || 0, 0, 2)}/h`}</p>
                     </div>
                   </div>
                 </div>
