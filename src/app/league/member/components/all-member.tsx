@@ -105,6 +105,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const handleUpdateText = (text: string) => {
     clearTimeout(timeoutSearch.current)
     timeoutSearch.current = setTimeout(() => {
+      setPage(1)
       setSearch(text?.trim())
     }, 500)
   }

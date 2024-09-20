@@ -49,11 +49,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
       <div className={cn('section', classNames?.wrapper)}>
         <div
           style={{
-            height: isShowSidebar
-              ? `calc(100vh - ${heightNav}px)`
-              : webApp?.viewportStableHeight
-                ? webApp.viewportStableHeight + safeAreaBottom
-                : webApp?.viewportStableHeight
+            height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh'
           }}
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col hide-scrollbar`}
         >
