@@ -16,6 +16,7 @@ import { MAX_SIZE_PER_PAGE, PAGE_SIZE, TELE_URI } from '@/constants'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
+import { formatNumber } from '@/helper/common'
 
 export default function JoinRequestPage() {
   const maxPage = useRef<number>(0)
@@ -121,7 +122,7 @@ export default function JoinRequestPage() {
           <CustomHeader title="JOIN REQUEST" />
           <div className="space-y-5 xs:space-y-6">
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              ALL REQUESTS ({total})
+              ALL REQUESTS ({formatNumber(total, 0, 0)})
             </p>
             {isLoading && (
               <Loader
