@@ -28,6 +28,7 @@ export default function JoinRequestPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
   const isUpdatePage = useRef<boolean>(false)
+  const isPendingProgress = useRef<boolean>(false)
   useQuery({
     queryKey: ['getListDevice', page],
     queryFn: async () => {
@@ -80,18 +81,32 @@ export default function JoinRequestPage() {
   }
 
   const handleApprove = async (id: number, index: number) => {
-    const res = await approveJoinLeague(id)
-    if (res?.status) {
-      toast.success(<CustomToast title="Accept member successfully" type="success" />)
-      handleUpdateData(index)
+    if (isPendingProgress.current) return
+    isPendingProgress.current = true
+    try {
+      const res = await approveJoinLeague(id)
+      if (res?.status) {
+        toast.success(<CustomToast title="Accept member successfully" type="success" />)
+        handleUpdateData(index)
+      }
+      isPendingProgress.current = false
+    } catch (ex) {
+      isPendingProgress.current = false
     }
   }
 
   const handleReject = async (id: number, index: number) => {
-    const res = await rejectJoinLeague(id)
-    if (res?.status) {
-      toast.success(<CustomToast title="Decline member successfully" type="success" />)
-      handleUpdateData(index)
+    if (isPendingProgress.current) return
+    isPendingProgress.current = true
+    try {
+      const res = await rejectJoinLeague(id)
+      if (res?.status) {
+        toast.success(<CustomToast title="Decline member successfully" type="success" />)
+        handleUpdateData(index)
+      }
+      isPendingProgress.current = false
+    } catch (ex) {
+      isPendingProgress.current = false
     }
   }
 
