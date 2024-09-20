@@ -2,12 +2,23 @@
 
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
-import { IconChat, IconClipboard, IconLeave, IconPoint } from '@/app/components/icons'
+import {
+  IconChat,
+  IconClipboard,
+  IconLeave,
+  IconMember,
+  IconPoint,
+  IconShare,
+  IconUserAddCircle
+} from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
 import { TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { leaveLeague, userLeague } from '@/services/league'
+import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -19,6 +30,11 @@ export default function InLeaguePage() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
 
+  const { data: totalJoinRequest } = useQuery({
+    queryKey: ['getTotalJoinRequest'],
+    queryFn: getTotalJoinRequest,
+    enabled: Boolean(currentLeague?.isOwner)
+  })
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       window.open(
@@ -30,8 +46,10 @@ export default function InLeaguePage() {
 
   const _getUserLeague = async () => {
     const res = await userLeague()
-    if (res.status) {
+    if (res.status && res.data && !res.data?.isPendingRequest) {
       setCurrentLeague({ league: res.data })
+    } else {
+      router.push('/league')
     }
   }
 
@@ -44,7 +62,7 @@ export default function InLeaguePage() {
       const res = await leaveLeague()
       if (res.status) {
         _getUserLeague()
-        toast.success('Leave League successfully')
+        toast.success(<CustomToast type="success" title="Leave League successfully!" />)
         router.push('/league')
       }
       setTimeout(() => {
@@ -57,7 +75,7 @@ export default function InLeaguePage() {
 
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
-      toast.success('Copied!')
+      toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
 
@@ -67,7 +85,12 @@ export default function InLeaguePage() {
 
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper:
+            "before:content-[''] before:absolute before:top-[5%] before:left-[-255px] before:size-[355px] before:rounded-[50%] before:blur-[75px] before:bg-green-500 before:opacity-30 before:z-[-1] after:content-[''] after:absolute after:top-[5%] after:right-[-255px] after:size-[355px] after:rounded-[50%] after:blur-[75px] after:bg-yellow-500 after:opacity-30 after:z-[-1]"
+        }}
+      >
         <div className="relative">
           <div className="absolute top-0 left-[50%] translate-x-[-50%] w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
@@ -82,115 +105,140 @@ export default function InLeaguePage() {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
-              <div className="size-1.5 min-w-1.5 bg-white"></div>
-              <div className="text-center font-airnt font-medium text-title text-lg xs:text-xl 2xs:text-2xl tracking-[1px] !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] [word-break:_break-word;]">
-                {currentLeague?.name}
+            <div className="space-y-2">
+              <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
+                <div className="size-1.5 min-w-1.5 bg-white"></div>
+                <div className="text-center font-airnt font-medium text-title text-lg xs:text-xl 2xs:text-2xl tracking-[1px] !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] [word-break:_break-word;]">
+                  {currentLeague?.name}
+                </div>
+                <div className="size-1.5 min-w-1.5 bg-white"></div>
               </div>
-              <div className="size-1.5 min-w-1.5 bg-white"></div>
-            </div>
-          </div>
-          <div className="relative w-fit mx-auto my-6">
-            <img src="/assets/images/league/in-league-frame.svg" alt="" />
-            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
-              <div className="space-y-1 xs:space-y-2">
-                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
-                  TOTAL MINING
+              <div className="flex items-center justify-center space-x-10">
+                <div className="w-8 h-[1px] bg-yellow-800"></div>
+                <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
+                  {currentLeague?.isOwner ? 'Admin' : 'Member'}
                 </div>
-                <div className="flex items-center space-x-2">
-                  <img
-                    className="size-6 xs:size-7 2xs:size-8"
-                    src="/assets/images/point.png"
-                    srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                    alt=""
-                  />
-                  <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                    {currentLeague?.totalMining ? formatNumber(currentLeague.totalMining, 0, 0) : 0}
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-1 xs:space-y-2">
-                <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
-                  CONTRIBUTORS
-                </div>
-                <div className="flex items-center space-x-2">
-                  <img
-                    className="size-6 xs:size-7 2xs:size-8"
-                    src="/assets/images/icons/icon-group-user-white.svg"
-                    alt=""
-                  />
-                  <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                    {currentLeague?.totalContributors
-                      ? formatNumber(currentLeague.totalContributors, 0, 0)
-                      : 0}
-                  </p>
-                </div>
+                <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
             </div>
           </div>
-          <div className="btn inactive">
-            <div className="btn-border"></div>
-            <div className="btn-inactive !px-3">Mining Together (Coming Soon)</div>
-            <div className="btn-border"></div>
-          </div>
-          <div className="flex justify-between mt-8">
-            <div className="btn inactive size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
+          {/* Progress */}
+          {/* <div className="mt-6 mb-6 xs:mb-8 2xs:mb-10 space-y-2">
+            <div className="relative bg-gray-850 h-1.5 xs:h-2 rounded-2xl w-full">
+              <div className="absolute top-0 left-0 h-full bg-gradient rounded-2xl before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:bg-gradient before:blur-[6px] w-[68%]"></div>
+            </div>
+            <div className="flex items-center justify-between text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-body uppercase">
+              <p>LV. 100</p>
+              <p>
+                <span className="text-title">1,400/</span>1400
+              </p>
+            </div>
+          </div> */}
+          <div className="space-y-6 xs:space-y-7 2xs:space-y-8">
+            {/* Mining Together */}
+            <div className="btn inactive">
               <div className="btn-border"></div>
-              <div className="btn-inactive !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
+              <div className="btn-inactive !px-3">Mining Together (Coming Soon)</div>
+              <div className="btn-border"></div>
+            </div>
+            {/* Total Mining */}
+            <div className="relative w-fit mx-auto">
+              <img src="/assets/images/league/in-league-frame.svg" alt="" />
+              <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
+                <div className="space-y-1 xs:space-y-2">
+                  <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
+                    TOTAL MINING
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <img
+                      className="size-6 xs:size-7 2xs:size-8"
+                      src="/assets/images/point.png"
+                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
+                      alt=""
+                    />
+                    <p className="text-inactive font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      0
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-1 xs:space-y-2">
+                  <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
+                    CONTRIBUTORS
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <img
+                      className="size-6 xs:size-7 2xs:size-8"
+                      src="/assets/images/icons/icon-group-user-white.svg"
+                      alt=""
+                    />
+                    <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      {currentLeague?.totalContributors
+                        ? formatNumber(currentLeague.totalContributors, 0, 0)
+                        : 0}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Link */}
+            <div className="flex items-center justify-between space-x-3">
+              <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
+                <IconChat className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Chat</p>
+              </div>
+              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
                 <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
-                  Mission
-                </p>
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Mission</p>
               </div>
-              <div className="btn-border"></div>
-            </div>
-            <div className="btn inactive size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
-              <div className="btn-border"></div>
-              <div className="btn-inactive !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
-                <IconChat className="size-6 xs:size-7 2xs:size-8" />
-                <p className="capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
-                  Chat
-                </p>
+              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              {/* <CopyToClipboard
+                text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
+                onCopy={handleCopy}
+              > */}
+              <div
+                className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
+                onClick={handleShare}
+              >
+                <IconShare className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Share</p>
               </div>
-              <div className="btn-border"></div>
+              {/* </CopyToClipboard> */}
+              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <Link
+                href="/league/member"
+                className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
+              >
+                <IconMember className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Member</p>
+              </Link>
+              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div
+                className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
+                onClick={onOpen}
+              >
+                <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Leave</p>
+              </div>
             </div>
-            <CopyToClipboard
-              text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
-              onCopy={handleCopy}
-            >
-              <div className="btn default size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto">
+            {/* Join Request */}
+            {currentLeague?.isOwner && (
+              <Link href="/league/join-request" className="btn default">
                 <div className="btn-border"></div>
-                <div className="btn-default !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
-                  <img
-                    className="size-6 xs:size-7 2xs:size-8 mx-auto"
-                    src="/assets/images/icons/icon-copy-gradient.svg"
-                    alt=""
-                  />
-                  <p className="text-gradient capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1">
-                    Invite
-                  </p>
+                <div className="btn-default !py-2.5 2xs:!py-2">
+                  <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
+                    <IconUserAddCircle className="size-6 xs:size-7 2xs:size-8 text-body" />
+                    <p className="text-body text-[15px] xs:text-base !leading-[20px] font-normal tracking-[-1px]">
+                      JOIN REQUEST{' '}
+                      <span className="text-green-500 ml-1">
+                        ({formatNumber(totalJoinRequest?.data || 0, 0, 0)})
+                      </span>
+                    </p>
+                  </div>
                 </div>
                 <div className="btn-border"></div>
-              </div>
-            </CopyToClipboard>
-            <div
-              onClick={onOpen}
-              className={`btn default size-[80px] xs:size-[85px] 2xs:size-[90px] mx-auto ${currentLeague?.isOwner ? 'pointer-events-none' : ''}`}
-            >
-              <div className="btn-border"></div>
-              <div className="btn-default !size-[70px] xs:!size-[75px] 2xs:!size-[80px] flex items-center justify-center flex-col !p-2">
-                {/* <img className="size-8 mx-auto" src="/assets/images/icons/icon-leave.svg" alt="" /> */}
-                <IconLeave
-                  className={`size-6 xs:size-7 2xs:size-8 ${currentLeague?.isOwner ? 'text-inactive' : 'text-green-500'}`}
-                />
-                <p
-                  className={`${currentLeague?.isOwner ? 'text-body' : 'text-gradient'}  capitalize font-geist font-normal tracking-[-1px] leading-[18px] text-[13px] xs:text-sm mt-1`}
-                >
-                  Leave
-                </p>
-              </div>
-              <div className="btn-border"></div>
-            </div>
+              </Link>
+            )}
           </div>
         </div>
       </CustomPage>

@@ -2,7 +2,14 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconChevron, IconHome, IconPoint, IconQuiz } from '@/app/components/icons'
+import {
+  IconCheckCircle,
+  IconChevron,
+  IconCloseHexagon,
+  IconHome,
+  IconPoint,
+  IconQuiz
+} from '@/app/components/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -16,18 +23,29 @@ import { claimTask, verifyMissionQuiz } from '@/services/missions'
 import { toast } from 'sonner'
 import Loader from '@/app/components/ui/loader'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import CustomToast from '@/app/components/ui/custom-toast'
+import { useDisclosure } from '@nextui-org/react'
+import SpecialBoxModal from '../components/special-box'
+import useCommonStore from '@/stores/commonStore'
 
 export default function QuizPage() {
   const router = useRouter()
   const [listChecked, setChecked] = useState<Array<string>>([])
   const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
+  const { getUserInfo } = useCommonStore()
   const { currentMissionQuiz, setCurrentMission } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
   const refTimeoutCheck = useRef<any>()
   const [errorById, setErrorById] = useState<{ [key: string]: boolean }>({})
   const [isLoadingFake, setLoadingFake] = useState<boolean>(true)
+  const {
+    isOpen: isOpenSpecial,
+    onOpen: onOpenSpecial,
+    onOpenChange: onOpenChangeSpecial,
+    onClose: onCloseSpecial
+  } = useDisclosure()
 
   const handleBack = () => {
     setCurrentMission(null)
@@ -78,7 +96,17 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
-          toast.success('Mission is completed')
+          if (currentMissionQuiz.box > 0) {
+            onOpenSpecial()
+          }
+          toast.success(
+            <CustomToast
+              type="success"
+              title="Mission is completed!"
+              point={currentMissionQuiz?.point}
+            />
+          )
+          getUserInfo()
           handleBack()
         }
         setIsLoading(false)
@@ -121,6 +149,7 @@ export default function QuizPage() {
         sendQuiz()
       } else {
         setIsLoading(false)
+        toast.error(<CustomToast type="error" title="Your answer is wrong. Try again." />)
       }
     }, 500)
   }
@@ -155,7 +184,7 @@ export default function QuizPage() {
           />
         )}
         <div className="space-y-8">
-          <CustomHeader title="IQ QUIZ" />
+          <CustomHeader title="IQ QUIZ" cb={() => setCurrentMission(null)} />
           {currentMissionQuiz && !isLoadingFake && (
             <div>
               <div className="relative">
@@ -267,6 +296,12 @@ export default function QuizPage() {
           )}
         </div>
       </CustomPage>
+      <SpecialBoxModal
+        isOpen={isOpenSpecial}
+        onOpen={onOpenSpecial}
+        onClose={onCloseSpecial}
+        onOpenChange={onOpenChangeSpecial}
+      />
     </>
   )
 }

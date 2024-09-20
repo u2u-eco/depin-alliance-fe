@@ -2,7 +2,7 @@
 
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
-import { IconPoint } from '@/app/components/icons'
+import { IconCheckCircle, IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
@@ -11,7 +11,8 @@ import {
   getListDevice,
   getNewDevice,
   getUserDevice,
-  removeItem
+  removeItem,
+  swapDevice
 } from '@/services/devices'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
@@ -23,16 +24,19 @@ import { toast } from 'sonner'
 import ImageDevice from '@/app/components/image-device'
 import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
+import CustomToast from '@/app/components/ui/custom-toast'
+import Loader from '@/app/components/ui/loader'
 
 const DEVICE_TYPE = {
   INFO: 'info',
   EDIT: 'edit',
   EQUIP: 'equip',
-  BUY: 'buy'
+  BUY: 'buy',
+  SWAP: 'swap'
 }
 
 export default function Device() {
-  const { token, userConfig, getUserConfig, getUserInfo } = useCommonStore()
+  const { userConfig, getUserConfig, getUserInfo } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -46,11 +50,14 @@ export default function Device() {
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   const currentIndex = useRef<number>(0)
   const equipType = useRef<string>('')
-  const { data: listDevice, refetch: refetchListDevice } = useQuery({
+  const {
+    data: listDevice,
+    isLoading,
+    refetch: refetchListDevice
+  } = useQuery({
     queryKey: ['fetchListDevice'],
     queryFn: getListDevice,
-    ...QUERY_CONFIG,
-    enabled: Boolean(token)
+    ...QUERY_CONFIG
   })
 
   const getDeviceItemDetail = async (index: number) => {
@@ -72,7 +79,7 @@ export default function Device() {
     try {
       const res = await addItem(currentIndex.current, activeItem)
       if (res.status) {
-        toast.success('Equip item successfully!')
+        toast.success(<CustomToast type="success" title="Equip item successfully!" />)
         setActiveItem(0)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
@@ -90,7 +97,7 @@ export default function Device() {
     try {
       const res = await removeItem(detailDeviceItem.current.id)
       if (res.status) {
-        toast.success('Unequipped successfully!')
+        toast.success(<CustomToast type="success" title="Unequipped successfully!" />)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
         getUserInfo()
@@ -111,7 +118,7 @@ export default function Device() {
           index: currentDevice.current.index
         })
         if (res.status) {
-          toast.success('Device name changed successfully!')
+          toast.success(<CustomToast type="success" title="Device name changed successfully!" />)
           currentName.current = ''
           onClose()
           refetchListDevice()
@@ -120,6 +127,17 @@ export default function Device() {
       } catch (ex) {
         setLoadingButton(false)
       }
+    }
+  }
+
+  const handleSwapItem = async () => {
+    const res = await swapDevice(detailDeviceItem.current.id, activeItem)
+    if (res.status) {
+      refetchListDevice()
+      setActiveItem(0)
+      getDeviceItemDetail(currentIndex.current)
+      toast.success(<CustomToast type="success" title="Swap item successfully" />)
+      onClose()
     }
   }
 
@@ -141,7 +159,15 @@ export default function Device() {
       case DEVICE_TYPE.BUY:
         handleAddNewDevice()
         break
+      case DEVICE_TYPE.SWAP:
+        handleSwapItem()
+        break
     }
+  }
+
+  const handleSwap = () => {
+    equipType.current = detailDeviceItem.current.type
+    setActiveType(DEVICE_TYPE.SWAP)
   }
 
   const handleClickItem = (index: number) => {
@@ -189,7 +215,7 @@ export default function Device() {
     const res = await getNewDevice()
     try {
       if (res.status) {
-        toast.success('Buy device successfully!!')
+        toast.success(<CustomToast type="success" title="Buy device successfully!" />)
         refetchListDevice()
         getUserInfo()
         getUserConfig()
@@ -201,10 +227,21 @@ export default function Device() {
     }
   }
 
-  const disableBtn = activeType === DEVICE_TYPE.EQUIP && !activeItem ? true : false
+  const disableBtn =
+    (activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP) && !activeItem
+      ? true
+      : false
   return (
     <>
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex flex-col justify-between h-full ">
+        {isLoading && (
+          <Loader
+            classNames={{
+              wrapper: 'z-[1] min-h-[300px] left-[0] absolute  top-0',
+              icon: 'w-[45px] h-[45px] text-white'
+            }}
+          />
+        )}
         <div className="space-y-4">
           {listDevice?.data.map((item: IUserDeviceItem) => {
             return (
@@ -244,7 +281,9 @@ export default function Device() {
               ? 'equip item'
               : activeType === DEVICE_TYPE.BUY
                 ? 'Buy Device'
-                : 'DEVICE NAME'
+                : activeType === DEVICE_TYPE.SWAP
+                  ? 'Swap Item'
+                  : 'DEVICE NAME'
         }
         isOpen={isOpen}
         onClose={handleClose}
@@ -263,12 +302,13 @@ export default function Device() {
                 </p>
               ) : (
                 <p>
-                  Select 01 <span className="text-gradient">“{equipType.current}”</span> to equip
+                  Select 01 <span className="text-gradient">“{equipType.current}”</span> to{' '}
+                  {activeType === DEVICE_TYPE.SWAP ? 'swap' : 'equip'}
                 </p>
               )}
             </div>
           )}
-          {activeType !== DEVICE_TYPE.EQUIP ? (
+          {activeType !== DEVICE_TYPE.EQUIP && activeType !== DEVICE_TYPE.SWAP ? (
             <>
               <div
                 className={`space-x-4 flex items-center justify-center ${activeType === DEVICE_TYPE.INFO ? 'mt-6 xs:mt-8 2xs:mt-10 mb-10 xs:mb-12 2xs:mb-14' : 'my-6 xs:my-8'}`}
@@ -400,37 +440,46 @@ export default function Device() {
               activeItem={activeItem}
             />
           )}
-          <div
-            className={`btn z-[2] ${disableBtn ? 'inactive' : ''} ${activeType === DEVICE_TYPE.INFO ? 'error' : ''}`}
-            onClick={handleConfirm}
-          >
-            <div className="btn-border"></div>
-            <div
-              className={`${disableBtn ? 'btn-inactive' : `btn-${activeType === DEVICE_TYPE.INFO ? 'error' : 'primary'}`}`}
-            >
-              {activeType === DEVICE_TYPE.INFO ? (
-                'UNEQUIPPED'
-              ) : activeType === DEVICE_TYPE.EQUIP ? (
-                'CONFIRM'
-              ) : activeType === DEVICE_TYPE.BUY ? (
-                <div className="flex items-center justify-center space-x-4 text-green-900">
-                  <p>BUY NOW</p>
-                  <div className="w-[30px] h-[1px] bg-green-800"></div>
-                  <div className="flex items-center space-x-1">
-                    <IconPoint className="size-5" color />
-                    <span className="font-geist">
-                      {userConfig?.pointBuyDevice
-                        ? formatNumber(userConfig?.pointBuyDevice, 0, 0)
-                        : 0}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                'SAVE'
-              )}
+          {/* Button */}
+          {activeType === DEVICE_TYPE.INFO ? (
+            <div className="flex justify-between space-x-3 xs:space-x-4">
+              <div className="btn error z-[2]" onClick={handleConfirm}>
+                <div className="btn-border"></div>
+                <div className="btn-error">UNEQUIPPED</div>
+                <div className="btn-border"></div>
+              </div>
+              <div className="btn z-[2]" onClick={handleSwap}>
+                <div className="btn-border"></div>
+                <div className="btn-primary">SWAP</div>
+                <div className="btn-border"></div>
+              </div>
             </div>
-            <div className="btn-border"></div>
-          </div>
+          ) : (
+            <div className={`btn z-[2] ${disableBtn ? 'inactive' : ''}`} onClick={handleConfirm}>
+              <div className="btn-border"></div>
+              <div className={`btn-${disableBtn ? 'inactive' : 'primary'}`}>
+                {activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP ? (
+                  'CONFIRM'
+                ) : activeType === DEVICE_TYPE.BUY ? (
+                  <div className="flex items-center justify-center space-x-4 text-green-900">
+                    <p>BUY NOW</p>
+                    <div className="w-[30px] h-[1px] bg-green-800"></div>
+                    <div className="flex items-center space-x-1">
+                      <IconPoint className="size-5" color />
+                      <span className="font-geist">
+                        {userConfig?.pointBuyDevice
+                          ? formatNumber(userConfig?.pointBuyDevice, 0, 0)
+                          : 0}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  'SAVE'
+                )}
+              </div>
+              <div className="btn-border"></div>
+            </div>
+          )}
         </div>
       </CustomModal>
     </>

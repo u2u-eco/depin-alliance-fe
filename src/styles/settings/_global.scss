@@ -70,6 +70,7 @@
   --hover: #152d27;
   --shape: clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0 100%, 0 30%);
   --gradient: linear-gradient(to right, #00ff90, #f4fd36);
+  --sab: env(safe-area-inset-bottom);
   // color-scheme: light dark;
 }
 
@@ -91,6 +92,10 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 #root {

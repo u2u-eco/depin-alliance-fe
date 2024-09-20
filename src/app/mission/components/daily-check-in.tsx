@@ -1,5 +1,6 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconPoint } from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
 import { QUERY_CONFIG } from '@/constants'
 import { formatNumber } from '@/helper/common'
@@ -41,7 +42,13 @@ export default function DailyCheckIn() {
     try {
       const res = await checkIn()
       if (res.status) {
-        toast.success('Mission is completed')
+        toast.success(
+          <CustomToast
+            type="success"
+            title="Mission is completed!"
+            point={currentItem.current?.point}
+          />
+        )
         refetch()
         getUserInfo()
         onClose()

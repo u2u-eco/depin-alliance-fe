@@ -72,3 +72,7 @@ export const updateSkill = (id: number) => {
 export const getNextLevel = () => {
   return https.get('users/next-level')
 }
+
+export const getListRankingEarned = () => {
+  return https.get('users/ranking-earned')
+}

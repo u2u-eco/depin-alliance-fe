@@ -1,5 +1,6 @@
 import { IDeviceItemBuyParam, IFilterDevice, IParamUseKey } from '@/interfaces/i.devices'
 import https from '../constants/https'
+import { PAGE_SIZE } from '@/constants'
 
 export const getUserDevice = ({
   index,
@@ -64,11 +65,12 @@ export const listUserItemDevice = (params: {
   sortAscending?: boolean
   type?: string
   page: number
+  size?: number
 }) => {
   return https.get(`/devices/user-item`, {
     params: {
       ...params,
-      size: 12
+      size: params.size || PAGE_SIZE
     }
   })
 }
@@ -87,4 +89,8 @@ export const estimateUseKey = (data: IParamUseKey) => {
 
 export const getUseKey = (data: IParamUseKey) => {
   return https.post('/devices/use-key', data)
+}
+
+export const swapDevice = (removeId: number, addId: number) => {
+  return https.get(`/devices/swap-item/${removeId}/${addId}`)
 }

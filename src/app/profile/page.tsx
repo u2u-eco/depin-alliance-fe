@@ -17,6 +17,7 @@ import { LIST_TYPE } from '@/constants'
 import Link from 'next/link'
 import Loader from '../components/ui/loader'
 import { CustomHeader } from '../components/ui/custom-header'
+import CustomToast from '../components/ui/custom-toast'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -33,8 +34,8 @@ export default function ProfilePage() {
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const _getSkills = async () => {
-    setIsLoading(true)
+  const _getSkills = async (disableLoading?: boolean) => {
+    setIsLoading(disableLoading ? false : true)
     const res = await getSkills()
     if (res.status) {
       setListSkill(res.data.skill)
@@ -69,7 +70,7 @@ export default function ProfilePage() {
     setLoadingButton(true)
     const res: any = await updateSkill(skillId)
     if (res.status) {
-      toast.success('Level Up successfully!')
+      toast.success(<CustomToast type="success" title="Level Up successfully!" />)
       getUserInfo()
       _getSkills()
       currentItem.current = {}
@@ -85,7 +86,7 @@ export default function ProfilePage() {
 
   const fetchList = () => {
     const update = () => {
-      _getSkills()
+      _getSkills(true)
       if (currentItem.current.skillId) {
         handleClickItem(currentItem.current)
       }
