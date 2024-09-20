@@ -1,4 +1,4 @@
-import { claim, getUserInfo, startContributing } from '@/services/user'
+import { claim, getUserInfo, mining, startContributing } from '@/services/user'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/helper/common'
@@ -7,7 +7,6 @@ import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
 import Loader from '@/app/components/ui/loader'
 import { toast } from 'sonner'
-import { IconCheckCircle, IconPoint } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
 
 const HOME_TYPE = {
@@ -43,6 +42,7 @@ export default function Mining() {
 
       const timeMining = userInfo.currentTime - userInfo.timeStartMining
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
+
       setMiningCount(currentPoint)
       workerRef.current?.postMessage(
         JSON.stringify({
@@ -61,6 +61,7 @@ export default function Mining() {
     if (res.status) {
       setUserInfo({ info: res.data })
     }
+    return res
   }
 
   const handleMining = async () => {
@@ -136,6 +137,16 @@ export default function Mining() {
     }
   }, [refButton, type])
 
+  const handleVisible = async () => {
+    if (document.hidden) {
+      //
+    } else {
+      workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
+      mining()
+      updateUserInfo()
+    }
+  }
+
   useEffect(() => {
     workerRef.current = new Worker(new URL('@/worker.ts', import.meta.url))
     workerRef.current.onmessage = (event: MessageEvent<any>) => {
@@ -169,6 +180,13 @@ export default function Mining() {
       setType(HOME_TYPE.START)
     }
   }, [userInfo])
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisible)
+    }
+  }, [])
 
   return (
     <div className="mt-6 xs:mt-8">

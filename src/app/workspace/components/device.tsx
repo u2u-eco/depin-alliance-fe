@@ -134,6 +134,7 @@ export default function Device() {
     const res = await swapDevice(detailDeviceItem.current.id, activeItem)
     if (res.status) {
       refetchListDevice()
+      setActiveItem(0)
       getDeviceItemDetail(currentIndex.current)
       toast.success(<CustomToast type="success" title="Swap item successfully" />)
       onClose()
@@ -301,7 +302,8 @@ export default function Device() {
                 </p>
               ) : (
                 <p>
-                  Select 01 <span className="text-gradient">“{equipType.current}”</span> to equip
+                  Select 01 <span className="text-gradient">“{equipType.current}”</span> to{' '}
+                  {activeType === DEVICE_TYPE.SWAP ? 'swap' : 'equip'}
                 </p>
               )}
             </div>
