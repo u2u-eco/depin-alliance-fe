@@ -12,7 +12,7 @@ import { approveJoinLeague, getListJoinRequest, rejectJoinLeague } from '@/servi
 import { useInView } from 'react-intersection-observer'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { toast } from 'sonner'
-import { PAGE_SIZE, TELE_URI } from '@/constants'
+import { MAX_SIZE_PER_PAGE, PAGE_SIZE, TELE_URI } from '@/constants'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
@@ -26,10 +26,12 @@ export default function JoinRequestPage() {
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
+  const isUpdatePage = useRef<boolean>(false)
   useQuery({
     queryKey: ['getListDevice', page],
     queryFn: async () => {
       try {
+        if (isUpdatePage.current) return
         setIsLoading(true)
         const res: any = await getListJoinRequest({ page, size: PAGE_SIZE })
         if (res.pagination?.totalPage) {
@@ -57,12 +59,21 @@ export default function JoinRequestPage() {
 
   const handleUpdateData = async (index: number) => {
     setIsLoading(true)
-    const res: any = await getListJoinRequest({ page: 1, size: PAGE_SIZE * page })
+    isUpdatePage.current = true
+    const currentPage = Math.floor(index / PAGE_SIZE)
+    setPage(currentPage + 1)
+
+    const res: any = await getListJoinRequest({
+      page: currentPage + 1,
+      size: PAGE_SIZE
+    })
+
     if (res.status) {
       setTotal(res?.pagination?.totalRecord || 0)
-      dataList.current = res.data
+      dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
       setListItem(dataList.current)
     }
+    isUpdatePage.current = false
     setIsLoading(false)
   }
 

@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getListMemberOfLeague, kickUserInLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
-import { PAGE_SIZE, TELE_URI } from '@/constants'
+import { MAX_SIZE_PER_PAGE, PAGE_SIZE, TELE_URI } from '@/constants'
 import CustomInputSearch from '@/app/components/ui/custom-input-search'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -32,10 +32,12 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const currentUser = useRef<IJoinRequest | null>(null)
   const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const isUpdatePage = useRef<boolean>(false)
   useQuery({
     queryKey: ['getListMemberOfLeague', page, search],
     queryFn: async () => {
       try {
+        if (isUpdatePage.current) return
         setIsLoading(true)
         const res: any = await getListMemberOfLeague({ page, size: PAGE_SIZE, username: search })
         if (res.pagination?.totalPage) {
@@ -64,20 +66,28 @@ const AllMember = ({ setTotalMember }: IMember) => {
     currentUser.current = { ...item, index }
     onOpen()
   }
+
   const handleUpdateData = async (index: number) => {
     setIsLoading(true)
+    isUpdatePage.current = true
+    const currentPage = Math.floor(index / PAGE_SIZE)
+    setPage(currentPage + 1)
     const res: any = await getListMemberOfLeague({
-      page: 1,
-      size: page * PAGE_SIZE,
+      page: currentPage + 1,
+      size: PAGE_SIZE,
       username: search
     })
+
     if (res.status) {
-      dataList.current = res.data
-      setTotalMember(res.pagination?.totalRecord || 0)
+      setTotalMember(res?.pagination?.totalRecord || 0)
+      dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
       setListItem(dataList.current)
     }
+    isUpdatePage.current = false
+
     setIsLoading(false)
   }
+
   const handleKick = async () => {
     if (isLoadingAction) return
     if (currentUser?.current?.id) {

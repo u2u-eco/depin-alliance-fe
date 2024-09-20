@@ -11,6 +11,7 @@ export const SHARE_URL = process.env.NEXT_PUBLIC_SHARE_URL
 export const IS_ONLY_SUPPORT_MOBILE =
   process.env.NEXT_PUBLIC_ONLY_SUPPORT_MOBILE === 'true' ? true : false
 export const PAGE_SIZE = 10
+export const MAX_SIZE_PER_PAGE = 10
 export const UPGRADE_TAB = {
   RAM: 'RAM',
   CPU: 'CPU',
