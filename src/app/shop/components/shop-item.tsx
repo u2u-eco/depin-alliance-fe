@@ -121,18 +121,14 @@ export default function ShopItem({ filterOptions }: IShopItem) {
   }, [filterOptions])
 
   useEffect(() => {
-    const offsetTop = refList.current?.getBoundingClientRect()?.top
-    const wrapChidden = document.getElementById('jsWrapContainer')
-    if (offsetTop && webApp?.viewportStableHeight) {
-      let margin = 0
-      if (wrapChidden) {
-        const marginOfWrap = window.getComputedStyle(wrapChidden)
-        margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+    setTimeout(() => {
+      const offsetTop = refList.current?.getBoundingClientRect()?.top
+      if (offsetTop && webApp?.viewportStableHeight) {
+        const heightTopBottom = offsetTop + heightNav
+        setMaxHeightListContent(webApp?.viewportStableHeight - heightTopBottom)
       }
-      const heightTopBottom = offsetTop + heightNav + margin
-      setMaxHeightListContent(webApp?.viewportStableHeight - heightTopBottom)
-    }
-  }, [webApp?.viewportStableHeight])
+    }, 1000)
+  }, [])
 
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
