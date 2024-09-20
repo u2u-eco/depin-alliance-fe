@@ -51,7 +51,7 @@ export default function InvitePage() {
 
   const handleCopy = () => {
     if (userInfo) {
-      toast.success('Copied!')
+      toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
   const handleShare = () => {
