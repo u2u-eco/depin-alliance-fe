@@ -125,16 +125,16 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       const offsetTop = refList.current?.getBoundingClientRect()?.top
       if (offsetTop && webApp?.viewportStableHeight) {
         const heightTopBottom = offsetTop + heightNav
-        setMaxHeightListContent(webApp?.viewportStableHeight - heightTopBottom)
+        setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
       }
-    }, 1000)
+    }, 500)
   }, [])
 
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
   return (
     <>
-      <div className="relative" ref={refList} style={{ minHeight: maxHeightListContent }}>
+      <div className="relative" ref={refList} style={{ minHeight: maxHeightListContent || '60vh' }}>
         <div className=" absolute"></div>
         <div
           className="overflow-y-auto hide-scrollbar"
