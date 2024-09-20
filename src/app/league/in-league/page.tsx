@@ -192,15 +192,18 @@ export default function InLeaguePage() {
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Mission</p>
               </div>
               <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              <CopyToClipboard
+              {/* <CopyToClipboard
                 text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
                 onCopy={handleCopy}
+              > */}
+              <div
+                className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
+                onClick={handleShare}
               >
-                <div className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500">
-                  <IconShare className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                  <p className="text-[13px] xs:text-sm !leading-[18px]">Share</p>
-                </div>
-              </CopyToClipboard>
+                <IconShare className="size-6 xs:size-7 2xs:size-8 mx-auto" />
+                <p className="text-[13px] xs:text-sm !leading-[18px]">Share</p>
+              </div>
+              {/* </CopyToClipboard> */}
               <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <Link
                 href="/league/member"
