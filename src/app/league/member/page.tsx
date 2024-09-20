@@ -3,12 +3,14 @@
 import CustomPage from '@/app/components/custom-page'
 import { IconAdmin, IconPoint } from '@/app/components/icons'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AllMember from './components/all-member'
 import RankingMember from './components/ranking-member'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
+import { useRouter } from 'next/navigation'
+import { userLeague } from '@/services/league'
 
 const MEMBER_TYPE = {
   ALL: 'all',
@@ -16,6 +18,7 @@ const MEMBER_TYPE = {
 }
 
 export default function MemberPage() {
+  const router = useRouter()
   const [activeType, setActiveType] = useState(MEMBER_TYPE.ALL)
   const { userInfo, currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
@@ -23,6 +26,17 @@ export default function MemberPage() {
   const handleSelectTab = (tab: string) => {
     setActiveType(tab)
   }
+
+  const _getUserLeague = async () => {
+    const res = await userLeague()
+    if (!res.status || !res.data || !res.data?.code) {
+      router.push('/league')
+    }
+  }
+
+  useEffect(() => {
+    _getUserLeague()
+  }, [])
 
   return (
     <>
