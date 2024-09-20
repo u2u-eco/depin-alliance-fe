@@ -4,13 +4,13 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import { BUTTON_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
-import { joinLeague } from '@/services/league'
+import { cancelJoinLeague, joinLeague } from '@/services/league'
 import { useState } from 'react'
 import { toast } from 'sonner'
 interface IJoinLeague {
   item: ILeagueItem | null
   onClose: () => void
-  joinCb: (code: string) => void
+  joinCb: (code: string, status: boolean) => void
 }
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
   const [loadingButton, setLoadingButton] = useState(false)
@@ -22,7 +22,21 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
         toast.success(<CustomToast type="success" title="Request join league successfully" />)
-        joinCb(item.code)
+        joinCb(item.code, true)
+        onClose()
+      }
+      setLoadingButton(false)
+    }
+  }
+
+  const handleCancel = async () => {
+    if (item?.code) {
+      setLoadingButton(true)
+      if (loadingButton) return
+      const res = await cancelJoinLeague(item?.code)
+      if (res.status && res.data) {
+        toast.success(<CustomToast type="success" title="Cancel join league successfully" />)
+        joinCb(item.code, false)
         onClose()
       }
       setLoadingButton(false)
@@ -57,7 +71,11 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
         </div>
       </div>
       {item?.isPendingRequest ? (
-        <CustomButton type={BUTTON_TYPE.CANCEL} title="CANCEL JOIN LEAGUE" onAction={() => {}} />
+        <CustomButton
+          type={BUTTON_TYPE.CANCEL}
+          title="CANCEL JOIN LEAGUE"
+          onAction={handleCancel}
+        />
       ) : (
         <CustomButton title="JOIN LEAGUE" disable={item?.isPendingRequest} onAction={handleJoin} />
       )}

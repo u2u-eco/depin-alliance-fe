@@ -228,16 +228,16 @@ export default function Item() {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
     const wrapChidden = document.getElementById('jsWrapContainer')
 
-    if (offsetTop && webApp?.viewportHeight) {
+    if (offsetTop && webApp?.viewportStableHeight) {
       let margin = 0
       if (wrapChidden) {
         const marginOfWrap = window.getComputedStyle(wrapChidden)
         margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
       }
       const heightTopBottom = offsetTop + margin
-      setMaxHeightListContent(webApp?.viewportHeight + safeAreaBottom - heightTopBottom)
+      setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
     }
-  }, [webApp?.viewportHeight])
+  }, [webApp?.viewportStableHeight])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =

@@ -96,10 +96,10 @@ export default function LeaguePage() {
     }, 300)
   }
 
-  const handleUpdateRequestJoin = (code: string) => {
+  const handleUpdateRequestJoin = (code: string, status: boolean) => {
     dataList.current.forEach((item: ILeagueItem) => {
       if (item.code === code) {
-        item.isPendingRequest = true
+        item.isPendingRequest = status
       }
     })
     setListItem(dataList.current)
@@ -196,8 +196,8 @@ export default function LeaguePage() {
             <JoinLeague
               item={currentItem.current}
               onClose={onClose}
-              joinCb={(code) => {
-                handleUpdateRequestJoin(code)
+              joinCb={(code, status) => {
+                handleUpdateRequestJoin(code, status)
               }}
             />
           ) : (

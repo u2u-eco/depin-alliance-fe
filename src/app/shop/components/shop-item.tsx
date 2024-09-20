@@ -122,11 +122,17 @@ export default function ShopItem({ filterOptions }: IShopItem) {
 
   useEffect(() => {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
-    if (offsetTop && webApp?.viewportHeight) {
-      const heightTopBottom = offsetTop + heightNav
-      setMaxHeightListContent(webApp?.viewportHeight - heightTopBottom)
+    const wrapChidden = document.getElementById('jsWrapContainer')
+    if (offsetTop && webApp?.viewportStableHeight) {
+      let margin = 0
+      if (wrapChidden) {
+        const marginOfWrap = window.getComputedStyle(wrapChidden)
+        margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+      }
+      const heightTopBottom = offsetTop + heightNav + margin
+      setMaxHeightListContent(webApp?.viewportStableHeight - heightTopBottom)
     }
-  }, [webApp?.viewportHeight])
+  }, [webApp?.viewportStableHeight])
 
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 

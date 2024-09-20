@@ -67,6 +67,10 @@ export const rejectJoinLeague = (id: number) => {
   return https.get(`/league/reject/${id}`)
 }
 
+export const cancelJoinLeague = (code: string) => {
+  return https.get(`/league/cancel/${code}`)
+}
+
 export const kickUserInLeague = (id: number) => {
   return https.get(`/league/kick/${id}`)
 }
