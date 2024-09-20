@@ -92,8 +92,8 @@ export default function LeaguePage() {
   const handleUpdateText = (text: string) => {
     clearTimeout(timeoutSearch.current)
     timeoutSearch.current = setTimeout(() => {
-      setSearch(text)
-    }, 300)
+      setSearch(text.trim())
+    }, 500)
   }
 
   const handleUpdateRequestJoin = (code: string, status: boolean) => {

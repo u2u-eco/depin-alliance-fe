@@ -54,7 +54,8 @@ export default function JoinRequestPage() {
       } catch (ex) {
         setIsLoading(false)
       }
-    }
+    },
+    enabled: Boolean(currentLeague?.isOwner)
   })
 
   const handleUpdateData = async (index: number) => {

@@ -105,8 +105,8 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const handleUpdateText = (text: string) => {
     clearTimeout(timeoutSearch.current)
     timeoutSearch.current = setTimeout(() => {
-      setSearch(text)
-    }, 300)
+      setSearch(text?.trim())
+    }, 500)
   }
 
   const handleInvite = () => {

@@ -1,6 +1,7 @@
 import { IconCheck, IconClose, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { IJoinRequest } from '@/interfaces/i.league'
+import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 import React from 'react'
 
@@ -18,6 +19,7 @@ const ITEM_TYPE = {
 }
 
 const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemProps) => {
+  const { currentLeague } = useCommonStore()
   return (
     <div className="relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent after:border-b-green-900 after:border-r-green-900">
       <div className="relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:bg-item-default before:opacity-20 p-2 flex items-center justify-between">
@@ -44,28 +46,30 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
             </div>
           </div>
         </div>
-        <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
-          {type === ITEM_TYPE.REQUEST && (
+        {currentLeague?.isOwner && (
+          <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+            {type === ITEM_TYPE.REQUEST && (
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  handleCheck && handleCheck(item.userId)
+                }}
+              >
+                <IconCheck className="size-6 xs:size-7 2xs:size-8 text-green-500" />
+              </div>
+            )}
             <div
               className="cursor-pointer"
               onClick={() => {
-                handleCheck && handleCheck(item.userId)
+                handleKick ? handleKick(item) : handleCancel && handleCancel(item.userId)
               }}
             >
-              <IconCheck className="size-6 xs:size-7 2xs:size-8 text-green-500" />
+              <IconClose
+                className={`size-6 xs:size-7 2xs:size-8 ${type === ITEM_TYPE.REQUEST ? 'text-error-blur' : 'text-yellow-800'}`}
+              />
             </div>
-          )}
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              handleKick ? handleKick(item) : handleCancel && handleCancel(item.userId)
-            }}
-          >
-            <IconClose
-              className={`size-6 xs:size-7 2xs:size-8 ${type === ITEM_TYPE.REQUEST ? 'text-error-blur' : 'text-yellow-800'}`}
-            />
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
