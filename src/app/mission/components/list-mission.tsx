@@ -1,6 +1,7 @@
 import CustomButton from '@/app/components/button'
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
+import CustomToast from '@/app/components/ui/custom-toast'
 import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
@@ -13,6 +14,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
+import SpecialBoxModal from './special-box'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -58,7 +60,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setVerified(true)
       refetch && refetch()
     } else {
-      toast.error('Mission not completed')
+      toast.error(<CustomToast type="error" title="Mission not completed!" />)
     }
     setLoadingButton(false)
   }
@@ -87,8 +89,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         }
       }
     } catch (ex: any) {
-      toast.error(ex.message || 'Error')
-      console.log(ex)
+      toast.error(<CustomToast type="error" title={ex.message || 'Error'} />)
     }
   }
 
@@ -98,9 +99,14 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     if (res.status) {
       if (currentItem.current.box > 0) {
         onOpenSpecial()
-      } else {
-        toast.success('Mission is completed')
       }
+      toast.success(
+        <CustomToast
+          type="success"
+          title="Mission is completed!"
+          point={currentItem.current?.point}
+        />
+      )
       refetch && refetch()
       getUserInfo()
       onClose()
@@ -229,44 +235,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           />
         </div>
       </CustomModal>
-      <CustomModal
+      <SpecialBoxModal
         isOpen={isOpenSpecial}
         onOpen={onOpenSpecial}
         onClose={onCloseSpecial}
         onOpenChange={onOpenChangeSpecial}
-        full
-      >
-        <div className="h-full flex flex-col justify-between p-4">
-          <div className="flex flex-1 flex-col items-center justify-center space-y-3">
-            <div className="relative size-[250px]">
-              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] size-full bg-[rgba(0,255,144,0.5)] z-[-1] blur-[75px]"></div>
-              <img
-                src="/assets/images/item-special.png"
-                srcSet="/assets/images/item-special.png 1x, /assets/images/item-special@2x.png 2x"
-                alt="DePIN Alliance"
-                className="size-full"
-              />
-            </div>
-            <div className="flex items-center justify-center space-x-6 ">
-              <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-              <div className="font-airnt font-medium text-lg xs:text-xl tracking-[1px] text-title text-center leading-[22px] xs:leading-[24px]">
-                Congratulation{' '}
-              </div>
-              <div className="size-1.5 min-w-1.5 bg-green-800"></div>
-            </div>
-            <p className="text-body text-base leading-[20px] tracking-[-1px] text-center">
-              You’ve received this special box.
-            </p>
-          </div>
-          <div className="m-8">
-            <div className="btn" onClick={onCloseSpecial}>
-              <div className="btn-border"></div>
-              <div className="btn-primary">Claim</div>
-              <div className="btn-border"></div>
-            </div>
-          </div>
-        </div>
-      </CustomModal>
+      />
     </>
   )
 }

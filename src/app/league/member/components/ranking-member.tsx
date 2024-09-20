@@ -1,41 +1,20 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
-import CustomPage from '@/app/components/custom-page'
-import { useQuery } from '@tanstack/react-query'
-import { getListRankingEarned, getRanking } from '../../services/user'
 import Image from 'next/image'
 import { formatNumber } from '@/helper/common'
-import dayjs from 'dayjs'
+import { getRanking } from '@/services/user'
 import useCommonStore from '@/stores/commonStore'
-import Loader from '../components/ui/loader'
-import { CustomHeader } from '../components/ui/custom-header'
-import ListRankingItem from './components/list-ranking'
+import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { motion } from 'framer-motion'
+import NoItem from '@/app/components/ui/no-item'
 
-const RANKING_TYPE = {
-  PROFIT: 'profit',
-  EARNED: 'earned'
-}
-
-export default function RankingPage() {
+const RankingMember = () => {
   const { userInfo } = useCommonStore()
   const [listRanking, setListRanking] = useState<any>({})
-  const [activeType, setActiveType] = useState(RANKING_TYPE.PROFIT)
   const { data: listRankingResponse, isLoading } = useQuery({
-    queryKey: ['getRanking', activeType],
-    queryFn: () => {
-      if (activeType === RANKING_TYPE.PROFIT) {
-        return getRanking()
-      } else {
-        return getListRankingEarned()
-      }
-    }
+    queryKey: ['getRanking'],
+    queryFn: getRanking
   })
-
-  const handleSelectTab = (tab: string) => {
-    setActiveType(tab)
-  }
 
   useEffect(() => {
     if (listRankingResponse?.data?.ranking) {
@@ -58,22 +37,22 @@ export default function RankingPage() {
     }
   }, [listRankingResponse?.data, userInfo])
 
+  const getBgByRank = (index: number) => {
+    switch (index) {
+      case 0:
+        return 'bg-[#BA3AFF] drop-shadow-purple before:bg-item-purple after:border-b-[#BA3AFF] after:border-r-[#BA3AFF]'
+      case 1:
+        return 'bg-[#00A3FF] drop-shadow-blue before:bg-item-blue after:border-b-[#00A3FF] after:border-r-[#00A3FF]'
+      case 2:
+        return 'bg-[#FFA800] drop-shadow-orange before:bg-item-orange after:border-b-[#FFA800] after:border-r-[#FFA800]'
+      case 99999:
+        return 'bg-green-500 drop-shadow-green before:bg-item-green after:border-b-green-500 after:border-r-green-500'
+      default:
+        return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
+    }
+  }
   return (
-    <CustomPage
-      classNames={{
-        wrapper:
-          "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
-      }}
-    >
-      {isLoading && (
-        <Loader
-          classNames={{
-            wrapper: 'h-[100vh] absolute z-[1] left-[0] bg-black/30',
-            icon: 'w-[45px] h-[45px] text-white'
-          }}
-        />
-      )}
-      <CustomHeader title="RANKING" />
+    <>
       <div className="mt-4">
         <div className="btn default cursor-default font-geist">
           <div className="btn-border"></div>
@@ -95,54 +74,16 @@ export default function RankingPage() {
           <div className="btn-border"></div>
         </div>
       </div>
-      <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4 my-6 xs:my-7 2xs:my-8">
-        {Object.values(RANKING_TYPE).map((item, index) => (
-          <motion.div
-            whileTap={{ scale: 0.95 }}
-            key={index}
-            className="relative cursor-pointer"
-            onClick={() => handleSelectTab(item)}
-          >
-            <img
-              className="mx-auto"
-              src={`/assets/images/upgrade/upgrade-tab${activeType === item ? '-active' : ''}.svg`}
-              alt="Ranking Tab"
-            />
-            <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
-            >
-              {item}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-      <div>
-        <motion.div
-          initial={{ y: 25, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -25, opacity: 0 }}
-          transition={{ duration: 0.35 }}
-          key={RANKING_TYPE.PROFIT}
-        >
-          <ListRankingItem data={listRanking} isEarn={activeType === RANKING_TYPE.EARNED} />
-        </motion.div>
-        {/* {activeType === RANKING_TYPE.PROFIT ? (
-          <motion.div
-            initial={{ y: 25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -25, opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            key={RANKING_TYPE.PROFIT}
-          >
-            <ListRankingItem data={listRanking}/>
-          </motion.div>
+      <div className="mt-6 xs:mt-8 2xs:mt-10">
+        {!isLoading && listRanking?.ranking?.length === 0 ? (
+          <NoItem title="No data available" />
         ) : (
           <motion.div
             initial={{ y: 25, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.35 }}
-            key={RANKING_TYPE.EARNED}
+            key="ranking"
           >
             <div
               className={`flex flex-col space-y-4 ${listRanking?.currentRank > listRanking?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}
@@ -204,8 +145,10 @@ export default function RankingPage() {
               ))}
             </div>
           </motion.div>
-        )} */}
+        )}
       </div>
-    </CustomPage>
+    </>
   )
 }
+
+export default RankingMember

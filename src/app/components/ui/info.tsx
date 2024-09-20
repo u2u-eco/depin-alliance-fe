@@ -121,7 +121,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                     className="flex items-center min-[400px]:space-x-1 cursor-pointer"
                   >
                     <span
-                      className={`font-geist text-yellow-500 ${profile ? 'text-sm xs:text-sm 2xs:text-base leading-[18px] 2xs:leading-[20px]' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
+                      className={`font-geist text-yellow-500 whitespace-nowrap ${profile ? 'text-sm xs:text-sm 2xs:text-base leading-[18px] 2xs:leading-[20px]' : 'text-xs min-[400px]:text-[13px] 2xs:text-sm'}`}
                     >
                       LV. {userInfo?.level}
                     </span>

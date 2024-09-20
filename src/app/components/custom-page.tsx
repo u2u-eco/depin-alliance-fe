@@ -28,7 +28,10 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/mission/partners' &&
     pathName !== '/workspace' &&
     pathName !== '/ranking' &&
-    pathName !== '/mission/quiz'
+    pathName !== '/mission/quiz' &&
+    pathName !== '/league/member' &&
+    pathName !== '/league/join-request' &&
+    pathName !== '/league/mission'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -37,18 +40,16 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/avatar' &&
     pathName !== '/profile' &&
     pathName !== '/level' &&
-    pathName !== '/mission/quiz'
+    pathName !== '/mission/quiz' &&
+    pathName !== '/league/member' &&
+    pathName !== '/league/join-request'
 
   return (
     <AnimatePresence>
       <div className={cn('section', classNames?.wrapper)}>
         <div
           style={{
-            height: isShowSidebar
-              ? `calc(100vh - ${heightNav}px)`
-              : webApp?.viewportStableHeight
-                ? webApp.viewportStableHeight + safeAreaBottom
-                : webApp?.viewportStableHeight
+            height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh'
           }}
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col hide-scrollbar`}
         >

@@ -1,5 +1,5 @@
 import CustomModal from '@/app/components/custom-modal'
-import { IconFilter, IconPoint, IconSort } from '@/app/components/icons'
+import { IconCheckCircle, IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -21,12 +21,15 @@ import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import { useTelegram } from '@/hooks/useTelegram'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const ITEM_TYPE = {
   INFO: 'info',
   SELL: 'sell',
   SPECIAL: 'SPECIAL'
 }
+
+const PAGE_SIZE = 12
 
 export default function Item() {
   const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
@@ -45,6 +48,8 @@ export default function Item() {
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const currentIndex = useRef<number>(0)
+  const isUpdatePage = useRef<boolean>(false)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -55,6 +60,7 @@ export default function Item() {
     type: ''
   })
   const refList = useRef<any>()
+  const refListScroll = useRef<any>()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const {
     isOpen: isOpenFilter,
@@ -81,8 +87,9 @@ export default function Item() {
     ],
     queryFn: async () => {
       try {
+        if (isUpdatePage.current) return
         setIsLoading(true)
-        const res: any = await listUserItemDevice({ ...filterOptions, page })
+        const res: any = await listUserItemDevice({ ...filterOptions, page, size: PAGE_SIZE })
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
@@ -105,7 +112,8 @@ export default function Item() {
     ...QUERY_CONFIG
   })
 
-  const handleInfo = (item: IDeviceTypeItem) => {
+  const handleInfo = (item: IDeviceTypeItem, index: number) => {
+    currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
     onOpen()
@@ -113,7 +121,6 @@ export default function Item() {
 
   const updateAmountSell = (amount: number) => {
     amountSell.current = amount
-    console.log(currentItem.current.price)
     setTotalPriceSell((currentItem.current.price / 2) * amount)
   }
 
@@ -125,14 +132,35 @@ export default function Item() {
     onOpen()
   }
 
+  const handleUpdateData = async () => {
+    setIsLoading(true)
+    isUpdatePage.current = true
+    const currentPage = Math.floor(currentIndex.current / PAGE_SIZE)
+    setPage(currentPage + 1)
+    const res: any = await listUserItemDevice({
+      ...filterOptions,
+      page: currentPage + 1,
+      size: PAGE_SIZE
+    })
+
+    if (res.status) {
+      dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
+      setListDeviceItem(dataList.current)
+    }
+    isUpdatePage.current = false
+    setIsLoading(false)
+  }
+
   const handleSell = async () => {
     setLoadingButton(true)
     if (loadingButton) return
     try {
       const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
       if (res.status) {
-        toast.success('Sell item successfully!')
-        refetch && refetch()
+        toast.success(
+          <CustomToast type="success" title="Sell successfully!" point={totalPriceSell} />
+        )
+        handleUpdateData()
         getUserInfo()
         onClose()
       }
@@ -146,7 +174,7 @@ export default function Item() {
     if (paramUseKey.current && !disableBtnSpecial) {
       specialItem.current = []
       if (userInfo && userInfo?.point < useKey) {
-        toast.error('User point not enough!')
+        toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
       onOpenSpecial()
@@ -199,8 +227,8 @@ export default function Item() {
   }, [isInView])
 
   useEffect(() => {
-    if (refList.current) {
-      refList.current?.scrollTo(0, 0)
+    if (refListScroll.current) {
+      refListScroll.current?.scrollTo(0, 0)
     }
     setPage(1)
   }, [filterOptions])
@@ -209,16 +237,16 @@ export default function Item() {
     const offsetTop = refList.current?.getBoundingClientRect()?.top
     const wrapChidden = document.getElementById('jsWrapContainer')
 
-    if (offsetTop && webApp?.viewportHeight) {
+    if (offsetTop && webApp?.viewportStableHeight) {
       let margin = 0
       if (wrapChidden) {
         const marginOfWrap = window.getComputedStyle(wrapChidden)
         margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
       }
       const heightTopBottom = offsetTop + margin
-      setMaxHeightListContent(webApp?.viewportHeight + safeAreaBottom - heightTopBottom)
+      setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
     }
-  }, [webApp?.viewportHeight])
+  }, [webApp?.viewportStableHeight])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
@@ -248,18 +276,19 @@ export default function Item() {
         <div className="relative mt-8" ref={refList} style={{ minHeight: maxHeightListContent }}>
           <div className=" absolute"></div>
           <div
+            ref={refListScroll}
             className="overflow-y-auto hide-scrollbar"
             style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
           >
             <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
-              {listDeviceItem?.map((item: any) => (
+              {listDeviceItem?.map((item: any, index: number) => (
                 <div
                   key={item.code}
                   className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all ${activeItem === item.code ? 'before:border-l-green-500 before:border-t-green-500' : ''}`}
                 >
                   <div
                     className={`flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
-                    onClick={() => handleInfo(item)}
+                    onClick={() => handleInfo(item, index)}
                   >
                     <ImageDevice
                       className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
@@ -349,7 +378,7 @@ export default function Item() {
                   className={activeType === ITEM_TYPE.INFO ? 'space-y-2 xs:space-y-3' : 'space-y-2'}
                 >
                   <p
-                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-2xl leading-[28px]' : 'text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px]'}`}
+                    className={`text-white font-semibold font-mona ${activeType === ITEM_TYPE.SELL ? 'text-base xs:text-xl 2xs:text-2xl !leading-[20px] xs:!leading-[24px] 2xs:!leading-[28px]' : 'text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px]'}`}
                   >
                     {currentItem.current?.name}
                   </p>
@@ -380,7 +409,7 @@ export default function Item() {
                               <IconPoint className="size-4" />
                               <span className="text-primary font-semibold leading-[16px]">
                                 {currentItem.current?.miningPower
-                                  ? `${formatNumber(currentItem.current?.miningPower, 0, 2)}/h`
+                                  ? `${formatNumber(currentItem.current?.miningPower * currentItem.current?.totalItem, 0, 2)}/h`
                                   : null}
                               </span>
                             </div>

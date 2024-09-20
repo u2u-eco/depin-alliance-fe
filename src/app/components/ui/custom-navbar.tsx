@@ -16,7 +16,12 @@ const CustomNavbar = () => {
     { id: 2, link: '/mission', title: 'mission' },
     { id: 3, link: '/home', title: 'contribute' },
     { id: 4, link: '/invite', title: 'invite' },
-    { id: 5, link: currentLeague?.code ? '/league/in-league' : '/league', title: 'league' }
+    {
+      id: 5,
+      link:
+        currentLeague?.code && !currentLeague.isPendingRequest ? '/league/in-league' : '/league',
+      title: 'league'
+    }
   ]
 
   useEffect(() => {

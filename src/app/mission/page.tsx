@@ -56,7 +56,6 @@ export default function MissionPage() {
           wrapper:
             "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]"
         }}
-        disableOverscroll
       >
         {isLoading && (
           <Loader

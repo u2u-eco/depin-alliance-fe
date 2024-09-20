@@ -25,6 +25,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const listTaskStatus = useRef<{ [key: number]: string }>({})
   const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
   const { setCurrentMission } = useMissionStore()
+  const [isEmptyPartner, setEmptyPartner] = useState<boolean>(false)
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -37,6 +38,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const countTaskDone = (list: any) => {
     const _listTaskDone: { [key: number]: number } = {}
     let _missionUnDone = 0
+    let _isEmptyPartner = true
     list.forEach((partnerItem: any, index: number) => {
       let count = 0
       partnerItem.missions.forEach((item: any) => {
@@ -50,8 +52,11 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
       }
       updateListPartner(_missionUnDone)
       listTaskStatus.current[index] = getStatus(count, partnerItem.missions.length)
+      if (listTaskStatus.current[index] !== LIST_STATUS_MISSION.DONE) {
+        _isEmptyPartner = false
+      }
     })
-
+    setEmptyPartner(_isEmptyPartner)
     setListTaskDone(_listTaskDone)
   }
 
@@ -78,47 +83,59 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
               <Loader />
             ) : (
               <>
-                {listPartners?.data?.map((item: IMissionPartner, index: number) => (
-                  <div onClick={() => handleLinkMission(item, index)} key={index}>
-                    <CustomItem
-                      type={LIST_TYPE.PARTNERS}
-                      title={item.name}
-                      image={item.image ? item.image : '/assets/images/partner-image@2x.png'}
-                      done={listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE}
-                      status={listTaskStatus.current[index]}
-                      key={index}
-                      item={item}
-                    >
-                      <>
-                        <div className="flex items-center space-x-1">
-                          <IconPoint className="size-[14px] xs:size-4" />
-                          <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">
-                            {item.rewards}
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
-                          <div className="flex items-center leading-[16px] space-x-1">
-                            <p className="text-title font-semibold text-[13px] xs:text-sm">
-                              {`${listTaskDone[index]}/${item.missions?.length}`}
-                            </p>
-                            <p className="text-body text-xs">
-                              {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE
-                                ? 'Completed'
-                                : ''}
-                            </p>
+                {isEmptyPartner ? (
+                  <NoItem title="No partner available" />
+                ) : (
+                  <>
+                    {listPartners?.data?.map((item: IMissionPartner, index: number) => {
+                      if (listTaskStatus.current[index] !== LIST_STATUS_MISSION.DONE) {
+                        return (
+                          <div onClick={() => handleLinkMission(item, index)} key={index}>
+                            <CustomItem
+                              type={LIST_TYPE.PARTNERS}
+                              title={item.name}
+                              image={
+                                item.image ? item.image : '/assets/images/partner-image@2x.png'
+                              }
+                              done={listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE}
+                              status={listTaskStatus.current[index]}
+                              key={index}
+                              item={item}
+                            >
+                              <>
+                                <div className="flex items-center space-x-1">
+                                  <IconPoint className="size-[14px] xs:size-4" />
+                                  <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">
+                                    {item.rewards}
+                                  </p>
+                                </div>
+                                <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
+                                  <div className="flex items-center leading-[16px] space-x-1">
+                                    <p className="text-title font-semibold text-[13px] xs:text-sm">
+                                      {`${listTaskDone[index]}/${item.missions?.length}`}
+                                    </p>
+                                    <p className="text-body text-xs">
+                                      {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE
+                                        ? 'Completed'
+                                        : ''}
+                                    </p>
+                                  </div>
+                                  <div className="w-[1px] h-4 bg-white/25"></div>
+                                  <div className="flex items-center leading-[16px] space-x-1">
+                                    <IconGroupUser className="text-body size-4" />
+                                    <p className="text-title font-semibold text-[13px] xs:text-sm">
+                                      {item.participants && formatNumber(item.participants, 0, 0)}
+                                    </p>
+                                  </div>
+                                </div>
+                              </>
+                            </CustomItem>
                           </div>
-                          <div className="w-[1px] h-4 bg-white/25"></div>
-                          <div className="flex items-center leading-[16px] space-x-1">
-                            <IconGroupUser className="text-body size-4" />
-                            <p className="text-title font-semibold text-[13px] xs:text-sm">
-                              {item.participants && formatNumber(item.participants, 0, 0)}
-                            </p>
-                          </div>
-                        </div>
-                      </>
-                    </CustomItem>
-                  </div>
-                ))}
+                        )
+                      }
+                    })}
+                  </>
+                )}
               </>
             )}
           </div>

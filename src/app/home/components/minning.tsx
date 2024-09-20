@@ -1,4 +1,4 @@
-import { claim, getUserInfo, startContributing } from '@/services/user'
+import { claim, getUserInfo, mining, startContributing } from '@/services/user'
 import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { formatNumber } from '@/helper/common'
@@ -6,6 +6,8 @@ import useCommonStore from '@/stores/commonStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
 import Loader from '@/app/components/ui/loader'
+import { toast } from 'sonner'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 const HOME_TYPE = {
   START: 'start',
@@ -40,6 +42,7 @@ export default function Mining() {
 
       const timeMining = userInfo.currentTime - userInfo.timeStartMining
       const currentPoint = userInfo.pointUnClaimed + timeMining * miningPowerPerSecond
+
       setMiningCount(currentPoint)
       workerRef.current?.postMessage(
         JSON.stringify({
@@ -58,6 +61,7 @@ export default function Mining() {
     if (res.status) {
       setUserInfo({ info: res.data })
     }
+    return res
   }
 
   const handleMining = async () => {
@@ -79,6 +83,13 @@ export default function Mining() {
     try {
       const res = await claim()
       if (res.status) {
+        toast.success(
+          <CustomToast
+            type="success"
+            title="Claim successfully"
+            point={res?.data?.point && res?.data?.point > 1 ? res?.data?.point : false}
+          />
+        )
         if (res.data.bonusReward > 0) {
           setBonusReward(res.data.bonusReward)
           onOpen()
@@ -126,6 +137,16 @@ export default function Mining() {
     }
   }, [refButton, type])
 
+  const handleVisible = async () => {
+    if (document.hidden) {
+      //
+    } else {
+      workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
+      mining()
+      updateUserInfo()
+    }
+  }
+
   useEffect(() => {
     workerRef.current = new Worker(new URL('@/worker.ts', import.meta.url))
     workerRef.current.onmessage = (event: MessageEvent<any>) => {
@@ -159,6 +180,13 @@ export default function Mining() {
       setType(HOME_TYPE.START)
     }
   }, [userInfo])
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisible)
+    }
+  }, [])
 
   return (
     <div className="mt-6 xs:mt-8">
@@ -204,8 +232,8 @@ export default function Mining() {
             {isLoading && (
               <Loader
                 classNames={{
-                  icon: 'text-white',
-                  wrapper: 'bg-transparent max-w-[20px] ml-1'
+                  icon: 'text-white size-full',
+                  wrapper: 'bg-transparent !size-5 ml-1'
                 }}
               />
             )}

@@ -45,7 +45,7 @@ const CustomModal = ({
         base: full
           ? `max-w-full m-0 rounded-none w-full h-full p-0 bg-black/80 backdrop-blur-[4px]`
           : `max-w-full m-0 rounded-none h-full xs:h-auto bg-transparent xs:bg-green-600 before:content-[''] before:bottom-0 before:absolute before:left-0 before:size-full before:z-[-1] before:bg-[linear-gradient(to_top,#000000,#002012)] pt-10 xs:pt-12 pb-8 xs:pb-10 px-4 xs:border-t-[0.5px] min-[355px]:border-t-green-600 xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] before:xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)]`,
-        backdrop: 'bg-black/30 backdrop-blur-[8px]'
+        backdrop: full ? 'bg-transparent ' : 'bg-black/30 backdrop-blur-[4px]'
       }}
     >
       <ModalContent>

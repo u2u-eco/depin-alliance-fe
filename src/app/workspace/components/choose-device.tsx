@@ -1,9 +1,10 @@
 import { IconPoint } from '@/app/components/icons'
 import ImageDevice from '@/app/components/image-device'
+import Loader from '@/app/components/ui/loader'
 import NoItem from '@/app/components/ui/no-item'
 import { formatNumber } from '@/helper/common'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
-import { getUserDevice, listUserItemDevice } from '@/services/devices'
+import { getUserDevice } from '@/services/devices'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -18,9 +19,11 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const [page, setPage] = useState<number>(1)
   const dataList = useRef<any[]>([])
   const [scrollTrigger, isInView] = useInView()
-  const { isLoading } = useQuery({
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
     queryFn: async () => {
+      setIsLoading(true)
       const res: any = await getUserDevice({ type, page })
       if (res.status) {
         if (res.pagination?.totalPage) {
@@ -32,6 +35,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         }
         dataList.current = _listItem
         setListDeviceItemByFilter(dataList.current)
+        setIsLoading(false)
       }
       return res
     }
@@ -48,20 +52,17 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   }, [type])
 
   return (
-    <div className="max-h-[300px] overflow-y-auto hide-scrollbar mt-8 mb-6">
-      {listDeviceItemByFilter?.length === 0 ? (
-        <>
-          {!isLoading && (
-            <NoItem
-              title="No item"
-              link={`/shop?type=${type}`}
-              classNames={{
-                icon: 'text-body'
-              }}
-            />
-          )}
-        </>
-      ) : (
+    <div className=" relative">
+      <div className="h-[300px] overflow-y-auto hide-scrollbar mt-8 mb-6">
+        {listDeviceItemByFilter?.length === 0 && !isLoading ? (
+          <NoItem
+            title="No item"
+            link={`/shop?type=${type}`}
+            classNames={{
+              icon: 'text-body'
+            }}
+          />
+        ) : null}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
             <div
@@ -92,10 +93,19 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
             </div>
           ))}
         </div>
-      )}
-      <div ref={scrollTrigger} className="text-[transparent]">
-        Loading...
+        <div ref={scrollTrigger} className="text-[transparent]">
+          Loading...
+        </div>
       </div>
+
+      {isLoading && (
+        <Loader
+          classNames={{
+            wrapper: 'h-[300px] top-0  z-[1] left-[0] absolute bg-black/30 backdrop-blur-[4px]',
+            icon: 'size-10 text-white'
+          }}
+        />
+      )}
     </div>
   )
 }

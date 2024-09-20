@@ -17,6 +17,7 @@ import { LIST_TYPE } from '@/constants'
 import Link from 'next/link'
 import Loader from '../components/ui/loader'
 import { CustomHeader } from '../components/ui/custom-header'
+import CustomToast from '../components/ui/custom-toast'
 
 const PROFILE_TYPE = {
   SKILL: 'skill'
@@ -69,7 +70,7 @@ export default function ProfilePage() {
     setLoadingButton(true)
     const res: any = await updateSkill(skillId)
     if (res.status) {
-      toast.success('Level Up successfully!')
+      toast.success(<CustomToast type="success" title="Level Up successfully!" />)
       getUserInfo()
       _getSkills()
       currentItem.current = {}

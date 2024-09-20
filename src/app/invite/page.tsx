@@ -12,6 +12,8 @@ import { getUserFriend } from '@/services/user'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
+import CustomToast from '../components/ui/custom-toast'
+import { formatNumber } from '@/helper/common'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [
@@ -50,7 +52,7 @@ export default function InvitePage() {
 
   const handleCopy = () => {
     if (userInfo) {
-      toast.success('Copied!')
+      toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
   const handleShare = () => {
@@ -144,7 +146,7 @@ export default function InvitePage() {
           <div>
             <CustomList
               type="invite"
-              title={`FRIEND LIST (${(listFriend as any)?.pagination?.totalRecord || 0})`}
+              title={`FRIEND LIST (${formatNumber((listFriend as any)?.pagination?.totalRecord || 0, 0, 0)})`}
               data={listItem}
               titleItemKey="username"
               pointKey="pointRef"
