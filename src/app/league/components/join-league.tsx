@@ -1,26 +1,28 @@
 import CustomButton from '@/app/components/button'
 import { IconPoint } from '@/app/components/icons'
+import CustomToast from '@/app/components/ui/custom-toast'
+import { BUTTON_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { joinLeague } from '@/services/league'
-import useCommonStore from '@/stores/commonStore'
 import { useState } from 'react'
+import { toast } from 'sonner'
 interface IJoinLeague {
   item: ILeagueItem | null
   onClose: () => void
-  joinCb: () => void
+  joinCb: (code: string) => void
 }
 export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
-  const { currentLeague } = useCommonStore()
   const [loadingButton, setLoadingButton] = useState(false)
   const handleJoin = async () => {
-    if (currentLeague?.isPendingRequest) return
+    if (item?.isPendingRequest) return
     if (item?.code) {
       setLoadingButton(true)
       if (loadingButton) return
       const res = await joinLeague(item?.code)
       if (res.status && res.data) {
-        joinCb()
+        toast.success(<CustomToast type="success" title="Request join league successfully" />)
+        joinCb(item.code)
         onClose()
       }
       setLoadingButton(false)
@@ -54,7 +56,11 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
           </p> */}
         </div>
       </div>
-      <CustomButton title="JOIN LEAGUE" onAction={handleJoin} />
+      {item?.isPendingRequest ? (
+        <CustomButton type={BUTTON_TYPE.CANCEL} title="CANCEL JOIN LEAGUE" onAction={() => {}} />
+      ) : (
+        <CustomButton title="JOIN LEAGUE" disable={item?.isPendingRequest} onAction={handleJoin} />
+      )}
     </>
   )
 }

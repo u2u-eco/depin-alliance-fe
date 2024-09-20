@@ -96,6 +96,15 @@ export default function LeaguePage() {
     }, 300)
   }
 
+  const handleUpdateRequestJoin = (code: string) => {
+    dataList.current.forEach((item: ILeagueItem) => {
+      if (item.code === code) {
+        item.isPendingRequest = true
+      }
+    })
+    setListItem(dataList.current)
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -184,7 +193,13 @@ export default function LeaguePage() {
       >
         <div>
           {type === LEAGUE_TYPE.JOIN ? (
-            <JoinLeague item={currentItem.current} onClose={onClose} joinCb={getUserLeague} />
+            <JoinLeague
+              item={currentItem.current}
+              onClose={onClose}
+              joinCb={(code) => {
+                handleUpdateRequestJoin(code)
+              }}
+            />
           ) : (
             <CreateLeague onClose={onClose} onAction={handleAction} />
           )}

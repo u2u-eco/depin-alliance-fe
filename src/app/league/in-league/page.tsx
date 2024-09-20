@@ -46,7 +46,7 @@ export default function InLeaguePage() {
 
   const _getUserLeague = async () => {
     const res = await userLeague()
-    if (res.status) {
+    if (res.status && res.data && !res.data?.isPendingRequest) {
       setCurrentLeague({ league: res.data })
     } else {
       router.push('/league')
@@ -156,10 +156,8 @@ export default function InLeaguePage() {
                       srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
                       alt=""
                     />
-                    <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      {currentLeague?.totalMining
-                        ? formatNumber(currentLeague.totalMining, 0, 0)
-                        : 0}
+                    <p className="text-inactive font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      0
                     </p>
                   </div>
                 </div>

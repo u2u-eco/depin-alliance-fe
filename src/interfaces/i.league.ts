@@ -5,6 +5,7 @@ export interface ILeagueItem {
   totalContributors: number
   totalMining: number
   level: number
+  isPendingRequest: boolean
 }
 
 export interface IUserLeague {
