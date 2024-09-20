@@ -75,7 +75,7 @@ export default function InLeaguePage() {
 
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
-      toast.success('Copied!')
+      toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
 
