@@ -5,9 +5,9 @@ import CustomPage from '@/app/components/custom-page'
 import {
   IconChat,
   IconClipboard,
+  IconGroupUser,
   IconLeave,
   IconMember,
-  IconPoint,
   IconShare,
   IconUserAddCircle
 } from '@/app/components/icons'
@@ -21,7 +21,6 @@ import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
 import { toast } from 'sonner'
 
 export default function InLeaguePage() {
@@ -273,11 +272,17 @@ export default function InLeaguePage() {
                 {currentLeague?.name}
               </p>
               <div className="flex items-center space-x-1.5 xs:space-x-2">
+                <IconGroupUser className="size-5 xs:size-6 2xs:size-7 text-primary" />
+                <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
+                  {formatNumber(currentLeague?.totalContributors || 0, 0, 0)}
+                </span>
+              </div>
+              {/* <div className="flex items-center space-x-1.5 xs:space-x-2">
                 <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                 <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
                   {currentLeague?.totalMining ? formatNumber(currentLeague.totalMining, 0, 2) : 0}/h
                 </span>
-              </div>
+              </div> */}
               {/* <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
                 LV. {currentLeague?.level}
               </p> */}
