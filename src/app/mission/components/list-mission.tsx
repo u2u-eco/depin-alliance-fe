@@ -29,6 +29,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
   const router = useRouter()
+  const refTimeoutCheck = useRef<any>()
   const { webApp } = useTelegram()
   const { getUserInfo, userInfo } = useCommonStore()
   const { setCurrentMissionQuiz } = useMissionStore()
@@ -140,7 +141,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           }
           break
       }
-      setTimeout(() => {
+      clearTimeout(refTimeoutCheck.current)
+      refTimeoutCheck.current = setTimeout(() => {
         setCheckMission(true)
         setLoadingButton(false)
       }, timeOut)
