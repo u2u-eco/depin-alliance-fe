@@ -51,16 +51,16 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
       <div className=" text-body text-[15px] xs:text-base tracking-[-1px] text-center">
         <p>Are you sure you want to join this League?</p>
       </div>
-      <div className="my-8 xs:my-9 2xs:my-10 flex items-center justify-center space-x-4 xs:space-x-5">
-        <div className="p-[1px] bg-white [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)] size-[100px] xs:size-[110px] min-w-[100px] xs:min-w-[110px] flex items-center justify-center">
+      <div className="my-6 xs:my-8 2xs:my-10 flex items-center justify-center space-x-3 xs:space-x-4 2xs:space-x-5">
+        <div className="[--size:_20px] xs:[--size:_22px] 2xs:[--size:_24px] p-[1px] bg-white [clip-path:_polygon(var(--size)_0%,100%_0,100%_calc(100%_-_var(--size)),calc(100%_-_var(--size))_100%,0_100%,0_var(--size))] size-[90px] xs:size-[100px] 2xs:size-[110px] min-w-[90px] xs:min-w-[100px] 2xs:min-w-[110px] flex items-center justify-center">
           <img
-            className="size-full object-cover [clip-path:_polygon(24px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_24px)]"
+            className="size-full object-cover [clip-path:_polygon(var(--size)_0%,100%_0,100%_calc(100%_-_var(--size)),calc(100%_-_var(--size))_100%,0_100%,0_var(--size))]"
             src={`${item?.avatar}` || '/assets/images/league/league-01@2x.png'}
             alt="DePIN Alliance"
           />
         </div>
         <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
-          <p className=" text-title font-semibold text-base xs:text-xl 2xs:text-2xl font-mona !leading-[24px] xs:!leading-[28px] 2xs:!leading-[30px] [word-break:_break-word;]">
+          <p className=" text-title font-semibold text-base xs:text-lg 2xs:text-xl font-mona !leading-[20px] xs:!leading-[22px] 2xs:!leading-[26px] [word-break:_break-word;] line-clamp-3">
             {item?.name}
           </p>
           <div className="flex items-center space-x-1.5 xs:space-x-2">
