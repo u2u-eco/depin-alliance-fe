@@ -90,6 +90,11 @@ export default function QuizPage() {
     setIsLoading(false)
   }
 
+  const handleCloseSpecial = () => {
+    onCloseSpecial()
+    handleBack()
+  }
+
   const handleClaim = async () => {
     if (currentMissionQuiz?.id) {
       setIsLoading(true)
@@ -98,6 +103,8 @@ export default function QuizPage() {
         if (res.status) {
           if (currentMissionQuiz.box > 0) {
             onOpenSpecial()
+          } else {
+            handleBack()
           }
           toast.success(
             <CustomToast
@@ -107,7 +114,6 @@ export default function QuizPage() {
             />
           )
           getUserInfo()
-          handleBack()
         }
         setIsLoading(false)
       } catch (ex) {
@@ -299,7 +305,7 @@ export default function QuizPage() {
       <SpecialBoxModal
         isOpen={isOpenSpecial}
         onOpen={onOpenSpecial}
-        onClose={onCloseSpecial}
+        onClose={handleCloseSpecial}
         onOpenChange={onOpenChangeSpecial}
       />
     </>
