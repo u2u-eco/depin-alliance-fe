@@ -161,7 +161,7 @@ export default function LeaguePage() {
                 </p>
                 <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               </div>
-              <div className="mt-2 mb-4 xs:mb-6 text-xs min-[355px]:text-[13px] xs:text-sm text-center text-body font-geist tracking-[-1px]">
+              <div className="mt-2 mb-4 xs:mb-5 2xs:mb-6 text-xs min-[355px]:text-[13px] xs:text-sm text-center text-body font-geist tracking-[-1px]">
                 Let’s join the League or create a new League to contribute together!
               </div>
               <CustomButton title="CREATE LEAGUE" onAction={handleCreateLeague} />

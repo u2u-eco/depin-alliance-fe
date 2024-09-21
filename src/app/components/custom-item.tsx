@@ -75,7 +75,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
         }`}
     >
       {type === LIST_TYPE.LEAGUE && item.isPendingRequest && (
-        <div className="absolute top-0 right-0 text-[10px] py-0.5 px-1.5 border border-yellow-500 text-yellow-500">
+        <div className="absolute top-0 right-0 text-[10px] !leading-[14px] py-0.5 px-1.5 border border-yellow-600 text-yellow-600 bg-gray-950 capitalize tracking-[-0.5px]">
           Pending approval
         </div>
       )}
@@ -120,7 +120,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
           )}
         </div>
         <div className="space-y-1.5 xs:space-y-2 2xs:space-y-2.5">
-          <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold leading-[18px] min-[355px]:leading-[20px] 2xs:leading-[22px] [word-break:_break-word;]">
+          <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[18px] min-[355px]:!leading-[20px] 2xs:!leading-[22px] [word-break:_break-word;] line-clamp-2">
             {title}
           </div>
           {children}
