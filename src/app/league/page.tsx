@@ -176,7 +176,6 @@ export default function LeaguePage() {
               data={listItem}
               titleItemKey="name"
               imageItemKey="avatar"
-              pointKey="totalMining"
               onClickItem={handleClickItem}
             />
             <div ref={scrollTrigger} className="text-[transparent]">
