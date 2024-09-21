@@ -61,7 +61,8 @@ export default function InLeaguePage() {
     try {
       const res = await leaveLeague()
       if (res.status) {
-        _getUserLeague()
+        // _getUserLeague()
+        setCurrentLeague({ league: null })
         toast.success(<CustomToast type="success" title="Leave League successfully!" />)
         router.push('/league')
       }
@@ -95,7 +96,7 @@ export default function InLeaguePage() {
           <div className="absolute top-0 left-[50%] translate-x-[-50%] w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
           </div>
-          <div className="space-y-5">
+          <div className="space-y-5 mb-6">
             <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
@@ -123,7 +124,7 @@ export default function InLeaguePage() {
             </div>
           </div>
           {/* Progress */}
-          {/* <div className="mt-6 mb-6 xs:mb-8 2xs:mb-10 space-y-2">
+          {/* <div className="mb-6 xs:mb-8 2xs:mb-10 space-y-2">
             <div className="relative bg-gray-850 h-1.5 xs:h-2 rounded-2xl w-full">
               <div className="absolute top-0 left-0 h-full bg-gradient rounded-2xl before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:bg-gradient before:blur-[6px] w-[68%]"></div>
             </div>
@@ -181,17 +182,17 @@ export default function InLeaguePage() {
               </div>
             </div>
             {/* Link */}
-            <div className="flex items-center justify-between space-x-3">
+            <div className="flex items-center justify-between min-[355px]:space-x-2 xs:space-x-3">
               <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
                 <IconChat className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Chat</p>
               </div>
-              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
                 <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Mission</p>
               </div>
-              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               {/* <CopyToClipboard
                 text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
                 onCopy={handleCopy}
@@ -204,7 +205,7 @@ export default function InLeaguePage() {
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Share</p>
               </div>
               {/* </CopyToClipboard> */}
-              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <Link
                 href="/league/member"
                 className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
@@ -212,7 +213,7 @@ export default function InLeaguePage() {
                 <IconMember className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Member</p>
               </Link>
-              <div className="w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
+              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <div
                 className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
                 onClick={onOpen}

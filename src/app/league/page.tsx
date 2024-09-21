@@ -57,7 +57,7 @@ export default function LeaguePage() {
       if (page > 1) {
         _listItem = [...dataList.current, ...res.data]
       }
-      dataList.current = _listItem
+      dataList.current = [..._listItem]
       setListItem(dataList.current)
       return res
     },
@@ -103,7 +103,7 @@ export default function LeaguePage() {
         item.isPendingRequest = status
       }
     })
-    setListItem(dataList.current)
+    setListItem([...dataList.current])
   }
 
   useEffect(() => {
@@ -120,7 +120,12 @@ export default function LeaguePage() {
 
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper:
+            "before:content-[''] before:absolute before:bottom-0 before:left-[50%] before:translate-x-[-50%] before:rotate-[-15deg] before:rounded-full before:bg-[linear-gradient(to_bottom,#00ff90,#f4fd36)] before:opacity-30 before:z-[-1] before:blur-[55px] before:w-[120px] before:h-[400px]"
+        }}
+      >
         {isLoading && (
           <Loader
             classNames={{
