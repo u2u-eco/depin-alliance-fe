@@ -103,7 +103,7 @@ export default function LeaguePage() {
         item.isPendingRequest = status
       }
     })
-    setListItem(dataList.current)
+    setListItem([...dataList.current])
   }
 
   useEffect(() => {
