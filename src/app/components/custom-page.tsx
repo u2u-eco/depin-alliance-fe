@@ -46,6 +46,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     <>
       <div className={cn('section', classNames?.wrapper)}>
         <div
+          id="jsBody"
           style={{
             height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh'
           }}

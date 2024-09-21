@@ -17,8 +17,8 @@ import { useRouter } from 'next/navigation'
 import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
 import CongratulationModal from './components/congratulation'
-import CustomInputSearch from '../components/ui/custom-input-search'
 import NoItem from '../components/ui/no-item'
+import InputHandleScroll from '../components/ui/input-handle-scroll'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -168,11 +168,11 @@ export default function LeaguePage() {
             </div>
           </div>
         </div>
-        <div className="mt-6 xs:mt-7 2xs:mt-8">
-          <CustomInputSearch placeholder="Search league..." onValueChange={handleUpdateText} />
+        <div className="mt-6 xs:mt-7 2xs:mt-8 relative">
+          <InputHandleScroll onValueChange={handleUpdateText} />
         </div>
         {listItem.length === 0 && !isLoading ? (
-          <NoItem title="No league" />
+          <NoItem classNames={{ wrapper: '!min-h-[250px]' }} title="No league" />
         ) : (
           <div>
             <CustomList
