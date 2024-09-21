@@ -142,9 +142,11 @@ export default function Mining() {
     if (document.hidden) {
       //
     } else {
-      workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
-      mining()
-      updateUserInfo()
+      if (userInfo?.status === 'MINING') {
+        workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
+        mining()
+        updateUserInfo()
+      }
     }
   }
 
