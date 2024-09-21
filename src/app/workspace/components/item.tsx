@@ -157,6 +157,7 @@ export default function Item() {
     try {
       const res = await sellItem({ code: currentItem.current.code, number: amountSell.current })
       if (res.status) {
+        toast.dismiss()
         toast.success(
           <CustomToast type="success" title="Sell successfully!" point={totalPriceSell} />
         )
