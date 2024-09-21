@@ -83,6 +83,7 @@ export default function Mining() {
     try {
       const res = await claim()
       if (res.status) {
+        toast.dismiss()
         toast.success(
           <CustomToast
             type="success"

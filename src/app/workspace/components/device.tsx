@@ -79,6 +79,7 @@ export default function Device() {
     try {
       const res = await addItem(currentIndex.current, activeItem)
       if (res.status) {
+        toast.dismiss()
         toast.success(<CustomToast type="success" title="Equip item successfully!" />)
         setActiveItem(0)
         refetchListDevice()
@@ -97,6 +98,7 @@ export default function Device() {
     try {
       const res = await removeItem(detailDeviceItem.current.id)
       if (res.status) {
+        toast.dismiss()
         toast.success(<CustomToast type="success" title="Unequipped successfully!" />)
         refetchListDevice()
         getDeviceItemDetail(currentIndex.current)
@@ -118,6 +120,7 @@ export default function Device() {
           index: currentDevice.current.index
         })
         if (res.status) {
+          toast.dismiss()
           toast.success(<CustomToast type="success" title="Device name changed successfully!" />)
           currentName.current = ''
           onClose()
@@ -136,6 +139,7 @@ export default function Device() {
       refetchListDevice()
       setActiveItem(0)
       getDeviceItemDetail(currentIndex.current)
+      toast.dismiss()
       toast.success(<CustomToast type="success" title="Swap item successfully" />)
       onClose()
     }

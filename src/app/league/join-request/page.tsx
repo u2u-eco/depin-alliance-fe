@@ -82,6 +82,7 @@ export default function JoinRequestPage() {
   const handleApprove = async (id: number, index: number) => {
     const res = await approveJoinLeague(id)
     if (res?.status) {
+      toast.dismiss()
       toast.success(<CustomToast title="Accept member successfully" type="success" />)
       handleUpdateData(index)
     }
@@ -90,6 +91,7 @@ export default function JoinRequestPage() {
   const handleReject = async (id: number, index: number) => {
     const res = await rejectJoinLeague(id)
     if (res?.status) {
+      toast.dismiss()
       toast.success(<CustomToast title="Decline member successfully" type="success" />)
       handleUpdateData(index)
     }
