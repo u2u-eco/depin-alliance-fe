@@ -53,7 +53,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
 
   return (
     <div className=" relative">
-      <div className="h-[300px] overflow-y-auto hide-scrollbar mt-8 mb-6">
+      <div className="h-[300px] overflow-y-auto no-scrollbar mt-8 mb-6">
         {listDeviceItemByFilter?.length === 0 && !isLoading ? (
           <NoItem
             title="No item"

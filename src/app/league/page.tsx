@@ -120,7 +120,12 @@ export default function LeaguePage() {
 
   return (
     <>
-      <CustomPage>
+      <CustomPage
+        classNames={{
+          wrapper:
+            "before:content-[''] before:absolute before:bottom-0 before:left-[50%] before:translate-x-[-50%] before:rotate-[-15deg] before:rounded-full before:bg-[linear-gradient(to_bottom,#00ff90,#f4fd36)] before:opacity-30 before:z-[-1] before:blur-[55px] before:w-[120px] before:h-[400px]"
+        }}
+      >
         {isLoading && (
           <Loader
             classNames={{

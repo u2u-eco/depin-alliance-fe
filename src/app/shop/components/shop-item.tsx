@@ -137,7 +137,7 @@ export default function ShopItem({ filterOptions }: IShopItem) {
       <div className="relative" ref={refList} style={{ minHeight: maxHeightListContent || '60vh' }}>
         <div className=" absolute"></div>
         <div
-          className="overflow-y-auto hide-scrollbar"
+          className="overflow-y-auto no-scrollbar"
           ref={refListScroll}
           style={{ maxHeight: maxHeightListContent }}
         >

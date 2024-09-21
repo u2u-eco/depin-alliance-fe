@@ -43,7 +43,7 @@ export default function MemberPage() {
       <CustomPage
         classNames={{
           wrapper:
-            "before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-205px] before:size-[355px] before:rounded-[50%] before:bg-yellow-500 before:blur-[75px] before:opacity-30 before:z-[-1]"
+            "[--size:_300px] xs:[--size:_355px] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-275px] before:size-[var(--size)] before:rounded-[50%] before:bg-yellow-500 before:blur-[75px] before:opacity-30 before:z-[-1] after:content-[''] after:absolute after:bottom-[-40px] after:right-[-20px] after:rotate-[-15deg] after:rounded-full after:bg-gradient after:opacity-30 after:z-[-1] after:blur-[55px] xs:after:blur-[68px] after:w-[100px] xs:after:w-[120px] after:h-[400px] xs:after:h-[500px]"
         }}
       >
         <div className="space-y-6 xs:space-y-8">
@@ -61,7 +61,7 @@ export default function MemberPage() {
                       <img
                         className="[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape));] size-full"
                         src={
-                          currentLeague?.adminAvatar ||
+                          currentLeague?.adminAvatar.replace(/-/g, '-main-') ||
                           '/assets/images/avatar/avatar-main-01@2x.png'
                         }
                         alt="Avatar"

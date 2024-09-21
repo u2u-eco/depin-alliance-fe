@@ -278,7 +278,7 @@ export default function Item() {
           <div className=" absolute"></div>
           <div
             ref={refListScroll}
-            className="overflow-y-auto hide-scrollbar"
+            className="overflow-y-auto no-scrollbar"
             style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
           >
             <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
