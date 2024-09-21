@@ -74,6 +74,11 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
               : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'
         }`}
     >
+      {type === LIST_TYPE.LEAGUE && item.isPendingRequest && (
+        <div className="absolute top-0 right-0 text-[10px] py-0.5 px-1.5 border border-yellow-500 text-yellow-500">
+          Pending approval
+        </div>
+      )}
       <div className="flex items-center space-x-3 2xs:space-x-4">
         <div className="flex items-center justify-center size-[60px] min-[355px]:size-16 xs:size-[68px] 2xs:size-[72px] min-w-[60px] min-[355px]:min-w-16 xs:min-w-[68px] 2xs:min-w-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
           {image ? (
