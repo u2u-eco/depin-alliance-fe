@@ -28,7 +28,7 @@ interface CommonState {
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
   getUserInfo: () => Promise<any>
   getUserConfig: () => void
-  setCurrentLeague: ({ league }: { league: IUserLeague }) => void
+  setCurrentLeague: ({ league }: { league: IUserLeague | null }) => void
 }
 
 const useCommonStore = create<CommonState>((set) => ({

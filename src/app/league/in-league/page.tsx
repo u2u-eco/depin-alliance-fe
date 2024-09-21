@@ -61,7 +61,8 @@ export default function InLeaguePage() {
     try {
       const res = await leaveLeague()
       if (res.status) {
-        _getUserLeague()
+        // _getUserLeague()
+        setCurrentLeague({ league: null })
         toast.success(<CustomToast type="success" title="Leave League successfully!" />)
         router.push('/league')
       }

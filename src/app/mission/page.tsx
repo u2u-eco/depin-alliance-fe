@@ -27,7 +27,6 @@ export default function MissionPage() {
   }
 
   const showTabPartner = (status: boolean) => {
-    setIsLoading(false)
     if (status) {
       setIsShowTab(true)
       if (!tab) {
@@ -39,6 +38,9 @@ export default function MissionPage() {
       }
       setIsShowTab(false)
     }
+    setTimeout(() => {
+      setIsLoading(false)
+    })
   }
 
   const updateListPartner = (count: number) => {
