@@ -95,6 +95,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
       const res = await kickUserInLeague(currentUser.current.id)
       if (res.status) {
         handleUpdateData(currentUser.current.index || 0)
+        toast.dismiss()
         toast.success(<CustomToast title="Kick member successfully" type="success" />)
         onClose()
       }
