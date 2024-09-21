@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import React, { ReactNode } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
@@ -6,7 +6,6 @@ import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import useCommonStore from '@/stores/commonStore'
-import { useTelegram } from '@/hooks/useTelegram'
 
 interface Pageprops {
   children: ReactNode
@@ -18,8 +17,7 @@ interface Pageprops {
 }
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
-  const { heightNav, safeAreaBottom } = useCommonStore()
-  const { webApp } = useTelegram()
+  const { heightNav } = useCommonStore()
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -45,7 +43,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/join-request'
 
   return (
-    <AnimatePresence>
+    <>
       <div className={cn('section', classNames?.wrapper)}>
         <div
           style={{
@@ -74,7 +72,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
         </div>
       </div>
       {isShowSidebar && <CustomNavbar />}
-    </AnimatePresence>
+    </>
   )
 }
 
