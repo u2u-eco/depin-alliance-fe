@@ -49,7 +49,7 @@ export default function JoinRequestPage() {
           _listItem = [...dataList.current, ...res.data]
         }
         dataList.current = _listItem
-        setListItem(dataList.current)
+        setListItem([...dataList.current])
         setIsLoading(false)
         return res
       } catch (ex) {
@@ -73,7 +73,7 @@ export default function JoinRequestPage() {
     if (res.status) {
       setTotal(res?.pagination?.totalRecord || 0)
       dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
-      setListItem(dataList.current)
+      setListItem([...dataList.current])
     }
     isUpdatePage.current = false
     setIsLoading(false)

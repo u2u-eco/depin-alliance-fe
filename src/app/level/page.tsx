@@ -65,7 +65,7 @@ export default function LevelPage() {
       <CustomPage
         classNames={{
           wrapper:
-            "bg-[linear-gradient(to_bottom,#000_40%,#00331d_100%)] before:content-[''] before:absolute before:left-[-60%] before:top-[-20%] before:size-[250px] before:blur-[50px] before:bg-green-500 before:rounded-[50%] before:z-[-1] before:opacity-30 after:content-[''] after:absolute after:right-[-60%] after:top-[-20%] after:size-[250px] after:blur-[50px] after:bg-green-500 after:rounded-[50%] after:z-[-1] after:opacity-30"
+            "bg-[linear-gradient(to_bottom,#000_68%,#00331d_100%)] before:content-[''] before:absolute before:left-[-200px] before:top-0 before:size-[250px] before:blur-[50px] before:bg-green-500 before:rounded-[50%] before:z-[-1] before:opacity-30 after:content-[''] after:absolute after:right-[-200px] after:top-0 after:size-[250px] after:blur-[50px] after:bg-green-500 after:rounded-[50%] after:z-[-1] after:opacity-30"
         }}
       >
         {isLoading && (

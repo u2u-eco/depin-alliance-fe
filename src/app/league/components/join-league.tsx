@@ -1,5 +1,5 @@
 import CustomButton from '@/app/components/button'
-import { IconPoint } from '@/app/components/icons'
+import { IconGroupUser, IconPoint } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { BUTTON_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
@@ -63,6 +63,12 @@ export default function JoinLeague({ item, onClose, joinCb }: IJoinLeague) {
           <p className=" text-title font-semibold text-base xs:text-xl 2xs:text-2xl font-mona !leading-[24px] xs:!leading-[28px] 2xs:!leading-[30px] [word-break:_break-word;]">
             {item?.name}
           </p>
+          <div className="flex items-center space-x-1.5 xs:space-x-2">
+            <IconGroupUser className="size-5 xs:size-6 2xs:size-7 text-primary" />
+            <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
+              {formatNumber(item?.totalContributors || 0, 0, 0)}
+            </span>
+          </div>
           {/* <div className="flex items-center space-x-1.5 xs:space-x-2">
             <IconPoint className="size-5 xs:size-6 2xs:size-7" />
             <span className="text-primary font-semibold xs:text-base 2xs:text-lg">

@@ -100,7 +100,7 @@ export default function Avatar() {
       <CustomPage
         classNames={{
           wrapper:
-            "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-[linear-gradient(to_bottom,#000_7%,#004024_21%,#000_57%,#000_92%)] after:z-[-2]"
+            "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-[linear-gradient(to_bottom,#004024_0%,#000_34%,#000_92%)] after:z-[-2]"
         }}
       >
         <div className="space-y-6 xs:space-y-8 2xs:space-y-10">
@@ -156,7 +156,7 @@ export default function Avatar() {
                         <div className="text-title font-mona text-base xs:text-lg font-semibold">
                           {item.name}
                         </div>
-                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px] max-h-[80px] overflow-y-auto hide-scrollbar">
+                        <div className="text-body text-[11px] xs:text-xs tracking-[-1px] leading-[16px] min-h-[64px] max-h-[80px] overflow-y-auto no-scrollbar">
                           {item.description}
                         </div>
                       </div>

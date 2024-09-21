@@ -167,7 +167,7 @@ const Onboarding = () => {
             </div>
             <motion.div
               layout
-              className="h-full max-w-[480px] mx-auto py-6 px-4 overflow-y-auto hide-scrollbar flex flex-col justify-between"
+              className="h-full max-w-[480px] mx-auto py-6 px-4 overflow-y-auto no-scrollbar flex flex-col justify-between"
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
