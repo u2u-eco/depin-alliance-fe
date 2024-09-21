@@ -57,7 +57,7 @@ export default function LeaguePage() {
       if (page > 1) {
         _listItem = [...dataList.current, ...res.data]
       }
-      dataList.current = _listItem
+      dataList.current = [..._listItem]
       setListItem(dataList.current)
       return res
     },

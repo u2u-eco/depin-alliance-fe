@@ -101,7 +101,7 @@ export default function Item() {
         if (page > 1) {
           _listItem = [...dataList.current, ...res.data]
         }
-        dataList.current = _listItem
+        dataList.current = [..._listItem]
         setListDeviceItem(dataList.current)
         setIsLoading(false)
         return res
@@ -145,7 +145,7 @@ export default function Item() {
 
     if (res.status) {
       dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
-      setListDeviceItem(dataList.current)
+      setListDeviceItem([...dataList.current])
     }
     isUpdatePage.current = false
     setIsLoading(false)
