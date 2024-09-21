@@ -153,7 +153,7 @@ const Onboarding = () => {
   // }, [])
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" key="Onboarding">
       {type === ONBOARDING_TYPE.SPLASH ? null : (
         <>
           <div className="onboarding section">

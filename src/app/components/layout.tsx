@@ -2,6 +2,7 @@
 
 import { NextUIProvider } from '@nextui-org/react'
 import React, { useEffect } from 'react'
+import { AnimatePresence } from 'framer-motion'
 // import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
 import TelegramProvider from '../../contexts/telegram.context'
@@ -39,8 +40,10 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
-            {children}
-            {/* {pathName !== '/' && <CustomNavbar />} */}
+            <AnimatePresence key="custom-page">
+              {children}
+              {/* {pathName !== '/' && <CustomNavbar />} */}
+            </AnimatePresence>
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>

@@ -103,7 +103,7 @@ export default function AccordionItem({
           </motion.div>
         </div>
       </motion.header>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" key="accordion-item">
         {isOpen && (
           <motion.section
             className="overflow-hidden"
