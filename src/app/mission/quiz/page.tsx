@@ -171,7 +171,7 @@ export default function QuizPage() {
       <CustomPage
         classNames={{
           wrapper:
-            "bg-[linear-gradient(to_bottom,#000000_1%,#002415_26%,#000000_44%,#000000_100%)] before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-25%] before:size-[355px] before:rounded-[50%] before:bg-gradient before:blur-[125px] before:opacity-30 before:z-[-1]"
+            "before:[--size:_300px] xs:before:[--size:_355px] before:content-[''] before:absolute before:left-[-300px] before:top-[10%] before:size-[var(--size)] before:rounded-[50%] before:bg-green-500 before:blur-[75px] before:opacity-30 before:z-[-1] after:[--size:_300px] xs:after:[--size:_355px] after:content-[''] after:absolute after:right-[-300px] after:top-[10%] after:size-[var(--size)] after:rounded-[50%] after:bg-yellow-500 after:blur-[75px] after:opacity-30 after:z-[-1]"
         }}
         disableOverscroll
       >
@@ -188,9 +188,9 @@ export default function QuizPage() {
           {currentMissionQuiz && !isLoadingFake && (
             <div>
               <div className="relative">
-                <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
+                {/* <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
                   <img className="w-full" src="/assets/images/mission/quiz-image.svg" alt="Shape" />
-                </div>
+                </div> */}
                 <div className="flex items-center justify-center space-x-3 xs:space-x-4">
                   <div className="relative drop-shadow-green">
                     <img

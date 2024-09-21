@@ -83,7 +83,7 @@ export default function MissionPage() {
             <Tabs
               variant="underlined"
               classNames={{
-                base: 'w-full mt-6 xs:mt-7 2xs:mt-8',
+                base: 'w-full',
                 tabList: 'gap-2 w-full relative rounded-none p-0 border-b border-divider',
                 cursor: 'w-full bg-gradient rounded',
                 tab: 'h-[30px] px-2 font-mona',
