@@ -21,8 +21,10 @@ const Loading = ({ isDone }: { isDone?: boolean }) => {
               alt="Logo"
             />
           </div>
-          <div className="absolute bottom-[60px] xs:bottom-[80px] 2xs:bottom-[100px] left-0 right-0 text-center space-y-4">
-            <span className="font-geist text-body">Logging to your account, please wait...</span>
+          <div className="absolute bottom-[40px] min-[355px]:bottom-[60px] xs:bottom-[80px] 2xs:bottom-[100px] left-0 right-0 text-center space-y-4">
+            <span className="font-geist text-body text-[13px] min-[355px]:text-sm">
+              Logging to your account, please wait...
+            </span>
             <div className="relative h-1 w-full max-w-[300px] xs:max-w-[320px] mx-auto rounded bg-gray-850">
               <motion.div
                 style={{ width: 0 }}
