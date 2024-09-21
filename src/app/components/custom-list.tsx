@@ -113,7 +113,7 @@ const CustomList = ({
                     <>
                       <IconGroupUser className="size-4 xs:size-5 text-green-500" />
                       <p className="text-green-500 font-semibold text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] !ml-1 xs:!ml-2">
-                        {item.totalContributors}
+                        {formatNumber(item.totalContributors || 0, 0, 0)}
                       </p>
                     </>
                   ) : null}
