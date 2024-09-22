@@ -23,6 +23,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   })
   const router = useRouter()
   const listTaskStatus = useRef<{ [key: number]: string }>({})
+  const listTaskClaimed = useRef<{ [key: number]: boolean }>({})
   const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
   const { setCurrentMission } = useMissionStore()
   const [isEmptyPartner, setEmptyPartner] = useState<boolean>(false)
@@ -40,19 +41,28 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     let _missionUnDone = 0
     let _isEmptyPartner = true
     list.forEach((partnerItem: any, index: number) => {
+      listTaskClaimed.current[index] = true
       let count = 0
+      let countClaimed = 0
       partnerItem.missions.forEach((item: any) => {
         if (item.status === MISSION_STATUS.VERIFIED || item.status === MISSION_STATUS.CLAIMED) {
           count += 1
+        }
+        if (item.status === MISSION_STATUS.CLAIMED) {
+          countClaimed += 1
         }
       })
       _listTaskDone[index] = count
       if (count < partnerItem.missions?.length) {
         _missionUnDone += 1
       }
+      if (countClaimed < partnerItem.missions?.length) {
+        listTaskClaimed.current[index] = false
+      }
+
       updateListPartner(_missionUnDone)
       listTaskStatus.current[index] = getStatus(count, partnerItem.missions.length)
-      if (listTaskStatus.current[index] !== LIST_STATUS_MISSION.DONE) {
+      if (!listTaskClaimed.current[index]) {
         _isEmptyPartner = false
       }
     })
@@ -88,7 +98,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
                 ) : (
                   <>
                     {listPartners?.data?.map((item: IMissionPartner, index: number) => {
-                      if (listTaskStatus.current[index] !== LIST_STATUS_MISSION.DONE) {
+                      if (!listTaskClaimed.current[index]) {
                         return (
                           <div onClick={() => handleLinkMission(item, index)} key={index}>
                             <CustomItem
