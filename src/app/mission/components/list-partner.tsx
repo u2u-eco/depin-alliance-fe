@@ -164,7 +164,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
                                   <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
                                     <div className="flex items-center leading-[16px] space-x-1">
                                       <p className="text-title font-semibold text-[13px] xs:text-sm">
-                                        {`${listTaskDone[index]}/${item.missions?.length}`}
+                                        {`${listTaskDone[index] || 0}/${item.missions?.length}`}
                                       </p>
                                       <p className="text-body text-xs">
                                         {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE
