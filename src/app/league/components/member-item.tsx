@@ -1,4 +1,4 @@
-import { IconCheck, IconClose, IconPoint } from '@/app/components/icons'
+import { IconCheck, IconClose, IconPoint, IconSettings } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { IJoinRequest } from '@/interfaces/i.league'
@@ -65,28 +65,41 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
         </div>
         {currentLeague?.isOwner && (
           <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
-            {type === ITEM_TYPE.REQUEST && (
+            {type === ITEM_TYPE.REQUEST ? (
+              <>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleClick('check')
+                  }}
+                >
+                  <IconCheck
+                    className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-green-500'} `}
+                  />
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleClick('cancel')
+                  }}
+                >
+                  <IconClose
+                    className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-error-blur'}`}
+                  />
+                </div>
+              </>
+            ) : (
               <div
                 className="cursor-pointer"
                 onClick={() => {
-                  handleClick('check')
+                  handleClick('cancel')
                 }}
               >
-                <IconCheck
-                  className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-green-500'} `}
+                <IconSettings
+                  className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-green-800'}`}
                 />
               </div>
             )}
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                handleClick('cancel')
-              }}
-            >
-              <IconClose
-                className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : type === ITEM_TYPE.REQUEST ? 'text-error-blur' : 'text-yellow-800'}`}
-              />
-            </div>
           </div>
         )}
       </div>

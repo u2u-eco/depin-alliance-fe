@@ -16,12 +16,22 @@ import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
+<<<<<<< HEAD
 import { useAppSound } from '@/hooks/useAppSound'
+=======
+import ModifyModal from './modify'
+>>>>>>> e1498e9 ([Task] Create UI for Modify modal)
 interface IMember {
   setTotalMember: (total: number) => void
 }
 const AllMember = ({ setTotalMember }: IMember) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenModify,
+    onOpen: onOpenModify,
+    onOpenChange: onOpenChangeModify,
+    onClose: onCloseModify
+  } = useDisclosure()
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -67,7 +77,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
   })
   const handleCancel = (item: IJoinRequest, index: number) => {
     currentUser.current = { ...item, index }
-    onOpen()
+    onOpenModify()
   }
 
   const handleUpdateData = async (index: number) => {
@@ -89,6 +99,11 @@ const AllMember = ({ setTotalMember }: IMember) => {
     isUpdatePage.current = false
 
     setIsLoading(false)
+  }
+
+  const handleKickModal = () => {
+    onCloseModify()
+    onOpen()
   }
 
   const handleKick = async () => {
@@ -223,6 +238,12 @@ const AllMember = ({ setTotalMember }: IMember) => {
           </div>
         </div>
       </CustomModal>
+      <ModifyModal
+        isOpen={isOpenModify}
+        onOpen={onOpenModify}
+        onOpenChange={onOpenChangeModify}
+        handleKickModal={handleKickModal}
+      />
     </>
   )
 }
