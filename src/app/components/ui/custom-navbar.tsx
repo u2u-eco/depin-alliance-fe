@@ -71,7 +71,7 @@ const CustomNavbar = () => {
               ) : (
                 <img
                   className="size-5 xs:size-6 2xs:size-7 mx-auto"
-                  src={`/assets/images/icons/icon-${item.title}${pathName.split('/')[1] === item.title ? '-gradient' : ''}.svg`}
+                  src={`/assets/images/icons/icon-${item.title}${pathName.split('/')[1] === item.title ? '-gradient' : ''}.svg?1`}
                   alt={`Icon ${item.title}`}
                 />
               )}
