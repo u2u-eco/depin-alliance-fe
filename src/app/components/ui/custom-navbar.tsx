@@ -12,7 +12,7 @@ const CustomNavbar = () => {
   const navRef = useRef<any>(null)
   const { currentLeague, setHeightNav } = useCommonStore()
   const listMenu = [
-    { id: 1, link: '/shop', title: 'shop' },
+    { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
     { id: 3, link: '/home', title: 'contribute' },
     { id: 4, link: '/invite', title: 'invite' },

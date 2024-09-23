@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { ReactNode } from 'react'
+import React from 'react'
 import CustomItem from './custom-item'
 import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { IconGroupUser, IconPoint } from './icons'
+import { IconGroupUser } from './icons'
+import Image from 'next/image'
 
 interface ListProps {
   type: string
@@ -93,19 +94,21 @@ const CustomList = ({
                       </p>
                     </div>
                   ) : null}
-                  {item.box > 0 && (
+                  {item.amount > 0 && (
                     <>
                       {item.miningPower !== 0 && pointKey && item[pointKey] ? (
                         <div className="w-[1px] h-4 xs:h-5 bg-white/25"></div>
                       ) : null}
                       <div className="flex items-center space-x-1">
-                        <img
+                        <Image
+                          width={0}
+                          height={0}
+                          sizes="100vw"
                           className="size-5"
-                          src="/assets/images/item-special.png"
-                          srcSet="/assets/images/item-special.png 1x, /assets/images/item-special@2x.png 2x"
-                          alt="Box"
+                          src={item.rewardImage || '/assets/images/item-special.png'}
+                          alt={item.rewardName}
                         />
-                        <p className="text-primary font-geist font-semibold">{`${item.box} box`}</p>
+                        <p className="text-primary font-geist font-semibold">{`${item.amount} ${item.rewardName}`}</p>
                       </div>
                     </>
                   )}
