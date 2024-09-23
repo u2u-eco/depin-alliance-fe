@@ -239,10 +239,7 @@ export default function Device({ height }: IDevice) {
       : false
   return (
     <>
-      <div
-        className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar"
-        style={{ height: height }}
-      >
+      <div className="flex flex-col h-full overflow-y-auto no-scrollbar" style={{ height: height }}>
         {isLoading && (
           <Loader
             classNames={{
