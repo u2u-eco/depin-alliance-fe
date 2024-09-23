@@ -117,11 +117,11 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
           <Switch
             classNames={{
               wrapper:
-                "[--shape:_6px] w-11 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] rounded-none h-6 px-[3px] bg-white/30 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_2px)] before:bg-gray-850 before:group-data-[selected=true]:bg-gray-850 before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] mr-1.5 xs:mr-2",
+                "[--shape:_6px] w-10 xs:w-11 rounded-none h-5 xs:h-6 px-[3px] bg-white/30 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_2px)] before:bg-gray-850 before:group-data-[selected=true]:bg-gray-850  mr-1.5 xs:mr-2",
               thumb:
-                '[--shape:_5px] [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] rounded-none !size-[18px] group-data-[selected=true]:ml-5 bg-white/30 group-data-[selected=true]:bg-gradient',
+                '[--shape:_5px] rounded-none !size-[14px] xs:!size-[18px] group-data-[selected=true]:ml-5 bg-white/30 group-data-[selected=true]:bg-gradient',
               label:
-                'text-body text-[15px] xs:text-base xs:!leading-[20px] tracking-[-1px] capitalize'
+                'text-body group-data-[selected=true]:text-title text-sm xs:text-[15px] xs:text-base !leading-[18px] xs:!leading-[20px] capitalize font-mona'
             }}
             isSelected={isHideCompleted}
             onChange={handleHideCompleted}
