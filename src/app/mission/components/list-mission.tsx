@@ -32,6 +32,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const router = useRouter()
   const refTimeoutCheck = useRef<any>()
   const { webApp } = useTelegram()
+  const refSpecialItem = useRef<any>()
   const { getUserInfo, userInfo } = useCommonStore()
   const { setCurrentMissionQuiz } = useMissionStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -99,7 +100,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     setLoadingButton(true)
     const res = await claimTask(currentItem.current.id)
     if (res.status) {
-      if (currentItem.current.box > 0) {
+      if (res.data?.amount > 0) {
+        refSpecialItem.current = res.data
         onOpenSpecial()
       }
       toast.success(
@@ -242,6 +244,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         isOpen={isOpenSpecial}
         onOpen={onOpenSpecial}
         onClose={onCloseSpecial}
+        item={refSpecialItem.current}
         onOpenChange={onOpenChangeSpecial}
       />
     </>

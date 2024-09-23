@@ -31,18 +31,25 @@ export default function WorkspacePage() {
   }
 
   useEffect(() => {
-    const offsetTop = refList.current?.getBoundingClientRect()?.top
-    const wrapChidden = document.getElementById('jsWrapContainer')
+    setTimeout(() => {
+      const offsetTop = refList.current?.getBoundingClientRect()?.top
+      console.log(
+        '🚀 ~ useEffect ~ refList.current?.getBoundingClientRect():',
+        refList.current?.getBoundingClientRect()
+      )
+      const wrapChidden = document.getElementById('jsWrapContainer')
 
-    if (offsetTop && webApp?.viewportStableHeight) {
-      let margin = 0
-      if (wrapChidden) {
-        const marginOfWrap = window.getComputedStyle(wrapChidden)
-        margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+      if (offsetTop && webApp?.viewportStableHeight) {
+        let margin = 0
+        if (wrapChidden) {
+          const marginOfWrap = window.getComputedStyle(wrapChidden)
+          margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+        }
+        const heightTopBottom = offsetTop + margin + heightNav
+        console.log('🚀 ~ useEffect ~ offsetTop:', offsetTop)
+        setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
       }
-      const heightTopBottom = offsetTop + margin + heightNav
-      setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
-    }
+    }, 1000)
   }, [webApp?.viewportStableHeight])
   return (
     <>
