@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
 import NoItem from '@/app/components/ui/no-item'
 
-const RankingMember = () => {
+const Ranking = () => {
   const { userInfo } = useCommonStore()
   const [listRanking, setListRanking] = useState<any>({})
   const { data: listRankingResponse, isLoading } = useQuery({
@@ -151,4 +151,4 @@ const RankingMember = () => {
   )
 }
 
-export default RankingMember
+export default Ranking

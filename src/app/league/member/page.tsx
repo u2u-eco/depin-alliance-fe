@@ -5,27 +5,16 @@ import { IconAdmin, IconPoint } from '@/app/components/icons'
 
 import React, { useEffect, useRef, useState } from 'react'
 import AllMember from './components/all-member'
-import RankingMember from './components/ranking-member'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
 import { useRouter } from 'next/navigation'
 import { userLeague } from '@/services/league'
 
-const MEMBER_TYPE = {
-  ALL: 'all',
-  RANKING: 'ranking'
-}
-
 export default function MemberPage() {
   const router = useRouter()
-  const [activeType, setActiveType] = useState(MEMBER_TYPE.ALL)
   const { userInfo, currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
-
-  const handleSelectTab = (tab: string) => {
-    setActiveType(tab)
-  }
 
   const _getUserLeague = async () => {
     const res = await userLeague()
@@ -86,34 +75,7 @@ export default function MemberPage() {
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
               MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
             </p>
-            <div className="space-y-6">
-              {/* <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
-                {Object.values(MEMBER_TYPE).map((item, index) => (
-                  <motion.div
-                    whileTap={{ scale: 0.95 }}
-                    key={index}
-                    className="relative cursor-pointer"
-                    onClick={() => handleSelectTab(item)}
-                  >
-                    <img
-                      className="mx-auto transition-all"
-                      src={`/assets/images/upgrade/upgrade-tab${activeType === item ? '-active' : ''}.svg`}
-                      alt="DePIN Alliance"
-                    />
-                    <div
-                      className={`absolute transition-all top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
-                    >
-                      {item}
-                    </div>
-                  </motion.div>
-                ))}
-              </div> */}
-              {activeType === MEMBER_TYPE.RANKING ? (
-                <RankingMember />
-              ) : (
-                <AllMember setTotalMember={setTotalMember} />
-              )}
-            </div>
+            <AllMember setTotalMember={setTotalMember} />
           </div>
         </div>
       </CustomPage>

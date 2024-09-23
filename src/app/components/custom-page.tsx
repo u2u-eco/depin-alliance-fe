@@ -28,7 +28,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
     pathName !== '/league/join-request' &&
-    pathName !== '/league/mission'
+    pathName !== '/league/mission' &&
+    pathName !== '/league/ranking'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -38,9 +39,9 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/level' &&
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
-    pathName !== '/league/join-request'
+    pathName !== '/league/join-request' &&
+    pathName !== '/league/ranking'
   const full = pathName === '/setting'
-
   return (
     <>
       <div className={cn('section', classNames?.wrapper)}>

@@ -11,6 +11,7 @@ import {
   IconGroupUser,
   IconLeave,
   IconMember,
+  IconOpenLink,
   IconShare,
   IconUserAddCircle
 } from '@/app/components/icons'
@@ -27,6 +28,17 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import Loader from '@/app/components/ui/loader'
+
+const listLink = [
+  { id: 1, icon: '', type: 'mission', class: '' },
+  { id: 2, icon: '', type: 'member', class: '' },
+  { id: 3, icon: '', type: 'chat', class: '' },
+  { id: 4, icon: '', type: 'invite', class: '' },
+  { id: 5, icon: '', type: 'research', class: '' },
+  { id: 6, icon: '', type: 'innovate', class: '' },
+  { id: 7, icon: '', type: 'leagues', class: '' },
+  { id: 8, icon: '', type: 'leave', class: '' }
+]
 
 export default function InLeaguePage() {
   const router = useRouter()
@@ -200,10 +212,14 @@ export default function InLeaguePage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {currentLeague?.isOwner ? 'Admin' : 'Member'}
+                  {currentLeague?.isOwner ? '</ Admin />' : '</ Member />'}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
+              <Link href="/league/ranking" className="flex items-center justify-center space-x-1">
+                <p className="text-gradient uppercase font-mona font-semibold">VIEW LEAGUE RANK</p>
+                <IconOpenLink gradient className="size-6" />
+              </Link>
             </div>
           </div>
           {/* Progress */}

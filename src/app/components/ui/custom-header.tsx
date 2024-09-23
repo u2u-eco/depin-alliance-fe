@@ -26,9 +26,9 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
         <div className="cursor-pointer rotate-90" onClick={handleBack}>
           <IconChevron className="text-green-500 size-6 xs:size-7 2xs:size-8" />
         </div>
-        <div className="flex items-center text-center space-x-3 xs:space-x-4">
+        <div className="flex items-center text-center space-x-2 xs:space-x-3 2xs:space-x-4">
           <div className="size-1.5 bg-green-800"></div>
-          <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] tracking-[1px]">
+          <div className="text-title font-airnt font-medium text-lg xs:text-xl 2xs:text-2xl !leading-[22px] xs:!leading-[24px] 2xs:!leading-[28px] tracking-[1px]">
             {title}
           </div>
           <div className="size-1.5 bg-green-800"></div>
