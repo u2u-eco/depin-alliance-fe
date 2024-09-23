@@ -15,7 +15,7 @@ interface ModalProps {
 const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
   const { setActiveTab } = useContext(WorkspaceContext)
   const handleClick = () => {
-    setActiveTab(WORKSPACE_TYPE.ITEM)
+    setActiveTab(WORKSPACE_TYPE.DEVICE)
   }
 
   return (
