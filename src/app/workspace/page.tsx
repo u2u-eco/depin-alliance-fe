@@ -8,7 +8,7 @@ import Device from './components/device'
 import Item from './components/item'
 import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
-import ShopPage from './components/shop/page'
+import ShopPage from './components/shop/shop'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
