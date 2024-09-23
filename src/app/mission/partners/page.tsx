@@ -85,7 +85,7 @@ export default function PartnersPage() {
                   <div className="flex-1 xs:min-w-[180px] space-y-1.5 xs:space-y-2 text-center">
                     <p className="text-sm font-semibold text-body leading-[16px]">REWARDS</p>
                     <div className="flex justify-center space-x-1 font-geist">
-                      <IconPoint className="size-3.5 xs:size-4" />
+                      <IconPoint className="size-3.5 xs:size-4 mt-0.5" />
                       <p className="text-green-500 text-[13px] xs:text-sm normal-case !leading-[18px] max-xs:text-left">
                         {currentMission?.rewards}
                       </p>
@@ -107,11 +107,16 @@ export default function PartnersPage() {
               </div>
               <div className="btn-border"></div>
             </div>
-
-            <ListMission
-              listMission={[{ group: 'Missions', missions: currentMission?.missions || [] }]}
-              refetch={getCurrentMissionById}
-            />
+            <div className="relative mt-0">
+              <div className="absolute top-0 right-0 mt-6 xs:mt-7 2xs:mt-8 text-[13px] xs:text-sm !leading-[20px] flex items-center font-semibold space-x-1">
+                <p className="text-title">1/4</p>
+                <p className="text-body">Completed</p>
+              </div>
+              <ListMission
+                listMission={[{ group: 'Missions', missions: currentMission?.missions || [] }]}
+                refetch={getCurrentMissionById}
+              />
+            </div>
           </div>
           <Link href="/home" className="absolute top-0 right-0">
             <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />

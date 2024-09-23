@@ -11,6 +11,9 @@ import useMissionStore from '@/stores/missionsStore'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Switch } from '@nextui-org/react'
+
 interface IListPartner {
   updateListPartner: (count: number) => void
   showTabPartner: (status: boolean) => void
@@ -27,6 +30,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
   const { setCurrentMission } = useMissionStore()
   const [isEmptyPartner, setEmptyPartner] = useState<boolean>(false)
+  const [isHideCompleted, setIsHideCompleted] = useState<boolean>(true)
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -75,6 +79,10 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     router.push(`/mission/partners?id=${index}`)
   }
 
+  const handleHideCompleted = () => {
+    setIsHideCompleted(!isHideCompleted)
+  }
+
   useEffect(() => {
     if (listPartners?.data) {
       showTabPartner(true)
@@ -86,73 +94,91 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
 
   return (
     <>
-      {listPartners?.data?.length > 0 ? (
-        <div className="mt-5 xs:mt-6">
-          <div className="flex flex-col space-y-3 xs:space-y-4">
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <>
-                {isEmptyPartner ? (
-                  <NoItem title="No partner available" />
-                ) : (
-                  <>
-                    {listPartners?.data?.map((item: IMissionPartner, index: number) => {
-                      if (!listTaskClaimed.current[index]) {
-                        return (
-                          <div onClick={() => handleLinkMission(item, index)} key={index}>
-                            <CustomItem
-                              type={LIST_TYPE.PARTNERS}
-                              title={item.name}
-                              image={
-                                item.image ? item.image : '/assets/images/partner-image@2x.png'
-                              }
-                              done={listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE}
-                              status={listTaskStatus.current[index]}
-                              key={index}
-                              item={item}
-                            >
-                              <>
-                                <div className="flex items-center space-x-1">
-                                  <IconPoint className="size-[14px] xs:size-4" />
-                                  <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">
-                                    {item.rewards}
-                                  </p>
-                                </div>
-                                <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
-                                  <div className="flex items-center leading-[16px] space-x-1">
-                                    <p className="text-title font-semibold text-[13px] xs:text-sm">
-                                      {`${listTaskDone[index]}/${item.missions?.length}`}
-                                    </p>
-                                    <p className="text-body text-xs">
-                                      {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE
-                                        ? 'Completed'
-                                        : ''}
-                                    </p>
-                                  </div>
-                                  <div className="w-[1px] h-4 bg-white/25"></div>
-                                  <div className="flex items-center leading-[16px] space-x-1">
-                                    <IconGroupUser className="text-body size-4" />
-                                    <p className="text-title font-semibold text-[13px] xs:text-sm">
-                                      {item.participants && formatNumber(item.participants, 0, 0)}
-                                    </p>
-                                  </div>
-                                </div>
-                              </>
-                            </CustomItem>
-                          </div>
-                        )
-                      }
-                    })}
-                  </>
-                )}
-              </>
-            )}
-          </div>
+      <div className="mt-5 xs:mt-6">
+        <div className="flex items-center justify-end">
+          <Switch
+            classNames={{
+              wrapper:
+                "[--shape:_6px] w-11 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] rounded-none h-6 px-[3px] bg-white/30 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_2px)] before:bg-gray-850 before:group-data-[selected=true]:bg-gray-850 before:[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] mr-1.5 xs:mr-2",
+              thumb:
+                '[--shape:_5px] [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0%_var(--shape))] rounded-none !size-[18px] group-data-[selected=true]:ml-5 bg-white/30 group-data-[selected=true]:bg-gradient',
+              label:
+                'text-body text-[15px] xs:text-base xs:!leading-[20px] tracking-[-1px] capitalize'
+            }}
+            isSelected={isHideCompleted}
+            onChange={handleHideCompleted}
+          >
+            hide completed
+          </Switch>
         </div>
-      ) : (
-        <>{!isLoading && <NoItem title="No partner available" />}</>
-      )}
+        {listPartners?.data?.length > 0 ? (
+          <div className="mt-5 xs:mt-6">
+            <div className="flex flex-col space-y-3 xs:space-y-4">
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <>
+                  {isEmptyPartner ? (
+                    <NoItem title="No partner available" />
+                  ) : (
+                    <>
+                      {listPartners?.data?.map((item: IMissionPartner, index: number) => {
+                        if (!listTaskClaimed.current[index]) {
+                          return (
+                            <div onClick={() => handleLinkMission(item, index)} key={index}>
+                              <CustomItem
+                                type={LIST_TYPE.PARTNERS}
+                                title={item.name}
+                                image={
+                                  item.image ? item.image : '/assets/images/partner-image@2x.png'
+                                }
+                                done={listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE}
+                                status={listTaskStatus.current[index]}
+                                key={index}
+                                item={item}
+                              >
+                                <>
+                                  <div className="flex items-center space-x-1">
+                                    <IconPoint className="size-[14px] xs:size-4" />
+                                    <p className="text-green-500 text-xs xs:text-[13px] 2xs:text-sm font-semibold leading-[16px]">
+                                      {item.rewards}
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
+                                    <div className="flex items-center leading-[16px] space-x-1">
+                                      <p className="text-title font-semibold text-[13px] xs:text-sm">
+                                        {`${listTaskDone[index]}/${item.missions?.length}`}
+                                      </p>
+                                      <p className="text-body text-xs">
+                                        {listTaskStatus.current[index] === LIST_STATUS_MISSION.DONE
+                                          ? 'Completed'
+                                          : ''}
+                                      </p>
+                                    </div>
+                                    <div className="w-[1px] h-4 bg-white/25"></div>
+                                    <div className="flex items-center leading-[16px] space-x-1">
+                                      <IconGroupUser className="text-body size-4" />
+                                      <p className="text-title font-semibold text-[13px] xs:text-sm">
+                                        {item.participants && formatNumber(item.participants, 0, 0)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </>
+                              </CustomItem>
+                            </div>
+                          )
+                        }
+                      })}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        ) : (
+          <>{!isLoading && <NoItem title="No partner available" />}</>
+        )}
+      </div>
     </>
   )
 }
