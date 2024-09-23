@@ -24,7 +24,6 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/profile' &&
     pathName !== '/level' &&
     pathName !== '/mission/partners' &&
-    pathName !== '/workspace' &&
     pathName !== '/ranking' &&
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
@@ -34,7 +33,6 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
     pathName !== '/setting' &&
-    pathName !== '/workspace' &&
     pathName !== '/avatar' &&
     pathName !== '/profile' &&
     pathName !== '/level' &&
