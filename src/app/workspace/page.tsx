@@ -8,6 +8,7 @@ import Device from './components/device'
 import Item from './components/item'
 import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
+import ShopPage from './components/shop/page'
 
 const WORKSPACE_TYPE = {
   DEVICE: 'device',
@@ -33,23 +34,17 @@ export default function WorkspacePage() {
   useEffect(() => {
     setTimeout(() => {
       const offsetTop = refList.current?.getBoundingClientRect()?.top
-      console.log(
-        '🚀 ~ useEffect ~ refList.current?.getBoundingClientRect():',
-        refList.current?.getBoundingClientRect()
-      )
       const wrapChidden = document.getElementById('jsWrapContainer')
-
       if (offsetTop && webApp?.viewportStableHeight) {
         let margin = 0
         if (wrapChidden) {
           const marginOfWrap = window.getComputedStyle(wrapChidden)
-          margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+          margin = Number(marginOfWrap.marginBottom.replaceAll('px', ''))
         }
-        const heightTopBottom = offsetTop + margin + heightNav
-        console.log('🚀 ~ useEffect ~ offsetTop:', offsetTop)
+        const heightTopBottom = offsetTop + margin + heightNav - 10
         setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
       }
-    }, 1000)
+    }, 500)
   }, [webApp?.viewportStableHeight])
   return (
     <>
@@ -58,9 +53,10 @@ export default function WorkspacePage() {
           wrapper:
             "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-[linear-gradient(315deg,#000_0,#00331d_50%,#000_72%)] after:z-[-2]"
         }}
+        wrapHidden
         disableOverscroll={activeType === WORKSPACE_TYPE.ITEM ? true : false}
       >
-        <div className="flex items-center justify-center  mt-8">
+        <div className="flex items-center justify-center mt-8">
           {Object.values(WORKSPACE_TYPE).map((item, index) => (
             <motion.div
               whileTap={{ scale: 0.95 }}
@@ -81,8 +77,8 @@ export default function WorkspacePage() {
             </motion.div>
           ))}
         </div>
-        <div className="mt-6 overflow-hidden" style={{ height: maxHeight }} ref={refList}>
-          {activeType === WORKSPACE_TYPE.DEVICE ? (
+        <div className="mt-6" style={{ height: maxHeight }} ref={refList}>
+          {activeType === WORKSPACE_TYPE.DEVICE && (
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -90,9 +86,10 @@ export default function WorkspacePage() {
               transition={{ duration: 0.35 }}
               key={WORKSPACE_TYPE.DEVICE}
             >
-              <Device />
+              <Device height={maxHeight} />
             </motion.div>
-          ) : (
+          )}
+          {activeType === WORKSPACE_TYPE.ITEM && (
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -100,7 +97,23 @@ export default function WorkspacePage() {
               transition={{ duration: 0.35 }}
               key={WORKSPACE_TYPE.ITEM}
             >
-              <Item />
+              <Item height={maxHeight} />
+            </motion.div>
+          )}
+          {activeType === WORKSPACE_TYPE.SHOP && (
+            <motion.div
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              key={WORKSPACE_TYPE.ITEM}
+            >
+              <ShopPage
+                height={maxHeight}
+                goToEquip={() => {
+                  setActiveType(WORKSPACE_TYPE.ITEM)
+                }}
+              />
             </motion.div>
           )}
         </div>

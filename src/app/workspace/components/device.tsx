@@ -34,8 +34,10 @@ const DEVICE_TYPE = {
   BUY: 'buy',
   SWAP: 'swap'
 }
-
-export default function Device() {
+interface IDevice {
+  height: number
+}
+export default function Device({ height }: IDevice) {
   const { userConfig, getUserConfig, getUserInfo } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -237,7 +239,10 @@ export default function Device() {
       : false
   return (
     <>
-      <div className="flex flex-col justify-between h-full ">
+      <div
+        className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar"
+        style={{ height: height }}
+      >
         {isLoading && (
           <Loader
             classNames={{

@@ -2,14 +2,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import {
-  IconCheckCircle,
-  IconChevron,
-  IconCloseHexagon,
-  IconHome,
-  IconPoint,
-  IconQuiz
-} from '@/app/components/icons'
+import { IconPoint, IconQuiz } from '@/app/components/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
