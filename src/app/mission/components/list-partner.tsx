@@ -30,6 +30,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     ...QUERY_CONFIG
   })
   const router = useRouter()
+  const [partnerDone, setPartnerDone] = useState<number>(0)
   const listTaskStatus = useRef<{ [key: number]: string }>({})
   const listTaskClaimed = useRef<{ [key: number]: boolean }>({})
   const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
@@ -71,7 +72,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
       if (countClaimed < partnerItem.missions?.length && isHideCompleted) {
         listTaskClaimed.current[index] = false
       }
-
+      setPartnerDone(list?.length - _missionUnDone)
       updateListPartner(_missionUnDone)
       listTaskStatus.current[index] = getStatus(count, partnerItem.missions.length)
       if (!listTaskClaimed.current[index]) {
@@ -107,7 +108,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     if (listPartners?.data) {
       countTaskDone(listPartners.data)
     }
-  }, [listPartners, isHideCompleted])
+  }, [isHideCompleted])
 
   return (
     <>
@@ -125,7 +126,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
             isSelected={isHideCompleted}
             onChange={handleHideCompleted}
           >
-            hide completed
+            hide completed {`(${partnerDone})`}
           </Switch>
         </div>
         {listPartners?.data?.length > 0 ? (
