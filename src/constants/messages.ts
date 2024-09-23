@@ -16,5 +16,6 @@ export const MESSAGES: { [key: string]: string } = {
   MSG_ITEM_OPEN_NOT_ENOUGH: 'Item open not enough',
   MSG_ITEM_SELL_NOT_ENOUGH: 'Item sell not enough',
   MSG_LEAGUE_REQUEST_INVALID: 'Request does not exist',
-  MSG_LEAGUE_MEMBER_NOT_EXIST: 'Request does not exist'
+  MSG_LEAGUE_MEMBER_NOT_EXIST: 'Request does not exist',
+  MSG_MISSION_CLAIM_ERROR: 'Can not claim mission'
 }

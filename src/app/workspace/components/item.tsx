@@ -1,7 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconCheckCircle, IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { IDeviceTypeItem, IParamUseKey } from '@/interfaces/i.devices'
 import Image from 'next/image'
@@ -20,8 +20,8 @@ import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
-import { useTelegram } from '@/hooks/useTelegram'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -30,12 +30,13 @@ const ITEM_TYPE = {
 }
 
 const PAGE_SIZE = 12
-
-export default function Item() {
+interface IItem {
+  height: number
+}
+export default function Item({ height }: IItem) {
   const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
-  const { webApp } = useTelegram()
   const [scrollTrigger, isInView] = useInView()
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
@@ -44,7 +45,6 @@ export default function Item() {
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
-  const [maxHeightListContent, setMaxHeightListContent] = useState<number>(0)
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -76,6 +76,7 @@ export default function Item() {
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
+  const { setTypeItemShop, setActiveTab } = useContext(WorkspaceContext)
   const [useKey, setUseKey] = useState<number>(0)
   const { refetch } = useQuery({
     queryKey: [
@@ -207,6 +208,11 @@ export default function Item() {
     onOpenSpecial()
   }
 
+  const handleLinkBuy = () => {
+    setTypeItemShop(filterOptions.type || null)
+    setActiveTab(WORKSPACE_TYPE.SHOP)
+  }
+
   const updateAmountUseKey = async (amount: number) => {
     if (amount && currentItem?.current.code === 'CYBER_BOX') {
       paramUseKey.current = {
@@ -234,20 +240,20 @@ export default function Item() {
     setPage(1)
   }, [filterOptions])
 
-  useEffect(() => {
-    const offsetTop = refList.current?.getBoundingClientRect()?.top
-    const wrapChidden = document.getElementById('jsWrapContainer')
+  // useEffect(() => {
+  //   const offsetTop = refList.current?.getBoundingClientRect()?.top
+  //   const wrapChidden = document.getElementById('jsWrapContainer')
 
-    if (offsetTop && webApp?.viewportStableHeight) {
-      let margin = 0
-      if (wrapChidden) {
-        const marginOfWrap = window.getComputedStyle(wrapChidden)
-        margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
-      }
-      const heightTopBottom = offsetTop + margin
-      setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
-    }
-  }, [webApp?.viewportStableHeight])
+  //   if (offsetTop && webApp?.viewportStableHeight) {
+  //     let margin = 0
+  //     if (wrapChidden) {
+  //       const marginOfWrap = window.getComputedStyle(wrapChidden)
+  //       margin = Number(marginOfWrap.marginTop.replaceAll('px', ''))
+  //     }
+  //     const heightTopBottom = offsetTop + margin
+  //     setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
+  //   }
+  // }, [webApp?.viewportStableHeight])
 
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
@@ -274,12 +280,12 @@ export default function Item() {
             </div>
           </div>
         </div>
-        <div className="relative mt-8" ref={refList} style={{ minHeight: maxHeightListContent }}>
+        <div className="relative mt-8" ref={refList} style={{ minHeight: height - 30 }}>
           <div className=" absolute"></div>
           <div
             ref={refListScroll}
             className="overflow-y-auto no-scrollbar"
-            style={{ maxHeight: maxHeightListContent, paddingBottom: safeAreaBottom }}
+            style={{ maxHeight: height - 40, paddingBottom: safeAreaBottom }}
           >
             <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 ">
               {listDeviceItem?.map((item: any, index: number) => (
@@ -312,13 +318,8 @@ export default function Item() {
           {listDeviceItem?.length === 0 && !isLoading ? (
             <NoItem
               title="No item"
-              link={
-                filterOptions.type === ITEM_TYPE.SPECIAL
-                  ? undefined
-                  : filterOptions.type
-                    ? `/shop?type=${filterOptions.type}`
-                    : '/shop'
-              }
+              textLink="Buy now"
+              action={filterOptions.type === ITEM_TYPE.SPECIAL ? undefined : handleLinkBuy}
               classNames={{
                 icon: 'text-body'
               }}
@@ -486,13 +487,18 @@ export default function Item() {
                   <div className="btn-border"></div>
                 </div>
               )}
-              <Link href="/shop" className="btn">
+              <div
+                onClick={() => {
+                  setActiveTab(WORKSPACE_TYPE.SHOP)
+                }}
+                className="btn"
+              >
                 <div className="btn-border"></div>
                 <div className="btn-primary">
                   {activeType === ITEM_TYPE.INFO ? 'Buy' : 'Confirm'}
                 </div>
                 <div className="btn-border"></div>
-              </Link>
+              </div>
             </div>
           )}
         </div>

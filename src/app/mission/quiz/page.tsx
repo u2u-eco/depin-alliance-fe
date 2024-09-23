@@ -2,14 +2,7 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import {
-  IconCheckCircle,
-  IconChevron,
-  IconCloseHexagon,
-  IconHome,
-  IconPoint,
-  IconQuiz
-} from '@/app/components/icons'
+import { IconPoint, IconQuiz } from '@/app/components/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -30,6 +23,7 @@ import useCommonStore from '@/stores/commonStore'
 
 export default function QuizPage() {
   const router = useRouter()
+  const refSpecialItem = useRef<any>()
   const [listChecked, setChecked] = useState<Array<string>>([])
   const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
@@ -101,7 +95,8 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
-          if (currentMissionQuiz.box > 0) {
+          if (res.data.amount > 0) {
+            refSpecialItem.current = res.data
             onOpenSpecial()
           } else {
             handleBack()
@@ -303,6 +298,7 @@ export default function QuizPage() {
         </div>
       </CustomPage>
       <SpecialBoxModal
+        item={refSpecialItem.current}
         isOpen={isOpenSpecial}
         onOpen={onOpenSpecial}
         onClose={handleCloseSpecial}

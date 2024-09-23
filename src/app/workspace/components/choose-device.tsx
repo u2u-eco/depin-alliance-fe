@@ -6,8 +6,9 @@ import { formatNumber } from '@/helper/common'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { getUserDevice } from '@/services/devices'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
 interface IChooseDevice {
   setActiveItem: (id: number) => void
   type: string
@@ -18,6 +19,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const dataList = useRef<any[]>([])
+  const { setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   useQuery({
@@ -41,6 +43,11 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     }
   })
 
+  const handleGoToShop = () => {
+    setTypeItemShop(type)
+    setActiveTab(WORKSPACE_TYPE.SHOP)
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -57,7 +64,8 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         {listDeviceItemByFilter?.length === 0 && !isLoading ? (
           <NoItem
             title="No item"
-            link={`/shop?type=${type}`}
+            textLink="Buy now"
+            action={handleGoToShop}
             classNames={{
               icon: 'text-body'
             }}

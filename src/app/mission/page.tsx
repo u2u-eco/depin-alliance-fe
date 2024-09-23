@@ -40,7 +40,7 @@ export default function MissionPage() {
     }
     setTimeout(() => {
       setIsLoading(false)
-    })
+    }, 300)
   }
 
   const updateListPartner = (count: number) => {
@@ -53,21 +53,20 @@ export default function MissionPage() {
 
   return (
     <>
+      {isLoading && (
+        <Loader
+          classNames={{
+            wrapper: 'min-h-[100vh] bottom-0 translate-y-[0%] absolute z-[12] left-[0] bg-black/30',
+            icon: 'w-[45px] h-[45px] text-white'
+          }}
+        />
+      )}
       <CustomPage
         classNames={{
           wrapper:
             "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-gradient-yellow before:z-[-1]"
         }}
       >
-        {isLoading && (
-          <Loader
-            classNames={{
-              wrapper:
-                'min-h-[100vh] top-[50%] translate-y-[-50%] absolute z-[1] left-[0] bg-black/30',
-              icon: 'w-[45px] h-[45px] text-white'
-            }}
-          />
-        )}
         {/* <div>
           <Image
             width={0}
