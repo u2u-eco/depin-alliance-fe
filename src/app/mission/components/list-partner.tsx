@@ -3,7 +3,13 @@ import CustomList from '@/app/components/custom-list'
 import { IconGroupUser, IconPoint } from '@/app/components/icons'
 import Loader from '@/app/components/ui/loader'
 import NoItem from '@/app/components/ui/no-item'
-import { LIST_STATUS_MISSION, LIST_TYPE, MISSION_STATUS, QUERY_CONFIG } from '@/constants'
+import {
+  HIDE_COMPLETED_PARTNER,
+  LIST_STATUS_MISSION,
+  LIST_TYPE,
+  MISSION_STATUS,
+  QUERY_CONFIG
+} from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { IMissionPartner } from '@/interfaces/i.missions'
 import { getListMissionByPartner } from '@/services/missions'
@@ -11,7 +17,6 @@ import useMissionStore from '@/stores/missionsStore'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Switch } from '@nextui-org/react'
 
 interface IListPartner {
@@ -30,7 +35,10 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const [listTaskDone, setListTaskDone] = useState<{ [key: number]: number }>({})
   const { setCurrentMission } = useMissionStore()
   const [isEmptyPartner, setEmptyPartner] = useState<boolean>(false)
-  const [isHideCompleted, setIsHideCompleted] = useState<boolean>(true)
+  const isHideCompletedStr = localStorage.getItem(HIDE_COMPLETED_PARTNER)
+  const [isHideCompleted, setIsHideCompleted] = useState<boolean>(
+    isHideCompletedStr === 'true' || isHideCompletedStr === null ? true : false
+  )
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -45,7 +53,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     let _missionUnDone = 0
     let _isEmptyPartner = true
     list.forEach((partnerItem: any, index: number) => {
-      listTaskClaimed.current[index] = true
+      listTaskClaimed.current[index] = isHideCompleted ? true : false
       let count = 0
       let countClaimed = 0
       partnerItem.missions.forEach((item: any) => {
@@ -60,7 +68,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
       if (count < partnerItem.missions?.length) {
         _missionUnDone += 1
       }
-      if (countClaimed < partnerItem.missions?.length) {
+      if (countClaimed < partnerItem.missions?.length && isHideCompleted) {
         listTaskClaimed.current[index] = false
       }
 
@@ -70,7 +78,9 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
         _isEmptyPartner = false
       }
     })
-    setEmptyPartner(_isEmptyPartner)
+    if (isHideCompleted) {
+      setEmptyPartner(_isEmptyPartner)
+    }
     setListTaskDone(_listTaskDone)
   }
 
@@ -80,6 +90,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   const handleHideCompleted = () => {
+    localStorage.setItem(HIDE_COMPLETED_PARTNER, isHideCompleted ? 'false' : 'true')
     setIsHideCompleted(!isHideCompleted)
   }
 
@@ -91,6 +102,12 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
       showTabPartner(false)
     }
   }, [listPartners])
+
+  useEffect(() => {
+    if (listPartners?.data) {
+      countTaskDone(listPartners.data)
+    }
+  }, [listPartners, isHideCompleted])
 
   return (
     <>

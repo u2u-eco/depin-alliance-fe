@@ -8,15 +8,16 @@ import { getListMissionByPartner } from '@/services/missions'
 import useMissionStore from '@/stores/missionsStore'
 import parse from 'html-react-parser'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ListMission from '../components/list-mission'
 import Image from 'next/image'
 import Link from 'next/link'
+import { MISSION_STATUS } from '@/constants'
 
 export default function PartnersPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-
+  const [missionDone, setMissionDone] = useState<number>(0)
   const id = searchParams.get('id')
   const { currentMission, setCurrentMission } = useMissionStore()
 
@@ -34,9 +35,21 @@ export default function PartnersPage() {
     router.push('/mission?tab=partners')
   }
 
+  const countListMissionCompleted = () => {
+    let _count = 0
+    currentMission?.missions.forEach((mission) => {
+      if (mission.status === MISSION_STATUS.VERIFIED || mission.status === MISSION_STATUS.CLAIMED) {
+        _count += 1
+      }
+    })
+    setMissionDone(_count)
+  }
+
   useEffect(() => {
     if (!currentMission && id) {
       getCurrentMissionById()
+    } else {
+      countListMissionCompleted()
     }
   }, [currentMission, id])
 
@@ -109,7 +122,9 @@ export default function PartnersPage() {
             </div>
             <div className="relative mt-0">
               <div className="absolute top-0 right-0 mt-6 xs:mt-7 2xs:mt-8 text-[13px] xs:text-sm !leading-[20px] flex items-center font-semibold space-x-1">
-                <p className="text-title">1/4</p>
+                <p className="text-title">
+                  {missionDone}/{currentMission?.missions?.length || 0}
+                </p>
                 <p className="text-body">Completed</p>
               </div>
               <ListMission
