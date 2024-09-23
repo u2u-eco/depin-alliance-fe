@@ -1,21 +1,21 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDisclosure } from '@nextui-org/react'
 import ShopItem from './components/shop-item'
 import FilterSort from '@/app/components/filter-sort'
 import { FILTER_TYPE } from '@/constants'
 import { useSearchParams } from 'next/navigation'
 import { IconSort, IconFilter } from '@/app/components/icons'
+import { WorkspaceContext } from '../../context/workspace-context'
 interface IShopPage {
   height: number
-  goToEquip: () => void
 }
-export default function ShopPage({ height, goToEquip }: IShopPage) {
+export default function ShopPage({ height }: IShopPage) {
   const searchParams = useSearchParams()
   const type = searchParams.get('type')
   const [activeFilter, setActiveFilter] = useState(type ? FILTER_TYPE.FILTER : FILTER_TYPE.SORT)
-
+  const { typeShopFilter } = useContext(WorkspaceContext)
   const [filterOptions, setFilterOptions] = useState<{
     sortBy: string
     sortAscending: boolean
@@ -23,8 +23,9 @@ export default function ShopPage({ height, goToEquip }: IShopPage) {
   }>({
     sortBy: 'price',
     sortAscending: true,
-    type: type || ''
+    type: typeShopFilter || type || ''
   })
+
   const {
     isOpen: isOpenFilter,
     onOpen: onOpenFilter,
@@ -59,7 +60,7 @@ export default function ShopPage({ height, goToEquip }: IShopPage) {
           </div>
         </div>
 
-        <ShopItem filterOptions={filterOptions} height={height} goToEquip={goToEquip} />
+        <ShopItem filterOptions={filterOptions} height={height} />
       </div>
       <FilterSort
         isOpen={isOpenFilter}

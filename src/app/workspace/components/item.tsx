@@ -1,7 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconCheckCircle, IconFilter, IconPoint, IconSort } from '@/app/components/icons'
 import { useDisclosure } from '@nextui-org/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { IDeviceTypeItem, IParamUseKey } from '@/interfaces/i.devices'
 import Image from 'next/image'
@@ -20,8 +20,8 @@ import Link from 'next/link'
 import Loader from '@/app/components/ui/loader'
 import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
-import { useTelegram } from '@/hooks/useTelegram'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -37,7 +37,6 @@ export default function Item({ height }: IItem) {
   const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
-  const { webApp } = useTelegram()
   const [scrollTrigger, isInView] = useInView()
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
@@ -46,7 +45,6 @@ export default function Item({ height }: IItem) {
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
-  // const [maxHeightListContent, setMaxHeightListContent] = useState<number>(0)
   const [activeFilter, setActiveFilter] = useState(FILTER_TYPE.SORT)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -78,6 +76,7 @@ export default function Item({ height }: IItem) {
   } = useDisclosure()
   const currentItem = useRef<any>()
   const amountSell = useRef<number>(1)
+  const { setTypeItemShop, setActiveTab } = useContext(WorkspaceContext)
   const [useKey, setUseKey] = useState<number>(0)
   const { refetch } = useQuery({
     queryKey: [
@@ -209,6 +208,11 @@ export default function Item({ height }: IItem) {
     onOpenSpecial()
   }
 
+  const handleLinkBuy = () => {
+    setTypeItemShop(filterOptions.type || null)
+    setActiveTab(WORKSPACE_TYPE.SHOP)
+  }
+
   const updateAmountUseKey = async (amount: number) => {
     if (amount && currentItem?.current.code === 'CYBER_BOX') {
       paramUseKey.current = {
@@ -314,13 +318,8 @@ export default function Item({ height }: IItem) {
           {listDeviceItem?.length === 0 && !isLoading ? (
             <NoItem
               title="No item"
-              link={
-                filterOptions.type === ITEM_TYPE.SPECIAL
-                  ? undefined
-                  : filterOptions.type
-                    ? `/shop?type=${filterOptions.type}`
-                    : '/shop'
-              }
+              textLink="Buy now"
+              action={filterOptions.type === ITEM_TYPE.SPECIAL ? undefined : handleLinkBuy}
               classNames={{
                 icon: 'text-body'
               }}
@@ -488,13 +487,18 @@ export default function Item({ height }: IItem) {
                   <div className="btn-border"></div>
                 </div>
               )}
-              <Link href="/shop" className="btn">
+              <div
+                onClick={() => {
+                  setActiveTab(WORKSPACE_TYPE.SHOP)
+                }}
+                className="btn"
+              >
                 <div className="btn-border"></div>
                 <div className="btn-primary">
                   {activeType === ITEM_TYPE.INFO ? 'Buy' : 'Confirm'}
                 </div>
                 <div className="btn-border"></div>
-              </Link>
+              </div>
             </div>
           )}
         </div>

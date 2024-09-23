@@ -17,9 +17,8 @@ import NotificationModal from './notification'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number
-  goToEquip: () => void
 }
-export default function ShopItem({ filterOptions, height, goToEquip }: IShopItem) {
+export default function ShopItem({ filterOptions, height }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const { getUserInfo, token, userInfo } = useCommonStore()
@@ -106,8 +105,6 @@ export default function ShopItem({ filterOptions, height, goToEquip }: IShopItem
   }
 
   useEffect(() => {
-    console.log('🚀 ~ useEffect ~ isInView:', isInView, page)
-
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
     }
@@ -291,7 +288,6 @@ export default function ShopItem({ filterOptions, height, goToEquip }: IShopItem
         </div>
       </CustomModal>
       <NotificationModal
-        handleCallback={goToEquip}
         isOpen={isOpenNotification}
         onOpen={onOpenNotification}
         onClose={onCloseNotification}

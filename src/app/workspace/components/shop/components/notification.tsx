@@ -1,8 +1,8 @@
 import CustomModal from '@/app/components/custom-modal'
 import ImageDevice from '@/app/components/image-device'
+import { WORKSPACE_TYPE, WorkspaceContext } from '@/app/workspace/context/workspace-context'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useContext } from 'react'
 
 interface ModalProps {
   isOpen: any
@@ -10,21 +10,12 @@ interface ModalProps {
   onOpenChange: any
   onClose?: any
   item?: IDeviceTypeItem
-  handleCallback: () => void
 }
 
-const NotificationModal = ({
-  isOpen,
-  onOpen,
-  onOpenChange,
-  onClose,
-  item,
-  handleCallback
-}: ModalProps) => {
-  const router = useRouter()
-
+const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
+  const { setActiveTab } = useContext(WorkspaceContext)
   const handleClick = () => {
-    handleCallback()
+    setActiveTab(WORKSPACE_TYPE.ITEM)
   }
 
   return (
