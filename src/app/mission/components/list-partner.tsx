@@ -66,7 +66,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
         }
       })
       _listTaskDone[index] = count
-      if (count < partnerItem.missions?.length) {
+      if (countClaimed < partnerItem.missions?.length) {
         _missionUnDone += 1
       }
       if (countClaimed < partnerItem.missions?.length && isHideCompleted) {
