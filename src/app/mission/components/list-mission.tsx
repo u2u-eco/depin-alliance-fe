@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import CustomButton from '@/app/components/button'
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
@@ -200,7 +201,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                     </p>
                   </div>
                 ) : null}
-                {currentItem.current?.box > 0 && (
+                {currentItem.current?.amount > 0 && (
                   <>
                     {currentItem.current?.point ? (
                       <div className="w-[1px] h-[20px] bg-white/25"></div>
@@ -210,10 +211,10 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                         className="size-6 xs:size-7 2xs:size-8"
                         width={30}
                         height={30}
-                        src="/assets/images/item-special@2x.png"
-                        alt="Box"
+                        src={currentItem.current?.rewardImage}
+                        alt={currentItem.current?.rewardName}
                       />
-                      <p className="text-primary font-geist font-semibold">{`${currentItem?.current.box} box`}</p>
+                      <p className="text-primary font-geist font-semibold">{`${currentItem?.current.amount} ${currentItem?.current?.rewardName}`}</p>
                     </div>
                   </>
                 )}
