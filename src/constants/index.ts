@@ -12,6 +12,7 @@ export const IS_ONLY_SUPPORT_MOBILE =
   process.env.NEXT_PUBLIC_ONLY_SUPPORT_MOBILE === 'true' ? true : false
 export const PAGE_SIZE = 10
 export const MAX_SIZE_PER_PAGE = 10
+export const HIDE_COMPLETED_PARTNER = 't-depin-hide-completed-task'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
   SUCCESS: 'SUCCESS'
