@@ -1,6 +1,8 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import { IconCheckCircle, IconCloseHexagon, IconPoint } from '../icons'
 import { formatNumber } from '@/helper/common'
+import useSound from 'use-sound'
+import useCommonStore from '@/stores/commonStore'
 
 interface ToastProps {
   type: string
@@ -15,6 +17,18 @@ const TOAST_TYPE = {
 }
 
 const CustomToast = ({ type, title, point, description }: ToastProps) => {
+  const { soundEnabled } = useCommonStore()
+  const [play] = useSound(
+    type === TOAST_TYPE.SUCCESS
+      ? '/assets/sounds/interaction/notify-success.mp3'
+      : '/assets/sounds/interaction/notify-error.mp3',
+    {
+      soundEnabled
+    }
+  )
+
+  play()
+
   return (
     <div
       className={`relative border border-transparent bg-black p-3 xs:p-4 font-geist flex items-center text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] w-full before:content-[''] before:!scale-y-1 before:!translate-y-0 before:bottom-0 before:absolute before:left-0 before:[--shape:_2px] xs:before:[--shape:_4px] before:w-12 xs:before:w-16 before:h-0.5 xs:before:h-1 before:[clip-path:_polygon(0_0,calc(100%_-_var(--shape))_0%,100%_100%,0%_100%)] before:overflow-hidden after:content-[''] after:bottom-0 after:absolute after:right-0 after:left-auto after:[--shape:_2px] xs:after:[--shape:_4px] after:w-12 xs:after:w-16 after:overflow-hidden after:h-0.5 xs:after:h-1  after:[clip-path:_polygon(var(--shape)_0,100%_0%,100%_100%,0%_100%)]
