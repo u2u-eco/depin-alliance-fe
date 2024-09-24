@@ -30,6 +30,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     ...QUERY_CONFIG
   })
   const router = useRouter()
+  const [partnerDone, setPartnerDone] = useState<number>(0)
   const [listTaskByFilter, setListTaskByFilter] = useState<any>([])
   const listTaskStatus = useRef<{ [key: number]: string }>({})
   const listTaskClaimed = useRef<{ [key: number]: boolean }>({})
@@ -84,6 +85,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
         _isEmptyPartner = false
       }
     })
+    setPartnerDone(list?.length - _missionUnDone)
     updateListPartner(_missionUnDone)
     const _listTask: any = isHideCompleted ? [...listUnDone] : [...listUnDone, ...listDone]
     setListTaskByFilter(_listTask)
@@ -127,7 +129,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
           </p>
           <div className="flex items-center space-x-2 cursor-pointer" onClick={handleHideCompleted}>
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              hide completed
+              hide completed {partnerDone ? `(${partnerDone})` : ''}
             </p>
             <motion.div
               whileTap={{ scale: 0.8 }}
