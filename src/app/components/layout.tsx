@@ -12,6 +12,7 @@ import useCommonStore from '@/stores/commonStore'
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
+
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -20,9 +21,14 @@ export default function Layout({ children }: any) {
       const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
+    document.addEventListener('swiped-right', function (e: any) {
+      console.log(e.target) // element that was swiped
+      console.log(e.detail) // see event data below
+    })
   }, [])
+
   return (
-    <>
+    <div className="container">
       <Toaster
         position="top-center"
         theme="dark"
@@ -47,6 +53,6 @@ export default function Layout({ children }: any) {
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
-    </>
+    </div>
   )
 }
