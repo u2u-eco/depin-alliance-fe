@@ -17,6 +17,7 @@ interface CommonState {
   currentStatus: I_CURRENT_STATUS
   currentLeague: IUserLeague | null
   heightNav: number
+  soundEnabled: boolean
   safeAreaBottom: number
   userConfig: IUserConfig | null
   setSafeAreaBottom: (height: number) => void
@@ -28,6 +29,7 @@ interface CommonState {
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
   getUserInfo: () => Promise<any>
   getUserConfig: () => void
+  setSoundEnabled: (status: boolean) => void
   setCurrentLeague: ({ league }: { league: IUserLeague | null }) => void
 }
 
@@ -40,6 +42,7 @@ const useCommonStore = create<CommonState>((set) => ({
   userConfig: null,
   heightNav: 70,
   safeAreaBottom: 0,
+  soundEnabled: true,
   currentStatus: I_CURRENT_STATUS.STARTED,
   setSafeAreaBottom: (height: number) => set({ safeAreaBottom: height }),
   setHeightNav: (height: number) => set({ heightNav: height }),
@@ -49,6 +52,7 @@ const useCommonStore = create<CommonState>((set) => ({
   setUserConfig: ({ config }) => set({ userConfig: config }),
   setDevice: ({ info }) => set({ deviceInfo: info }),
   setCurrentStatus: ({ status }) => set({ currentStatus: status }),
+  setSoundEnabled: (status: boolean) => set({ soundEnabled: status }),
   getUserInfo: async () => {
     const response = await getUserInfo()
     if (response.status) {
