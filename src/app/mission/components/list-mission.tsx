@@ -104,6 +104,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         refSpecialItem.current = res.data
         onOpenSpecial()
       }
+      toast.dismiss()
       toast.success(
         <CustomToast
           type="success"

@@ -13,6 +13,7 @@ import ListMission from '../components/list-mission'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MISSION_STATUS } from '@/constants'
+import { genIdFromString } from '@/lib/utils'
 
 export default function PartnersPage() {
   const router = useRouter()
@@ -25,7 +26,8 @@ export default function PartnersPage() {
     const res = await getListMissionByPartner()
     if (res.status) {
       res.data.forEach((item: IMissionPartner, index: number) => {
-        if (index === Number(id)) {
+        let _id: any = genIdFromString(item.name)
+        if (_id === id) {
           setCurrentMission(item)
         }
       })

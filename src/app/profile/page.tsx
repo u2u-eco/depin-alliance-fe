@@ -25,7 +25,8 @@ const PROFILE_TYPE = {
 
 export default function ProfilePage() {
   const router = useRouter()
-  const currentItem = useRef<any>()
+  const refCurrentItem = useRef<any>()
+  const [currentItem, setCurrentItem] = useState<any>()
   const refInterval = useRef<any>()
   const { token, getUserInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -62,7 +63,8 @@ export default function ProfilePage() {
         infoSkill = res.data
       }
     }
-    currentItem.current = { ...item, ...infoSkill }
+    refCurrentItem.current = { ...item, ...infoSkill }
+    setCurrentItem(refCurrentItem.current)
     onOpen()
   }
 
@@ -73,8 +75,7 @@ export default function ProfilePage() {
       toast.success(<CustomToast type="success" title="Level Up successfully!" />)
       getUserInfo()
       _getSkills()
-      currentItem.current = {}
-      onClose()
+      handleClose()
     }
     setLoadingButton(false)
   }
@@ -84,11 +85,27 @@ export default function ProfilePage() {
     handleUpdateSkill(data)
   }
 
+  const handleClose = () => {
+    onClose()
+    refCurrentItem.current = {}
+    setCurrentItem({})
+  }
+
+  const updateCurrentItem = async () => {
+    if (refCurrentItem.current?.skillId) {
+      const res = await getSkillInfo(refCurrentItem.current?.skillId)
+      if (res.status) {
+        refCurrentItem.current = { ...refCurrentItem.current, ...res.data }
+        setCurrentItem(refCurrentItem.current)
+      }
+    }
+  }
+
   const fetchList = () => {
     const update = () => {
       _getSkills(true)
-      if (currentItem.current.skillId) {
-        handleClickItem(currentItem.current)
+      if (refCurrentItem.current?.skillId) {
+        updateCurrentItem()
       }
     }
     update()
@@ -154,12 +171,12 @@ export default function ProfilePage() {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        onClose={onClose}
+        onClose={handleClose}
       >
         <UpgradeModal
           activeType={PROFILE_TYPE.SKILL}
           UPGRADE_TYPE={PROFILE_TYPE}
-          item={currentItem.current}
+          item={currentItem}
           refInterval={refInterval}
           handleAction={handleModalAction}
         />

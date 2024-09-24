@@ -271,7 +271,7 @@ export default function QuizPage() {
                                 ></div>
                               </div>
                             </motion.div>
-                            <p className="text-body text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] tracking-[-1px] -mt-[1px] xs:mt-0.5">
+                            <p className="text-body text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px] tracking-[-1px] -mt-[1px] xs:mt-[1px]">
                               {el.text}
                             </p>
                           </div>
