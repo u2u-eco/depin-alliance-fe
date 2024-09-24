@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Switch } from '@nextui-org/react'
+import { motion } from 'framer-motion'
 
 interface IListPartner {
   updateListPartner: (count: number) => void
@@ -113,24 +114,30 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   return (
     <>
       <div className="mt-5 xs:mt-6">
-        <div className="flex items-center justify-end">
-          <Switch
-            classNames={{
-              wrapper:
-                "[--shape:_6px] w-10 xs:w-11 rounded-none h-5 xs:h-6 px-[3px] bg-white/30 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_2px)] before:bg-gray-850 before:group-data-[selected=true]:bg-gray-850  mr-1.5 xs:mr-2",
-              thumb:
-                '[--shape:_5px] rounded-none !size-[14px] xs:!size-[18px] group-data-[selected=true]:ml-5 bg-white/30 group-data-[selected=true]:bg-gradient',
-              label:
-                'text-body group-data-[selected=true]:text-title text-sm xs:text-[15px] xs:text-base !leading-[18px] xs:!leading-[20px] capitalize font-mona'
-            }}
-            isSelected={isHideCompleted}
-            onChange={handleHideCompleted}
-          >
-            hide completed {`(${partnerDone})`}
-          </Switch>
+        <div className="flex items-center justify-between">
+          <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+            ALL MISSIONS
+          </p>
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={handleHideCompleted}>
+            <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+              completed
+            </p>
+            <motion.div
+              whileTap={{ scale: 0.8 }}
+              className="relative size-5 xs:size-6 min-w-5 xs:min-w-6 flex items-center justify-center"
+            >
+              <div
+                className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isHideCompleted ? 'bg-white/10' : ''}`}
+              >
+                <div
+                  className={`size-full bg-gradient transition-opacity ${isHideCompleted ? 'opacity-100' : 'opacity-0'}`}
+                ></div>
+              </div>
+            </motion.div>
+          </div>
         </div>
         {listPartners?.data?.length > 0 ? (
-          <div className="mt-5 xs:mt-6">
+          <div className="mt-4">
             <div className="flex flex-col space-y-3 xs:space-y-4">
               {isLoading ? (
                 <Loader />
