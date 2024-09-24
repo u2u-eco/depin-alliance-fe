@@ -56,16 +56,31 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     onOpen()
   }
 
-  const handleVerifyMission = async (id: number) => {
+  const handleVerifyMission = async (id: number, disableMessage?: boolean) => {
+    if (isVerified) return
     setLoadingButton(true)
+
     const res = await verifyMission(id)
     if (res.status && res.data) {
       setVerified(true)
       refetch && refetch()
     } else {
-      toast.error(<CustomToast type="error" title="Mission not completed!" />)
+      if (!disableMessage) {
+        toast.error(<CustomToast type="error" title="Mission not completed!" />)
+      }
     }
     setLoadingButton(false)
+    return res
+  }
+
+  const checkMission = async (id: number) => {
+    const res = await verifyMission(id)
+    window.open(currentItem.current.url, '_blank')
+    setTimeout(() => {
+      if (res.status && res.data) {
+        setVerified(true)
+      }
+    })
   }
 
   const handleShare = () => {
@@ -138,10 +153,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           timeOut = 2000
           router.push('/mission/quiz')
           setCurrentMissionQuiz(currentItem.current)
-
         default:
           if (currentItem.current.url) {
-            window.open(currentItem.current.url, '_blank')
+            if (currentItem.current?.type === 'TELEGRAM' && webApp?.platform === 'android') {
+              checkMission(currentItem.current.id)
+            } else {
+              window.open(currentItem.current.url, '_blank')
+            }
           }
           break
       }
