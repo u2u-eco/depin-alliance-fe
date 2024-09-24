@@ -95,7 +95,7 @@ export default function QuizPage() {
       try {
         const res = await claimTask(currentMissionQuiz.id)
         if (res.status) {
-          if (res.data.amount > 0) {
+          if (res.data?.amount > 0) {
             refSpecialItem.current = res.data
             onOpenSpecial()
           } else {
