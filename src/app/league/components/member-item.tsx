@@ -96,7 +96,7 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
                 }}
               >
                 <IconSettings
-                  className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-green-800'}`}
+                  className={`size-5 xs:size-6 2xs:size-7 ${isDisable ? 'text-inactive' : 'text-green-800'}`}
                 />
               </div>
             )}

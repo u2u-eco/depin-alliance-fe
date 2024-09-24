@@ -29,7 +29,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/member' &&
     pathName !== '/league/join-request' &&
     pathName !== '/league/mission' &&
-    pathName !== '/league/ranking'
+    pathName !== '/league/ranking' &&
+    pathName !== '/league/all-league'
   const isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -40,7 +41,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
     pathName !== '/league/join-request' &&
-    pathName !== '/league/ranking'
+    pathName !== '/league/ranking' &&
+    pathName !== '/league/all-league'
   const full = pathName === '/setting'
   return (
     <>

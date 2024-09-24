@@ -16,11 +16,8 @@ import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
-<<<<<<< HEAD
 import { useAppSound } from '@/hooks/useAppSound'
-=======
 import ModifyModal from './modify'
->>>>>>> e1498e9 ([Task] Create UI for Modify modal)
 interface IMember {
   setTotalMember: (total: number) => void
 }
