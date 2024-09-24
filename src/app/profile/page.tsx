@@ -25,7 +25,8 @@ const PROFILE_TYPE = {
 
 export default function ProfilePage() {
   const router = useRouter()
-  const currentItem = useRef<any>()
+  // const currentItem = useRef<any>()
+  const [currentItem, setCurrentItem] = useState<any>()
   const refInterval = useRef<any>()
   const { token, getUserInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -62,7 +63,7 @@ export default function ProfilePage() {
         infoSkill = res.data
       }
     }
-    currentItem.current = { ...item, ...infoSkill }
+    setCurrentItem({ ...item, ...infoSkill })
     onOpen()
   }
 
@@ -84,15 +85,15 @@ export default function ProfilePage() {
   }
 
   const handleClose = () => {
-    currentItem.current = {}
+    setCurrentItem({})
     onClose()
   }
 
   const fetchList = () => {
     const update = () => {
       _getSkills(true)
-      if (currentItem.current.skillId) {
-        handleClickItem(currentItem.current)
+      if (currentItem.skillId) {
+        handleClickItem(currentItem)
       }
     }
     update()
@@ -163,7 +164,7 @@ export default function ProfilePage() {
         <UpgradeModal
           activeType={PROFILE_TYPE.SKILL}
           UPGRADE_TYPE={PROFILE_TYPE}
-          item={currentItem.current}
+          item={currentItem}
           refInterval={refInterval}
           handleAction={handleModalAction}
         />
