@@ -108,7 +108,7 @@ const CustomList = ({
                           src={item.rewardImage || '/assets/images/item-special.png'}
                           alt={item.rewardName}
                         />
-                        <p className="text-primary font-geist font-semibold">{`${item.amount} ${item.rewardName}`}</p>
+                        <p className="text-primary font-geist font-semibold">{`${item.amount} ${item.rewardName === 'OPEN' ? '$OPEN' : item.rewardName}`}</p>
                       </div>
                     </>
                   )}
