@@ -235,7 +235,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                         src={currentItem.current?.rewardImage}
                         alt={currentItem.current?.rewardName}
                       />
-                      <p className="text-primary font-geist font-semibold">{`${currentItem?.current.amount} ${currentItem?.current?.rewardName}`}</p>
+                      <p className="text-primary font-geist font-semibold">{`${currentItem?.current.amount} ${currentItem?.current?.rewardName === 'OPEN' ? '$OPEN' : currentItem?.current?.rewardName}`}</p>
                     </div>
                   </>
                 )}
