@@ -18,6 +18,7 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
 import { useAppSound } from '@/hooks/useAppSound'
 import ModifyModal from './modify'
+import CustomRank from '@/app/components/ui/custom-rank'
 interface IMember {
   setTotalMember: (total: number) => void
 }
@@ -136,6 +137,12 @@ const AllMember = ({ setTotalMember }: IMember) => {
     }
   }
 
+  const data = {
+    currentRank: 150,
+    ranking: listItem
+  }
+  console.log(data)
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -143,7 +150,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
   }, [isInView])
 
   return (
-    <>
+    <div className="space-y-8">
       <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
       <div>
         {listItem.length === 0 && !isLoading ? (
@@ -156,19 +163,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
             transition={{ duration: 0.35 }}
             key="all"
           >
-            <div className="flex flex-col space-y-3 2xs:space-y-4">
-              {listItem.map((item: any, index: number) => (
-                <MemberItem
-                  key={index}
-                  item={item}
-                  type="member"
-                  handleKick={(item) => handleCancel(item, index)}
-                />
-              ))}
-              <div ref={scrollTrigger} className="text-[transparent]">
-                Loading...
-              </div>
-            </div>
+            <CustomRank data={data} type="member" />
           </motion.div>
         )}
         {isLoading && (
@@ -241,7 +236,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
         onOpenChange={onOpenChangeModify}
         handleKickModal={handleKickModal}
       />
-    </>
+    </div>
   )
 }
 

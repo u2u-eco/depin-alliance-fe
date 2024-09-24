@@ -71,10 +71,12 @@ export default function MemberPage() {
               </div>
             </div>
           </div>
-          <div className="space-y-3 xs:space-y-4">
-            <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
-            </p>
+          <div className="space-y-6">
+            <div className="space-y-3 xs:space-y-4">
+              <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+                MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
+              </p>
+            </div>
             <AllMember setTotalMember={setTotalMember} />
           </div>
         </div>

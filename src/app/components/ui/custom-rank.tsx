@@ -47,7 +47,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
 
   return (
     <div
-      className={`flex flex-col space-y-4 ${data?.currentRank > data?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}
+      className={`flex flex-col space-y-3 xs:space-y-4 ${data?.currentRank > data?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}
     >
       {data?.ranking?.map((item: IRankingItem, index: number) => (
         <div

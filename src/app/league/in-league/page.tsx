@@ -307,10 +307,10 @@ export default function InLeaguePage() {
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
-              <Link href="/league/ranking" className="flex items-center justify-center space-x-1">
+              {/* <Link href="/league/ranking" className="flex items-center justify-center space-x-1">
                 <p className="text-gradient uppercase font-mona font-semibold">VIEW LEAGUE RANK</p>
                 <IconOpenLink gradient className="size-6" />
-              </Link>
+              </Link> */}
             </div>
           </div>
           {/* Progress */}
@@ -372,7 +372,7 @@ export default function InLeaguePage() {
               </div>
             </div>
             {/* Fund - Profit */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 xs:space-x-4">
               <div className="flex-1">
                 <div className="btn cursor-default">
                   <div className="btn-border"></div>
@@ -380,7 +380,7 @@ export default function InLeaguePage() {
                     <div className="space-y-4">
                       <IconFund className="text-yellow-500 size-12 mx-auto" />
                       <div className="space-y-2">
-                        <p className="text-center uppercase text-title tracking-[-1px] leading-[18px]">
+                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
                           FUND
                         </p>
                         <div className="flex items-center justify-center space-x-2">
@@ -409,7 +409,7 @@ export default function InLeaguePage() {
                     <div className="space-y-4">
                       <IconProfit className="text-green-500 size-12 mx-auto" />
                       <div className="space-y-2">
-                        <p className="text-center uppercase text-title tracking-[-1px] leading-[18px]">
+                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
                           PROFIT
                         </p>
                         <div className="flex items-center justify-center space-x-2">
