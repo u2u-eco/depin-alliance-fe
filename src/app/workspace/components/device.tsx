@@ -26,6 +26,7 @@ import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
 import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
+import useSound from 'use-sound'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -38,7 +39,7 @@ interface IDevice {
   height: number
 }
 export default function Device({ height }: IDevice) {
-  const { userConfig, getUserConfig, getUserInfo } = useCommonStore()
+  const { userConfig, getUserConfig, getUserInfo, soundEnabled } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -46,6 +47,13 @@ export default function Device({ height }: IDevice) {
   const detailDeviceItem = useRef<any>()
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
+
+  const [playOpen] = useSound('/assets/sounds/interaction/dropdown-open.mp3', {
+    soundEnabled
+  })
+  const [playClose] = useSound('/assets/sounds/interaction/dropdown-close.mp3', {
+    soundEnabled
+  })
   const [loadingButton, setLoadingButton] = useState(false)
 
   const currentName = useRef<string>('')
@@ -233,6 +241,15 @@ export default function Device({ height }: IDevice) {
     }
   }
 
+  const handleExpanded = (index: number | false) => {
+    if (index) {
+      playOpen()
+    } else {
+      playClose()
+    }
+    setExpanded(index)
+  }
+
   const disableBtn =
     (activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP) && !activeItem
       ? true
@@ -259,7 +276,7 @@ export default function Device({ height }: IDevice) {
                 index={item.index}
                 item={item}
                 expanded={expanded}
-                setExpanded={setExpanded}
+                setExpanded={handleExpanded}
                 handleEdit={(item) => handleClick(DEVICE_TYPE.EDIT, item)}
                 handleClickItem={handleClickItem}
               >

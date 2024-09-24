@@ -6,11 +6,15 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
+import useSound from 'use-sound'
 
 const CustomNavbar = () => {
   const pathName = usePathname()
   const navRef = useRef<any>(null)
-  const { currentLeague, setHeightNav } = useCommonStore()
+  const { currentLeague, setHeightNav, soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   const listMenu = [
     { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
@@ -52,6 +56,9 @@ const CustomNavbar = () => {
         >
           {listMenu.map((item) => (
             <Link
+              onClick={() => {
+                play()
+              }}
               href={item.link}
               className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative`}
               key={item.id}
