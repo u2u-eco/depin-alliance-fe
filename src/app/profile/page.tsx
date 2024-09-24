@@ -25,7 +25,7 @@ const PROFILE_TYPE = {
 
 export default function ProfilePage() {
   const router = useRouter()
-  // const currentItem = useRef<any>()
+  const refCurrentItem = useRef<any>()
   const [currentItem, setCurrentItem] = useState<any>()
   const refInterval = useRef<any>()
   const { token, getUserInfo } = useCommonStore()
@@ -63,7 +63,8 @@ export default function ProfilePage() {
         infoSkill = res.data
       }
     }
-    setCurrentItem({ ...item, ...infoSkill })
+    refCurrentItem.current = { ...item, ...infoSkill }
+    setCurrentItem(refCurrentItem.current)
     onOpen()
   }
 
@@ -85,15 +86,26 @@ export default function ProfilePage() {
   }
 
   const handleClose = () => {
-    setCurrentItem({})
     onClose()
+    refCurrentItem.current = {}
+    setCurrentItem({})
+  }
+
+  const updateCurrentItem = async () => {
+    if (refCurrentItem.current?.skillId) {
+      const res = await getSkillInfo(refCurrentItem.current?.skillId)
+      if (res.status) {
+        refCurrentItem.current = { ...refCurrentItem.current, ...res.data }
+        setCurrentItem(refCurrentItem.current)
+      }
+    }
   }
 
   const fetchList = () => {
     const update = () => {
       _getSkills(true)
-      if (currentItem.skillId) {
-        handleClickItem(currentItem)
+      if (refCurrentItem.current?.skillId) {
+        updateCurrentItem()
       }
     }
     update()
