@@ -73,8 +73,7 @@ export default function ProfilePage() {
       toast.success(<CustomToast type="success" title="Level Up successfully!" />)
       getUserInfo()
       _getSkills()
-      currentItem.current = {}
-      onClose()
+      handleClose()
     }
     setLoadingButton(false)
   }
@@ -82,6 +81,11 @@ export default function ProfilePage() {
   const handleModalAction = (data: any) => {
     if (loadingButton) return
     handleUpdateSkill(data)
+  }
+
+  const handleClose = () => {
+    currentItem.current = {}
+    onClose()
   }
 
   const fetchList = () => {
@@ -154,7 +158,7 @@ export default function ProfilePage() {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        onClose={onClose}
+        onClose={handleClose}
       >
         <UpgradeModal
           activeType={PROFILE_TYPE.SKILL}
