@@ -24,6 +24,7 @@ export interface IMissionPartner {
   name: string
   participants: number
   rewards: string
+  id: number
 }
 export interface IQuizAnswerItem {
   correct: boolean
