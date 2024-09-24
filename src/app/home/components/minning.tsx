@@ -8,6 +8,7 @@ import { useDisclosure } from '@nextui-org/react'
 import Loader from '@/app/components/ui/loader'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import useSound from 'use-sound'
 
 const HOME_TYPE = {
   START: 'start',
@@ -18,7 +19,11 @@ export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
   const [bonusReward, setBonusReward] = useState<number>(0)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { userInfo, setUserInfo } = useCommonStore()
+  const { userInfo, setUserInfo, soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
+  })
+
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -104,6 +109,7 @@ export default function Mining() {
   }
 
   const handleClick = (type: any) => {
+    play()
     switch (type) {
       case HOME_TYPE.START:
         if (isLoading) return
