@@ -23,6 +23,8 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
   useEffect(() => {
     if (listItem?.length > 0) {
       setActiveType(BOX_TYPE.CLAIM)
+    } else {
+      setActiveType(BOX_TYPE.OPEN)
     }
   }, [listItem])
 

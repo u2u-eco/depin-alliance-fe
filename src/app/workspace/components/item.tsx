@@ -42,7 +42,7 @@ export default function Item({ height }: IItem) {
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
-  const specialItem = useRef<any>([])
+  const [specialItem, setSpecialItem] = useState<any>([])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -60,7 +60,7 @@ export default function Item({ height }: IItem) {
     sortAscending: true,
     type: ''
   })
-  const { buttonSound } = useAppSound()
+  const { buttonSound, specialSound } = useAppSound()
 
   const refList = useRef<any>()
   const refListScroll = useRef<any>()
@@ -178,16 +178,19 @@ export default function Item({ height }: IItem) {
 
   const handleSpecial = async () => {
     if (paramUseKey.current && !disableBtnSpecial) {
-      specialItem.current = []
+      setSpecialItem([])
       if (userInfo && userInfo?.point < useKey) {
         toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
+      specialSound()
       onOpenSpecial()
       try {
         const res = await getUseKey(paramUseKey.current)
         if (res.status) {
-          specialItem.current = res.data
+          setTimeout(() => {
+            setSpecialItem([...res.data])
+          }, 2000)
           refetch && refetch()
           getUserInfo()
         }
@@ -530,7 +533,7 @@ export default function Item({ height }: IItem) {
         onOpen={onOpenSpecial}
         onOpenChange={onOpenChangeSpecial}
         onClose={onCloseSpecial}
-        listItem={specialItem.current}
+        listItem={specialItem}
       />
     </>
   )
