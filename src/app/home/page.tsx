@@ -6,22 +6,20 @@ import Mining from './components/minning'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
 import { useUserInfo } from '@/hooks/useUserInfo'
-import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 import { motion } from 'framer-motion'
 import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function HomePage() {
-  const { userInfo, token, getUserConfig, soundThemeEnabled, soundEnabled } = useCommonStore()
+  const { userInfo, token, getUserConfig, soundThemeEnabled } = useCommonStore()
   const [play, { stop }] = useSound('/assets/sounds/theme/main-theme.mp3', {
     soundEnabled: soundThemeEnabled,
     loop: true
   })
+  const { tabSound } = useAppSound()
 
-  const [playTab] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
   // const totalDevice = useRef<number>(0)
 
   useUserInfo()
@@ -133,7 +131,7 @@ export default function HomePage() {
                 </div>
                 <Link
                   onClick={() => {
-                    playTab()
+                    tabSound()
                   }}
                   href="/workspace"
                   className="flex items-center space-x-1"

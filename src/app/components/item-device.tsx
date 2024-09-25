@@ -1,21 +1,17 @@
 import ImageDevice from './image-device'
 import { IconPoint } from './icons'
 import { formatNumber } from '@/helper/common'
-import useCommonStore from '@/stores/commonStore'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IItemDevice {
   key: number
   item: any
   handleClick: (item: any) => void
 }
 export default function ItemDevice({ key, item, handleClick }: IItemDevice) {
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
 
   const _onClick = () => {
-    play()
+    buttonSound()
     handleClick(item)
   }
   return (

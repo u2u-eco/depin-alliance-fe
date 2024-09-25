@@ -10,7 +10,7 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '../components/ui/loader'
 import { CustomHeader } from '../components/ui/custom-header'
 import ListRankingItem from './components/list-ranking'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const RANKING_TYPE = {
   PROFIT: 'profit',
@@ -18,11 +18,10 @@ const RANKING_TYPE = {
 }
 
 export default function RankingPage() {
-  const { userInfo, soundEnabled } = useCommonStore()
+  const { userInfo } = useCommonStore()
   const [listRanking, setListRanking] = useState<any>({})
-  const [tabSound] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
+  const { tabSound } = useAppSound()
+
   const [activeType, setActiveType] = useState(RANKING_TYPE.PROFIT)
   const { data: listRankingResponse, isLoading } = useQuery({
     queryKey: ['getRanking', activeType],

@@ -15,6 +15,7 @@ import {
 import CustomToast from '@/app/components/ui/custom-toast'
 import { BUTTON_TYPE, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
@@ -23,19 +24,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import useSound from 'use-sound'
 
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague, soundEnabled } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
-  const [tabSound] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
-  const [btnSound] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound, tabSound } = useAppSound()
+
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
@@ -227,7 +223,7 @@ export default function InLeaguePage() {
               <div
                 className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
                 onClick={() => {
-                  btnSound()
+                  buttonSound()
                   onOpen()
                 }}
               >

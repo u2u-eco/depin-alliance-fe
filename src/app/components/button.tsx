@@ -1,7 +1,6 @@
 import { BUTTON_TYPE } from '@/constants'
 import Loader from './ui/loader'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ICustomButton {
   title: string
@@ -11,12 +10,9 @@ interface ICustomButton {
   onAction?: () => void
 }
 export default function CustomButton({ title, onAction, disable, isLoading, type }: ICustomButton) {
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
   const handleClick = () => {
-    play()
+    buttonSound()
     onAction && onAction()
   }
   const getTypeButton = () => {

@@ -8,14 +8,12 @@ import { FILTER_TYPE } from '@/constants'
 import { useSearchParams } from 'next/navigation'
 import { IconSort, IconFilter } from '@/app/components/icons'
 import { WorkspaceContext } from '../../context/workspace-context'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IShopPage {
   height: number
 }
 export default function ShopPage({ height }: IShopPage) {
   const searchParams = useSearchParams()
-  const { soundEnabled } = useCommonStore()
   const type = searchParams.get('type')
   const [activeFilter, setActiveFilter] = useState(type ? FILTER_TYPE.FILTER : FILTER_TYPE.SORT)
   const { typeShopFilter } = useContext(WorkspaceContext)
@@ -28,9 +26,8 @@ export default function ShopPage({ height }: IShopPage) {
     sortAscending: true,
     type: typeShopFilter || type || ''
   })
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+
+  const { buttonSound } = useAppSound()
   const {
     isOpen: isOpenFilter,
     onOpen: onOpenFilter,
@@ -39,7 +36,7 @@ export default function ShopPage({ height }: IShopPage) {
   } = useDisclosure()
 
   const handleFilterSort = (type: string) => {
-    play()
+    buttonSound()
     setActiveFilter(type)
     onOpenFilter()
   }

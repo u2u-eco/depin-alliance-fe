@@ -18,8 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { genIdFromString } from '@/lib/utils'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface IListPartner {
   updateListPartner: (count: number) => void
@@ -32,7 +31,6 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     ...QUERY_CONFIG
   })
   const router = useRouter()
-  const { soundEnabled } = useCommonStore()
   const [partnerDone, setPartnerDone] = useState<number>(0)
   const [listTaskByFilter, setListTaskByFilter] = useState<any>([])
   const listTaskStatus = useRef<{ [key: number]: string }>({})
@@ -44,9 +42,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const [isHideCompleted, setIsHideCompleted] = useState<boolean>(
     isHideCompletedStr === 'true' || isHideCompletedStr === null ? true : false
   )
-  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
+  const { tabSound } = useAppSound()
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -102,7 +98,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   const handleLinkMission = (item: IMissionPartner, index: number) => {
-    play()
+    tabSound()
     setCurrentMission(item)
     router.push(`/mission/partners?id=${item.id}`)
   }

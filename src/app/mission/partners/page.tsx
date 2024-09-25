@@ -14,15 +14,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MISSION_STATUS } from '@/constants'
 import { genIdFromString } from '@/lib/utils'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function PartnersPage() {
   const router = useRouter()
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
+  const { tabSound } = useAppSound()
   const searchParams = useSearchParams()
   const [missionDone, setMissionDone] = useState<number>(0)
   const id = searchParams.get('id')
@@ -40,7 +36,7 @@ export default function PartnersPage() {
     }
   }
   const handleBack = () => {
-    play()
+    tabSound()
     router.push('/mission?tab=partners')
   }
 
@@ -144,7 +140,7 @@ export default function PartnersPage() {
           </div>
           <Link
             onClick={() => {
-              play()
+              tabSound()
             }}
             href="/home"
             className="absolute top-0 right-0"

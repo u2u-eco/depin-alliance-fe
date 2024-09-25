@@ -1,8 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import useIsOnScreenKeyboardOpen from '@/hooks/useIsOnScreenKeyboardOpen'
-import useCommonStore from '@/stores/commonStore'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ModalProps {
   title?: string
@@ -27,10 +26,8 @@ const CustomModal = ({
   // const {isOpen, onOpen, onOpenChange} = useDisclosure()
   const [placement, setPlacement] = useState<any>('bottom')
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   useEffect(() => {
     if (isOpen) {
       setPlacement(window && window.innerWidth >= 375 && !isKeyboardOpen ? 'bottom' : 'top')
@@ -66,7 +63,7 @@ const CustomModal = ({
                 <div
                   className="absolute top-3 xs:top-4 min-[400px]::top-5 2xs:top-6 right-3 xs:right-4 cursor-pointer"
                   onClick={() => {
-                    play()
+                    buttonSound()
                     onClose()
                   }}
                 >
