@@ -28,10 +28,7 @@ export default function Missions({ updateListReward }: IMission) {
     listMission?.data.forEach((item: any) => {
       if (item.missions) {
         item.missions.forEach((mission: IItemMissionPartner) => {
-          if (
-            mission.status !== MISSION_STATUS.VERIFIED &&
-            mission.status !== MISSION_STATUS.CLAIMED
-          ) {
+          if (mission.status !== MISSION_STATUS.CLAIMED) {
             count += 1
           }
         })
