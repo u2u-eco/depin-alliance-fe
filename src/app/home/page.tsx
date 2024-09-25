@@ -13,76 +13,15 @@ import { motion } from 'framer-motion'
 import useSound from 'use-sound'
 
 export default function HomePage() {
-  const { userInfo, token, getUserConfig, soundEnabled } = useCommonStore()
+  const { userInfo, token, getUserConfig, soundThemeEnabled } = useCommonStore()
   const [play, { stop }] = useSound('/assets/sounds/theme/main-theme.mp3', {
-    soundEnabled,
+    soundEnabled: soundThemeEnabled,
     loop: true
   })
 
   // const totalDevice = useRef<number>(0)
 
   useUserInfo()
-
-  // const _getListDevice = async () => {
-  //   const listDevice: any = await getListDevice()
-  //   if (listDevice.status) {
-  //     const data: Array<IUserDeviceItem> = listDevice.data
-  //     _getUserDevice(data[0].index)
-  //     totalDevice.current = data?.length
-  //   }
-  // }
-
-  // const _getUserDevice = async (index: number) => {
-  //   const res = await getUserDevice(index)
-  //   if (res.status) {
-  //     let listInfo: any = {}
-  //     let listByType: any = {}
-
-  //     res.data.forEach((item: IDeviceTypeItem) => {
-  //       if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
-  //         if (!listInfo[item.type]) {
-  //           listInfo[item.type] = item
-  //         } else {
-  //           listInfo[item.type].name =
-  //             `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
-  //         }
-  //       } else {
-  //         if (!listByType[item.type]?.[item.code]) {
-  //           if (!listByType[item.type]) {
-  //             listByType[item.type] = {}
-  //           }
-  //           if (!listByType[item.type][item.code]) {
-  //             listByType[item.type][item.code] = {
-  //               ...item,
-  //               value: 1
-  //             }
-  //           }
-  //         } else {
-  //           if (listByType[item.type][item.code]) {
-  //             listByType[item.type][item.code].value += 1
-  //           }
-  //         }
-  //       }
-  //     })
-  //     const listCPU_GPU = Object.keys(listByType).map((key) => {
-  //       let newItem = { type: key, name: '' }
-  //       Object.keys(listByType[key]).map((key2, index) => {
-  //         newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
-  //       })
-  //       return newItem
-  //     })
-  //     const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
-  //     setDevice({
-  //       info: [...listCPU_GPU, ...newData]
-  //     })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (token) {
-  //     _getListDevice()
-  //   }
-  // }, [token])
 
   useEffect(() => {
     play()

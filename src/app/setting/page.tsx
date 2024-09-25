@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
 import { IconMusic, IconSound } from '../components/icons'
 import { motion } from 'framer-motion'
+import useCommonStore from '@/stores/commonStore'
 
 const SETTING_TYPE = {
   WALLET: 'wallet',
@@ -27,8 +28,9 @@ const listSocial = [
 
 export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [activeMusic, setActiveMusic] = useState(false)
-  const [activeSound, setActiveSound] = useState(false)
+  const { soundEnabled, soundThemeEnabled, setSoundEnabled, setSoundThemeEnabled } =
+    useCommonStore()
+
   const [type, setType] = useState(SETTING_TYPE.WALLET)
   const listSetting = [
     // { id: 1, image: SETTING_TYPE.WALLET, title: 'Connect Wallet', text: 'UQBC4...9BGL', icon: 'link' },
@@ -38,7 +40,7 @@ export default function SettingPage() {
       type: SETTING_TYPE.MUSIC,
       image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
       title: 'Music Theme',
-      text: activeMusic ? 'Turn on' : 'Turn off',
+      text: soundThemeEnabled ? 'Turn on' : 'Turn off',
       icon: ''
     },
     {
@@ -46,7 +48,7 @@ export default function SettingPage() {
       type: SETTING_TYPE.SOUND,
       image: <IconSound className="size-7 xs:size-8 2xs:size-9" gradient />,
       title: 'Sound Effect',
-      text: activeSound ? 'Turn on' : 'Turn off',
+      text: soundEnabled ? 'Turn on' : 'Turn off',
       icon: ''
     }
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
@@ -63,10 +65,10 @@ export default function SettingPage() {
         console.log(111)
         break
       case SETTING_TYPE.MUSIC:
-        setActiveMusic(!activeMusic)
+        setSoundThemeEnabled(!soundThemeEnabled)
         break
       case SETTING_TYPE.SOUND:
-        setActiveSound(!activeSound)
+        setSoundEnabled(!soundEnabled)
         break
       case SETTING_TYPE.FEEDBACK:
         console.log(111)
@@ -115,10 +117,10 @@ export default function SettingPage() {
                     >
                       {item.type === SETTING_TYPE.SOUND || item.type === SETTING_TYPE.MUSIC ? (
                         <div
-                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'bg-white/10' : ''}`}
+                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && soundEnabled) || (item.type === SETTING_TYPE.MUSIC && soundThemeEnabled) ? 'bg-white/10' : ''}`}
                         >
                           <div
-                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'opacity-100' : ''}`}
+                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && soundEnabled) || (item.type === SETTING_TYPE.MUSIC && soundThemeEnabled) ? 'opacity-100' : ''}`}
                           ></div>
                         </div>
                       ) : (

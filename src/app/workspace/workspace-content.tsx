@@ -9,17 +9,21 @@ import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
 import ShopPage from './components/shop/shop'
 import { WORKSPACE_TYPE, WorkspaceContext } from './context/workspace-context'
+import useSound from 'use-sound'
 
 export default function WorkspaceContent() {
   const refList = useRef<any>()
-
-  const { heightNav, safeAreaBottom } = useCommonStore()
+  const { heightNav, safeAreaBottom, soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   const { webApp } = useTelegram()
   const [maxHeight, setMaxHeightListContent] = useState<number>(200)
   const { activeTab, setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   // const [activeTab, setActiveTab] = useState(WORKSPACE_TYPE.DEVICE)
 
   const handleSelectTab = (tab: string) => {
+    play()
     if (tab !== WORKSPACE_TYPE.SHOP) {
       setTypeItemShop(null)
     }
