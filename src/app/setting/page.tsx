@@ -7,12 +7,18 @@ import CustomModal from '../components/custom-modal'
 
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
-import { IconMusic, IconNotification, IconSound } from '../components/icons'
+import {
+  IconLink,
+  IconMusic,
+  IconNotification,
+  IconSound,
+  IconUnlink,
+  IconWallet
+} from '../components/icons'
 import { motion } from 'framer-motion'
 import useCommonStore from '@/stores/commonStore'
 import { SETTING_TYPE } from '@/constants'
-import { useQuery } from '@tanstack/react-query'
-import { getUserSetting, updateSetting } from '@/services/user'
+import { updateSetting } from '@/services/user'
 import { toast } from 'sonner'
 import CustomToast from '../components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
@@ -23,6 +29,8 @@ import {
   useTonConnectUI,
   useTonConnectModal
 } from '@tonconnect/ui-react'
+import { formatAddress } from '@/helper/common'
+
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
   // { id: 3, icon: 'discord', link: '#' },
@@ -33,7 +41,7 @@ const listSocial = [
 
 export default function SettingPage() {
   const userFriendlyAddress = useTonAddress()
-  const [tonConnectUI, setOptions] = useTonConnectUI()
+  const [tonConnectUI] = useTonConnectUI()
   const { open } = useTonConnectModal()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
@@ -55,14 +63,24 @@ export default function SettingPage() {
     })
   }
 
+  tonConnectUI.uiOptions = {
+    uiPreferences: {
+      theme: 'SYSTEM'
+    }
+  }
+
   const listSetting = [
     {
       id: 1,
       type: SETTING_TYPE.WALLET,
-      image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
-      title: 'Wallet',
-      text: !wallet ? '' : userFriendlyAddress.substring(1, 10),
-      icon: !wallet ? 'connect' : 'link'
+      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: !wallet ? 'Connect Wallet' : 'Your Wallet',
+      text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
+      icon: !wallet ? (
+        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
+      ) : (
+        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
+      )
     },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
@@ -162,7 +180,11 @@ export default function SettingPage() {
           <div className="my-6 xs:my-7 2xs:my-8">
             <div className=" flex flex-col space-y-3 xs:space-y-4">
               {listSetting.map((item: any) => (
-                <div className="relative !bg-transparent " key={item.id}>
+                <div
+                  className="relative !bg-transparent "
+                  key={item.id}
+                  onClick={() => handleClick(item.type)}
+                >
                   <div className="relative [--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2  [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3 xs:space-x-4">
@@ -178,11 +200,7 @@ export default function SettingPage() {
                           </div>
                         </div>
                       </div>
-                      <motion.div
-                        whileTap={{ scale: 0.86 }}
-                        className="mr-3 cursor-pointer"
-                        onClick={() => handleClick(item.type)}
-                      >
+                      <motion.div whileTap={{ scale: 0.86 }} className="mr-3 cursor-pointer">
                         {item.type === SETTING_TYPE.SOUND_EFFECT ||
                         item.type === SETTING_TYPE.MUSIC_THEME ||
                         item.type === SETTING_TYPE.NOTIFICATION ? (
@@ -194,11 +212,8 @@ export default function SettingPage() {
                             ></div>
                           </div>
                         ) : (
-                          <img
-                            className="size-9"
-                            src={`/assets/images/icons/icon-${item.icon}-green.svg`}
-                            alt="DePIN Alliance"
-                          />
+                          item.icon
+                          // <img className="size-9" src={item.icon} alt="DePIN Alliance" />
                         )}
                       </motion.div>
                     </div>
@@ -301,10 +316,18 @@ export default function SettingPage() {
                 <p>Are you sure you want to log out this account?</p>
               )}
             </div>
-            <div className="my-8 space-x-4 flex items-center justify-center">
+            <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
               <div
-                className={`p-[1px] size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-cente ${type === SETTING_TYPE.WALLET ? 'bg-white/10' : 'bg-white'}`}
-              ></div>
+                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type === SETTING_TYPE.WALLET ? 'bg-white/10' : 'bg-white'}`}
+              >
+                <IconWallet className="size-9 xs:size-10 2xs:size-11" gradient />
+              </div>
+              <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
+                <p className="text-title leading-[18px] tracking-[-1px]">YOUR WALLET:</p>
+                <p className="text-green-500 text-[15px] xs:text-base 2xs:text-lg xs:!leading-[20px] 2xs:!leading-[22px] font-semibold">
+                  {formatAddress(userFriendlyAddress)}
+                </p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="btn error">
