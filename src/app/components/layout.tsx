@@ -9,10 +9,12 @@ import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
+import Swipeable from './swipeable'
+import { useRouter } from 'next/navigation'
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
-
+  const router = useRouter()
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -21,11 +23,11 @@ export default function Layout({ children }: any) {
       const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
-    document.addEventListener('swiped-right', function (e: any) {
-      console.log(e.target) // element that was swiped
-      console.log(e.detail) // see event data below
-    })
   }, [])
+
+  const handleBack = () => {
+    router.back()
+  }
 
   return (
     <div className="container">
@@ -46,10 +48,12 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
-            <AnimatePresence key="custom-page">
-              {children}
-              {/* {pathName !== '/' && <CustomNavbar />} */}
-            </AnimatePresence>
+            <Swipeable onSwipeRight={handleBack}>
+              <AnimatePresence key="custom-page">
+                {children}
+                {/* {pathName !== '/' && <CustomNavbar />} */}
+              </AnimatePresence>
+            </Swipeable>
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
