@@ -7,7 +7,7 @@ import CustomModal from '../components/custom-modal'
 
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
-import { IconMusic, IconSound } from '../components/icons'
+import { IconLink, IconMusic, IconSound, IconUnlink, IconWallet } from '../components/icons'
 import { motion } from 'framer-motion'
 
 import useCommonStore from '@/stores/commonStore'
@@ -15,8 +15,10 @@ import {
   TonConnectButton,
   useTonWallet,
   useTonAddress,
-  useTonConnectUI
+  useTonConnectUI,
+  THEME
 } from '@tonconnect/ui-react'
+import { formatAddress } from '@/helper/common'
 
 const SETTING_TYPE = {
   WALLET: 'wallet',
@@ -45,15 +47,24 @@ export default function SettingPage() {
 
   const [activeMusic, setActiveMusic] = useState(false)
   const [activeSound, setActiveSound] = useState(false)
+  tonConnectUI.uiOptions = {
+    uiPreferences: {
+      theme: 'SYSTEM'
+    }
+  }
 
   const listSetting = [
     {
       id: 1,
       type: SETTING_TYPE.WALLET,
-      image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
-      title: 'Wallet',
-      text: !wallet ? '' : userFriendlyAddress.substring(1, 10),
-      icon: !wallet ? 'connect' : 'link'
+      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: !wallet ? 'Connect Wallet' : 'Your Wallet',
+      text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
+      icon: !wallet ? (
+        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
+      ) : (
+        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
+      )
     },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
@@ -120,56 +131,51 @@ export default function SettingPage() {
         <div className="[--space:_48px] xs:[--space:_52px] 2xs:[--space:_56px] flex flex-col justify-between h-[calc(100%_-_var(--space))]">
           <div className="my-8">
             <div className="space-y-3 xs:space-y-4">
-              {listSetting.map((item: any) =>
-                item.id === 1 && !wallet ? (
-                  <div>
-                    <TonConnectButton />
-                  </div>
-                ) : (
-                  <div
-                    className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
-                    key={item.id}
-                    id={'key-' + item.id}
-                  >
-                    <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">
-                      <div className="flex items-center space-x-3 xs:space-x-4">
-                        <div className="flex items-center justify-center size-[60px] xs:size-[66px] 2xs:size-[72px] bg-white/10 [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]">
-                          {item.image}
+              {listSetting.map((item: any) => (
+                <div
+                  className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
+                  key={item.id}
+                  id={'key-' + item.id}
+                >
+                  <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">
+                    <div className="flex items-center space-x-3 xs:space-x-4">
+                      <div className="flex items-center justify-center size-[60px] xs:size-[66px] 2xs:size-[72px] bg-white/10 [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]">
+                        {item.image}
+                      </div>
+                      <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
+                        <div className="text-white font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
+                          {item.title}
                         </div>
-                        <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
-                          <div className="text-white font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
-                            {item.title}
-                          </div>
-                          <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px]">
-                            {item.text}
-                          </div>
+                        <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px]">
+                          {item.text}
                         </div>
                       </div>
-                      <motion.div
-                        whileTap={{ scale: 0.86 }}
-                        className="mr-3 cursor-pointer"
-                        onClick={() => handleClick(item.type)}
-                      >
-                        {item.type === SETTING_TYPE.SOUND || item.type === SETTING_TYPE.MUSIC ? (
-                          <div
-                            className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'bg-white/10' : ''}`}
-                          >
-                            <div
-                              className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'opacity-100' : ''}`}
-                            ></div>
-                          </div>
-                        ) : (
-                          <img
-                            className="size-9"
-                            src={`/assets/images/icons/icon-${item.icon}-green.svg`}
-                            alt="DePIN Alliance"
-                          />
-                        )}
-                      </motion.div>
                     </div>
+                    <motion.div
+                      whileTap={{ scale: 0.86 }}
+                      className={`relative mr-3 cursor-pointer ${item.type === SETTING_TYPE.WALLET ? 'overflow-hidden' : ''}`}
+                      onClick={() => handleClick(item.type)}
+                    >
+                      {item.type === SETTING_TYPE.SOUND || item.type === SETTING_TYPE.MUSIC ? (
+                        <div
+                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'bg-white/10' : ''}`}
+                        >
+                          <div
+                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'opacity-100' : ''}`}
+                          ></div>
+                        </div>
+                      ) : (
+                        <>
+                          {item.type === SETTING_TYPE.WALLET && (
+                            <TonConnectButton className="absolute top-0 left-0 !size-full opacity-0" />
+                          )}
+                          {item.icon}
+                        </>
+                      )}
+                    </motion.div>
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           </div>
           <div>
@@ -221,10 +227,18 @@ export default function SettingPage() {
                 <p>Are you sure you want to log out this account?</p>
               )}
             </div>
-            <div className="my-8 space-x-4 flex items-center justify-center">
+            <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
               <div
-                className={`p-[1px] size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-cente ${type === SETTING_TYPE.WALLET ? 'bg-white/10' : 'bg-white'}`}
-              ></div>
+                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type === SETTING_TYPE.WALLET ? 'bg-white/10' : 'bg-white'}`}
+              >
+                <IconWallet className="size-9 xs:size-10 2xs:size-11" gradient />
+              </div>
+              <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
+                <p className="text-title leading-[18px] tracking-[-1px]">YOUR WALLET:</p>
+                <p className="text-green-500 text-[15px] xs:text-base 2xs:text-lg xs:!leading-[20px] 2xs:!leading-[22px] font-semibold">
+                  {formatAddress(userFriendlyAddress)}
+                </p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="btn error">
