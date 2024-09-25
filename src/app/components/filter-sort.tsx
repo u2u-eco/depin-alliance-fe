@@ -1,9 +1,8 @@
 import { BUTTON_TYPE, FILTER_TYPE } from '@/constants'
 import CustomModal from './custom-modal'
 import { useState } from 'react'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
 import CustomButton from './button'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IFilterSort {
   type: string
   isOpen: boolean
@@ -33,12 +32,10 @@ export default function FilterSort({
     sortAscending: true,
     type: filterType || undefined
   })
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   const handleSort = (sortBy: string, sortAscending: boolean, _type: string) => {
-    play()
+    buttonSound()
     if (type === FILTER_TYPE.FILTER) {
       setFilterOptions({
         ...filterOptions,

@@ -2,8 +2,7 @@ import React from 'react'
 import { IconChevron, IconHome } from '../icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import useSound from 'use-sound'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface HeaderProps {
   title: string
@@ -12,12 +11,9 @@ interface HeaderProps {
 
 export const CustomHeader = ({ title, cb }: HeaderProps) => {
   const router = useRouter()
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
-    soundEnabled
-  })
+  const { tabSound } = useAppSound()
   const handleBack = () => {
-    play()
+    tabSound()
     if (cb) {
       cb()
     }
@@ -39,7 +35,7 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
         </div>
         <Link
           onClick={() => {
-            play()
+            tabSound()
           }}
           href="/home"
         >

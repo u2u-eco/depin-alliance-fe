@@ -3,20 +3,17 @@ import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/ico
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { formatNumber } from '@/helper/common'
 import { useEffect, useState } from 'react'
-import useCommonStore from '@/stores/commonStore'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 interface ISellItem {
   item: IDeviceTypeItem
   updateAmountSell: (amount: number) => void
 }
 export default function SellItem({ item, updateAmountSell }: ISellItem) {
   const [amount, setAmount] = useState<number>(1)
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   const handleUpdateAmount = (index: number) => {
-    play()
+    buttonSound()
     const newValue = amount + index
     if (index > 0) {
       if (newValue <= item.totalItem) {

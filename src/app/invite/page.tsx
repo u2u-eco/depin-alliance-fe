@@ -15,7 +15,7 @@ import Loader from '../components/ui/loader'
 import CustomToast from '../components/ui/custom-toast'
 import { formatNumber } from '@/helper/common'
 import CustomButton from '../components/button'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [
@@ -26,10 +26,9 @@ import useSound from 'use-sound'
 // }
 
 export default function InvitePage() {
-  const { userInfo, soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { userInfo } = useCommonStore()
+
+  const { buttonSound } = useAppSound()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -56,7 +55,7 @@ export default function InvitePage() {
 
   const handleCopy = () => {
     if (userInfo) {
-      play()
+      buttonSound()
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }

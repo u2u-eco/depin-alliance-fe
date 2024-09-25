@@ -5,7 +5,7 @@ import useCommonStore from '@/stores/commonStore'
 import { IconPoint, IconThunder, IconUpDown } from '@/app/components/icons'
 import CountdownTime from '@/app/components/countdown-time'
 import ImageDevice from '@/app/components/image-device'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IUpgradeModal {
   activeType: string
   UPGRADE_TYPE: any
@@ -19,17 +19,15 @@ export default function UpgradeModal({
   item,
   handleAction
 }: IUpgradeModal) {
-  const { userInfo, soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { userInfo } = useCommonStore()
+  const { buttonSound } = useAppSound()
   const [timeCountdown, setTimeCountdown] = useState<number>(item.timeWaiting)
 
   const handleClick = () => {
     if (!userInfo?.pointSkill || disableBtn) {
       return
     }
-    play()
+    buttonSound()
     handleAction(item.skillId)
   }
 

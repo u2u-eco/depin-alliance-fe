@@ -2,7 +2,7 @@
 
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
-import { IconCheckCircle, IconPoint } from '@/app/components/icons'
+import { IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
@@ -26,8 +26,8 @@ import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
 import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
-import useSound from 'use-sound'
 import CustomButton from '@/app/components/button'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -40,7 +40,7 @@ interface IDevice {
   height: number
 }
 export default function Device({ height }: IDevice) {
-  const { userConfig, getUserConfig, getUserInfo, soundEnabled } = useCommonStore()
+  const { userConfig, getUserConfig, getUserInfo } = useCommonStore()
   const [activeType, setActiveType] = useState(DEVICE_TYPE.INFO)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeItem, setActiveItem] = useState<number>(0)
@@ -48,16 +48,8 @@ export default function Device({ height }: IDevice) {
   const detailDeviceItem = useRef<any>()
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
+  const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
 
-  const [playOpen] = useSound('/assets/sounds/interaction/dropdown-open.mp3', {
-    soundEnabled
-  })
-  const [playClose] = useSound('/assets/sounds/interaction/dropdown-close.mp3', {
-    soundEnabled
-  })
-  const [playBtn] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
   const [loadingButton, setLoadingButton] = useState(false)
 
   const currentName = useRef<string>('')
@@ -161,7 +153,7 @@ export default function Device({ height }: IDevice) {
 
   const handleConfirm = () => {
     if (loadingButton) return
-    playBtn()
+    buttonSound()
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
@@ -230,7 +222,7 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleSelectItem = (index: number) => {
-    playBtn()
+    buttonSound()
     setActiveItem(index)
   }
 
@@ -253,9 +245,9 @@ export default function Device({ height }: IDevice) {
 
   const handleExpanded = (index: number | false) => {
     if (index) {
-      playOpen()
+      dropdownOpen()
     } else {
-      playClose()
+      dropdownClose()
     }
     setExpanded(index)
   }
