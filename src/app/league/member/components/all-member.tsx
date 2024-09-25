@@ -132,7 +132,6 @@ const AllMember = ({ setTotalMember }: IMember) => {
     currentRank: 150,
     ranking: listItem
   }
-  console.log(data)
 
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {

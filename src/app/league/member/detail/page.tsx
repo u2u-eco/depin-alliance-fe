@@ -1,7 +1,14 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconFund, IconGroupUser, IconLeave, IconPoint, IconProfit } from '@/app/components/icons'
+import {
+  IconDelete,
+  IconFund,
+  IconGroupUser,
+  IconLeave,
+  IconPoint,
+  IconProfit
+} from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -226,7 +233,7 @@ export default function MemberDetailPage() {
                     </p>
                   </div>
                   <div className="cursor-pointer" onClick={handleKickModal}>
-                    <IconLeave gradient className="size-7 xs:size-8 2xs:size-9" />
+                    <IconDelete className="size-7 xs:size-8 2xs:size-9 text-error-blur" />
                   </div>
                 </div>
               </div>
