@@ -2,6 +2,8 @@ import React from 'react'
 import { IconChevron, IconHome } from '../icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import useSound from 'use-sound'
+import useCommonStore from '@/stores/commonStore'
 
 interface HeaderProps {
   title: string
@@ -10,8 +12,12 @@ interface HeaderProps {
 
 export const CustomHeader = ({ title, cb }: HeaderProps) => {
   const router = useRouter()
-
+  const { soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   const handleBack = () => {
+    play()
     if (cb) {
       cb()
     }

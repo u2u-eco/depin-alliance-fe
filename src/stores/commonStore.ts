@@ -1,10 +1,5 @@
 import { create } from 'zustand'
-import {
-  CURRENT_STATUS as I_CURRENT_STATUS,
-  IDeviceItem,
-  IUser,
-  IUserInfo
-} from '@/interfaces/i.user'
+import { CURRENT_STATUS as I_CURRENT_STATUS, IDeviceItem, IUserInfo } from '@/interfaces/i.user'
 import { getUserConfig, getUserInfo } from '@/services/user'
 import { IUserConfig, IUserLeague } from '@/interfaces/i.league'
 import Cookies from 'js-cookie'
@@ -18,6 +13,7 @@ interface CommonState {
   currentLeague: IUserLeague | null
   heightNav: number
   soundEnabled: boolean
+  soundThemeEnabled: boolean
   safeAreaBottom: number
   userConfig: IUserConfig | null
   setSafeAreaBottom: (height: number) => void
@@ -30,6 +26,7 @@ interface CommonState {
   getUserInfo: () => Promise<any>
   getUserConfig: () => void
   setSoundEnabled: (status: boolean) => void
+  setSoundThemeEnabled: (status: boolean) => void
   setCurrentLeague: ({ league }: { league: IUserLeague | null }) => void
 }
 
@@ -43,6 +40,7 @@ const useCommonStore = create<CommonState>((set) => ({
   heightNav: 70,
   safeAreaBottom: 0,
   soundEnabled: true,
+  soundThemeEnabled: true,
   currentStatus: I_CURRENT_STATUS.STARTED,
   setSafeAreaBottom: (height: number) => set({ safeAreaBottom: height }),
   setHeightNav: (height: number) => set({ heightNav: height }),
@@ -53,6 +51,7 @@ const useCommonStore = create<CommonState>((set) => ({
   setDevice: ({ info }) => set({ deviceInfo: info }),
   setCurrentStatus: ({ status }) => set({ currentStatus: status }),
   setSoundEnabled: (status: boolean) => set({ soundEnabled: status }),
+  setSoundThemeEnabled: (status: boolean) => set({ soundThemeEnabled: status }),
   getUserInfo: async () => {
     const response = await getUserInfo()
     if (response.status) {
