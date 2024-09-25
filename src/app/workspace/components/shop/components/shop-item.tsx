@@ -14,6 +14,7 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import NotificationModal from './notification'
+import ItemDevice from '@/app/components/item-device'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number

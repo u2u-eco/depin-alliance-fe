@@ -5,13 +5,12 @@ import React, { useEffect, useState } from 'react'
 import CustomPage from '@/app/components/custom-page'
 import { useQuery } from '@tanstack/react-query'
 import { getListRankingEarned, getRanking } from '../../services/user'
-import Image from 'next/image'
-import { formatNumber } from '@/helper/common'
 import dayjs from 'dayjs'
 import useCommonStore from '@/stores/commonStore'
 import Loader from '../components/ui/loader'
 import { CustomHeader } from '../components/ui/custom-header'
 import ListRankingItem from './components/list-ranking'
+import useSound from 'use-sound'
 
 const RANKING_TYPE = {
   PROFIT: 'profit',
@@ -19,8 +18,11 @@ const RANKING_TYPE = {
 }
 
 export default function RankingPage() {
-  const { userInfo } = useCommonStore()
+  const { userInfo, soundEnabled } = useCommonStore()
   const [listRanking, setListRanking] = useState<any>({})
+  const [tabSound] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   const [activeType, setActiveType] = useState(RANKING_TYPE.PROFIT)
   const { data: listRankingResponse, isLoading } = useQuery({
     queryKey: ['getRanking', activeType],
@@ -34,6 +36,7 @@ export default function RankingPage() {
   })
 
   const handleSelectTab = (tab: string) => {
+    tabSound()
     setActiveType(tab)
   }
 

@@ -13,12 +13,15 @@ import { motion } from 'framer-motion'
 import useSound from 'use-sound'
 
 export default function HomePage() {
-  const { userInfo, token, getUserConfig, soundThemeEnabled } = useCommonStore()
+  const { userInfo, token, getUserConfig, soundThemeEnabled, soundEnabled } = useCommonStore()
   const [play, { stop }] = useSound('/assets/sounds/theme/main-theme.mp3', {
     soundEnabled: soundThemeEnabled,
     loop: true
   })
 
+  const [playTab] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   // const totalDevice = useRef<number>(0)
 
   useUserInfo()
@@ -128,7 +131,13 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                <Link href="/workspace" className="flex items-center space-x-1">
+                <Link
+                  onClick={() => {
+                    playTab()
+                  }}
+                  href="/workspace"
+                  className="flex items-center space-x-1"
+                >
                   <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
                     VIEW DETAIL
                   </div>

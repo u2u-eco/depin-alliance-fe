@@ -23,11 +23,14 @@ const CustomToast = ({ type, title, point, description }: ToastProps) => {
       ? '/assets/sounds/interaction/notify-success.mp3'
       : '/assets/sounds/interaction/notify-error.mp3',
     {
-      soundEnabled
+      soundEnabled,
+      interrupt: true
     }
   )
 
-  play()
+  useEffect(() => {
+    play()
+  }, [play])
 
   return (
     <div

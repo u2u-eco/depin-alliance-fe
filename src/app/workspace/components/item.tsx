@@ -22,6 +22,7 @@ import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
+import useSound from 'use-sound'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -34,7 +35,7 @@ interface IItem {
   height: number
 }
 export default function Item({ height }: IItem) {
-  const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
+  const { getUserInfo, userInfo, safeAreaBottom, soundEnabled } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -58,6 +59,9 @@ export default function Item({ height }: IItem) {
     sortBy: 'price',
     sortAscending: true,
     type: ''
+  })
+  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
   })
   const refList = useRef<any>()
   const refListScroll = useRef<any>()
@@ -114,6 +118,7 @@ export default function Item({ height }: IItem) {
   })
 
   const handleInfo = (item: IDeviceTypeItem, index: number) => {
+    play()
     currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
@@ -200,6 +205,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleFilterSort = (type: string) => {
+    play()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -258,6 +264,17 @@ export default function Item({ height }: IItem) {
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
     currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
+
+  const handleSellAndUseKey = () => {
+    if (!disableBtnSpecial) {
+      play()
+    }
+    if (isSpecial) {
+      handleSpecial()
+    } else {
+      handleSell()
+    }
+  }
   return (
     <>
       <div className="space-y-8">
@@ -446,13 +463,9 @@ export default function Item({ height }: IItem) {
             </>
           ) : null}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
-            <motion.div
+            <div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'inactive' : ''}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              onClick={isSpecial ? handleSpecial : handleSell}
+              onClick={handleSellAndUseKey}
             >
               <div className="btn-border"></div>
               <div
@@ -487,16 +500,17 @@ export default function Item({ height }: IItem) {
                 </div>
               </div>
               <div className="btn-border"></div>
-            </motion.div>
+            </div>
           ) : (
             <div className="flex items-center space-x-3 xs:space-x-4">
               {(activeType !== ITEM_TYPE.INFO ||
                 (activeType === ITEM_TYPE.INFO && currentItem.current?.isCanSell)) && (
                 <div
                   className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
-                  onClick={() =>
+                  onClick={() => {
+                    play()
                     activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
-                  }
+                  }}
                 >
                   <div className="btn-border"></div>
                   <div className={`btn btn-${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}>
@@ -507,6 +521,7 @@ export default function Item({ height }: IItem) {
               )}
               <div
                 onClick={() => {
+                  play()
                   setActiveTab(WORKSPACE_TYPE.SHOP)
                 }}
                 className="btn"

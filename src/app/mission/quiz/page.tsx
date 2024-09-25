@@ -20,6 +20,7 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import { useDisclosure } from '@nextui-org/react'
 import SpecialBoxModal from '../components/special-box'
 import useCommonStore from '@/stores/commonStore'
+import useSound from 'use-sound'
 
 export default function QuizPage() {
   const router = useRouter()
@@ -27,7 +28,10 @@ export default function QuizPage() {
   const [listChecked, setChecked] = useState<Array<string>>([])
   const [listAnswerOfUser, setListAnswerOfUser] = useState<Array<string>>([])
   const _listChecked = useRef<Array<string>>([])
-  const { getUserInfo } = useCommonStore()
+  const { getUserInfo, soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
+  })
   const { currentMissionQuiz, setCurrentMission } = useMissionStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVerified, setIsVerified] = useState<boolean>(false)
@@ -49,6 +53,7 @@ export default function QuizPage() {
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
     if (isVerified) return
+    play()
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {
