@@ -6,7 +6,6 @@ import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import useCommonStore from '@/stores/commonStore'
-
 interface Pageprops {
   children: ReactNode
   classNames?: {
