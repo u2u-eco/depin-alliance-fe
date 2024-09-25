@@ -42,7 +42,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const [isHideCompleted, setIsHideCompleted] = useState<boolean>(
     isHideCompletedStr === 'true' || isHideCompletedStr === null ? true : false
   )
-  const { tabSound } = useAppSound()
+  const { tabSound, buttonSound } = useAppSound()
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -106,6 +106,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const handleHideCompleted = () => {
     localStorage.setItem(HIDE_COMPLETED_PARTNER, isHideCompleted ? 'false' : 'true')
     setIsHideCompleted(!isHideCompleted)
+    buttonSound()
   }
 
   useEffect(() => {
