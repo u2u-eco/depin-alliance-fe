@@ -1,19 +1,15 @@
 import { IconMinusCircle, IconPlusCircle } from '@/app/components/icons'
-import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 import { useEffect, useState } from 'react'
-import useSound from 'use-sound'
 interface IAmountUseKey {
   maxTotal: number
   updateAmountUseKey: (amount: number) => void
 }
 export default function AmountUseKey({ maxTotal, updateAmountUseKey }: IAmountUseKey) {
   const [amount, setAmount] = useState<number>(1)
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
   const handleUpdateAmount = (_value: number) => {
-    play()
+    buttonSound()
     const currentAmount = amount + _value
     if (currentAmount < 1) {
       setAmount(1)

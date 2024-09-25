@@ -1,9 +1,8 @@
 import { IconPlus, IconReload } from '@/app/components/icons'
 import { UPGRADE_TAB } from '@/constants'
+import { useAppSound } from '@/hooks/useAppSound'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
-import useCommonStore from '@/stores/commonStore'
 import { useEffect, useRef, useState } from 'react'
-import useSound from 'use-sound'
 const DEVICE_TYPE = {
   INFO: 'info',
   EDIT: 'edit',
@@ -24,10 +23,8 @@ const MAX_SLOT_BY_TYPE = {
 const LIST_TYPE = [UPGRADE_TAB.RAM, UPGRADE_TAB.GPU, UPGRADE_TAB.STORAGE, UPGRADE_TAB.CPU]
 export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }: IDeviceItem) {
   const [listInfo, setListInfo] = useState<any>({})
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   const listInfoByFilter = useRef<any>({})
   const updateData = () => {
     listInfoByFilter.current.current = {}
@@ -94,7 +91,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                               key={index}
                               className="flex items-center justify-center text-center py-2 px-2 xs:px-3 2xs:px-4 bg-black/20 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer text-xs xs:text-[13px] !leading-[16px] xs:!leading-[20px] 2xs:!leading-[24px] 2xs:text-sm [word-break:_break-word;]"
                               onClick={() => {
-                                play()
+                                buttonSound()
                                 handleInfo(item)
                               }}
                             >
@@ -107,7 +104,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                               key={index}
                               className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
                               onClick={() => {
-                                play()
+                                buttonSound()
                                 handleEquip(keyItem)
                               }}
                             >

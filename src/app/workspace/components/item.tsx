@@ -22,7 +22,7 @@ import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -35,7 +35,7 @@ interface IItem {
   height: number
 }
 export default function Item({ height }: IItem) {
-  const { getUserInfo, userInfo, safeAreaBottom, soundEnabled } = useCommonStore()
+  const { getUserInfo, userInfo, safeAreaBottom } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -60,9 +60,8 @@ export default function Item({ height }: IItem) {
     sortAscending: true,
     type: ''
   })
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   const refList = useRef<any>()
   const refListScroll = useRef<any>()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
@@ -118,7 +117,7 @@ export default function Item({ height }: IItem) {
   })
 
   const handleInfo = (item: IDeviceTypeItem, index: number) => {
-    play()
+    buttonSound()
     currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
@@ -205,7 +204,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleFilterSort = (type: string) => {
-    play()
+    buttonSound()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -267,7 +266,7 @@ export default function Item({ height }: IItem) {
 
   const handleSellAndUseKey = () => {
     if (!disableBtnSpecial) {
-      play()
+      buttonSound()
     }
     if (isSpecial) {
       handleSpecial()
@@ -508,7 +507,7 @@ export default function Item({ height }: IItem) {
                 <div
                   className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
                   onClick={() => {
-                    play()
+                    buttonSound()
                     activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
                   }}
                 >
@@ -521,7 +520,7 @@ export default function Item({ height }: IItem) {
               )}
               <div
                 onClick={() => {
-                  play()
+                  buttonSound()
                   setActiveTab(WORKSPACE_TYPE.SHOP)
                 }}
                 className="btn"

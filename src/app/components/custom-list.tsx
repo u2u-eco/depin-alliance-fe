@@ -5,8 +5,7 @@ import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { IconGroupUser } from './icons'
 import Image from 'next/image'
-import useCommonStore from '@/stores/commonStore'
-import useSound from 'use-sound'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ListProps {
   type: string
@@ -37,13 +36,11 @@ const CustomList = ({
   cb,
   onClickItem
 }: ListProps) => {
-  const { soundEnabled } = useCommonStore()
-  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
-    soundEnabled
-  })
+  const { buttonSound } = useAppSound()
+
   const handleClickItem = (item: any) => {
     if (onClickItem) {
-      play()
+      buttonSound()
       onClickItem(item)
     }
   }
