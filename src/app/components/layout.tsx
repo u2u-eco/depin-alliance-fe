@@ -9,6 +9,8 @@ import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
+import { TonConnectUIProvider } from '@tonconnect/ui-react'
+
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
@@ -21,6 +23,9 @@ export default function Layout({ children }: any) {
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
   }, [])
+  const url = process.env.NEXT_PUBLIC_TONCONNECT_MAINIFEST
+  const teleUrl: any = process.env.NEXT_PUBLIC_TELE_URI
+
   return (
     <>
       <Toaster
@@ -41,7 +46,14 @@ export default function Layout({ children }: any) {
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
             <AnimatePresence key="custom-page">
-              {children}
+              <TonConnectUIProvider
+                manifestUrl={url}
+                actionsConfiguration={{
+                  twaReturnUrl: teleUrl
+                }}
+              >
+                {children}
+              </TonConnectUIProvider>
               {/* {pathName !== '/' && <CustomNavbar />} */}
             </AnimatePresence>
           </NextUIProvider>

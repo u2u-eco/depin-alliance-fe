@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { GeistMono } from 'geist/font/mono'
 import '@/styles/globals.css'
+
 import Layout from '@/app/components/layout'
 import Script from 'next/script'
 import { GoogleAnalytics } from '@next/third-parties/google'

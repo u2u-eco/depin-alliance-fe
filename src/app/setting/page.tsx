@@ -4,10 +4,19 @@ import React, { useState } from 'react'
 import CustomPage from '../components/custom-page'
 import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
+
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
 import { IconMusic, IconSound } from '../components/icons'
 import { motion } from 'framer-motion'
+
+import useCommonStore from '@/stores/commonStore'
+import {
+  TonConnectButton,
+  useTonWallet,
+  useTonAddress,
+  useTonConnectUI
+} from '@tonconnect/ui-react'
 
 const SETTING_TYPE = {
   WALLET: 'wallet',
@@ -26,12 +35,26 @@ const listSocial = [
 ]
 
 export default function SettingPage() {
+  const userFriendlyAddress = useTonAddress()
+  const [tonConnectUI, setOptions] = useTonConnectUI()
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
+  const [type, setType] = useState(SETTING_TYPE.WALLET)
+  const wallet = useTonWallet()
+
   const [activeMusic, setActiveMusic] = useState(false)
   const [activeSound, setActiveSound] = useState(false)
-  const [type, setType] = useState(SETTING_TYPE.WALLET)
+
   const listSetting = [
-    // { id: 1, image: SETTING_TYPE.WALLET, title: 'Connect Wallet', text: 'UQBC4...9BGL', icon: 'link' },
+    {
+      id: 1,
+      type: SETTING_TYPE.WALLET,
+      image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: 'Wallet',
+      text: !wallet ? '' : userFriendlyAddress.substring(1, 10),
+      icon: !wallet ? 'connect' : 'link'
+    },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
       id: 3,
@@ -52,12 +75,20 @@ export default function SettingPage() {
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
     // { id: 6, image: SETTING_TYPE.LOGOUT, title: 'Log Out', text: 'Quit this account', icon: 'open-link' },
   ]
-
+  const handleWalletClick = () => {
+    tonConnectUI.disconnect()
+    onClose()
+  }
   const handleClick = (type: string) => {
     switch (type) {
       case SETTING_TYPE.WALLET:
-        setType(SETTING_TYPE.WALLET)
-        onOpen()
+        if (wallet) {
+          setType(SETTING_TYPE.WALLET)
+          onOpen()
+        } else {
+          console.log('connect wallet')
+        }
+
         break
       case SETTING_TYPE.LANGUAGE:
         console.log(111)
@@ -89,49 +120,56 @@ export default function SettingPage() {
         <div className="[--space:_48px] xs:[--space:_52px] 2xs:[--space:_56px] flex flex-col justify-between h-[calc(100%_-_var(--space))]">
           <div className="my-8">
             <div className="space-y-3 xs:space-y-4">
-              {listSetting.map((item: any) => (
-                <div
-                  className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
-                  key={item.id}
-                >
-                  <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">
-                    <div className="flex items-center space-x-3 xs:space-x-4">
-                      <div className="flex items-center justify-center size-[60px] xs:size-[66px] 2xs:size-[72px] bg-white/10 [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]">
-                        {item.image}
-                      </div>
-                      <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
-                        <div className="text-white font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
-                          {item.title}
-                        </div>
-                        <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px]">
-                          {item.text}
-                        </div>
-                      </div>
-                    </div>
-                    <motion.div
-                      whileTap={{ scale: 0.86 }}
-                      className="mr-3 cursor-pointer"
-                      onClick={() => handleClick(item.type)}
-                    >
-                      {item.type === SETTING_TYPE.SOUND || item.type === SETTING_TYPE.MUSIC ? (
-                        <div
-                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'bg-white/10' : ''}`}
-                        >
-                          <div
-                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'opacity-100' : ''}`}
-                          ></div>
-                        </div>
-                      ) : (
-                        <img
-                          className="size-9"
-                          src={`/assets/images/icons/icon-${item.icon}-green.svg`}
-                          alt="DePIN Alliance"
-                        />
-                      )}
-                    </motion.div>
+              {listSetting.map((item: any) =>
+                item.id === 1 && !wallet ? (
+                  <div>
+                    <TonConnectButton />
                   </div>
-                </div>
-              ))}
+                ) : (
+                  <div
+                    className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
+                    key={item.id}
+                    id={'key-' + item.id}
+                  >
+                    <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">
+                      <div className="flex items-center space-x-3 xs:space-x-4">
+                        <div className="flex items-center justify-center size-[60px] xs:size-[66px] 2xs:size-[72px] bg-white/10 [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)]">
+                          {item.image}
+                        </div>
+                        <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
+                          <div className="text-white font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
+                            {item.title}
+                          </div>
+                          <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px]">
+                            {item.text}
+                          </div>
+                        </div>
+                      </div>
+                      <motion.div
+                        whileTap={{ scale: 0.86 }}
+                        className="mr-3 cursor-pointer"
+                        onClick={() => handleClick(item.type)}
+                      >
+                        {item.type === SETTING_TYPE.SOUND || item.type === SETTING_TYPE.MUSIC ? (
+                          <div
+                            className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'bg-white/10' : ''}`}
+                          >
+                            <div
+                              className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND && activeSound) || (item.type === SETTING_TYPE.MUSIC && activeMusic) ? 'opacity-100' : ''}`}
+                            ></div>
+                          </div>
+                        ) : (
+                          <img
+                            className="size-9"
+                            src={`/assets/images/icons/icon-${item.icon}-green.svg`}
+                            alt="DePIN Alliance"
+                          />
+                        )}
+                      </motion.div>
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </div>
           <div>
@@ -191,7 +229,7 @@ export default function SettingPage() {
             <div className="flex items-center space-x-4">
               <div className="btn error">
                 <div className="btn-border"></div>
-                <div className="btn-error">
+                <div className="btn-error" onClick={handleWalletClick}>
                   {type === SETTING_TYPE.WALLET ? 'Disconnect' : 'Log Out'}
                 </div>
                 <div className="btn-border"></div>
