@@ -27,6 +27,7 @@ import AccordionItem from '@/app/components/accordion-item'
 import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
 import useSound from 'use-sound'
+import CustomButton from '@/app/components/button'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -52,6 +53,9 @@ export default function Device({ height }: IDevice) {
     soundEnabled
   })
   const [playClose] = useSound('/assets/sounds/interaction/dropdown-close.mp3', {
+    soundEnabled
+  })
+  const [playBtn] = useSound('/assets/sounds/interaction/button-click.mp3', {
     soundEnabled
   })
   const [loadingButton, setLoadingButton] = useState(false)
@@ -157,6 +161,7 @@ export default function Device({ height }: IDevice) {
 
   const handleConfirm = () => {
     if (loadingButton) return
+    playBtn()
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
@@ -222,6 +227,11 @@ export default function Device({ height }: IDevice) {
 
   const handleInputName = (value: string) => {
     currentName.current = value
+  }
+
+  const handleSelectItem = (index: number) => {
+    playBtn()
+    setActiveItem(index)
   }
 
   const handleAddNewDevice = async () => {
@@ -290,11 +300,10 @@ export default function Device({ height }: IDevice) {
             )
           })}
         </div>
+
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
-            <div className="btn-border"></div>
-            <div className="btn-primary">buy more device</div>
-            <div className="btn-border"></div>
+          <div className="mt-6">
+            <CustomButton title="buy more device" onAction={() => handleClick(DEVICE_TYPE.BUY)} />
           </div>
         )}
       </div>
@@ -461,7 +470,7 @@ export default function Device({ height }: IDevice) {
             </>
           ) : (
             <ChooseDevice
-              setActiveItem={setActiveItem}
+              setActiveItem={handleSelectItem}
               type={equipType.current}
               activeItem={activeItem}
             />

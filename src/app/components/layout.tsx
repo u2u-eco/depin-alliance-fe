@@ -9,9 +9,21 @@ import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
+import { DEPIN_CONFIG } from '@/constants'
 export default function Layout({ children }: any) {
-  const { setSafeAreaBottom } = useCommonStore()
+  const { setSafeAreaBottom, setSoundEnabled, setSoundThemeEnabled } = useCommonStore()
   const queryClient = new QueryClient()
+
+  const updateSetting = () => {
+    const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)
+    const depinConfig = depinConfigStr ? JSON.parse(depinConfigStr) : {}
+    if (depinConfig.soundEnabled !== undefined) {
+      setSoundEnabled(depinConfig.soundEnabled)
+    }
+    if (depinConfig.soundThemeEnabled !== undefined) {
+      setSoundThemeEnabled(depinConfig.soundThemeEnabled)
+    }
+  }
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -20,6 +32,9 @@ export default function Layout({ children }: any) {
       const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
+    setTimeout(() => {
+      updateSetting()
+    }, 200)
   }, [])
   return (
     <>

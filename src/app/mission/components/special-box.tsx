@@ -1,3 +1,4 @@
+import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import Image from 'next/image'
 import React from 'react'
@@ -43,11 +44,7 @@ const SpecialBoxModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalP
           </p>
         </div>
         <div className="m-4 xs:m-6 2xs:m-8">
-          <div className="btn" onClick={onClose}>
-            <div className="btn-border"></div>
-            <div className="btn-primary">Claim</div>
-            <div className="btn-border"></div>
-          </div>
+          <CustomButton title="Claim" onAction={onClose} />
         </div>
       </div>
     </CustomModal>

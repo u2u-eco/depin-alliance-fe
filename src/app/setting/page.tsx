@@ -9,6 +9,7 @@ import { CustomHeader } from '../components/ui/custom-header'
 import { IconMusic, IconSound } from '../components/icons'
 import { motion } from 'framer-motion'
 import useCommonStore from '@/stores/commonStore'
+import { DEPIN_CONFIG } from '@/constants'
 
 const SETTING_TYPE = {
   WALLET: 'wallet',
@@ -30,6 +31,8 @@ export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { soundEnabled, soundThemeEnabled, setSoundEnabled, setSoundThemeEnabled } =
     useCommonStore()
+  const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)
+  const depinConfig = depinConfigStr ? JSON.parse(depinConfigStr) : {}
 
   const [type, setType] = useState(SETTING_TYPE.WALLET)
   const listSetting = [
@@ -65,9 +68,23 @@ export default function SettingPage() {
         console.log(111)
         break
       case SETTING_TYPE.MUSIC:
+        localStorage.setItem(
+          DEPIN_CONFIG,
+          JSON.stringify({
+            ...depinConfig,
+            soundThemeEnabled: !soundThemeEnabled
+          })
+        )
         setSoundThemeEnabled(!soundThemeEnabled)
         break
       case SETTING_TYPE.SOUND:
+        localStorage.setItem(
+          DEPIN_CONFIG,
+          JSON.stringify({
+            ...depinConfig,
+            soundEnabled: !soundEnabled
+          })
+        )
         setSoundEnabled(!soundEnabled)
         break
       case SETTING_TYPE.FEEDBACK:
