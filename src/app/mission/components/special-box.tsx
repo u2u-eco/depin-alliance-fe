@@ -1,7 +1,9 @@
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
+import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
+import useSound from 'use-sound'
 
 interface ModalProps {
   isOpen: any
@@ -16,6 +18,15 @@ interface ModalProps {
 }
 
 const SpecialBoxModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
+  const { soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/theme/special-effect.mp3', {
+    soundEnabled
+  })
+  useEffect(() => {
+    if (isOpen) {
+      play()
+    }
+  }, [play, isOpen])
   return (
     <CustomModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} onOpenChange={onOpenChange} full>
       <div className="h-full flex flex-col justify-between p-3 3xs:p-4">

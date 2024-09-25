@@ -8,6 +8,8 @@ import { Tab, Tabs } from '@nextui-org/react'
 import ListPartner from './components/list-partner'
 import { useSearchParams } from 'next/navigation'
 import Loader from '../components/ui/loader'
+import useSound from 'use-sound'
+import useCommonStore from '@/stores/commonStore'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
@@ -17,6 +19,10 @@ const MISSION_TAB = {
 export default function MissionPage() {
   const query = useSearchParams()
   const tab = query.get('tab')
+  const { soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
   const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.REWARDS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
@@ -24,6 +30,7 @@ export default function MissionPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
+    play()
   }
 
   const showTabPartner = (status: boolean) => {
