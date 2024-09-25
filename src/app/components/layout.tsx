@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
 import TourGuide from './tour-guide'
 import { TourGuideProvider } from '@/contexts/tour.guide.context'
+import { TonConnectUIProvider } from '@tonconnect/ui-react'
 
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
@@ -46,6 +47,8 @@ export default function Layout({ children }: any) {
       mainSound?.stop()
     }
   }, [userSetting?.enableMusicTheme])
+  const url = process.env.NEXT_PUBLIC_TONCONNECT_MAINIFEST
+  const teleUrl: any = process.env.NEXT_PUBLIC_TELE_URI
 
   return (
     <div className="container">
@@ -66,19 +69,26 @@ export default function Layout({ children }: any) {
 
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
-          <NextUIProvider>
-            <SoundsProvider>
-              <TourGuideProvider>
-                <Swipeable onSwipeRight={handleBack}>
-                  <AnimatePresence key="custom-page">
-                    {children}
-                    {/* {pathName !== '/' && <CustomNavbar />} */}
-                  </AnimatePresence>
-                </Swipeable>
-                <TourGuide />
-              </TourGuideProvider>
-            </SoundsProvider>
-          </NextUIProvider>
+          <TonConnectUIProvider
+            manifestUrl={url}
+            actionsConfiguration={{
+              twaReturnUrl: teleUrl
+            }}
+          >
+            <NextUIProvider>
+              <SoundsProvider>
+                <TourGuideProvider>
+                  <Swipeable onSwipeRight={handleBack}>
+                    <AnimatePresence key="custom-page">
+                      {children}
+                      {/* {pathName !== '/' && <CustomNavbar />} */}
+                    </AnimatePresence>
+                  </Swipeable>
+                  <TourGuide />
+                </TourGuideProvider>
+              </SoundsProvider>
+            </NextUIProvider>
+          </TonConnectUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
     </div>

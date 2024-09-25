@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
+
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
 import { IconMusic, IconNotification, IconSound } from '../components/icons'
@@ -15,7 +16,13 @@ import { getUserSetting, updateSetting } from '@/services/user'
 import { toast } from 'sonner'
 import CustomToast from '../components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
-
+import {
+  TonConnectButton,
+  useTonWallet,
+  useTonAddress,
+  useTonConnectUI,
+  useTonConnectModal
+} from '@tonconnect/ui-react'
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
   // { id: 3, icon: 'discord', link: '#' },
@@ -25,11 +32,15 @@ const listSocial = [
 ]
 
 export default function SettingPage() {
+  const userFriendlyAddress = useTonAddress()
+  const [tonConnectUI, setOptions] = useTonConnectUI()
+  const { open } = useTonConnectModal()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
   const { buttonSound } = useAppSound()
   const [isLoading, setLoading] = useState<boolean>(false)
-
+  const [type, setType] = useState(SETTING_TYPE.WALLET)
+  const wallet = useTonWallet()
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     if (isLoading) return
     setLoading(true)
@@ -44,12 +55,15 @@ export default function SettingPage() {
     })
   }
 
-  // const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)
-  // const depinConfig = depinConfigStr ? JSON.parse(depinConfigStr) : {}
-
-  const [type, setType] = useState(SETTING_TYPE.WALLET)
   const listSetting = [
-    // { id: 1, image: SETTING_TYPE.WALLET, title: 'Connect Wallet', text: 'UQBC4...9BGL', icon: 'link' },
+    {
+      id: 1,
+      type: SETTING_TYPE.WALLET,
+      image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: 'Wallet',
+      text: !wallet ? '' : userFriendlyAddress.substring(1, 10),
+      icon: !wallet ? 'connect' : 'link'
+    },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
       id: 2,
@@ -81,13 +95,21 @@ export default function SettingPage() {
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
     // { id: 6, image: SETTING_TYPE.LOGOUT, title: 'Log Out', text: 'Quit this account', icon: 'open-link' },
   ]
-
+  const handleWalletClick = () => {
+    tonConnectUI.disconnect()
+    onClose()
+  }
   const handleClick = (type: string) => {
     buttonSound.play()
     switch (type) {
       case SETTING_TYPE.WALLET:
-        setType(SETTING_TYPE.WALLET)
-        onOpen()
+        if (wallet) {
+          setType(SETTING_TYPE.WALLET)
+          onOpen()
+        } else {
+          open()
+        }
+
         break
       case SETTING_TYPE.LANGUAGE:
         console.log(111)
@@ -287,7 +309,7 @@ export default function SettingPage() {
             <div className="flex items-center space-x-4">
               <div className="btn error">
                 <div className="btn-border"></div>
-                <div className="btn-error">
+                <div className="btn-error" onClick={handleWalletClick}>
                   {type === SETTING_TYPE.WALLET ? 'Disconnect' : 'Log Out'}
                 </div>
                 <div className="btn-border"></div>
