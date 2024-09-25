@@ -16,7 +16,7 @@ export default function DetailLeaguePage() {
       >
         <div>
           <CustomHeader title="LEAGUE detail" />
-          <div className="relative mt-14">
+          <div className="relative mt-10 xs:mt-12 2xs:mt-14">
             <div className="absolute top-0 left-[50%] translate-x-[-50%] w-full z-[-1]">
               <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
             </div>
@@ -87,14 +87,14 @@ export default function DetailLeaguePage() {
               <div className="flex-1">
                 <div className="btn cursor-default">
                   <div className="btn-border"></div>
-                  <div className="font-geist !p-4 xs:!p-5 2xs:!p-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(146,152,32,0),rgba(146,152,32,1))] before:opacity-15 before:z-[-1]">
-                    <div className="space-y-4">
-                      <IconFund className="text-yellow-500 size-12 mx-auto" />
-                      <div className="space-y-2">
-                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(146,152,32,0),rgba(146,152,32,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
                           TOTAL FUNDING
                         </p>
-                        <div className="flex items-center justify-center space-x-2">
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
                             100K
@@ -109,14 +109,14 @@ export default function DetailLeaguePage() {
               <div className="flex-1">
                 <div className="btn cursor-default">
                   <div className="btn-border"></div>
-                  <div className="font-geist !p-4 xs:!p-5 2xs:!p-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(0,153,86,0),rgba(0,153,86,1))] before:opacity-15 before:z-[-1]">
-                    <div className="space-y-4">
-                      <IconProfit className="text-green-500 size-12 mx-auto" />
-                      <div className="space-y-2">
-                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(0,153,86,0),rgba(0,153,86,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
                           TOTAL CONTRIBUTED
                         </p>
-                        <div className="flex items-center justify-center space-x-2">
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
                             100K/h

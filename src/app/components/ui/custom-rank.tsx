@@ -40,7 +40,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
     switch (type) {
       case RANK_TYPE.LEAGUE:
         return router.push('/league/all-league/detail')
-      case RANK_TYPE.LEAGUE:
+      case RANK_TYPE.MEMBER:
         return router.push('/league/member/detail')
     }
   }

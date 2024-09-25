@@ -19,8 +19,8 @@ const ContributeModal = () => {
       <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
         <p>Fund your points to League to unlock special features</p>
       </div>
-      <div className="mt-8 mb-6 h-[300px] overflow-y-auto no-scrollbar ">
-        <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
+      <div className="mt-6 xs:mt-7 2xs:mt-8 mb-6 h-[300px] overflow-y-auto no-scrollbar ">
+        <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-6 xs:mb-7 2xs:mb-8">
           {lisDevice.map((item: any, index: number) => (
             <div
               key={index}
@@ -53,7 +53,7 @@ const ContributeModal = () => {
           ))}
         </div>
       </div>
-      <p className="text-center text-error !leading-[18px] tracking-[-1px]">
+      <p className="text-center text-error text-[13px] xs:text-sm !leading-[18px] tracking-[-1px]">
         After contributing, your items will not be returned. So select carefully
       </p>
       <div className="mt-6">

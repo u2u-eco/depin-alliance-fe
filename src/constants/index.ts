@@ -51,7 +51,8 @@ export const LIST_TYPE = {
   SKILL: 'skill',
   RANKING: 'ranking',
   PARTNERS: 'partners',
-  LEAGUE: 'league'
+  LEAGUE: 'league',
+  RESEARCH: 'research'
 }
 
 export const FILTER_TYPE = {

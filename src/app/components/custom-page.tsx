@@ -27,9 +27,12 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/setting' &&
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
+    pathName !== '/league/member/detail' &&
     pathName !== '/league/join-request' &&
     pathName !== '/league/mission' &&
     pathName !== '/league/ranking' &&
+    pathName !== '/league/research' &&
+    pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
   const isShowSidebar =
@@ -41,8 +44,11 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/level' &&
     pathName !== '/mission/quiz' &&
     pathName !== '/league/member' &&
+    pathName !== '/league/member/detail' &&
     pathName !== '/league/join-request' &&
     pathName !== '/league/ranking' &&
+    pathName !== '/league/research' &&
+    pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
   const full = pathName === '/setting'

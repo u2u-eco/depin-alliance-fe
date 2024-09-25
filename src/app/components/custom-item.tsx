@@ -8,6 +8,7 @@ import {
   IconCheckCircle,
   IconDoubleArrow,
   IconLoader,
+  IconLock,
   IconOpenLink,
   IconPlus,
   IconUserAdd
@@ -74,14 +75,21 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
               : isSpecialBg
                 ? 'before:bg-gradient after:border-b-yellow-700 after:border-r-yellow-700 '
                 : 'before:bg-item-yellow after:border-b-yellow-900 after:border-r-yellow-900'
-            : type === LIST_TYPE.SKILL
-              ? `${getClassBySkill(item.skillId)} before:opacity-20`
+            : type === LIST_TYPE.SKILL || type === LIST_TYPE.RESEARCH
+              ? `${getClassBySkill(item.skillId)} ${item.lock ? 'pointer-events-none after:border-r-black/50 after:border-b-black/50' : ''} before:opacity-20`
               : 'before:opacity-20 before:bg-item-default after:border-b-green-900 after:border-r-green-900'
         }`}
     >
       {type === LIST_TYPE.LEAGUE && item.isPendingRequest && (
         <div className="absolute top-0 right-0 text-[10px] !leading-[14px] py-0.5 px-1.5 border border-yellow-600 text-yellow-600 bg-gray-950 capitalize tracking-[-0.5px]">
           Pending approval
+        </div>
+      )}
+      {type === LIST_TYPE.RESEARCH && item.lock && (
+        <div className="absolute top-0 left-0 right-0 w-full h-full p-2 bg-black/50 [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] z-[1] cursor-default pointer-events-none">
+          <div className="flex items-center justify-center size-[60px] min-[355px]:size-16 xs:size-[68px] 2xs:size-[72px]">
+            <IconLock className="text-body size-6 xs:size-7 2xs:size-8" />
+          </div>
         </div>
       )}
       <div className="flex items-center space-x-3 2xs:space-x-4">
@@ -132,7 +140,7 @@ const CustomItem = ({ type, image, icon, done, status, title, item, cb, children
         </div>
       </div>
       <div className="ml-1 xs:ml-2 mr-1 xs:mr-2 2xs:mr-3">
-        {type === LIST_TYPE.SKILL ? (
+        {type === LIST_TYPE.SKILL || type === LIST_TYPE.RESEARCH ? (
           <>
             {item.timeWaiting > Date.now() ? (
               <CountdownTime time={item.timeWaiting} type="basic" cb={cb} />

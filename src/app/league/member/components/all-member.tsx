@@ -17,19 +17,12 @@ import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
 import { useAppSound } from '@/hooks/useAppSound'
-import ModifyModal from './modify'
 import CustomRank from '@/app/components/ui/custom-rank'
 interface IMember {
   setTotalMember: (total: number) => void
 }
 const AllMember = ({ setTotalMember }: IMember) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const {
-    isOpen: isOpenModify,
-    onOpen: onOpenModify,
-    onOpenChange: onOpenChangeModify,
-    onClose: onCloseModify
-  } = useDisclosure()
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -75,7 +68,6 @@ const AllMember = ({ setTotalMember }: IMember) => {
   })
   const handleCancel = (item: IJoinRequest, index: number) => {
     currentUser.current = { ...item, index }
-    onOpenModify()
   }
 
   const handleUpdateData = async (index: number) => {
@@ -100,7 +92,6 @@ const AllMember = ({ setTotalMember }: IMember) => {
   }
 
   const handleKickModal = () => {
-    onCloseModify()
     onOpen()
   }
 
@@ -175,7 +166,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
           />
         )}
       </div>
-      <CustomModal title="Kick member" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
+      {/* <CustomModal title="Kick member" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>
@@ -229,13 +220,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
             </div>
           </div>
         </div>
-      </CustomModal>
-      <ModifyModal
-        isOpen={isOpenModify}
-        onOpen={onOpenModify}
-        onOpenChange={onOpenChangeModify}
-        handleKickModal={handleKickModal}
-      />
+      </CustomModal> */}
     </div>
   )
 }

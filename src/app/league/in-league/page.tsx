@@ -9,17 +9,14 @@ import {
   IconChat,
   IconClipboard,
   IconFund,
-  IconGroupUser,
   IconInnovate,
   IconLeague,
   IconLeave,
   IconMember,
-  IconOpenLink,
   IconPlus,
   IconPoint,
   IconProfit,
   IconResearch,
-  IconShare,
   IconUserAdd,
   IconUserAddCircle
 } from '@/app/components/icons'
@@ -68,7 +65,7 @@ export default function InLeaguePage() {
       id: 1,
       icon: <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'mission',
-      class: 'pointer-events-none text-inactive'
+      class: ''
     },
     {
       id: 2,
@@ -92,13 +89,13 @@ export default function InLeaguePage() {
       id: 5,
       icon: <IconResearch className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'research',
-      class: 'pointer-events-none text-inactive'
+      class: ''
     },
     {
       id: 6,
       icon: <IconInnovate className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'innovate',
-      class: 'pointer-events-none text-inactive'
+      class: ''
     },
     {
       id: 7,
@@ -224,6 +221,10 @@ export default function InLeaguePage() {
         return handleShare()
       case LEAGUE_TYPE.LEAGUES:
         return router.push('/league/all-league')
+      case LEAGUE_TYPE.RESEARCH:
+        return router.push('/league/research')
+      case LEAGUE_TYPE.INNOVATE:
+        return router.push('/league/innovate')
       case LEAGUE_TYPE.LEAVE:
         setActiveType(LEAGUE_TYPE.LEAVE)
         onOpen()
@@ -376,14 +377,14 @@ export default function InLeaguePage() {
               <div className="flex-1">
                 <div className="btn cursor-default">
                   <div className="btn-border"></div>
-                  <div className="font-geist !p-4 xs:!p-5 2xs:!p-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(146,152,32,0),rgba(146,152,32,1))] before:opacity-15 before:z-[-1]">
-                    <div className="space-y-4">
-                      <IconFund className="text-yellow-500 size-12 mx-auto" />
-                      <div className="space-y-2">
-                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(146,152,32,0),rgba(146,152,32,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] !leading-[18px]">
                           FUND
                         </p>
-                        <div className="flex items-center justify-center space-x-2">
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
                             100K
@@ -396,7 +397,7 @@ export default function InLeaguePage() {
                 </div>
                 <div className="btn group" onClick={() => handleAction(LEAGUE_TYPE.FUNDING)}>
                   <div className="btn-border"></div>
-                  <div className="btn-primary relative flex items-center justify-center !p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
+                  <div className="btn-primary relative flex items-center justify-center !p-2 xs:!p-2.5 2xs:!p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
                     <IconPlus gradient className="size-6 mx-auto" />
                   </div>
                   <div className="btn-border"></div>
@@ -405,14 +406,14 @@ export default function InLeaguePage() {
               <div className="flex-1">
                 <div className="btn cursor-default">
                   <div className="btn-border"></div>
-                  <div className="font-geist !p-4 xs:!p-5 2xs:!p-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(0,153,86,0),rgba(0,153,86,1))] before:opacity-15 before:z-[-1]">
-                    <div className="space-y-4">
-                      <IconProfit className="text-green-500 size-12 mx-auto" />
-                      <div className="space-y-2">
-                        <p className="text-center text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(0,153,86,0),rgba(0,153,86,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] !leading-[18px]">
                           PROFIT
                         </p>
-                        <div className="flex items-center justify-center space-x-2">
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
                             100K/h
@@ -425,7 +426,7 @@ export default function InLeaguePage() {
                 </div>
                 <div className="btn group" onClick={() => handleAction(LEAGUE_TYPE.CONTRIBUTE)}>
                   <div className="btn-border"></div>
-                  <div className="btn-primary relative flex items-center justify-center !p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
+                  <div className="btn-primary relative flex items-center justify-center !p-2 xs:!p-2.5 2xs:!p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
                     <IconPlus gradient className="size-6 mx-auto" />
                   </div>
                   <div className="btn-border"></div>

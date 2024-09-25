@@ -10,11 +10,22 @@ import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
 import { useRouter } from 'next/navigation'
 import { userLeague } from '@/services/league'
+import { motion } from 'framer-motion'
+
+const MEMBER_TAB = {
+  PROFIT: 'profit',
+  EARNED: 'earned'
+}
 
 export default function MemberPage() {
   const router = useRouter()
   const { userInfo, currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
+  const [activeTab, setActiveTab] = useState(MEMBER_TAB.PROFIT)
+
+  const handleSelectTab = (tab: string) => {
+    setActiveTab(tab)
+  }
 
   const _getUserLeague = async () => {
     const res = await userLeague()
@@ -76,6 +87,26 @@ export default function MemberPage() {
               <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
                 MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
               </p>
+              <div className="flex items-center justify-center">
+                {Object.values(MEMBER_TAB).map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative cursor-pointer"
+                    onClick={() => handleSelectTab(item)}
+                  >
+                    <img
+                      className="mx-auto max-w-[101%] w-[101%]"
+                      src={`/assets/images/league/tab${activeTab === item ? '-active' : ''}.svg`}
+                      alt="Upgrade Tab"
+                    />
+                    <div
+                      className={`absolute top-0 h-full left-0 w-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeTab === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+                    >
+                      {item}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             <AllMember setTotalMember={setTotalMember} />
           </div>

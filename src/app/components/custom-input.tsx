@@ -48,7 +48,7 @@ const CustomInput = ({
         startContent={amount && <IconPoint className="size-6 xs:size-7 2xs:size-8" />}
         endContent={
           amount && (
-            <div className="py-2 text-base cursor-pointer text-gradient font-semibold !leading-[18px] uppercase font-mona backdrop-blur-[4px]">
+            <div className="py-2 text-[15px] xs:text-base cursor-pointer text-gradient font-semibold !leading-[18px] uppercase font-mona backdrop-blur-[4px]">
               MAX
             </div>
           )
