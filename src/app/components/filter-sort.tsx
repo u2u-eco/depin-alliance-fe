@@ -1,6 +1,9 @@
-import { FILTER_TYPE } from '@/constants'
+import { BUTTON_TYPE, FILTER_TYPE } from '@/constants'
 import CustomModal from './custom-modal'
 import { useState } from 'react'
+import useSound from 'use-sound'
+import useCommonStore from '@/stores/commonStore'
+import CustomButton from './button'
 interface IFilterSort {
   type: string
   isOpen: boolean
@@ -30,7 +33,12 @@ export default function FilterSort({
     sortAscending: true,
     type: filterType || undefined
   })
+  const { soundEnabled } = useCommonStore()
+  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
+  })
   const handleSort = (sortBy: string, sortAscending: boolean, _type: string) => {
+    play()
     if (type === FILTER_TYPE.FILTER) {
       setFilterOptions({
         ...filterOptions,
@@ -147,21 +155,8 @@ export default function FilterSort({
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className={`btn default`} onClick={handleReset}>
-            <div className="btn-border"></div>
-            <div className={`btn btn-default`}>Reset</div>
-            <div className="btn-border"></div>
-          </div>
-          <div
-            className="btn"
-            onClick={() => {
-              handleConfirm()
-            }}
-          >
-            <div className="btn-border"></div>
-            <div className="btn-primary">Confirm</div>
-            <div className="btn-border"></div>
-          </div>
+          <CustomButton type={BUTTON_TYPE.DEFAULT} title="Reset" onAction={handleReset} />
+          <CustomButton title="Confirm" onAction={handleConfirm} />
         </div>
       </div>
     </CustomModal>

@@ -13,9 +13,11 @@ export const IS_ONLY_SUPPORT_MOBILE =
 export const PAGE_SIZE = 10
 export const MAX_SIZE_PER_PAGE = 10
 export const HIDE_COMPLETED_PARTNER = 't-depin-hide-completed-task'
+export const DEPIN_CONFIG = 't-depin-alliance-config'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
-  SUCCESS: 'SUCCESS'
+  SUCCESS: 'SUCCESS',
+  DEFAULT: 'DEFAULT'
 }
 export const UPGRADE_TAB = {
   RAM: 'RAM',

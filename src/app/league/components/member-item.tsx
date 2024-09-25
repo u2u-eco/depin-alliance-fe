@@ -4,6 +4,7 @@ import { IJoinRequest } from '@/interfaces/i.league'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import useSound from 'use-sound'
 
 interface ItemProps {
   type?: string
@@ -19,12 +20,15 @@ const ITEM_TYPE = {
 }
 
 const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemProps) => {
-  const { currentLeague } = useCommonStore()
+  const { currentLeague, soundEnabled } = useCommonStore()
   const [selectCode, setSelectedCode] = useState<number>(0)
-
+  const [play] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
+  })
   const isDisable = item.userId === selectCode || (item?.id && item.id === selectCode)
   const handleClick = (type: string) => {
     if (isDisable) return
+    play()
     if (!handleKick) {
       setSelectedCode(item?.userId || item?.id || 0)
     }

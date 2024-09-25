@@ -1,5 +1,6 @@
 'use client'
 
+import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import {
@@ -12,7 +13,7 @@ import {
   IconUserAddCircle
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { TELE_URI } from '@/constants'
+import { BUTTON_TYPE, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
@@ -22,13 +23,19 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import useSound from 'use-sound'
 
 export default function InLeaguePage() {
   const router = useRouter()
-  const { currentLeague, setCurrentLeague } = useCommonStore()
+  const { currentLeague, setCurrentLeague, soundEnabled } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
-
+  const [tabSound] = useSound('/assets/sounds/interaction/tab-click.mp3', {
+    soundEnabled
+  })
+  const [btnSound] = useSound('/assets/sounds/interaction/button-click.mp3', {
+    soundEnabled
+  })
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
@@ -36,6 +43,7 @@ export default function InLeaguePage() {
   })
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
+      tabSound()
       window.open(
         `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
         '_self'
@@ -206,6 +214,9 @@ export default function InLeaguePage() {
               {/* </CopyToClipboard> */}
               <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <Link
+                onClick={() => {
+                  tabSound()
+                }}
                 href="/league/member"
                 className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
               >
@@ -215,7 +226,10 @@ export default function InLeaguePage() {
               <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <div
                 className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
-                onClick={onOpen}
+                onClick={() => {
+                  btnSound()
+                  onOpen()
+                }}
               >
                 <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Leave</p>
@@ -223,7 +237,13 @@ export default function InLeaguePage() {
             </div>
             {/* Join Request */}
             {currentLeague?.isOwner && (
-              <Link href="/league/join-request" className="btn default">
+              <Link
+                onClick={() => {
+                  tabSound()
+                }}
+                href="/league/join-request"
+                className="btn default"
+              >
                 <div className="btn-border"></div>
                 <div className="btn-default !py-2.5 2xs:!py-2">
                   <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
@@ -289,16 +309,8 @@ export default function InLeaguePage() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="btn default" onClick={onClose}>
-              <div className="btn-border"></div>
-              <div className="btn-default">Cancel</div>
-              <div className="btn-border"></div>
-            </div>
-            <div className="btn error" onClick={handleLeave}>
-              <div className="btn-border"></div>
-              <div className="btn-error">Leave</div>
-              <div className="btn-border"></div>
-            </div>
+            <CustomButton type={BUTTON_TYPE.DEFAULT} title="Cancel" onAction={onClose} />
+            <CustomButton type={BUTTON_TYPE.CANCEL} title="Leave" onAction={handleLeave} />
           </div>
         </div>
       </CustomModal>

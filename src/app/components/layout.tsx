@@ -11,10 +11,22 @@ import { Toaster } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
+import { DEPIN_CONFIG } from '@/constants'
 export default function Layout({ children }: any) {
-  const { setSafeAreaBottom } = useCommonStore()
+  const { setSafeAreaBottom, setSoundEnabled, setSoundThemeEnabled } = useCommonStore()
   const queryClient = new QueryClient()
   const router = useRouter()
+
+  const updateSetting = () => {
+    const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)
+    const depinConfig = depinConfigStr ? JSON.parse(depinConfigStr) : {}
+    if (depinConfig.soundEnabled !== undefined) {
+      setSoundEnabled(depinConfig.soundEnabled)
+    }
+    if (depinConfig.soundThemeEnabled !== undefined) {
+      setSoundThemeEnabled(depinConfig.soundThemeEnabled)
+    }
+  }
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -23,6 +35,9 @@ export default function Layout({ children }: any) {
       const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
+    setTimeout(() => {
+      updateSetting()
+    }, 200)
   }, [])
 
   const handleBack = () => {

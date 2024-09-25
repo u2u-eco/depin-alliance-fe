@@ -42,6 +42,8 @@ export default function WorkspaceContent() {
         }
         const heightTopBottom = offsetTop + margin + heightNav - 10
         setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
+      } else {
+        setMaxHeightListContent(400)
       }
     }, 500)
   }, [webApp?.viewportStableHeight])

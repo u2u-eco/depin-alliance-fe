@@ -37,7 +37,12 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
           </div>
           <div className="size-1.5 bg-green-800"></div>
         </div>
-        <Link href="/home">
+        <Link
+          onClick={() => {
+            play()
+          }}
+          href="/home"
+        >
           <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
         </Link>
       </div>
