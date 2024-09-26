@@ -16,13 +16,13 @@ const TOAST_TYPE = {
 }
 
 const CustomToast = ({ type, title, point, description }: ToastProps) => {
-  const { soundEnabled } = useCommonStore()
+  const { userSetting } = useCommonStore()
   const message = new Howl({
     src:
       type === TOAST_TYPE.SUCCESS
         ? '/assets/sounds/interaction/notify-success.mp3'
         : '/assets/sounds/interaction/notify-error.mp3',
-    mute: !soundEnabled
+    mute: !userSetting?.enableSoundEffect
   })
 
   useEffect(() => {

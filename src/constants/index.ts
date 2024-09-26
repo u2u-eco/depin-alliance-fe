@@ -35,6 +35,7 @@ export const QUERY_CONFIG = {
   refetchOnWindowFocus: false
 }
 
+export const MAX_SIZE_UPLOAD = 20000000
 export const SETTING_TYPE = {
   NOTIFICATION: 'NOTIFICATION',
   MUSIC_THEME: 'MUSIC_THEME',
