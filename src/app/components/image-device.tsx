@@ -1,8 +1,8 @@
 import Image from 'next/image'
 interface IImageDevice {
   className: string
-  image: string | null
-  type: string
+  image?: string | null
+  type?: string
 }
 export default function ImageDevice({ className, image, type }: IImageDevice) {
   return (
