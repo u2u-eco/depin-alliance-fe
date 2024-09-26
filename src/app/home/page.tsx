@@ -1,88 +1,37 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
 import CustomPage from '../components/custom-page'
 import useCommonStore from '@/stores/commonStore'
 import { useUserInfo } from '@/hooks/useUserInfo'
-import Image from 'next/image'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 import { motion } from 'framer-motion'
-
+import { useAppSound } from '@/hooks/useAppSound'
+import { SoundsContextValue } from '@/contexts/sounds.context'
+import { useRouter } from 'next/navigation'
 export default function HomePage() {
-  const { userInfo, token, getUserConfig } = useCommonStore()
+  const router = useRouter()
+  const { userInfo } = useCommonStore()
 
-  // const totalDevice = useRef<number>(0)
+  const { main } = useContext(SoundsContextValue)
+  const { tabSound } = useAppSound()
+
+  const handleClickFigure = () => {
+    tabSound.play()
+    router.push('/avatar')
+  }
+
+  useEffect(() => {
+    main.play()
+    return () => {
+      main.stop()
+    }
+  }, [])
 
   useUserInfo()
-
-  // const _getListDevice = async () => {
-  //   const listDevice: any = await getListDevice()
-  //   if (listDevice.status) {
-  //     const data: Array<IUserDeviceItem> = listDevice.data
-  //     _getUserDevice(data[0].index)
-  //     totalDevice.current = data?.length
-  //   }
-  // }
-
-  // const _getUserDevice = async (index: number) => {
-  //   const res = await getUserDevice(index)
-  //   if (res.status) {
-  //     let listInfo: any = {}
-  //     let listByType: any = {}
-
-  //     res.data.forEach((item: IDeviceTypeItem) => {
-  //       if (item.type === UPGRADE_TAB.RAM || item.type === UPGRADE_TAB.STORAGE) {
-  //         if (!listInfo[item.type]) {
-  //           listInfo[item.type] = item
-  //         } else {
-  //           listInfo[item.type].name =
-  //             `${parseInt(listInfo[item.type].name) + parseInt(item.name)} GB`
-  //         }
-  //       } else {
-  //         if (!listByType[item.type]?.[item.code]) {
-  //           if (!listByType[item.type]) {
-  //             listByType[item.type] = {}
-  //           }
-  //           if (!listByType[item.type][item.code]) {
-  //             listByType[item.type][item.code] = {
-  //               ...item,
-  //               value: 1
-  //             }
-  //           }
-  //         } else {
-  //           if (listByType[item.type][item.code]) {
-  //             listByType[item.type][item.code].value += 1
-  //           }
-  //         }
-  //       }
-  //     })
-  //     const listCPU_GPU = Object.keys(listByType).map((key) => {
-  //       let newItem = { type: key, name: '' }
-  //       Object.keys(listByType[key]).map((key2, index) => {
-  //         newItem.name += `${index > 0 ? ', ' : ''}${listByType[key][key2].name}${listByType[key][key2].value > 1 ? `(x${listByType[key][key2].value})` : ''}`
-  //       })
-  //       return newItem
-  //     })
-  //     const newData: any = Object.keys(listInfo).map((key) => listInfo[key])
-  //     setDevice({
-  //       info: [...listCPU_GPU, ...newData]
-  //     })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (token) {
-  //     _getListDevice()
-  //   }
-  // }, [token])
-  useEffect(() => {
-    if (token) {
-      getUserConfig()
-    }
-  }, [token])
 
   return (
     <>
@@ -98,8 +47,18 @@ export default function HomePage() {
           <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/home-frame.svg" alt="Frame" />
           </div>
-          <Link href="/avatar" className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]">
-            <img className="mx-auto min-h-[240px] max-h-[240px] xs:min-h-[260px] xs:max-h-[260px]" src={userInfo?.avatar?.replace(/avatar-/g, 'figure-') || '/assets/images/avatar/figure-01@2x.png'} alt="Figure" />
+          <div
+            onClick={handleClickFigure}
+            className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]"
+          >
+            <img
+              className="mx-auto min-h-[240px] max-h-[240px] xs:min-h-[260px] xs:max-h-[260px]"
+              src={
+                userInfo?.avatar?.replace(/avatar-/g, 'figure-') ||
+                '/assets/images/avatar/figure-01@2x.png'
+              }
+              alt="Figure"
+            />
             {/* <Image
               className="mx-auto min-h-[240px] max-h-[240px] xs:min-h-[260px] xs:max-h-[260px]"
               width={0}
@@ -112,7 +71,7 @@ export default function HomePage() {
               }
               alt="Figure"
             /> */}
-          </Link>
+          </div>
         </motion.div>
         {/* Button */}
         <Mining />
@@ -166,7 +125,13 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                <Link href="/workspace" className="flex items-center space-x-1">
+                <Link
+                  onClick={() => {
+                    tabSound.play()
+                  }}
+                  href="/workspace"
+                  className="flex items-center space-x-1"
+                >
                   <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
                     VIEW DETAIL
                   </div>

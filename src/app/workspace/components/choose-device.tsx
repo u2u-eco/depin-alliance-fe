@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IChooseDevice {
   setActiveItem: (id: number) => void
   type: string
@@ -22,6 +23,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const { setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { buttonSound } = useAppSound()
   useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
     queryFn: async () => {
@@ -44,6 +46,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   })
 
   const handleGoToShop = () => {
+    buttonSound.play()
     setTypeItemShop(type)
     setActiveTab(WORKSPACE_TYPE.SHOP)
   }

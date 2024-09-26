@@ -1,8 +1,11 @@
 'use client'
 
+import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
+import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
 import {
+  IconChange,
   IconChat,
   IconClipboard,
   IconGroupUser,
@@ -12,23 +15,27 @@ import {
   IconUserAddCircle
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { TELE_URI } from '@/constants'
+import { BUTTON_TYPE, MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
+import { useAppSound } from '@/hooks/useAppSound'
+import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import Loader from '@/app/components/ui/loader'
 
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
-
+  const { buttonSound, tabSound } = useAppSound()
+  const [isLoadingAvatar, setLoadingAvatar] = useState<boolean>(false)
+  const file = useRef<any>()
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
@@ -36,6 +43,7 @@ export default function InLeaguePage() {
   })
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
+      tabSound.play()
       window.open(
         `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
         '_self'
@@ -73,10 +81,59 @@ export default function InLeaguePage() {
     }
   }
 
+  const updateAvatar = async () => {
+    const formData = new FormData()
+
+    if (file.current) {
+      formData.append('image', file.current)
+    }
+
+    try {
+      const res: any = await updateAvatarLeague(formData)
+      if (res.status && res.data) {
+        toast.success(<CustomToast type="success" title="Update avatar successfully" />)
+        _getUserLeague()
+      }
+      setTimeout(() => {
+        setLoadingAvatar(false)
+      })
+    } catch (ex) {
+      setLoadingAvatar(false)
+    }
+  }
+
+  const onChange = (e: any) => {
+    if (isLoadingAvatar) return
+    file.current = e.target.files[0]
+    if (!file.current.type.includes('image')) {
+      toast.error(<CustomToast type="error" title="Unsupported file format" />)
+      return
+    }
+    if (file.current.size > MAX_SIZE_UPLOAD) {
+      toast.error(<CustomToast type="error" title="File too large" />)
+      return
+    }
+    try {
+      setLoadingAvatar(true)
+      filetoDataURL(file.current).then((res) => {
+        dataURLtoFile(res, EImageType.PNG).then((image) => {
+          file.current = image
+          updateAvatar()
+        })
+      })
+    } catch (ex) {
+      setLoadingAvatar(false)
+    }
+  }
+
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
+  }
+
+  const handleSound = () => {
+    buttonSound.play()
   }
 
   useEffect(() => {
@@ -96,7 +153,10 @@ export default function InLeaguePage() {
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
           </div>
           <div className="space-y-5 mb-6">
-            <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
+            <div
+              className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white"
+              onClick={handleSound}
+            >
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
                   className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
@@ -104,6 +164,30 @@ export default function InLeaguePage() {
                   alt="DePIN Alliance"
                 />
               </div>
+              {currentLeague?.isOwner && (
+                <div className="absolute bottom-0 right-0 size-[50px] xs:size-[55px] 2xs:size-[60px] border-[25px] xs:border-[27.5px] 2xs:border-[30px] border-transparent border-r-yellow-500 border-b-yellow-500 z-[2] cursor-pointer">
+                  <IconChange className="size-5 xs:size-[22px] 2xs:size-6 text-yellow-900" />
+                </div>
+              )}
+              {currentLeague?.isOwner && (
+                <input
+                  disabled={isLoadingAvatar}
+                  className="absolute  z-[3] top-0 left-0 right-0 w-full h-full m-0 cursor-pointer opacity-0"
+                  id="files"
+                  accept="image/*"
+                  type="file"
+                  onChange={onChange}
+                />
+              )}
+
+              {isLoadingAvatar && (
+                <Loader
+                  classNames={{
+                    wrapper: 'w-full absolute pointer-events-none z-[4] p top-0 bg-black/50',
+                    icon: 'w-[30px] h-[45px] text-white'
+                  }}
+                />
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
@@ -206,6 +290,9 @@ export default function InLeaguePage() {
               {/* </CopyToClipboard> */}
               <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <Link
+                onClick={() => {
+                  tabSound.play()
+                }}
                 href="/league/member"
                 className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
               >
@@ -215,7 +302,10 @@ export default function InLeaguePage() {
               <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <div
                 className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
-                onClick={onOpen}
+                onClick={() => {
+                  buttonSound.play()
+                  onOpen()
+                }}
               >
                 <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />
                 <p className="text-[13px] xs:text-sm !leading-[18px]">Leave</p>
@@ -223,7 +313,13 @@ export default function InLeaguePage() {
             </div>
             {/* Join Request */}
             {currentLeague?.isOwner && (
-              <Link href="/league/join-request" className="btn default">
+              <Link
+                onClick={() => {
+                  tabSound.play()
+                }}
+                href="/league/join-request"
+                className="btn default"
+              >
                 <div className="btn-border"></div>
                 <div className="btn-default !py-2.5 2xs:!py-2">
                   <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
@@ -289,16 +385,22 @@ export default function InLeaguePage() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="btn default" onClick={onClose}>
-              <div className="btn-border"></div>
-              <div className="btn-default">Cancel</div>
-              <div className="btn-border"></div>
-            </div>
-            <div className="btn error" onClick={handleLeave}>
-              <div className="btn-border"></div>
-              <div className="btn-error">Leave</div>
-              <div className="btn-border"></div>
-            </div>
+            <CustomButton
+              type={BUTTON_TYPE.DEFAULT}
+              title="Cancel"
+              onAction={() => {
+                onClose()
+                buttonSound.play()
+              }}
+            />
+            <CustomButton
+              type={BUTTON_TYPE.CANCEL}
+              title="Leave"
+              onAction={() => {
+                handleLeave()
+                buttonSound.play()
+              }}
+            />
           </div>
         </div>
       </CustomModal>

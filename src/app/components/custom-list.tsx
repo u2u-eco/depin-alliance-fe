@@ -5,6 +5,7 @@ import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { IconGroupUser } from './icons'
 import Image from 'next/image'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ListProps {
   type: string
@@ -35,8 +36,13 @@ const CustomList = ({
   cb,
   onClickItem
 }: ListProps) => {
+  const { buttonSound } = useAppSound()
+
   const handleClickItem = (item: any) => {
-    onClickItem && onClickItem(item)
+    if (onClickItem) {
+      buttonSound.play()
+      onClickItem(item)
+    }
   }
   const isDone = (item: any) => {
     return type === LIST_TYPE.MISSION ? item.status === 'CLAIMED' : item.status

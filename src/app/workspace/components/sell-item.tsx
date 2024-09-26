@@ -3,13 +3,17 @@ import { IconMinusCircle, IconPlusCircle, IconPoint } from '@/app/components/ico
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { formatNumber } from '@/helper/common'
 import { useEffect, useState } from 'react'
+import { useAppSound } from '@/hooks/useAppSound'
 interface ISellItem {
   item: IDeviceTypeItem
   updateAmountSell: (amount: number) => void
 }
 export default function SellItem({ item, updateAmountSell }: ISellItem) {
   const [amount, setAmount] = useState<number>(1)
+  const { buttonSound } = useAppSound()
+
   const handleUpdateAmount = (index: number) => {
+    buttonSound.play()
     const newValue = amount + index
     if (index > 0) {
       if (newValue <= item.totalItem) {
@@ -51,9 +55,13 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
                 className={`size-5 xs:size-6 ${amount === 1 ? 'text-green-800' : 'text-green-500'}`}
               />
             </div>
-            <span className="text-green-100 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">{amount}</span>
+            <span className="text-green-100 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">
+              {amount}
+            </span>
             <div className="cursor-pointer" onClick={() => handleUpdateAmount(1)}>
-              <IconPlusCircle className={`size-5 xs:size-6 ${amount === item.totalItem ? 'text-green-800' : 'text-green-500'}`} />
+              <IconPlusCircle
+                className={`size-5 xs:size-6 ${amount === item.totalItem ? 'text-green-800' : 'text-green-500'}`}
+              />
             </div>
           </div>
         </div>

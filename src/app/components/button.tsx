@@ -1,5 +1,6 @@
 import { BUTTON_TYPE } from '@/constants'
 import Loader from './ui/loader'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ICustomButton {
   title: string
@@ -9,18 +10,38 @@ interface ICustomButton {
   onAction?: () => void
 }
 export default function CustomButton({ title, onAction, disable, isLoading, type }: ICustomButton) {
+  const { buttonSound } = useAppSound()
   const handleClick = () => {
+    buttonSound.play()
     onAction && onAction()
   }
+  const getTypeButton = () => {
+    if (disable || isLoading) return 'inactive'
+    switch (type) {
+      case BUTTON_TYPE.CANCEL:
+        return 'error'
+      case BUTTON_TYPE.DEFAULT:
+        return 'default'
+      default:
+        return ''
+    }
+  }
+
+  const getBtnClass = () => {
+    if (disable || isLoading) return 'btn-inactive '
+    switch (type) {
+      case BUTTON_TYPE.CANCEL:
+        return 'btn-error'
+      case BUTTON_TYPE.DEFAULT:
+        return 'btn-default'
+      default:
+        return 'btn-primary'
+    }
+  }
   return (
-    <div
-      className={`btn ${disable || isLoading ? 'inactive' : type === BUTTON_TYPE.CANCEL ? 'error' : ''}`}
-      onClick={handleClick}
-    >
+    <div className={`btn ${getTypeButton()}`} onClick={handleClick}>
       <div className="btn-border"></div>
-      <div
-        className={`flex justify-center items-center ${disable || isLoading ? 'btn-inactive ' : type === BUTTON_TYPE.CANCEL ? 'btn-error' : 'btn-primary'}`}
-      >
+      <div className={`flex justify-center items-center ${getBtnClass()}`}>
         {title}
         {isLoading && (
           <Loader

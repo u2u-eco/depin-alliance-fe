@@ -3,27 +3,26 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import CustomPage from '../components/custom-page'
-import { useRouter } from 'next/navigation'
 import Device from './components/device'
 import Item from './components/item'
 import { useTelegram } from '@/hooks/useTelegram'
 import useCommonStore from '@/stores/commonStore'
 import ShopPage from './components/shop/shop'
 import { WORKSPACE_TYPE, WorkspaceContext } from './context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function WorkspaceContent() {
   const refList = useRef<any>()
-  const router = useRouter()
   const { heightNav, safeAreaBottom } = useCommonStore()
+  const { tabSound } = useAppSound()
+
   const { webApp } = useTelegram()
   const [maxHeight, setMaxHeightListContent] = useState<number>(200)
   const { activeTab, setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   // const [activeTab, setActiveTab] = useState(WORKSPACE_TYPE.DEVICE)
 
-  const handleBack = () => {
-    router.back()
-  }
   const handleSelectTab = (tab: string) => {
+    tabSound.play()
     if (tab !== WORKSPACE_TYPE.SHOP) {
       setTypeItemShop(null)
     }
@@ -42,6 +41,8 @@ export default function WorkspaceContent() {
         }
         const heightTopBottom = offsetTop + margin + heightNav - 10
         setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
+      } else {
+        setMaxHeightListContent(400)
       }
     }, 500)
   }, [webApp?.viewportStableHeight])

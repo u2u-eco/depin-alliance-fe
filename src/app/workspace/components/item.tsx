@@ -22,6 +22,7 @@ import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -41,7 +42,7 @@ export default function Item({ height }: IItem) {
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
-  const specialItem = useRef<any>([])
+  const [specialItem, setSpecialItem] = useState<any>([])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -59,6 +60,8 @@ export default function Item({ height }: IItem) {
     sortAscending: true,
     type: ''
   })
+  const { buttonSound, specialSound } = useAppSound()
+
   const refList = useRef<any>()
   const refListScroll = useRef<any>()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
@@ -114,6 +117,7 @@ export default function Item({ height }: IItem) {
   })
 
   const handleInfo = (item: IDeviceTypeItem, index: number) => {
+    buttonSound.play()
     currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
@@ -174,16 +178,19 @@ export default function Item({ height }: IItem) {
 
   const handleSpecial = async () => {
     if (paramUseKey.current && !disableBtnSpecial) {
-      specialItem.current = []
+      setSpecialItem([])
       if (userInfo && userInfo?.point < useKey) {
         toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
+      specialSound.play()
       onOpenSpecial()
       try {
         const res = await getUseKey(paramUseKey.current)
         if (res.status) {
-          specialItem.current = res.data
+          setTimeout(() => {
+            setSpecialItem([...res.data])
+          }, 2000)
           refetch && refetch()
           getUserInfo()
         }
@@ -200,6 +207,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleFilterSort = (type: string) => {
+    buttonSound.play()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -209,6 +217,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleLinkBuy = () => {
+    buttonSound.play()
     setTypeItemShop(filterOptions.type || null)
     setActiveTab(WORKSPACE_TYPE.SHOP)
   }
@@ -258,6 +267,17 @@ export default function Item({ height }: IItem) {
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
     currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
+
+  const handleSellAndUseKey = () => {
+    if (!disableBtnSpecial) {
+      buttonSound.play()
+    }
+    if (isSpecial) {
+      handleSpecial()
+    } else {
+      handleSell()
+    }
+  }
   return (
     <>
       <div className="space-y-8">
@@ -446,13 +466,9 @@ export default function Item({ height }: IItem) {
             </>
           ) : null}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
-            <motion.div
+            <div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'inactive' : ''}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              onClick={isSpecial ? handleSpecial : handleSell}
+              onClick={handleSellAndUseKey}
             >
               <div className="btn-border"></div>
               <div
@@ -487,16 +503,17 @@ export default function Item({ height }: IItem) {
                 </div>
               </div>
               <div className="btn-border"></div>
-            </motion.div>
+            </div>
           ) : (
             <div className="flex items-center space-x-3 xs:space-x-4">
               {(activeType !== ITEM_TYPE.INFO ||
                 (activeType === ITEM_TYPE.INFO && currentItem.current?.isCanSell)) && (
                 <div
                   className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
-                  onClick={() =>
+                  onClick={() => {
+                    buttonSound.play()
                     activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
-                  }
+                  }}
                 >
                   <div className="btn-border"></div>
                   <div className={`btn btn-${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}>
@@ -507,6 +524,7 @@ export default function Item({ height }: IItem) {
               )}
               <div
                 onClick={() => {
+                  buttonSound.play()
                   setActiveTab(WORKSPACE_TYPE.SHOP)
                 }}
                 className="btn"
@@ -534,7 +552,7 @@ export default function Item({ height }: IItem) {
         onOpen={onOpenSpecial}
         onOpenChange={onOpenChangeSpecial}
         onClose={onCloseSpecial}
-        listItem={specialItem.current}
+        listItem={specialItem}
       />
     </>
   )

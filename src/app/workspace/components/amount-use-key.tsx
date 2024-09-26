@@ -1,4 +1,5 @@
 import { IconMinusCircle, IconPlusCircle } from '@/app/components/icons'
+import { useAppSound } from '@/hooks/useAppSound'
 import { useEffect, useState } from 'react'
 interface IAmountUseKey {
   maxTotal: number
@@ -6,8 +7,9 @@ interface IAmountUseKey {
 }
 export default function AmountUseKey({ maxTotal, updateAmountUseKey }: IAmountUseKey) {
   const [amount, setAmount] = useState<number>(1)
-
+  const { buttonSound } = useAppSound()
   const handleUpdateAmount = (_value: number) => {
+    buttonSound.play()
     const currentAmount = amount + _value
     if (currentAmount < 1) {
       setAmount(1)

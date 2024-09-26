@@ -19,6 +19,7 @@ import Loader from '../components/ui/loader'
 import CongratulationModal from './components/congratulation'
 import NoItem from '../components/ui/no-item'
 import InputHandleScroll from '../components/ui/input-handle-scroll'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const LEAGUE_TYPE = {
   JOIN: 'join',
@@ -38,6 +39,8 @@ export default function LeaguePage() {
   const timeoutSearch = useRef<any>(null)
   const [search, setSearch] = useState<string>('')
   const [listItem, setListItem] = useState<ILeagueItem[]>([])
+  const { buttonSound } = useAppSound()
+
   const {
     isOpen: isOpenCongratulation,
     onOpen: onOpenCongratulation,
@@ -106,6 +109,10 @@ export default function LeaguePage() {
     setListItem([...dataList.current])
   }
 
+  const handleSound = () => {
+    buttonSound.play()
+  }
+
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {
       setPage(page + 1)
@@ -168,7 +175,7 @@ export default function LeaguePage() {
             </div>
           </div>
         </div>
-        <div className="mt-6 xs:mt-7 2xs:mt-8 relative">
+        <div className="mt-6 xs:mt-7 2xs:mt-8 relative" onClick={handleSound}>
           <InputHandleScroll onValueChange={handleUpdateText} />
         </div>
         {listItem.length === 0 && !isLoading ? (
