@@ -100,13 +100,17 @@ export default function InLeaguePage() {
   const onChange = (e: any) => {
     if (isLoadingAvatar) return
     file.current = e.target.files[0]
-    setLoadingAvatar(true)
-    filetoDataURL(file.current).then((res) => {
-      dataURLtoFile(res, EImageType.PNG).then((image) => {
-        file.current = image
-        updateAvatar()
+    try {
+      setLoadingAvatar(true)
+      filetoDataURL(file.current).then((res) => {
+        dataURLtoFile(res, EImageType.PNG).then((image) => {
+          file.current = image
+          updateAvatar()
+        })
       })
-    })
+    } catch (ex) {
+      setLoadingAvatar(false)
+    }
   }
 
   const handleCopy = () => {
@@ -145,14 +149,17 @@ export default function InLeaguePage() {
                   <IconChange className="size-5 xs:size-[22px] 2xs:size-6 text-yellow-900" />
                 </div>
               )}
-              <input
-                disabled={isLoadingAvatar}
-                className="absolute  z-[3] top-0 left-0 right-0 w-full h-full m-0 cursor-pointer opacity-0"
-                id="files"
-                accept="image/*"
-                type="file"
-                onChange={onChange}
-              />
+              {currentLeague?.isOwner && (
+                <input
+                  disabled={isLoadingAvatar}
+                  className="absolute  z-[3] top-0 left-0 right-0 w-full h-full m-0 cursor-pointer opacity-0"
+                  id="files"
+                  accept="image/*"
+                  type="file"
+                  onChange={onChange}
+                />
+              )}
+
               {isLoadingAvatar && (
                 <Loader
                   classNames={{
