@@ -16,6 +16,7 @@ import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IMember {
   setTotalMember: (total: number) => void
 }
@@ -33,6 +34,8 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const isUpdatePage = useRef<boolean>(false)
+  const { buttonSound } = useAppSound()
+
   useQuery({
     queryKey: ['getListMemberOfLeague', page, search],
     queryFn: async () => {
@@ -112,6 +115,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
   }
 
   const handleInvite = () => {
+    buttonSound.play()
     if (currentLeague?.inviteLink) {
       window.open(
         `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
@@ -194,12 +198,24 @@ const AllMember = ({ setTotalMember }: IMember) => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="btn default" onClick={onClose}>
+            <div
+              className="btn default"
+              onClick={() => {
+                onClose()
+                buttonSound.play()
+              }}
+            >
               <div className="btn-border"></div>
               <div className="btn-default">Cancel</div>
               <div className="btn-border"></div>
             </div>
-            <div className="btn error" onClick={handleKick}>
+            <div
+              className="btn error"
+              onClick={() => {
+                handleKick()
+                buttonSound.play()
+              }}
+            >
               <div className="btn-border"></div>
               <div className="btn-error">KICK</div>
               <div className="btn-border"></div>

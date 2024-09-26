@@ -8,6 +8,7 @@ import { FILTER_TYPE } from '@/constants'
 import { useSearchParams } from 'next/navigation'
 import { IconSort, IconFilter } from '@/app/components/icons'
 import { WorkspaceContext } from '../../context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IShopPage {
   height: number
 }
@@ -26,6 +27,7 @@ export default function ShopPage({ height }: IShopPage) {
     type: typeShopFilter || type || ''
   })
 
+  const { buttonSound } = useAppSound()
   const {
     isOpen: isOpenFilter,
     onOpen: onOpenFilter,
@@ -34,6 +36,7 @@ export default function ShopPage({ height }: IShopPage) {
   } = useDisclosure()
 
   const handleFilterSort = (type: string) => {
+    buttonSound.play()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -47,13 +50,13 @@ export default function ShopPage({ height }: IShopPage) {
           <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.SORT)}>
               <IconSort
-                className="size-6 xs:size-[30px] text-green-800"
+                className="size-6 xs:size-7 2xs:size-8 text-green-800"
                 gradient={activeFilter === FILTER_TYPE.SORT}
               />
             </div>
             <div className="cursor-pointer" onClick={() => handleFilterSort(FILTER_TYPE.FILTER)}>
               <IconFilter
-                className="size-6 xs:size-[30px] text-green-800"
+                className="size-6 xs:size-7 2xs:size-8 text-green-800"
                 gradient={activeFilter === FILTER_TYPE.FILTER}
               />
             </div>

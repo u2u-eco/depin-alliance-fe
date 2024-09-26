@@ -28,6 +28,12 @@ export interface IUserConfig {
   urlImage: string
 }
 
+export interface IUserSetting {
+  enableMusicTheme: boolean
+  enableNotification: boolean
+  enableSoundEffect: boolean
+}
+
 export interface IJoinRequest {
   miningPower: number
   userId: number

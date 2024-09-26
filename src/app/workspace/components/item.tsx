@@ -22,6 +22,7 @@ import OpenBox from './open-box'
 import AmountUseKey from './amount-use-key'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const ITEM_TYPE = {
   INFO: 'info',
@@ -41,7 +42,7 @@ export default function Item({ height }: IItem) {
   const paramUseKey = useRef<IParamUseKey | null>(null)
   const [totalPriceSell, setTotalPriceSell] = useState<number>(0)
   const [activeItem, setActiveItem] = useState<string>('')
-  const specialItem = useRef<any>([])
+  const [specialItem, setSpecialItem] = useState<any>([])
   const [activeType, setActiveType] = useState(ITEM_TYPE.INFO)
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
@@ -59,6 +60,8 @@ export default function Item({ height }: IItem) {
     sortAscending: true,
     type: ''
   })
+  const { buttonSound, specialSound } = useAppSound()
+
   const refList = useRef<any>()
   const refListScroll = useRef<any>()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
@@ -114,6 +117,7 @@ export default function Item({ height }: IItem) {
   })
 
   const handleInfo = (item: IDeviceTypeItem, index: number) => {
+    buttonSound.play()
     currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
@@ -174,16 +178,19 @@ export default function Item({ height }: IItem) {
 
   const handleSpecial = async () => {
     if (paramUseKey.current && !disableBtnSpecial) {
-      specialItem.current = []
+      setSpecialItem([])
       if (userInfo && userInfo?.point < useKey) {
         toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
+      specialSound.play()
       onOpenSpecial()
       try {
         const res = await getUseKey(paramUseKey.current)
         if (res.status) {
-          specialItem.current = res.data
+          setTimeout(() => {
+            setSpecialItem([...res.data])
+          }, 2000)
           refetch && refetch()
           getUserInfo()
         }
@@ -200,6 +207,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleFilterSort = (type: string) => {
+    buttonSound.play()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -209,6 +217,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleLinkBuy = () => {
+    buttonSound.play()
     setTypeItemShop(filterOptions.type || null)
     setActiveTab(WORKSPACE_TYPE.SHOP)
   }
@@ -258,6 +267,17 @@ export default function Item({ height }: IItem) {
   const isSpecial = currentItem.current?.type === ITEM_TYPE.SPECIAL
   const disableBtnSpecial =
     currentItem.current?.type === ITEM_TYPE.SPECIAL && currentItem.current?.code !== 'CYBER_BOX'
+
+  const handleSellAndUseKey = () => {
+    if (!disableBtnSpecial) {
+      buttonSound.play()
+    }
+    if (isSpecial) {
+      handleSpecial()
+    } else {
+      handleSell()
+    }
+  }
   return (
     <>
       <div className="space-y-8">
@@ -297,16 +317,34 @@ export default function Item({ height }: IItem) {
                     className={`flex flex-col [--shape:_24px] xs:[--shape:_28px] 2xs:[--shape:_32px] h-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] transition-all after:content-[''] after:absolute after:top-[50%] after:left-[50%] after:translate-x-[-50%] after:translate-y-[-50%] after:w-[calc(100%_-_2px)] after:h-[calc(100%_-_2px)]  after:bg-white/10 after:z-[-1] after:[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer ${activeItem === item.id ? 'after:bg-[#143828]' : ''}`}
                     onClick={() => handleInfo(item, index)}
                   >
-                    <ImageDevice
-                      className="size-[70px] overflow-hidden xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                      image={item.image}
-                      type={item.type}
-                    />
+                    <div className="relative w-fit mx-auto after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-7 xs:after:size-8 2xs:after:size-9 after:border-[14px] xs:after:border-[16px] 2xs:after:border-[18px] after:border-transparent after:border-b-green-500 after:border-r-green-500">
+                      <div className="relative p-[1px] bg-green-100 size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_2px)] before:bg-[#233b31] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]">
+                        <ImageDevice
+                          image={item.image}
+                          className="size-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                          type={item.type}
+                        />
+                      </div>
+                      <div className="absolute bottom-[1px] xs:bottom-[2px] right-[1px] xs:right-[2px] min-w-4 2xs:min-w-5 text-green-900 text-[10px] xs:text-[11px] 2xs:text-xs font-semibold !leading-[14px] xs:!leading-[16px] text-center z-[2] max-2xs:tracking-[-0.5px]">
+                        {item.totalItem || 1}
+                      </div>
+                    </div>
 
-                    <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px]">
-                      {item.name}
+                    <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm xs:!leading-[18px]">
+                      {item.code === 'OPEN_MESH' ? 1 : item.name.split('$')[0]}
                     </p>
-                    <p className="text-green-500 mt-auto">x{item.totalItem || 1}</p>
+                    {item.type !== 'SPECIAL' ? (
+                      <div className="flex items-center justify-center space-x-1 mt-auto">
+                        <IconPoint className="size-3 xs:size-4" />
+                        <p className="text-green-500 font-semibold text-xs xs:text-sm !leading-[16px]">
+                          {item?.miningPower && `${formatNumber(item?.miningPower, 0, 2)}/h`}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-green-500 mt-auto leading-[18px]">
+                        {item.code === 'CYBER_BOX' ? '???' : `$${item.name.split('$')[1]}`}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -428,13 +466,9 @@ export default function Item({ height }: IItem) {
             </>
           ) : null}
           {activeType === ITEM_TYPE.SELL || (activeType === ITEM_TYPE.INFO && isSpecial) ? (
-            <motion.div
+            <div
               className={`btn z-[2] ${activeType === ITEM_TYPE.SELL ? 'error' : disableBtnSpecial ? 'inactive' : ''}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              onClick={isSpecial ? handleSpecial : handleSell}
+              onClick={handleSellAndUseKey}
             >
               <div className="btn-border"></div>
               <div
@@ -469,16 +503,17 @@ export default function Item({ height }: IItem) {
                 </div>
               </div>
               <div className="btn-border"></div>
-            </motion.div>
+            </div>
           ) : (
             <div className="flex items-center space-x-3 xs:space-x-4">
               {(activeType !== ITEM_TYPE.INFO ||
                 (activeType === ITEM_TYPE.INFO && currentItem.current?.isCanSell)) && (
                 <div
                   className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
-                  onClick={() =>
+                  onClick={() => {
+                    buttonSound.play()
                     activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
-                  }
+                  }}
                 >
                   <div className="btn-border"></div>
                   <div className={`btn btn-${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}>
@@ -489,6 +524,7 @@ export default function Item({ height }: IItem) {
               )}
               <div
                 onClick={() => {
+                  buttonSound.play()
                   setActiveTab(WORKSPACE_TYPE.SHOP)
                 }}
                 className="btn"
@@ -516,7 +552,7 @@ export default function Item({ height }: IItem) {
         onOpen={onOpenSpecial}
         onOpenChange={onOpenChangeSpecial}
         onClose={onCloseSpecial}
-        listItem={specialItem.current}
+        listItem={specialItem}
       />
     </>
   )

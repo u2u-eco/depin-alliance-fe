@@ -14,6 +14,8 @@ import { useInView } from 'react-intersection-observer'
 import Loader from '../components/ui/loader'
 import CustomToast from '../components/ui/custom-toast'
 import { formatNumber } from '@/helper/common'
+import CustomButton from '../components/button'
+import { useAppSound } from '@/hooks/useAppSound'
 // const listFriend = {
 //   title: 'FRIEND LIST',
 //   data: [
@@ -24,7 +26,9 @@ import { formatNumber } from '@/helper/common'
 // }
 
 export default function InvitePage() {
-  const { userInfo, token } = useCommonStore()
+  const { userInfo } = useCommonStore()
+
+  const { buttonSound } = useAppSound()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
   const [scrollTrigger, isInView] = useInView()
@@ -46,12 +50,12 @@ export default function InvitePage() {
       dataList.current = _listItem
       setListItem(dataList.current)
       return res
-    },
-    enabled: Boolean(token)
+    }
   })
 
   const handleCopy = () => {
     if (userInfo) {
+      buttonSound.play()
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
@@ -118,14 +122,8 @@ export default function InvitePage() {
                 Refer your friends to get a luck box and earn 10% each time they claim mining.
               </div>
               <div className="flex items-center space-x-3 xs:space-x-4">
-                <div className="btn" onClick={handleShare}>
-                  <div className="btn-border"></div>
-                  {/* href={`https://t.me/share/url?url=${uriCopy}?start=${user?.code}&text=Hello! Welcome to Depin Alliance`} */}
-                  <div className="btn-primary max-[399px]:!py-3 max-[354px]:text-sm max-[354px]:!py-2">
-                    INVITE FRIEND
-                  </div>
-                  <div className="btn-border"></div>
-                </div>
+                <CustomButton title="INVITE FRIEND" onAction={handleShare} />
+
                 <CopyToClipboard text={`${TELE_URI}?start=${userInfo?.code}`} onCopy={handleCopy}>
                   <div className="btn w-fit">
                     <div className="btn-border"></div>

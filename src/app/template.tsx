@@ -17,8 +17,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { webApp } = useTelegram()
   const router = useRouter()
   const isProgressLogin = useRef<boolean>(false)
-  const { token, setToken, getUserConfig, setCurrentStatus, getUserInfo, setCurrentLeague } =
-    useCommonStore((state) => state)
+  const {
+    token,
+    setToken,
+    getUserConfig,
+    getUserSetting,
+    setCurrentStatus,
+    getUserInfo,
+    setCurrentLeague
+  } = useCommonStore((state) => state)
   const [isLoading, setIsLoading] = useState<boolean>(token ? false : true)
   const [loginError, setIsLoginError] = useState<boolean>(false)
 
@@ -52,6 +59,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         ) {
           router.push('/')
         }
+        getUserSetting()
         _getUserLeague()
         Cookies.set(CURRENT_STATUS_STORAGE, res.data?.currentStatus)
         setToken({ token: res.data?.accessToken })
