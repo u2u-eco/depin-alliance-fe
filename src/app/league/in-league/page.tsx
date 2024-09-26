@@ -373,8 +373,22 @@ export default function InLeaguePage() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <CustomButton type={BUTTON_TYPE.DEFAULT} title="Cancel" onAction={onClose} />
-            <CustomButton type={BUTTON_TYPE.CANCEL} title="Leave" onAction={handleLeave} />
+            <CustomButton
+              type={BUTTON_TYPE.DEFAULT}
+              title="Cancel"
+              onAction={() => {
+                onClose()
+                buttonSound.play()
+              }}
+            />
+            <CustomButton
+              type={BUTTON_TYPE.CANCEL}
+              title="Leave"
+              onAction={() => {
+                handleLeave()
+                buttonSound.play()
+              }}
+            />
           </div>
         </div>
       </CustomModal>

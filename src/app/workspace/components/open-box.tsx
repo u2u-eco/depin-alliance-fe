@@ -1,6 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -19,6 +20,7 @@ const BOX_TYPE = {
 
 export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listItem }: OpenBoxProps) {
   const [activeType, setActiveType] = useState(BOX_TYPE.OPEN)
+  const { buttonSound } = useAppSound()
 
   useEffect(() => {
     if (listItem?.length > 0) {
@@ -145,8 +147,14 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                 </p>
               </div>
             </div>
-            <div className="m-2 xs:m-4 2xs:m-6 mt-6">
-              <div className="btn" onClick={onClose}>
+            <div className="m-2 xs:m-4 2xs:m-6">
+              <div
+                className="btn"
+                onClick={() => {
+                  onClose()
+                  buttonSound.play()
+                }}
+              >
                 <div className="btn-border"></div>
                 <div className="btn-primary">Claim Reward</div>
                 <div className="btn-border"></div>

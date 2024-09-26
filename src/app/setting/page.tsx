@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserSetting, updateSetting } from '@/services/user'
 import { toast } from 'sonner'
 import CustomToast from '../components/ui/custom-toast'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -26,6 +27,7 @@ const listSocial = [
 export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
+  const { buttonSound } = useAppSound()
 
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     const res = await updateSetting(data)
@@ -65,6 +67,7 @@ export default function SettingPage() {
   ]
 
   const handleClick = (type: string) => {
+    buttonSound.play()
     switch (type) {
       case SETTING_TYPE.WALLET:
         setType(SETTING_TYPE.WALLET)
@@ -92,6 +95,10 @@ export default function SettingPage() {
         console.log(111)
         break
     }
+  }
+
+  const handleClickLink = () => {
+    buttonSound.play()
   }
 
   useEffect(() => {
@@ -158,18 +165,16 @@ export default function SettingPage() {
           </div>
           <div>
             <img className="mx-auto" src="/assets/images/navbar-frame.svg" alt="" />
-            <div className="flex justify-center mt-6 mb-4">
+            <div className="flex justify-center mt-6 mb-4 space-x-3 xs:space-x-4">
               {listSocial.map((item: any) => (
-                <Link
-                  href={item.link}
-                  className="btn default w-fit mx-auto"
-                  target="_blank"
-                  key={item.id}
-                >
+                <Link href={item.link} className="btn default w-auto" target="_blank" key={item.id}>
                   <div className="btn-border"></div>
-                  <div className="btn-default !p-2 !size-[50px] min-[355px]:!size-[60px] xs:!size-[70px] 2xs:!size-[80px] flex items-center justify-center">
+                  <div
+                    onClick={handleClickLink}
+                    className="btn-default !p-2 !size-[60px] xs:!size-[70px] 2xs:!size-[80px] flex items-center justify-center"
+                  >
                     <img
-                      className="h-5 min-[355px]:h-6 xs:h-7 2xs:h-8"
+                      className="h-6 xs:h-7 2xs:h-8"
                       src={`/assets/images/icons/icon-${item.icon}-white.svg`}
                       alt="DePIN Alliance"
                     />

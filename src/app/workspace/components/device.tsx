@@ -177,6 +177,7 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleSwap = () => {
+    buttonSound.play()
     equipType.current = detailDeviceItem.current.type
     setActiveType(DEVICE_TYPE.SWAP)
   }

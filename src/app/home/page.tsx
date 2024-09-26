@@ -11,11 +11,18 @@ import { IconPoint } from '../components/icons'
 import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { SoundsContextValue } from '@/contexts/sounds.context'
+import { useRouter } from 'next/navigation'
 export default function HomePage() {
+  const router = useRouter()
   const { userInfo } = useCommonStore()
 
   const { main } = useContext(SoundsContextValue)
   const { tabSound } = useAppSound()
+
+  const handleClickFigure = () => {
+    tabSound.play()
+    router.push('/avatar')
+  }
 
   useEffect(() => {
     main.play()
@@ -40,8 +47,8 @@ export default function HomePage() {
           <div className="absolute top-0 left-0 right-0 w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/home-frame.svg" alt="Frame" />
           </div>
-          <Link
-            href="/avatar"
+          <div
+            onClick={handleClickFigure}
             className="relative block mt-16 w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:top-0 before:left-[50%] before:translate-x-[-50%] before:size-[170px] before:rounded-[50%] before:bg-green-800 before:z-[-1] before:blur-[50px]"
           >
             <img
@@ -64,7 +71,7 @@ export default function HomePage() {
               }
               alt="Figure"
             /> */}
-          </Link>
+          </div>
         </motion.div>
         {/* Button */}
         <Mining />

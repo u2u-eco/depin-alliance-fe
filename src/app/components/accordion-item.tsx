@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { ReactNode, useState } from 'react'
 import { IconChevron, IconEdit, IconPoint } from './icons'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IAccordionItem {
   index: number
   item: IUserDeviceItem
@@ -23,6 +24,7 @@ export default function AccordionItem({
   handleEdit
 }: IAccordionItem) {
   const isOpen = index === expanded
+  const { buttonSound } = useAppSound()
 
   const handleSelectItem = (index: number | false) => {
     if (index) {
@@ -68,7 +70,12 @@ export default function AccordionItem({
                 >
                   {item.name}
                 </p>
-                <div onClick={() => handleEdit(item)}>
+                <div
+                  onClick={() => {
+                    handleEdit(item)
+                    buttonSound.play()
+                  }}
+                >
                   <IconEdit className="text-[#888888] size-6 cursor-pointer" />
                 </div>
               </div>

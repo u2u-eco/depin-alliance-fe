@@ -4,6 +4,7 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
 import { QUERY_CONFIG } from '@/constants'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import { IMissionItem } from '@/interfaces/i.missions'
 import { checkIn, getDailyCheckIn } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
@@ -20,6 +21,8 @@ export default function DailyCheckIn() {
   const currentItem = useRef<any>()
   const [isLoadingBtn, setLoadingBtn] = useState<boolean>(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const { buttonSound } = useAppSound()
+
   const { data: listDaily, refetch } = useQuery({
     queryKey: ['fetchDailyCheckIn'],
     queryFn: getDailyCheckIn,
@@ -31,12 +34,14 @@ export default function DailyCheckIn() {
   )
   const handleClick = (item: IMissionItem) => {
     if (item.time <= currentDay && !item.isChecked) {
+      buttonSound.play()
       currentItem.current = item
       onOpen()
     }
   }
 
   const handleClaim = async () => {
+    buttonSound.play()
     if (isLoadingBtn) return
     setLoadingBtn(true)
     try {

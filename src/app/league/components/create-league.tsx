@@ -9,6 +9,7 @@ import InputNameLeague from './input-name-league'
 import { MAX_SIZE_UPLOAD } from '@/constants'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ICreateLeague {
   onClose: () => void
@@ -22,6 +23,8 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const { setCurrentLeague } = useCommonStore()
   const [isDisableCreate, disableCreate] = useState<boolean>(true)
+  const { buttonSound } = useAppSound()
+
   const onChange = (e: any) => {
     file.current = e.target.files[0]
     if (file.current.size > MAX_SIZE_UPLOAD) {
@@ -34,6 +37,10 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
         file.current = image
       })
     })
+  }
+
+  const handleSound = () => {
+    buttonSound.play()
   }
 
   const _getUserLeague = async () => {
@@ -71,7 +78,7 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   // }
   const create = async () => {
     if (isLoading || isDisableCreate || !imagePreview) return
-
+    buttonSound.play()
     setIsLoading(true)
     const formData = new FormData()
     formData.append('name', name.current)
@@ -94,7 +101,7 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   return (
     <>
       <div className="mt-8 mb-10 space-y-6">
-        <div className="relative space-y-2 w-fit mx-auto">
+        <div className="relative space-y-2 w-fit mx-auto" onClick={handleSound}>
           <div
             className={`size-[85px] xs:size-[90px] mx-auto flex items-center justify-center [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] overflow-hidden p-[1px] ${imagePreview ? 'bg-green-100' : 'bg-white/10'}`}
           >
