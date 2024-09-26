@@ -3,6 +3,7 @@
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
+import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
 import {
   IconChange,
   IconChat,
@@ -17,14 +18,15 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import { BUTTON_TYPE, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
-import { getTotalJoinRequest, leaveLeague, userLeague } from '@/services/league'
+import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import Loader from '@/app/components/ui/loader'
 
 export default function InLeaguePage() {
   const router = useRouter()
@@ -32,7 +34,8 @@ export default function InLeaguePage() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
   const { buttonSound, tabSound } = useAppSound()
-
+  const [isLoadingAvatar, setLoadingAvatar] = useState<boolean>(false)
+  const file = useRef<any>()
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
@@ -78,6 +81,34 @@ export default function InLeaguePage() {
     }
   }
 
+  const updateAvatar = async () => {
+    const formData = new FormData()
+    if (file.current) {
+      formData.append('image', file.current)
+    }
+    try {
+      const res: any = await updateAvatarLeague(formData)
+      if (res.status && res.data) {
+        _getUserLeague()
+      }
+      setLoadingAvatar(false)
+    } catch (ex) {
+      setLoadingAvatar(false)
+    }
+  }
+
+  const onChange = (e: any) => {
+    if (isLoadingAvatar) return
+    file.current = e.target.files[0]
+    setLoadingAvatar(true)
+    filetoDataURL(file.current).then((res) => {
+      dataURLtoFile(res, EImageType.PNG).then((image) => {
+        file.current = image
+        updateAvatar()
+      })
+    })
+  }
+
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
       toast.success(<CustomToast type="success" title="Copied!" />)
@@ -113,6 +144,22 @@ export default function InLeaguePage() {
                 <div className="absolute bottom-0 right-0 size-[50px] xs:size-[55px] 2xs:size-[60px] border-[25px] xs:border-[27.5px] 2xs:border-[30px] border-transparent border-r-yellow-500 border-b-yellow-500 z-[2] cursor-pointer">
                   <IconChange className="size-5 xs:size-[22px] 2xs:size-6 text-yellow-900" />
                 </div>
+              )}
+              <input
+                disabled={isLoadingAvatar}
+                className="absolute  z-[3] top-0 left-0 right-0 w-full h-full m-0 cursor-pointer opacity-0"
+                id="files"
+                accept="image/*"
+                type="file"
+                onChange={onChange}
+              />
+              {isLoadingAvatar && (
+                <Loader
+                  classNames={{
+                    wrapper: 'w-full absolute pointer-events-none z-[4] p top-0 bg-black/50',
+                    icon: 'w-[30px] h-[45px] text-white'
+                  }}
+                />
               )}
             </div>
             <div className="space-y-2">

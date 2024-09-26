@@ -75,6 +75,14 @@ export const kickUserInLeague = (id: number) => {
   return https.get(`/league/kick/${id}`)
 }
 
+export const updateAvatarLeague = (formData: any) => {
+  return https.post('/league/avatar', formData, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  })
+}
+
 export const getListMemberOfLeague = (params: {
   page: number
   size?: number

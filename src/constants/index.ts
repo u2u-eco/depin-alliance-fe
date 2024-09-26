@@ -35,6 +35,16 @@ export const QUERY_CONFIG = {
   refetchOnWindowFocus: false
 }
 
+export const SETTING_TYPE = {
+  NOTIFICATION: 'NOTIFICATION',
+  MUSIC_THEME: 'MUSIC_THEME',
+  SOUND_EFFECT: 'SOUND_EFFECT',
+  WALLET: 'WALLET',
+  LANGUAGE: 'LANGUAGE',
+  FEEDBACK: 'FEEDBACK',
+  LOGOUT: 'LOGOUT'
+}
+
 export const LIST_TYPE = {
   MISSION: 'mission',
   SKILL: 'skill',
