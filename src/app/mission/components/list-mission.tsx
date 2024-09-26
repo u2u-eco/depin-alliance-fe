@@ -76,9 +76,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const checkMission = async (id: number) => {
     const res = await verifyMission(id)
     window.open(currentItem.current.url, '_blank')
+
     setTimeout(() => {
       if (res.status && res.data) {
         setVerified(true)
+        refetch && refetch()
       }
     })
   }
