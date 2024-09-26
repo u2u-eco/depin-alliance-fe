@@ -155,7 +155,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           setCurrentMissionQuiz(currentItem.current)
         default:
           if (currentItem.current.url) {
-            if (currentItem.current?.type === 'TELEGRAM' && webApp?.platform === 'android') {
+            if (webApp?.platform === 'android') {
               checkMission(currentItem.current.id)
             } else {
               window.open(currentItem.current.url, '_blank')
