@@ -135,7 +135,7 @@ export default function SettingPage() {
                         {item.image}
                       </div>
                       <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
-                        <div className="!text-white font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
+                        <div className="!text-[#ffffff] font-mona font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] xs:!leading-[22px]">
                           {item.title}
                         </div>
                         <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px]">
