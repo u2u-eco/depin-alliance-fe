@@ -56,7 +56,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -25, opacity: 0 }}
+              // exit={{ y: -25, opacity: 0 }}
               transition={{ duration: 0.35 }}
               key="custom-page"
               className={
