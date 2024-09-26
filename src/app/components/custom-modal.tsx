@@ -51,7 +51,7 @@ const CustomModal = ({
       <ModalContent>
         {(onClose) => (
           <div
-            className={`max-w-[480px] mx-auto w-full max-xs:overflow-y-auto max-xs:no-scrollbar ${full ? 'h-full' : ''}`}
+            className={`max-w-[480px] mx-auto w-full ${full ? 'h-full' : 'max-xs:overflow-y-auto max-xs:no-scrollbar'}`}
           >
             {full ? (
               <>{background}</>

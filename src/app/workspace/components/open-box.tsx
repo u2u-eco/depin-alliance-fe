@@ -58,7 +58,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
         ) : (
           <>
             <div className="flex flex-1 flex-col items-center mt-14 xs:mt-16 2xs:mt-20 space-y-6 xs:space-y-7 2xs:space-y-8">
-              <div className="relative max-h-[360px] hidden-scrollbar overflow-y-auto py-4 xs:py-5 2xs:py-6 px-4 border border-green-500 drop-shadow-green w-full bg-[linear-gradient(to_bottom,#000,#00371f)]">
+              <div className="relative max-h-[280px] min-[355px]:max-h-[320px] xs:max-h-[360px] no-scrollbar overflow-y-auto py-4 xs:py-5 2xs:py-6 px-4 border border-green-500 drop-shadow-green w-full bg-[linear-gradient(to_bottom,#000,#00371f)]">
                 <div className="absolute top-0 left-0 right-0 opacity-50 w-full h-full">
                   <img
                     className="object-cover w-full h-full"
@@ -143,7 +143,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
                 </p>
               </div>
             </div>
-            <div className="m-2 xs:m-4 2xs:m-6">
+            <div className="m-2 xs:m-4 2xs:m-6 mt-6">
               <div className="btn" onClick={onClose}>
                 <div className="btn-border"></div>
                 <div className="btn-primary">Claim Reward</div>
