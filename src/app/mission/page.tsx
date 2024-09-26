@@ -107,7 +107,7 @@ export default function MissionPage() {
               ></Tab>
             </Tabs>
           )}
-
+          <div className=" absolute"></div>
           <div className={`${activeTab === MISSION_TAB.PARTNERS ? '' : 'hidden'}`}>
             <ListPartner updateListPartner={updateListPartner} showTabPartner={showTabPartner} />
           </div>
