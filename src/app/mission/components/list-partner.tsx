@@ -106,7 +106,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const handleHideCompleted = () => {
     localStorage.setItem(HIDE_COMPLETED_PARTNER, isHideCompleted ? 'false' : 'true')
     setIsHideCompleted(!isHideCompleted)
-    buttonSound()
+    buttonSound.play()
   }
 
   useEffect(() => {
