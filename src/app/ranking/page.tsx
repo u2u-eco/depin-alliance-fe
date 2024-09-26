@@ -123,7 +123,7 @@ export default function RankingPage() {
         <motion.div
           initial={{ y: 25, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -25, opacity: 0 }}
+          // exit={{ y: -25, opacity: 0 }}
           transition={{ duration: 0.35 }}
           key={RANKING_TYPE.PROFIT}
         >
