@@ -128,6 +128,10 @@ export default function InLeaguePage() {
     }
   }
 
+  const handleSound = () => {
+    buttonSound.play()
+  }
+
   useEffect(() => {
     _getUserLeague()
   }, [])
@@ -145,7 +149,10 @@ export default function InLeaguePage() {
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
           </div>
           <div className="space-y-5 mb-6">
-            <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
+            <div
+              className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white"
+              onClick={handleSound}
+            >
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
                   className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"

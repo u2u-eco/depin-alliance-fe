@@ -52,7 +52,7 @@ export default function NoItem({ title, classNames, link, textLink, action }: It
         </div>
       )}
       {action && (
-        <div onClick={action} className="flex items-center space-x-1">
+        <div onClick={action} className="flex items-center space-x-1 cursor-pointer">
           <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">
             {textLink}
           </p>
