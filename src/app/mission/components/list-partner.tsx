@@ -56,7 +56,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     const _listTaskDone: { [key: number]: number } = {}
     let _missionUnDone = 0
     const listDone: IMissionPartner[] = []
-    let listUnDone: IMissionPartner[] = []
+    const listUnDone: IMissionPartner[] = []
     let _isEmptyPartner = true
     list.forEach((partnerItem: any, index: number) => {
       let id: any = genIdFromString(partnerItem.name)
@@ -89,7 +89,6 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     })
     setPartnerDone(list?.length - _missionUnDone)
     updateListPartner(_missionUnDone)
-    listUnDone = listUnDone.splice(0, 11)
     const _listTask: any = isHideCompleted ? [...listUnDone] : [...listUnDone, ...listDone]
     setListTaskByFilter(_listTask)
     if (isHideCompleted) {
@@ -99,7 +98,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   const handleLinkMission = (item: IMissionPartner, index: number) => {
-    tabSound.play()
+    tabSound()
     setCurrentMission(item)
     router.push(`/mission/partners?id=${item.id}`)
   }
@@ -107,7 +106,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const handleHideCompleted = () => {
     localStorage.setItem(HIDE_COMPLETED_PARTNER, isHideCompleted ? 'false' : 'true')
     setIsHideCompleted(!isHideCompleted)
-    buttonSound.play()
+    buttonSound()
   }
 
   useEffect(() => {
