@@ -331,7 +331,7 @@ export default function Item({ height }: IItem) {
                     </div>
 
                     <p className="font-mona font-semibold text-white mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm xs:!leading-[18px]">
-                      {item.code === 'OPEN_MESH' ? 1 : item.name.split('$')[0]}
+                      {item.code === 'CYBER_BOX' ? item.name : item.code === 'OPEN_MESH' ? 1 : item.name.split(' ')[0]}
                     </p>
                     {item.type !== 'SPECIAL' ? (
                       <div className="flex items-center justify-center space-x-1 mt-auto">
@@ -342,7 +342,7 @@ export default function Item({ height }: IItem) {
                       </div>
                     ) : (
                       <p className="text-green-500 mt-auto leading-[18px]">
-                        {item.code === 'CYBER_BOX' ? '???' : `$${item.name.split('$')[1]}`}
+                        {item.code === 'CYBER_BOX' ? '???' : item.code === 'OPEN_MESH' ? `$${item.name}` : `$${item.name.split(' ')[1]}`}
                       </p>
                     )}
                   </div>
