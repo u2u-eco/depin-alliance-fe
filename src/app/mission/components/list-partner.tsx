@@ -98,7 +98,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   const handleLinkMission = (item: IMissionPartner, index: number) => {
-    tabSound()
+    tabSound.play()
     setCurrentMission(item)
     router.push(`/mission/partners?id=${item.id}`)
   }
