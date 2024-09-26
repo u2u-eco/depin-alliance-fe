@@ -1,4 +1,5 @@
 export { default as IconAdmin } from './admin'
+export { default as IconChange } from './change'
 export { default as IconChat } from './chat'
 export { default as IconCheckCircle } from './check-circle'
 export { default as IconCheck } from './check'

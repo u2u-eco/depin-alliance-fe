@@ -4,6 +4,7 @@ import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import {
+  IconChange,
   IconChat,
   IconClipboard,
   IconGroupUser,
@@ -108,6 +109,11 @@ export default function InLeaguePage() {
                   alt="DePIN Alliance"
                 />
               </div>
+              {currentLeague?.isOwner && (
+                <div className="absolute bottom-0 right-0 size-[50px] xs:size-[55px] 2xs:size-[60px] border-[25px] xs:border-[27.5px] 2xs:border-[30px] border-transparent border-r-yellow-500 border-b-yellow-500 z-[2] cursor-pointer">
+                  <IconChange className="size-5 xs:size-[22px] 2xs:size-6 text-yellow-900" />
+                </div>
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">

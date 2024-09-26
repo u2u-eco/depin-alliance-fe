@@ -21,10 +21,11 @@ const SETTING_TYPE = {
 }
 
 const listSocial = [
-  { id: 1, icon: 'facebook', link: '#' },
-  { id: 2, icon: 'x', link: 'https://x.com/DePINApp' },
-  { id: 3, icon: 'discord', link: '#' },
-  { id: 4, icon: 'telegram', link: 'https://t.me/DePIN_App' }
+  // { id: 1, icon: 'facebook', link: '#' },
+  // { id: 3, icon: 'discord', link: '#' },
+  { id: 1, icon: 'x', link: 'https://x.com/DePINApp' },
+  { id: 3, icon: 'telegram', link: 'https://t.me/DePIN_App' },
+  { id: 2, icon: 'logo', link: 'https://depinalliance.xyz/ ' }
 ]
 
 export default function SettingPage() {
@@ -155,7 +156,7 @@ export default function SettingPage() {
           </div>
           <div>
             <img className="mx-auto" src="/assets/images/navbar-frame.svg" alt="" />
-            <div className="flex justify-between mt-6 mb-4">
+            <div className="flex justify-center mt-6 mb-4">
               {listSocial.map((item: any) => (
                 <Link
                   href={item.link}
@@ -166,7 +167,7 @@ export default function SettingPage() {
                   <div className="btn-border"></div>
                   <div className="btn-default !p-2 !size-[50px] min-[355px]:!size-[60px] xs:!size-[70px] 2xs:!size-[80px] flex items-center justify-center">
                     <img
-                      className="size-5 min-[355px]:size-6 xs:size-7 2xs:size-8"
+                      className="h-5 min-[355px]:h-6 xs:h-7 2xs:h-8"
                       src={`/assets/images/icons/icon-${item.icon}-white.svg`}
                       alt="DePIN Alliance"
                     />
