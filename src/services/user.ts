@@ -76,3 +76,11 @@ export const getNextLevel = () => {
 export const getListRankingEarned = () => {
   return https.get('users/ranking-earned')
 }
+
+export const getUserSetting = () => {
+  return https.get('/users/settings')
+}
+
+export const updateSetting = (data: { setting: string; enable: boolean }) => {
+  return https.post('/users/settings', data)
+}
