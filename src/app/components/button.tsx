@@ -12,7 +12,7 @@ interface ICustomButton {
 export default function CustomButton({ title, onAction, disable, isLoading, type }: ICustomButton) {
   const { buttonSound } = useAppSound()
   const handleClick = () => {
-    buttonSound()
+    buttonSound.play()
     onAction && onAction()
   }
   const getTypeButton = () => {

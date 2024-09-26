@@ -39,7 +39,7 @@ export default function InLeaguePage() {
   })
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
-      tabSound()
+      tabSound.play()
       window.open(
         `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
         '_self'
@@ -211,7 +211,7 @@ export default function InLeaguePage() {
               <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
               <Link
                 onClick={() => {
-                  tabSound()
+                  tabSound.play()
                 }}
                 href="/league/member"
                 className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
@@ -223,7 +223,7 @@ export default function InLeaguePage() {
               <div
                 className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
                 onClick={() => {
-                  buttonSound()
+                  buttonSound.play()
                   onOpen()
                 }}
               >
@@ -235,7 +235,7 @@ export default function InLeaguePage() {
             {currentLeague?.isOwner && (
               <Link
                 onClick={() => {
-                  tabSound()
+                  tabSound.play()
                 }}
                 href="/league/join-request"
                 className="btn default"

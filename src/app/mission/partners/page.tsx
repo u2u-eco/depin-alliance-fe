@@ -36,7 +36,7 @@ export default function PartnersPage() {
     }
   }
   const handleBack = () => {
-    tabSound()
+    tabSound.play()
     router.push('/mission?tab=partners')
   }
 
@@ -140,7 +140,7 @@ export default function PartnersPage() {
           </div>
           <Link
             onClick={() => {
-              tabSound()
+              tabSound.play()
             }}
             href="/home"
             className="absolute top-0 right-0"

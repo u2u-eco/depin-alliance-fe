@@ -55,7 +55,7 @@ export default function InvitePage() {
 
   const handleCopy = () => {
     if (userInfo) {
-      buttonSound()
+      buttonSound.play()
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }

@@ -11,7 +11,7 @@ export default function ItemDevice({ key, item, handleClick }: IItemDevice) {
   const { buttonSound } = useAppSound()
 
   const _onClick = () => {
-    buttonSound()
+    buttonSound.play()
     handleClick(item)
   }
   return (

@@ -36,7 +36,7 @@ export default function ShopPage({ height }: IShopPage) {
   } = useDisclosure()
 
   const handleFilterSort = (type: string) => {
-    buttonSound()
+    buttonSound.play()
     setActiveFilter(type)
     onOpenFilter()
   }

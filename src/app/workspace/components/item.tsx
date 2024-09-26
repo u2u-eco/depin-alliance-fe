@@ -117,7 +117,7 @@ export default function Item({ height }: IItem) {
   })
 
   const handleInfo = (item: IDeviceTypeItem, index: number) => {
-    buttonSound()
+    buttonSound.play()
     currentIndex.current = index
     currentItem.current = item
     setActiveType(ITEM_TYPE.INFO)
@@ -183,7 +183,7 @@ export default function Item({ height }: IItem) {
         toast.error(<CustomToast type="error" title="User point not enough!" />)
         return
       }
-      specialSound()
+      specialSound.play()
       onOpenSpecial()
       try {
         const res = await getUseKey(paramUseKey.current)
@@ -207,7 +207,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleFilterSort = (type: string) => {
-    buttonSound()
+    buttonSound.play()
     setActiveFilter(type)
     onOpenFilter()
   }
@@ -269,7 +269,7 @@ export default function Item({ height }: IItem) {
 
   const handleSellAndUseKey = () => {
     if (!disableBtnSpecial) {
-      buttonSound()
+      buttonSound.play()
     }
     if (isSpecial) {
       handleSpecial()
@@ -510,7 +510,7 @@ export default function Item({ height }: IItem) {
                 <div
                   className={`btn ${activeType === ITEM_TYPE.INFO ? 'error' : 'default'}`}
                   onClick={() => {
-                    buttonSound()
+                    buttonSound.play()
                     activeType === ITEM_TYPE.INFO ? handleClick(ITEM_TYPE.SELL) : onClose()
                   }}
                 >
@@ -523,7 +523,7 @@ export default function Item({ height }: IItem) {
               )}
               <div
                 onClick={() => {
-                  buttonSound()
+                  buttonSound.play()
                   setActiveTab(WORKSPACE_TYPE.SHOP)
                 }}
                 className="btn"

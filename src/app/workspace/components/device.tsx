@@ -153,7 +153,7 @@ export default function Device({ height }: IDevice) {
 
   const handleConfirm = () => {
     if (loadingButton) return
-    buttonSound()
+    buttonSound.play()
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
@@ -222,7 +222,7 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleSelectItem = (index: number) => {
-    buttonSound()
+    buttonSound.play()
     setActiveItem(index)
   }
 
@@ -245,9 +245,9 @@ export default function Device({ height }: IDevice) {
 
   const handleExpanded = (index: number | false) => {
     if (index) {
-      dropdownOpen()
+      dropdownOpen.play()
     } else {
-      dropdownClose()
+      dropdownClose.play()
     }
     setExpanded(index)
   }

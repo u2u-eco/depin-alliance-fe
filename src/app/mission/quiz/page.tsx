@@ -52,7 +52,7 @@ export default function QuizPage() {
 
   const handleSelectAnswer = (item: IQuizAnswerItem, id: number, isMultiple: boolean) => {
     if (isVerified) return
-    buttonSound()
+    buttonSound.play()
     const keyId = `${id}-${item.index}`
     const indexOf = _listChecked.current.indexOf(keyId)
     if (indexOf === -1) {

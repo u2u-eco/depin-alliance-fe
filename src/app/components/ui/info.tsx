@@ -22,12 +22,12 @@ const Info = ({ profile, rank }: InfoProps) => {
 
   const { tabSound } = useAppSound()
   const handleOpen = () => {
-    tabSound()
+    tabSound.play()
     route.push('/avatar')
   }
 
   const handleProfile = () => {
-    tabSound()
+    tabSound.play()
     route.push('/profile')
   }
 
@@ -65,7 +65,7 @@ const Info = ({ profile, rank }: InfoProps) => {
         {profile && (
           <Link
             onClick={() => {
-              tabSound()
+              tabSound.play()
             }}
             href="/ranking"
             className="[--space:_20px] xs:[--space:_24px] 2xs:[--space:_28px] absolute top-0 right-0 bg-green-500 cursor-pointer flex items-center justify-between py-1 xs:py-1.5 pr-2 pl-6 xs:pl-7 2xs:pl-8 w-[90px] xs:w-[100px] 2xs:w-[110px] [clip-path:_polygon(0_0,100%_0,100%_100%,var(--space)_100%)] z-[1]"
@@ -122,7 +122,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 <div className="flex items-center space-x-2 min-[400px]:space-x-3 2xs:space-x-4">
                   <Link
                     onClick={() => {
-                      tabSound()
+                      tabSound.play()
                     }}
                     href="/level"
                     className="flex items-center min-[400px]:space-x-1 cursor-pointer"
@@ -174,7 +174,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4 mr-3 2xs:mr-4">
                   <Link
                     onClick={() => {
-                      tabSound()
+                      tabSound.play()
                     }}
                     href="/profile"
                     className="p-1 group"
@@ -183,7 +183,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                   </Link>
                   <Link
                     onClick={() => {
-                      tabSound()
+                      tabSound.play()
                     }}
                     href="/setting"
                     className="p-1 group"

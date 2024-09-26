@@ -40,7 +40,7 @@ const CustomList = ({
 
   const handleClickItem = (item: any) => {
     if (onClickItem) {
-      buttonSound()
+      buttonSound.play()
       onClickItem(item)
     }
   }

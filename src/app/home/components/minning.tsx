@@ -107,7 +107,7 @@ export default function Mining() {
   }
 
   const handleClick = (type: any) => {
-    buttonSound()
+    buttonSound.play()
     switch (type) {
       case HOME_TYPE.START:
         if (isLoading) return

@@ -9,7 +9,7 @@ export default function AmountUseKey({ maxTotal, updateAmountUseKey }: IAmountUs
   const [amount, setAmount] = useState<number>(1)
   const { buttonSound } = useAppSound()
   const handleUpdateAmount = (_value: number) => {
-    buttonSound()
+    buttonSound.play()
     const currentAmount = amount + _value
     if (currentAmount < 1) {
       setAmount(1)

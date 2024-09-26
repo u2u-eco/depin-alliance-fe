@@ -55,7 +55,7 @@ const CustomNavbar = () => {
           {listMenu.map((item) => (
             <Link
               onClick={() => {
-                tabSound()
+                tabSound.play()
               }}
               href={item.link}
               className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative`}
