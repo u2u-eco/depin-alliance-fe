@@ -1,6 +1,7 @@
 import { Input } from '@nextui-org/react'
 import React from 'react'
 import { IconClose, IconSearch } from '../icons'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface InputProps {
   placeholder: string
@@ -21,8 +22,14 @@ const CustomInputSearch = ({
   onBlur,
   onValueChange
 }: InputProps) => {
+  const { buttonSound } = useAppSound()
+
+  const handleSound = () => {
+    buttonSound.play()
+  }
+
   return (
-    <>
+    <div onClick={handleSound}>
       <Input
         ref={refParent}
         isClearable
@@ -43,12 +50,16 @@ const CustomInputSearch = ({
           <IconSearch className="text-green-500 size-6 xs:size-7 2xs:size-8 min-w-6 xs:min-w-7 2xs:min-w-8" />
         }
         endContent={
-          <div ref={refBtnClear} className={`${refBtnClear ? 'opacity-0' : ''} `}>
+          <div
+            ref={refBtnClear}
+            className={`${refBtnClear ? 'opacity-0' : ''} `}
+            onClick={handleSound}
+          >
             <IconClose className="text-body size-5" />
           </div>
         }
       />
-    </>
+    </div>
   )
 }
 

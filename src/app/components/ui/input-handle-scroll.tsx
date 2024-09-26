@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import CustomInputSearch from './custom-input-search'
 import { IconClose } from '../icons'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IInputHandleScroll {
   onValueChange: (text: string) => void
 }
@@ -8,6 +9,8 @@ export default function InputHandleScroll({ onValueChange }: IInputHandleScroll)
   const refInput = useRef<any>(null)
   const refBtnClear = useRef<any>(null)
   const [isShowClear, setShowClear] = useState<boolean>(false)
+  const { buttonSound } = useAppSound()
+
   const handleClickInput = () => {
     const wrap = document.getElementById('jsBody')
     if (wrap && wrap.scrollTop < 150) {
@@ -43,7 +46,12 @@ export default function InputHandleScroll({ onValueChange }: IInputHandleScroll)
         onValueChange={_onValueChange}
       />
       {isShowClear && (
-        <div onClick={handleClear}>
+        <div
+          onClick={() => {
+            handleClear()
+            buttonSound.play()
+          }}
+        >
           <IconClose className="text-body size-5 absolute top-[50%] right-[12px] translate-y-[-50%]" />
         </div>
       )}

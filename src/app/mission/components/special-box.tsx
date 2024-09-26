@@ -1,6 +1,8 @@
+import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
+import { useAppSound } from '@/hooks/useAppSound'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface ModalProps {
   isOpen: any
@@ -15,6 +17,13 @@ interface ModalProps {
 }
 
 const SpecialBoxModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
+  const { specialSound } = useAppSound()
+
+  useEffect(() => {
+    if (isOpen) {
+      specialSound.play()
+    }
+  }, [specialSound, isOpen])
   return (
     <CustomModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} onOpenChange={onOpenChange} full>
       <div className="h-full flex flex-col justify-between p-3 3xs:p-4">
@@ -43,11 +52,7 @@ const SpecialBoxModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalP
           </p>
         </div>
         <div className="m-4 xs:m-6 2xs:m-8">
-          <div className="btn" onClick={onClose}>
-            <div className="btn-border"></div>
-            <div className="btn-primary">Claim</div>
-            <div className="btn-border"></div>
-          </div>
+          <CustomButton title="Claim" onAction={onClose} />
         </div>
       </div>
     </CustomModal>

@@ -1,5 +1,6 @@
 import { IconCheck, IconClose, IconPoint } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import { IJoinRequest } from '@/interfaces/i.league'
 import useCommonStore from '@/stores/commonStore'
 import Image from 'next/image'
@@ -21,10 +22,12 @@ const ITEM_TYPE = {
 const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemProps) => {
   const { currentLeague } = useCommonStore()
   const [selectCode, setSelectedCode] = useState<number>(0)
+  const { buttonSound } = useAppSound()
 
   const isDisable = item.userId === selectCode || (item?.id && item.id === selectCode)
   const handleClick = (type: string) => {
     if (isDisable) return
+    buttonSound.play()
     if (!handleKick) {
       setSelectedCode(item?.userId || item?.id || 0)
     }

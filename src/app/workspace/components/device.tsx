@@ -2,7 +2,7 @@
 
 import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
-import { IconCheckCircle, IconPoint } from '@/app/components/icons'
+import { IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem, IUserDeviceItem } from '@/interfaces/i.devices'
 import {
@@ -26,6 +26,8 @@ import ChooseDevice from './choose-device'
 import AccordionItem from '@/app/components/accordion-item'
 import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
+import CustomButton from '@/app/components/button'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -46,6 +48,8 @@ export default function Device({ height }: IDevice) {
   const detailDeviceItem = useRef<any>()
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
+  const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
+
   const [loadingButton, setLoadingButton] = useState(false)
 
   const currentName = useRef<string>('')
@@ -149,6 +153,7 @@ export default function Device({ height }: IDevice) {
 
   const handleConfirm = () => {
     if (loadingButton) return
+    buttonSound.play()
     switch (activeType) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
@@ -172,6 +177,7 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleSwap = () => {
+    buttonSound.play()
     equipType.current = detailDeviceItem.current.type
     setActiveType(DEVICE_TYPE.SWAP)
   }
@@ -216,6 +222,11 @@ export default function Device({ height }: IDevice) {
     currentName.current = value
   }
 
+  const handleSelectItem = (index: number) => {
+    buttonSound.play()
+    setActiveItem(index)
+  }
+
   const handleAddNewDevice = async () => {
     setLoadingButton(true)
     const res = await getNewDevice()
@@ -231,6 +242,15 @@ export default function Device({ height }: IDevice) {
     } catch (ex) {
       setLoadingButton(false)
     }
+  }
+
+  const handleExpanded = (index: number | false) => {
+    if (index) {
+      dropdownOpen.play()
+    } else {
+      dropdownClose.play()
+    }
+    setExpanded(index)
   }
 
   const disableBtn =
@@ -259,7 +279,7 @@ export default function Device({ height }: IDevice) {
                 index={item.index}
                 item={item}
                 expanded={expanded}
-                setExpanded={setExpanded}
+                setExpanded={handleExpanded}
                 handleEdit={(item) => handleClick(DEVICE_TYPE.EDIT, item)}
                 handleClickItem={handleClickItem}
               >
@@ -273,11 +293,10 @@ export default function Device({ height }: IDevice) {
             )
           })}
         </div>
+
         {userConfig?.maxDevice && userConfig.maxDevice > listDevice?.data.length && (
-          <div className="btn mt-6" onClick={() => handleClick(DEVICE_TYPE.BUY)}>
-            <div className="btn-border"></div>
-            <div className="btn-primary">buy more device</div>
-            <div className="btn-border"></div>
+          <div className="mt-6">
+            <CustomButton title="buy more device" onAction={() => handleClick(DEVICE_TYPE.BUY)} />
           </div>
         )}
       </div>
@@ -444,7 +463,7 @@ export default function Device({ height }: IDevice) {
             </>
           ) : (
             <ChooseDevice
-              setActiveItem={setActiveItem}
+              setActiveItem={handleSelectItem}
               type={equipType.current}
               activeItem={activeItem}
             />

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
+import { useAppSound } from '@/hooks/useAppSound'
 import useCommonStore from '@/stores/commonStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
@@ -11,6 +12,7 @@ const CustomNavbar = () => {
   const pathName = usePathname()
   const navRef = useRef<any>(null)
   const { currentLeague, setHeightNav } = useCommonStore()
+  const { tabSound } = useAppSound()
   const listMenu = [
     { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
@@ -52,6 +54,9 @@ const CustomNavbar = () => {
         >
           {listMenu.map((item) => (
             <Link
+              onClick={() => {
+                tabSound.play()
+              }}
               href={item.link}
               className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative`}
               key={item.id}

@@ -13,9 +13,11 @@ export const IS_ONLY_SUPPORT_MOBILE =
 export const PAGE_SIZE = 10
 export const MAX_SIZE_PER_PAGE = 10
 export const HIDE_COMPLETED_PARTNER = 't-depin-hide-completed-task'
+export const DEPIN_CONFIG = 't-depin-alliance-config'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
-  SUCCESS: 'SUCCESS'
+  SUCCESS: 'SUCCESS',
+  DEFAULT: 'DEFAULT'
 }
 export const UPGRADE_TAB = {
   RAM: 'RAM',
@@ -31,6 +33,17 @@ export const QUERY_CONFIG = {
   refetchOnMount: true,
   refetchOnReconnect: false,
   refetchOnWindowFocus: false
+}
+
+export const MAX_SIZE_UPLOAD = 20000000
+export const SETTING_TYPE = {
+  NOTIFICATION: 'NOTIFICATION',
+  MUSIC_THEME: 'MUSIC_THEME',
+  SOUND_EFFECT: 'SOUND_EFFECT',
+  WALLET: 'WALLET',
+  LANGUAGE: 'LANGUAGE',
+  FEEDBACK: 'FEEDBACK',
+  LOGOUT: 'LOGOUT'
 }
 
 export const LIST_TYPE = {

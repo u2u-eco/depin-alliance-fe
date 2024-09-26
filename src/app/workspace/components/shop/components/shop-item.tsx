@@ -14,6 +14,8 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import NotificationModal from './notification'
+import ItemDevice from '@/app/components/item-device'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number
@@ -31,6 +33,8 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const refListScroll = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [loadingButton, setLoadingButton] = useState(false)
+  const { buttonSound } = useAppSound()
+
   const {
     isOpen: isOpenNotification,
     onOpen: onOpenNotification,
@@ -73,9 +77,11 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const handleClick = (item: IDeviceTypeItem) => {
     currentItem.current = item
     onOpen()
+    buttonSound?.play()
   }
 
   const buy = async () => {
+    buttonSound.play()
     setLoadingButton(true)
     if (loadingButton) return
     try {
@@ -136,11 +142,13 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
                 className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
                 onClick={() => handleClick(item)}
               >
-                <ImageDevice
-                  image={item.image}
-                  className="size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                  type={item.type}
-                />
+                <div className="relative p-[1px] bg-green-100 size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]">
+                  <ImageDevice
+                    image={item.image}
+                    className="size-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                    type={item.type}
+                  />
+                </div>
 
                 <p className="font-mona font-semibold text-white mt-2 xs:mt-3 mb-1 text-xs xs:text-[13px] 2xs:text-sm leading-[15px] xs:leading-[16px] min-h-[30px] xs:min-h-[32px]">
                   {item.name}
@@ -235,6 +243,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
+                      buttonSound.play()
                       handleAmount(-1)
                     }}
                   >
@@ -248,6 +257,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
+                      buttonSound.play()
                       handleAmount(+1)
                     }}
                   >

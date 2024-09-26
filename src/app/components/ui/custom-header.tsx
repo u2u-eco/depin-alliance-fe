@@ -2,6 +2,7 @@ import React from 'react'
 import { IconChevron, IconHome } from '../icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface HeaderProps {
   title: string
@@ -10,8 +11,9 @@ interface HeaderProps {
 
 export const CustomHeader = ({ title, cb }: HeaderProps) => {
   const router = useRouter()
-
+  const { tabSound } = useAppSound()
   const handleBack = () => {
+    tabSound.play()
     if (cb) {
       cb()
     }
@@ -31,7 +33,12 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
           </div>
           <div className="size-1.5 bg-green-800"></div>
         </div>
-        <Link href="/home">
+        <Link
+          onClick={() => {
+            tabSound.play()
+          }}
+          href="/home"
+        >
           <IconHome className="size-6 xs:size-7 2xs:size-8" gradient />
         </Link>
       </div>

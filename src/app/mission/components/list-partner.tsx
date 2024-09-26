@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { genIdFromString } from '@/lib/utils'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface IListPartner {
   updateListPartner: (count: number) => void
@@ -41,6 +42,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const [isHideCompleted, setIsHideCompleted] = useState<boolean>(
     isHideCompletedStr === 'true' || isHideCompletedStr === null ? true : false
   )
+  const { tabSound, buttonSound } = useAppSound()
   const getStatus = (count: number, length: number) => {
     if (count === length) {
       return LIST_STATUS_MISSION.DONE
@@ -96,6 +98,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   const handleLinkMission = (item: IMissionPartner, index: number) => {
+    tabSound.play()
     setCurrentMission(item)
     router.push(`/mission/partners?id=${item.id}`)
   }
@@ -103,6 +106,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   const handleHideCompleted = () => {
     localStorage.setItem(HIDE_COMPLETED_PARTNER, isHideCompleted ? 'false' : 'true')
     setIsHideCompleted(!isHideCompleted)
+    buttonSound.play()
   }
 
   useEffect(() => {

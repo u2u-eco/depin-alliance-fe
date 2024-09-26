@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import useIsOnScreenKeyboardOpen from '@/hooks/useIsOnScreenKeyboardOpen'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ModalProps {
   title?: string
@@ -25,6 +26,8 @@ const CustomModal = ({
   // const {isOpen, onOpen, onOpenChange} = useDisclosure()
   const [placement, setPlacement] = useState<any>('bottom')
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
+  const { buttonSound } = useAppSound()
+
   useEffect(() => {
     if (isOpen) {
       setPlacement(window && window.innerWidth >= 375 && !isKeyboardOpen ? 'bottom' : 'top')
@@ -51,7 +54,7 @@ const CustomModal = ({
       <ModalContent>
         {(onClose) => (
           <div
-            className={`max-w-[480px] mx-auto w-full max-xs:overflow-y-auto max-xs:no-scrollbar ${full ? 'h-full' : ''}`}
+            className={`max-w-[480px] mx-auto w-full ${full ? 'h-full' : 'max-xs:overflow-y-auto max-xs:no-scrollbar'}`}
           >
             {full ? (
               <>{background}</>
@@ -59,7 +62,10 @@ const CustomModal = ({
               <>
                 <div
                   className="absolute top-3 xs:top-4 min-[400px]::top-5 2xs:top-6 right-3 xs:right-4 cursor-pointer"
-                  onClick={onClose}
+                  onClick={() => {
+                    buttonSound.play()
+                    onClose()
+                  }}
                 >
                   <img
                     className="size-6"

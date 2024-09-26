@@ -1,5 +1,6 @@
 import CustomModal from '@/app/components/custom-modal'
 import { IconCongratulation } from '@/app/components/icons'
+import { useAppSound } from '@/hooks/useAppSound'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -12,8 +13,10 @@ interface ModalProps {
 
 const CongratulationModal = ({ isOpen, onOpen, onOpenChange, onClose }: ModalProps) => {
   const router = useRouter()
+  const { buttonSound } = useAppSound()
 
   const handleClick = () => {
+    buttonSound.play()
     router.push('/league/in-league')
   }
 
