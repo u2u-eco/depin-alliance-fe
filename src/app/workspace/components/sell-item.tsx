@@ -13,7 +13,7 @@ export default function SellItem({ item, updateAmountSell }: ISellItem) {
   const { buttonSound } = useAppSound()
 
   const handleUpdateAmount = (index: number) => {
-    buttonSound()
+    buttonSound.play()
     const newValue = amount + index
     if (index > 0) {
       if (newValue <= item.totalItem) {

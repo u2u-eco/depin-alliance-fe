@@ -27,7 +27,7 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
   const isDisable = item.userId === selectCode || (item?.id && item.id === selectCode)
   const handleClick = (type: string) => {
     if (isDisable) return
-    buttonSound()
+    buttonSound.play()
     if (!handleKick) {
       setSelectedCode(item?.userId || item?.id || 0)
     }

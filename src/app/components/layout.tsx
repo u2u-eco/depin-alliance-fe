@@ -12,6 +12,7 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import { DEPIN_CONFIG } from '@/constants'
+import SoundsProvider from '@/contexts/sounds.context'
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom, setSoundEnabled, setSoundThemeEnabled } = useCommonStore()
   const queryClient = new QueryClient()
@@ -27,6 +28,18 @@ export default function Layout({ children }: any) {
       setSoundThemeEnabled(depinConfig.soundThemeEnabled)
     }
   }
+
+  const handleVisible = async () => {
+    if (document.hidden) {
+      window.audioContext.suspend()
+      // sound.stop()
+    } else {
+      setTimeout(() => {
+        window.audioContext.resume()
+      }, 1000)
+    }
+  }
+
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -63,12 +76,14 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
-            <Swipeable onSwipeRight={handleBack}>
-              <AnimatePresence key="custom-page">
-                {children}
-                {/* {pathName !== '/' && <CustomNavbar />} */}
-              </AnimatePresence>
-            </Swipeable>
+            <SoundsProvider>
+              <Swipeable onSwipeRight={handleBack}>
+                <AnimatePresence key="custom-page">
+                  {children}
+                  {/* {pathName !== '/' && <CustomNavbar />} */}
+                </AnimatePresence>
+              </Swipeable>
+            </SoundsProvider>
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>

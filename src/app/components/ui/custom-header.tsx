@@ -13,7 +13,7 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
   const router = useRouter()
   const { tabSound } = useAppSound()
   const handleBack = () => {
-    tabSound()
+    tabSound.play()
     if (cb) {
       cb()
     }
@@ -35,7 +35,7 @@ export const CustomHeader = ({ title, cb }: HeaderProps) => {
         </div>
         <Link
           onClick={() => {
-            tabSound()
+            tabSound.play()
           }}
           href="/home"
         >

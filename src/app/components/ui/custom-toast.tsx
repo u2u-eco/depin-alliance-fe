@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from 'react'
 import { IconCheckCircle, IconCloseHexagon, IconPoint } from '../icons'
 import { formatNumber } from '@/helper/common'
-import useSound from 'use-sound'
 import useCommonStore from '@/stores/commonStore'
 
 interface ToastProps {
@@ -18,19 +17,17 @@ const TOAST_TYPE = {
 
 const CustomToast = ({ type, title, point, description }: ToastProps) => {
   const { soundEnabled } = useCommonStore()
-  const [play] = useSound(
-    type === TOAST_TYPE.SUCCESS
-      ? '/assets/sounds/interaction/notify-success.mp3'
-      : '/assets/sounds/interaction/notify-error.mp3',
-    {
-      soundEnabled,
-      interrupt: true
-    }
-  )
+  const message = new Howl({
+    src:
+      type === TOAST_TYPE.SUCCESS
+        ? '/assets/sounds/interaction/notify-success.mp3'
+        : '/assets/sounds/interaction/notify-error.mp3',
+    mute: !soundEnabled
+  })
 
   useEffect(() => {
-    play()
-  }, [play])
+    message.play()
+  }, [message])
 
   return (
     <div

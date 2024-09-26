@@ -22,7 +22,7 @@ export default function WorkspaceContent() {
   // const [activeTab, setActiveTab] = useState(WORKSPACE_TYPE.DEVICE)
 
   const handleSelectTab = (tab: string) => {
-    tabSound()
+    tabSound.play()
     if (tab !== WORKSPACE_TYPE.SHOP) {
       setTypeItemShop(null)
     }

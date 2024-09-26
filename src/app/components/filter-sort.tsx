@@ -35,7 +35,7 @@ export default function FilterSort({
   const { buttonSound } = useAppSound()
 
   const handleSort = (sortBy: string, sortAscending: boolean, _type: string) => {
-    buttonSound()
+    buttonSound.play()
     if (type === FILTER_TYPE.FILTER) {
       setFilterOptions({
         ...filterOptions,

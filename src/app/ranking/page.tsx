@@ -35,7 +35,7 @@ export default function RankingPage() {
   })
 
   const handleSelectTab = (tab: string) => {
-    tabSound()
+    tabSound.play()
     setActiveType(tab)
   }
 

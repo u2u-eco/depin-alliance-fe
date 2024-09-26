@@ -27,7 +27,7 @@ export default function UpgradeModal({
     if (!userInfo?.pointSkill || disableBtn) {
       return
     }
-    buttonSound()
+    buttonSound.play()
     handleAction(item.skillId)
   }
 

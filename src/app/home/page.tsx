@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
 import CustomPage from '../components/custom-page'
@@ -9,33 +9,22 @@ import { useUserInfo } from '@/hooks/useUserInfo'
 import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 import { motion } from 'framer-motion'
-import useSound from 'use-sound'
 import { useAppSound } from '@/hooks/useAppSound'
-
+import { SoundsContextValue } from '@/contexts/sounds.context'
 export default function HomePage() {
-  const { userInfo, token, getUserConfig, soundThemeEnabled } = useCommonStore()
-  const [play, { stop }] = useSound('/assets/sounds/theme/main-theme.mp3', {
-    soundEnabled: soundThemeEnabled,
-    loop: true
-  })
+  const { userInfo } = useCommonStore()
+
+  const { main } = useContext(SoundsContextValue)
   const { tabSound } = useAppSound()
 
-  // const totalDevice = useRef<number>(0)
+  useEffect(() => {
+    main.play()
+    return () => {
+      main.stop()
+    }
+  }, [])
 
   useUserInfo()
-
-  useEffect(() => {
-    play()
-    return () => {
-      stop()
-    }
-  }, [play])
-
-  useEffect(() => {
-    if (token) {
-      getUserConfig()
-    }
-  }, [token])
 
   return (
     <>
@@ -131,7 +120,7 @@ export default function HomePage() {
                 </div>
                 <Link
                   onClick={() => {
-                    tabSound()
+                    tabSound.play()
                   }}
                   href="/workspace"
                   className="flex items-center space-x-1"

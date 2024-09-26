@@ -21,7 +21,7 @@ const SpecialBoxModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalP
 
   useEffect(() => {
     if (isOpen) {
-      specialSound()
+      specialSound.play()
     }
   }, [specialSound, isOpen])
   return (

@@ -63,7 +63,7 @@ const CustomModal = ({
                 <div
                   className="absolute top-3 xs:top-4 min-[400px]::top-5 2xs:top-6 right-3 xs:right-4 cursor-pointer"
                   onClick={() => {
-                    buttonSound()
+                    buttonSound.play()
                     onClose()
                   }}
                 >

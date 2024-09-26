@@ -26,7 +26,7 @@ export default function MissionPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const handleChangeTab = (tab: any) => {
     setActiveTab(tab)
-    tabSound()
+    tabSound.play()
   }
 
   const showTabPartner = (status: boolean) => {
