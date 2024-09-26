@@ -77,6 +77,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const handleClick = (item: IDeviceTypeItem) => {
     currentItem.current = item
     onOpen()
+    buttonSound?.play()
   }
 
   const buy = async () => {
