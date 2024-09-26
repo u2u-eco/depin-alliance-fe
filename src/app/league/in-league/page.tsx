@@ -13,7 +13,9 @@ import {
   IconLeague,
   IconLeave,
   IconMember,
+  IconMinusCircle,
   IconPlus,
+  IconPlusCircle,
   IconPoint,
   IconProfit,
   IconResearch,
@@ -36,6 +38,8 @@ import Loader from '@/app/components/ui/loader'
 import LeaveModal from '../components/leave'
 import FundingModal from '../components/funding'
 import ContributeModal from '../components/contribute'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 const LEAGUE_TYPE = {
   LEAVE: 'leave',
@@ -54,6 +58,12 @@ export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const {
+    isOpen: isOpenContribute,
+    onOpen: onOpenContribute,
+    onClose: onCloseContribute,
+    onOpenChange: onOpenChangeContribute
+  } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
   const { buttonSound, tabSound } = useAppSound()
   const [isLoadingAvatar, setLoadingAvatar] = useState<boolean>(false)
@@ -176,6 +186,10 @@ export default function InLeaguePage() {
     } catch (ex) {
       setLoadingAvatar(false)
     }
+  }
+  const handleClickItem = () => {
+    onClose()
+    onOpenContribute()
   }
 
   const onChange = (e: any) => {
@@ -496,9 +510,117 @@ export default function InLeaguePage() {
           ) : activeType === LEAGUE_TYPE.FUNDING ? (
             <FundingModal />
           ) : (
-            <ContributeModal />
+            <ContributeModal handleClickItem={handleClickItem} />
           )}
         </>
+      </CustomModal>
+      <CustomModal
+        title="CONTRIBUTE"
+        isOpen={isOpenContribute}
+        onOpen={onOpenContribute}
+        onClose={onCloseContribute}
+        onOpenChange={onOpenChangeContribute}
+      >
+        <div>
+          <div className="text-body text-[15px] xs:text-base !leading-[18px] text-center tracking-[-1px]">
+            <p>
+              Are you sure you want to contribute <span className="text-gradient">“RAM 16GB”</span>
+            </p>
+          </div>
+          <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
+            <div className="[--shape:_30px] p-[1px] bg-green-100 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape))] size-[100px] xs:size-[115px] 2xs:size-[130px] min-w-[100px] xs:min-w-[115px] 2xs:min-w-[130px]">
+              <Image
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="size-full [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape))]"
+                src={`/assets/images/upgrade/upgrade-ram@2x.png`}
+                alt="DePIN Alliance"
+              />
+              {/* <Image
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full h-full [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
+                    src={
+                      currentItem.current?.image?.length > 0
+                        ? currentItem.current.image
+                        : isSpecial
+                          ? `/assets/images/workspace/item-special@2x.png`
+                          : `/assets/images/upgrade/upgrade-${currentItem.current?.type?.toLowerCase()}@2x.png`
+                    }
+                    alt="DePIN Alliance"
+                  /> */}
+            </div>
+            <div className="space-y-2">
+              <p className="text-white font-semibold font-mona text-base xs:text-xl 2xs:text-2xl !leading-[20px] xs:!leading-[24px] 2xs:!leading-[28px]">
+                RAM 16GB
+              </p>
+              <p className="font-semibold text-title leading-[16px]">
+                16 <span className="font-normal text-white-50 tracking-[-1px]">In Total</span>
+              </p>
+              <p className="font-semibold text-green-600 leading-[16px]">
+                3 <span className="font-normal text-white-50 tracking-[-1px]">Equipped</span>
+              </p>
+            </div>
+          </div>
+          <motion.div
+            className="relative w-fit mx-auto mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <img src="/assets/images/workspace/workspace-modal-frame.svg" alt="" />
+            <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between space-x-3 py-3 px-4 xs:px-6 2xs:px-8">
+              <div className="space-y-2 xs:space-y-3">
+                <div className="font-mona text-title uppercase tracking-[-1px]">TOTAL PROFIT:</div>
+                <div className="flex items-center space-x-1.5 xs:space-x-2">
+                  <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+                  <span className="text-green-500 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">
+                    10,000/h
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2 xs:space-y-3">
+                <div className="font-mona text-title uppercase tracking-[-1px]">AMOUNT:</div>
+                <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+                  <div className="cursor-pointer">
+                    <IconMinusCircle className={`size-5 xs:size-6 text-green-800 `} />
+                  </div>
+                  <span className="text-green-100 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">
+                    1
+                  </span>
+                  <div className="cursor-pointer">
+                    <IconPlusCircle className={`size-5 xs:size-6 text-green-500`} />
+                  </div>
+                </div>
+                {/* <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+                  <div className="cursor-pointer" onClick={() => handleUpdateAmount(-1)}>
+                    <IconMinusCircle
+                      className={`size-5 xs:size-6 ${amount === 1 ? 'text-green-800' : 'text-green-500'}`}
+                    />
+                  </div>
+                  <span className="text-green-100 text-base xs:text-lg !leading-[20px] xs:!leading-[22px] font-semibold">
+                    {amount}
+                  </span>
+                  <div className="cursor-pointer" onClick={() => handleUpdateAmount(1)}>
+                    <IconPlusCircle
+                      className={`size-5 xs:size-6 ${amount === item.totalItem ? 'text-green-800' : 'text-green-500'}`}
+                    />
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          </motion.div>
+          <div className="mt-6">
+            <div className="btn">
+              <div className="btn-border"></div>
+              <div className="btn-primary">CONTRIBUTE</div>
+              <div className="btn-border"></div>
+            </div>
+          </div>
+        </div>
       </CustomModal>
     </>
   )
