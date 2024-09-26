@@ -217,6 +217,7 @@ export default function Item({ height }: IItem) {
   }
 
   const handleLinkBuy = () => {
+    buttonSound.play()
     setTypeItemShop(filterOptions.type || null)
     setActiveTab(WORKSPACE_TYPE.SHOP)
   }
