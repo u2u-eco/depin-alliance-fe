@@ -105,6 +105,10 @@ export default function InLeaguePage() {
   const onChange = (e: any) => {
     if (isLoadingAvatar) return
     file.current = e.target.files[0]
+    if (!file.current.type.includes('image')) {
+      toast.error(<CustomToast type="error" title="Unsupported file format" />)
+      return
+    }
     if (file.current.size > MAX_SIZE_UPLOAD) {
       toast.error(<CustomToast type="error" title="File too large" />)
       return
