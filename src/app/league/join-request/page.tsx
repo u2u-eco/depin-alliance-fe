@@ -17,6 +17,7 @@ import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function JoinRequestPage() {
   const maxPage = useRef<number>(0)
@@ -28,6 +29,8 @@ export default function JoinRequestPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
   const isUpdatePage = useRef<boolean>(false)
+  const { buttonSound } = useAppSound()
+
   useQuery({
     queryKey: ['getListDevice', page],
     queryFn: async () => {
@@ -98,6 +101,7 @@ export default function JoinRequestPage() {
   }
 
   const handleInvite = () => {
+    buttonSound.play()
     if (currentLeague?.inviteLink) {
       window.open(
         `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,

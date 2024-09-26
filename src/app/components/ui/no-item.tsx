@@ -2,6 +2,7 @@ import { IconEmpty, IconOpenLink } from '../icons'
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ItemProps {
   title: string
@@ -17,6 +18,11 @@ interface ItemProps {
 }
 
 export default function NoItem({ title, classNames, link, textLink, action }: ItemProps) {
+  const { buttonSound } = useAppSound()
+
+  const handleSound = () => {
+    buttonSound.play()
+  }
   return (
     <div
       className={cn(
@@ -36,12 +42,14 @@ export default function NoItem({ title, classNames, link, textLink, action }: It
         {title}
       </p>
       {link && (
-        <Link href={link || '#'} className="flex items-center space-x-1">
-          <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">
-            {textLink || 'Buy Now'}
-          </p>
-          <IconOpenLink className="size-6" gradient />
-        </Link>
+        <div onClick={handleSound}>
+          <Link href={link || '#'} className="flex items-center space-x-1">
+            <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">
+              {textLink || 'Buy Now'}
+            </p>
+            <IconOpenLink className="size-6" gradient />
+          </Link>
+        </div>
       )}
       {action && (
         <div onClick={action} className="flex items-center space-x-1">

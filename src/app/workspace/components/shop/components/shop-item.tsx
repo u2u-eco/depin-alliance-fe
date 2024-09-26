@@ -15,6 +15,7 @@ import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import NotificationModal from './notification'
 import ItemDevice from '@/app/components/item-device'
+import { useAppSound } from '@/hooks/useAppSound'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number
@@ -32,6 +33,8 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const refListScroll = useRef<any>()
   const dataList = useRef<IDeviceTypeItem[]>([])
   const [loadingButton, setLoadingButton] = useState(false)
+  const { buttonSound } = useAppSound()
+
   const {
     isOpen: isOpenNotification,
     onOpen: onOpenNotification,
@@ -77,6 +80,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   }
 
   const buy = async () => {
+    buttonSound.play()
     setLoadingButton(true)
     if (loadingButton) return
     try {
@@ -215,6 +219,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
+                      buttonSound.play()
                       handleAmount(-1)
                     }}
                   >
@@ -228,6 +233,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
                   <div
                     className="cursor-pointer"
                     onClick={() => {
+                      buttonSound.play()
                       handleAmount(+1)
                     }}
                   >

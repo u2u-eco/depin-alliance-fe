@@ -20,7 +20,7 @@ export default function Mining() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
 
-  const { buttonSound } = useAppSound()
+  const { buttonSound, specialSound } = useAppSound()
 
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
@@ -97,6 +97,7 @@ export default function Mining() {
         if (res.data.bonusReward > 0) {
           setBonusReward(res.data.bonusReward)
           onOpen()
+          specialSound.play()
         }
         updateUserInfo()
       }

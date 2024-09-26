@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { CustomHeader } from '../components/ui/custom-header'
 import CustomToast from '../components/ui/custom-toast'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const listAvatar = [
   {
@@ -33,6 +34,8 @@ export default function Avatar() {
   const [listImage, setListImage] = useState<Array<string>>([])
   const [selectedImage, setSelectedImage] = useState<string>('')
   const currentIndex = useRef<number>(0)
+  const { buttonSound } = useAppSound()
+
   const getAvatar = async () => {
     const res = await getListAvatar()
     if (res.status) {
@@ -40,6 +43,7 @@ export default function Avatar() {
     }
   }
   const setAvatarActive = (avatar: string, index: number) => {
+    buttonSound.play()
     setSelectedImage(avatar)
     currentIndex.current = index
   }
@@ -49,6 +53,7 @@ export default function Avatar() {
   }
 
   const handleUpdateAvatar = async () => {
+    buttonSound.play()
     const res = await updateAvatar(selectedImage)
     if (res.status) {
       toast.success(<CustomToast type="success" title="Update successfully!" />)
@@ -63,6 +68,8 @@ export default function Avatar() {
   }
 
   const handleChange = (value: number) => {
+    buttonSound.play()
+
     let nextItem = currentIndex.current + value
     if (nextItem < 0) {
       nextItem = 0

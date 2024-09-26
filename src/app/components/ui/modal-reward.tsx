@@ -2,6 +2,7 @@ import { Modal, ModalContent } from '@nextui-org/react'
 import React, { ReactNode } from 'react'
 import { IconPoint } from '../icons'
 import CustomModal from '../custom-modal'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface ModalProps {
   isOpen: any
@@ -22,6 +23,8 @@ const ModalReward = ({
   text,
   point
 }: ModalProps) => {
+  const { buttonSound } = useAppSound()
+
   return (
     <CustomModal isOpen={isOpen} onClose={onCloseModal} onOpenChange={onOpenChange} full>
       <div className="h-full flex flex-col justify-between p-4">
@@ -51,7 +54,13 @@ const ModalReward = ({
           </div>
         </div>
         <div className="m-4 xs:m-6 2xs:m-8">
-          <div className="btn" onClick={onCloseModal}>
+          <div
+            className="btn"
+            onClick={() => {
+              onCloseModal()
+              buttonSound.play()
+            }}
+          >
             <div className="btn-border"></div>
             <div className="btn-primary">CLAIM REWARD</div>
             <div className="btn-border"></div>

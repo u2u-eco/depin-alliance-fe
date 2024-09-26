@@ -1,6 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import ImageDevice from '@/app/components/image-device'
 import { WORKSPACE_TYPE, WorkspaceContext } from '@/app/workspace/context/workspace-context'
+import { useAppSound } from '@/hooks/useAppSound'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import React, { useContext } from 'react'
 
@@ -14,7 +15,10 @@ interface ModalProps {
 
 const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
   const { setActiveTab } = useContext(WorkspaceContext)
+  const { buttonSound } = useAppSound()
+
   const handleClick = () => {
+    buttonSound.play()
     setActiveTab(WORKSPACE_TYPE.DEVICE)
   }
 
@@ -45,7 +49,13 @@ const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: Moda
           </div>
         </div>
         <div className="flex space-x-2 xs:space-x-3 2xs:space-x-4 my-3 xs:my-4">
-          <div className="btn default" onClick={onClose}>
+          <div
+            className="btn default"
+            onClick={() => {
+              onClose()
+              buttonSound.play()
+            }}
+          >
             <div className="btn-border"></div>
             <div className="btn-default text-sm xs:text-15px 2xs:text-base !p-3 xs:!p-[14px]">
               BACK TO SHOP
