@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
@@ -12,6 +12,8 @@ import useCommonStore from '@/stores/commonStore'
 import { SETTING_TYPE } from '@/constants'
 import { useQuery } from '@tanstack/react-query'
 import { getUserSetting, updateSetting } from '@/services/user'
+import { toast } from 'sonner'
+import CustomToast from '../components/ui/custom-toast'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -23,18 +25,15 @@ const listSocial = [
 
 export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { soundEnabled, soundThemeEnabled, setSoundEnabled, setSoundThemeEnabled } =
-    useCommonStore()
+  const { userSetting, getUserSetting } = useCommonStore()
 
-  const { data } = useQuery({
-    queryKey: ['fetchUserSetting'],
-    queryFn: getUserSetting
-  })
-
-  const handleUpdateSetting = (data: { setting: string; enable: boolean }) => {
-    updateSetting(data)
+  const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
+    const res = await updateSetting(data)
+    if (res.status) {
+      toast.success(<CustomToast type="success" title="Update config successfully" />)
+      getUserSetting()
+    }
   }
-  console.log(data)
 
   // const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)
   // const depinConfig = depinConfigStr ? JSON.parse(depinConfigStr) : {}
@@ -48,7 +47,8 @@ export default function SettingPage() {
       type: SETTING_TYPE.MUSIC_THEME,
       image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
       title: 'Music Theme',
-      text: soundThemeEnabled ? 'Turn on' : 'Turn off',
+      text: userSetting?.enableMusicTheme ? 'Turn on' : 'Turn off',
+      active: userSetting?.enableMusicTheme,
       icon: ''
     },
     {
@@ -56,7 +56,8 @@ export default function SettingPage() {
       type: SETTING_TYPE.SOUND_EFFECT,
       image: <IconSound className="size-7 xs:size-8 2xs:size-9" gradient />,
       title: 'Sound Effect',
-      text: soundEnabled ? 'Turn on' : 'Turn off',
+      active: userSetting?.enableSoundEffect,
+      text: userSetting?.enableSoundEffect ? 'Turn on' : 'Turn off',
       icon: ''
     }
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
@@ -73,32 +74,16 @@ export default function SettingPage() {
         console.log(111)
         break
       case SETTING_TYPE.MUSIC_THEME:
-        // localStorage.setItem(
-        //   DEPIN_CONFIG,
-        //   JSON.stringify({
-        //     ...depinConfig,
-        //     soundThemeEnabled: !soundThemeEnabled
-        //   })
-        // )
         handleUpdateSetting({
           setting: type,
-          enable: !soundThemeEnabled
+          enable: !userSetting?.enableMusicTheme
         })
-        setSoundThemeEnabled(!soundThemeEnabled)
         break
       case SETTING_TYPE.SOUND_EFFECT:
-        // localStorage.setItem(
-        //   DEPIN_CONFIG,
-        //   JSON.stringify({
-        //     ...depinConfig,
-        //     soundEnabled: !soundEnabled
-        //   })
-        // )
         handleUpdateSetting({
           setting: type,
-          enable: !soundEnabled
+          enable: !userSetting?.enableSoundEffect
         })
-        setSoundEnabled(!soundEnabled)
         break
       case SETTING_TYPE.FEEDBACK:
         console.log(111)
@@ -108,6 +93,10 @@ export default function SettingPage() {
         break
     }
   }
+
+  useEffect(() => {
+    getUserSetting()
+  }, [])
 
   return (
     <>
@@ -148,10 +137,10 @@ export default function SettingPage() {
                       {item.type === SETTING_TYPE.SOUND_EFFECT ||
                       item.type === SETTING_TYPE.MUSIC_THEME ? (
                         <div
-                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${(item.type === SETTING_TYPE.SOUND_EFFECT && soundEnabled) || (item.type === SETTING_TYPE.MUSIC_THEME && soundThemeEnabled) ? 'bg-white/10' : ''}`}
+                          className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${item.active ? 'bg-white/10' : ''}`}
                         >
                           <div
-                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${(item.type === SETTING_TYPE.SOUND_EFFECT && soundEnabled) || (item.type === SETTING_TYPE.MUSIC_THEME && soundThemeEnabled) ? 'opacity-100' : ''}`}
+                            className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${item.active ? 'opacity-100' : ''}`}
                           ></div>
                         </div>
                       ) : (

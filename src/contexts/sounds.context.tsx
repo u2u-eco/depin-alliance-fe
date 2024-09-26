@@ -12,40 +12,40 @@ interface ISoundsContext {
 export const SoundsContextValue = createContext<any>({})
 
 const SoundsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { soundEnabled, soundThemeEnabled } = useCommonStore()
+  const { userSetting } = useCommonStore()
   const [sounds, setSounds] = useState<any>({})
   useEffect(() => {
     const mainSound = new Howl({
       src: ['/assets/sounds/theme/main-theme.mp3'],
       loop: true,
-      mute: !soundThemeEnabled,
+      mute: !userSetting?.enableMusicTheme,
       html5: false
     })
     const _tabSound = new Howl({
       src: ['/assets/sounds/interaction/tab-click.mp3'],
       html5: false,
-      mute: !soundEnabled
+      mute: !userSetting?.enableSoundEffect
     })
     const _buttonSound = new Howl({
       src: ['/assets/sounds/interaction/button-click.mp3'],
       html5: false,
-      mute: !soundEnabled
+      mute: !userSetting?.enableSoundEffect
     })
     const _specialSound = new Howl({
       src: ['/assets/sounds/theme/special-effect.mp3'],
       html5: false,
-      mute: !soundEnabled
+      mute: !userSetting?.enableSoundEffect
     })
 
     const _dropdownOpenSound = new Howl({
       src: ['/assets/sounds/interaction/dropdown-open.mp3'],
       html5: false,
-      mute: !soundEnabled
+      mute: !userSetting?.enableSoundEffect
     })
     const _dropdownCloseSound = new Howl({
       src: ['/assets/sounds/interaction/dropdown-close.mp3'],
       html5: false,
-      mute: !soundEnabled
+      mute: !userSetting?.enableSoundEffect
     })
 
     setSounds({
@@ -56,7 +56,7 @@ const SoundsProvider = ({ children }: { children: React.ReactNode }) => {
       dropdownOpen: _dropdownOpenSound,
       dropdownClose: _dropdownCloseSound
     })
-  }, [soundEnabled, soundThemeEnabled])
+  }, [userSetting])
 
   const handleVisible = async () => {
     if (document.hidden) {

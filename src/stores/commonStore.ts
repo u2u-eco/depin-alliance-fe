@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { CURRENT_STATUS as I_CURRENT_STATUS, IDeviceItem, IUserInfo } from '@/interfaces/i.user'
-import { getUserConfig, getUserInfo } from '@/services/user'
-import { IUserConfig, IUserLeague } from '@/interfaces/i.league'
+import { getUserConfig, getUserInfo, getUserSetting } from '@/services/user'
+import { IUserConfig, IUserLeague, IUserSetting } from '@/interfaces/i.league'
 import Cookies from 'js-cookie'
 import { CURRENT_STATUS } from '@/constants'
 interface CommonState {
@@ -12,10 +12,9 @@ interface CommonState {
   currentStatus: I_CURRENT_STATUS
   currentLeague: IUserLeague | null
   heightNav: number
-  soundEnabled: boolean
-  soundThemeEnabled: boolean
   safeAreaBottom: number
   userConfig: IUserConfig | null
+  userSetting: IUserSetting | null
   setSafeAreaBottom: (height: number) => void
   setHeightNav: (height: number) => void
   setToken: ({ token }: { token: string }) => void
@@ -25,8 +24,7 @@ interface CommonState {
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
   getUserInfo: () => Promise<any>
   getUserConfig: () => void
-  setSoundEnabled: (status: boolean) => void
-  setSoundThemeEnabled: (status: boolean) => void
+  getUserSetting: () => void
   setCurrentLeague: ({ league }: { league: IUserLeague | null }) => void
 }
 
@@ -37,10 +35,9 @@ const useCommonStore = create<CommonState>((set) => ({
   deviceInfo: [],
   currentLeague: null,
   userConfig: null,
+  userSetting: null,
   heightNav: 70,
   safeAreaBottom: 0,
-  soundEnabled: true,
-  soundThemeEnabled: true,
   currentStatus: I_CURRENT_STATUS.STARTED,
   setSafeAreaBottom: (height: number) => set({ safeAreaBottom: height }),
   setHeightNav: (height: number) => set({ heightNav: height }),
@@ -50,8 +47,6 @@ const useCommonStore = create<CommonState>((set) => ({
   setUserConfig: ({ config }) => set({ userConfig: config }),
   setDevice: ({ info }) => set({ deviceInfo: info }),
   setCurrentStatus: ({ status }) => set({ currentStatus: status }),
-  setSoundEnabled: (status: boolean) => set({ soundEnabled: status }),
-  setSoundThemeEnabled: (status: boolean) => set({ soundThemeEnabled: status }),
   getUserInfo: async () => {
     const response = await getUserInfo()
     if (response.status) {
@@ -68,6 +63,13 @@ const useCommonStore = create<CommonState>((set) => ({
     if (response.status) {
       const config = response.data
       set(() => ({ userConfig: config }))
+    }
+  },
+  getUserSetting: async () => {
+    const response = await getUserSetting()
+    if (response.status) {
+      const config = response.data
+      set(() => ({ userSetting: config }))
     }
   }
 }))

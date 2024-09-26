@@ -6,6 +6,9 @@ import { useRef, useState } from 'react'
 import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
 import Image from 'next/image'
 import InputNameLeague from './input-name-league'
+import { MAX_SIZE_UPLOAD } from '@/constants'
+import { toast } from 'sonner'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 interface ICreateLeague {
   onClose: () => void
@@ -21,6 +24,10 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   const [isDisableCreate, disableCreate] = useState<boolean>(true)
   const onChange = (e: any) => {
     file.current = e.target.files[0]
+    if (file.current.size > MAX_SIZE_UPLOAD) {
+      toast.error(<CustomToast type="error" title="File too large" />)
+      return
+    }
     filetoDataURL(file.current).then((res) => {
       setImagePreview(res)
       dataURLtoFile(res, EImageType.PNG).then((image) => {
@@ -64,6 +71,7 @@ export default function CreateLeague({ onClose, onAction }: ICreateLeague) {
   // }
   const create = async () => {
     if (isLoading || isDisableCreate || !imagePreview) return
+
     setIsLoading(true)
     const formData = new FormData()
     formData.append('name', name.current)

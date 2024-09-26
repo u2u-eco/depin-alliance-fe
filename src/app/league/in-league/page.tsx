@@ -15,7 +15,7 @@ import {
   IconUserAddCircle
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { BUTTON_TYPE, TELE_URI } from '@/constants'
+import { BUTTON_TYPE, MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
 import { formatNumber } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
@@ -30,7 +30,7 @@ import Loader from '@/app/components/ui/loader'
 
 export default function InLeaguePage() {
   const router = useRouter()
-  const { currentLeague, setCurrentLeague, soundEnabled } = useCommonStore()
+  const { currentLeague, setCurrentLeague } = useCommonStore()
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
   const { buttonSound, tabSound } = useAppSound()
@@ -83,15 +83,19 @@ export default function InLeaguePage() {
 
   const updateAvatar = async () => {
     const formData = new FormData()
+
     if (file.current) {
       formData.append('image', file.current)
     }
+
     try {
       const res: any = await updateAvatarLeague(formData)
       if (res.status && res.data) {
         _getUserLeague()
       }
-      setLoadingAvatar(false)
+      setTimeout(() => {
+        setLoadingAvatar(false)
+      })
     } catch (ex) {
       setLoadingAvatar(false)
     }
@@ -100,6 +104,10 @@ export default function InLeaguePage() {
   const onChange = (e: any) => {
     if (isLoadingAvatar) return
     file.current = e.target.files[0]
+    if (file.current.size > MAX_SIZE_UPLOAD) {
+      toast.error(<CustomToast type="error" title="File too large" />)
+      return
+    }
     try {
       setLoadingAvatar(true)
       filetoDataURL(file.current).then((res) => {
