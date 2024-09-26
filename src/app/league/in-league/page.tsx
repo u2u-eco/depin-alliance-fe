@@ -91,6 +91,7 @@ export default function InLeaguePage() {
     try {
       const res: any = await updateAvatarLeague(formData)
       if (res.status && res.data) {
+        toast.success(<CustomToast type="success" title="Update avatar successfully" />)
         _getUserLeague()
       }
       setTimeout(() => {

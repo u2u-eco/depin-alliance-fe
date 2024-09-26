@@ -28,13 +28,20 @@ export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
   const { buttonSound } = useAppSound()
+  const [isLoading, setLoading] = useState<boolean>(false)
 
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
+    if (isLoading) return
+    setLoading(true)
     const res = await updateSetting(data)
     if (res.status) {
+      toast.dismiss()
       toast.success(<CustomToast type="success" title="Update config successfully" />)
-      getUserSetting()
+      await getUserSetting()
     }
+    setTimeout(() => {
+      setLoading(false)
+    })
   }
 
   // const depinConfigStr = localStorage.getItem(DEPIN_CONFIG)

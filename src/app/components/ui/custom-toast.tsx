@@ -26,8 +26,9 @@ const CustomToast = ({ type, title, point, description }: ToastProps) => {
   })
 
   useEffect(() => {
+    message.stop()
     message.play()
-  }, [message])
+  }, [])
 
   return (
     <div
