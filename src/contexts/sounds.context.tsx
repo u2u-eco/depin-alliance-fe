@@ -56,7 +56,7 @@ const SoundsProvider = ({ children }: { children: React.ReactNode }) => {
       dropdownOpen: _dropdownOpenSound,
       dropdownClose: _dropdownCloseSound
     })
-  }, [soundEnabled])
+  }, [soundEnabled, soundThemeEnabled])
 
   const handleVisible = async () => {
     if (document.hidden) {
