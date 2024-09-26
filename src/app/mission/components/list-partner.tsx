@@ -56,7 +56,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     const _listTaskDone: { [key: number]: number } = {}
     let _missionUnDone = 0
     const listDone: IMissionPartner[] = []
-    const listUnDone: IMissionPartner[] = []
+    let listUnDone: IMissionPartner[] = []
     let _isEmptyPartner = true
     list.forEach((partnerItem: any, index: number) => {
       let id: any = genIdFromString(partnerItem.name)
@@ -89,6 +89,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
     })
     setPartnerDone(list?.length - _missionUnDone)
     updateListPartner(_missionUnDone)
+    listUnDone = listUnDone.splice(0, 11)
     const _listTask: any = isHideCompleted ? [...listUnDone] : [...listUnDone, ...listDone]
     setListTaskByFilter(_listTask)
     if (isHideCompleted) {
