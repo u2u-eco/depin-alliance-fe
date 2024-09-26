@@ -16,7 +16,7 @@ interface Pageprops {
 }
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
-  const { heightNav, safeAreaBottom } = useCommonStore()
+  const { heightNav } = useCommonStore()
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -47,8 +47,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
         <div
           id="jsBody"
           style={{
-            height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh',
-            paddingBottom: isShowSidebar ? safeAreaBottom : 0
+            height: isShowSidebar ? `calc(100vh - ${heightNav}px)` : '100vh'
           }}
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col no-scrollbar`}
         >
