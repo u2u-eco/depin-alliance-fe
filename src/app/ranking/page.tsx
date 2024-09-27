@@ -126,6 +126,7 @@ export default function RankingPage() {
           // exit={{ y: -25, opacity: 0 }}
           transition={{ duration: 0.35 }}
           key={RANKING_TYPE.PROFIT}
+          className="!will-change-auto"
         >
           <ListRankingItem data={listRanking} isEarn={activeType === RANKING_TYPE.EARNED} />
         </motion.div>
