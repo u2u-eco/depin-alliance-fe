@@ -56,13 +56,13 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              // exit={{ y: -25, opacity: 0 }}
-              transition={{ duration: 0.35 }}
+              exit={{ y: -25, opacity: 0 }}
+              // transition={{ duration: 0.35 }}
               key="custom-page"
               className={
                 full
                   ? '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]'
-                  : ''
+                  : '!will-change-auto'
               }
             >
               {isShowInfo && <Info />}
