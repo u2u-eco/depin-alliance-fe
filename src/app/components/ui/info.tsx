@@ -219,7 +219,9 @@ const Info = ({ profile, rank }: InfoProps) => {
           className={`absolute left-[50%] translate-x-[-50%] flex items-center z-[1] ${profile || pathName === '/home' ? 'flex-col justify-center space-y-1 bottom-[-42px] xs:bottom-[-46px] 2xs:bottom-[-50px]' : ' space-x-1 bottom-[-15px]'}`}
         >
           {(pathName === '/home' || pathName === '/profile') && (
-            <p className="font-geist uppercase text-white tracking-[-1px]">BALANCE:</p>
+            <p className="font-geist uppercase text-white tracking-[-1px] leading-[18px]">
+              BALANCE:
+            </p>
           )}
           <div
             className={`flex items-center ${profile || pathName === '/home' ? 'space-x-1 xs:space-x-2' : 'space-x-1'}`}

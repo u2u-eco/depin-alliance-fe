@@ -197,7 +197,7 @@ export default function Mining() {
   }, [])
 
   return (
-    <div className="mt-6 xs:mt-8">
+    <div className="mt-3 min-[355px]:mt-4 xs:mt-6 2xs:mt-8">
       <button
         className={`btn ${isLoading ? 'default' : ''}`}
         onClick={() => handleClick(type)}

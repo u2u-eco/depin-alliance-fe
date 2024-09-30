@@ -51,7 +51,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
-  const full = pathName === '/setting'
+  const full = pathName === '/setting' || pathName === '/home'
   return (
     <>
       <div className={cn('section', classNames?.wrapper)}>
@@ -68,18 +68,20 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
-              // transition={{ duration: 0.35 }}
+              transition={{ duration: 0.35 }}
               key="custom-page"
               className={
                 full
-                  ? '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]'
+                  ? pathName === '/setting'
+                    ? '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]'
+                    : 'h-full'
                   : '!will-change-auto'
               }
             >
               {isShowInfo && <Info />}
               <div
                 id="jsWrapContainer"
-                className={`${isShowInfo ? 'my-8 xs:my-10' : full ? 'my-5 xs:my-6 2xs:my-7 h-full' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
+                className={`${isShowInfo ? (pathName === '/home' ? '[--space:_200px] min-[355px]:[--space:_230px] xs:[--space:_270px] 2xs:[--space:_300px] h-[calc(100%_-_var(--space))] my-8 xs:my-10' : 'my-8 xs:my-10') : full ? 'my-5 xs:my-6 2xs:my-7 h-full' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
               >
                 {children}
               </div>
