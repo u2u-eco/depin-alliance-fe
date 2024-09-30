@@ -23,7 +23,7 @@ import {
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { BUTTON_TYPE, MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
-import { formatNumber } from '@/helper/common'
+import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
@@ -400,7 +400,7 @@ export default function InLeaguePage() {
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                            100K
+                            {kFormatter(currentLeague?.point || 0, 0, 2)}
                           </p>
                         </div>
                       </div>
@@ -429,7 +429,7 @@ export default function InLeaguePage() {
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                            100K/h
+                            {kFormatter(currentLeague?.profit || 0, 0, 2)}/h
                           </p>
                         </div>
                       </div>

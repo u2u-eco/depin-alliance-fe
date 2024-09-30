@@ -28,7 +28,6 @@ import CustomButton from '@/app/components/button'
 
 export default function MemberDetailPage() {
   const { currentLeague } = useCommonStore()
-  const [isOwner] = useState(true)
   const params = useSearchParams()
   const router = useRouter()
   const userId: any = params.get('id')
@@ -58,6 +57,7 @@ export default function MemberDetailPage() {
   const handleKickModal = () => {
     onOpen()
   }
+
   const handleKick = async () => {
     if (isLoadingAction) return
     if (detail?.data?.id) {
@@ -72,6 +72,8 @@ export default function MemberDetailPage() {
       setIsLoadingAction(false)
     }
   }
+
+  const isAdmin = currentLeague?.id === Number(userId)
 
   return (
     <>
@@ -107,7 +109,7 @@ export default function MemberDetailPage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {`</ MEMBER />`}
+                  {`</ ${isAdmin ? 'ADMIN' : 'MEMBER'} />`}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
@@ -193,7 +195,7 @@ export default function MemberDetailPage() {
           </div>
           {currentLeague?.isOwner && (
             <div className="space-y-4 mt-6 xs:mt-7 2xs:mt-8">
-              {isOwner && (
+              {!isAdmin && (
                 <>
                   <div className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5 cursor-pointer">
                     <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
@@ -245,23 +247,24 @@ export default function MemberDetailPage() {
                       </motion.div>
                     </div>
                   </div>
+
+                  <div
+                    onClick={handleKickModal}
+                    className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5 cursor-pointer"
+                  >
+                    <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="font-mona text-[15px] xs:text-base 2xs:text-lg font-semibold text-white !leading-[20px] 2xs:!leading-[22px]">
+                          Delete this member{' '}
+                        </p>
+                      </div>
+                      <div className="cursor-pointer">
+                        <IconDelete className="size-7 xs:size-8 2xs:size-9 text-error-blur" />
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
-              <div
-                onClick={handleKickModal}
-                className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5 cursor-pointer"
-              >
-                <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
-                  <div className="space-y-1.5 xs:space-y-2">
-                    <p className="font-mona text-[15px] xs:text-base 2xs:text-lg font-semibold text-white !leading-[20px] 2xs:!leading-[22px]">
-                      Delete this member{' '}
-                    </p>
-                  </div>
-                  <div className="cursor-pointer">
-                    <IconDelete className="size-7 xs:size-8 2xs:size-9 text-error-blur" />
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </div>
