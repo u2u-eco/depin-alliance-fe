@@ -93,26 +93,28 @@ export default function MemberPage() {
                 <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
                   MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
                 </p>
-                <div
-                  className="flex items-center space-x-2 cursor-pointer"
-                  onClick={handleShowModer}
-                >
-                  <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-                    MODER
-                  </p>
-                  <motion.div
-                    whileTap={{ scale: 0.8 }}
-                    className="relative size-5 xs:size-6 min-w-5 xs:min-w-6 flex items-center justify-center"
+                {currentLeague?.isOwner && (
+                  <div
+                    className="flex items-center space-x-2 cursor-pointer"
+                    onClick={handleShowModer}
                   >
-                    <div
-                      className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isShowModer ? 'bg-white/10' : ''}`}
+                    <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+                      MODER
+                    </p>
+                    <motion.div
+                      whileTap={{ scale: 0.8 }}
+                      className="relative size-5 xs:size-6 min-w-5 xs:min-w-6 flex items-center justify-center"
                     >
                       <div
-                        className={`size-full bg-gradient transition-opacity ${isShowModer ? 'opacity-100' : 'opacity-0'}`}
-                      ></div>
-                    </div>
-                  </motion.div>
-                </div>
+                        className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isShowModer ? 'bg-white/10' : ''}`}
+                      >
+                        <div
+                          className={`size-full bg-gradient transition-opacity ${isShowModer ? 'opacity-100' : 'opacity-0'}`}
+                        ></div>
+                      </div>
+                    </motion.div>
+                  </div>
+                )}
               </div>
               <div className="flex items-center justify-center">
                 {Object.values(MEMBER_TAB).map((item, index) => (

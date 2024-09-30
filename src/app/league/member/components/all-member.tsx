@@ -141,7 +141,9 @@ const AllMember = ({ setTotalMember }: IMember) => {
 
   return (
     <div className="space-y-8">
-      <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
+      {currentLeague?.isOwner && (
+        <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
+      )}
       <div>
         {listItem.length === 0 && !isLoading ? (
           <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
