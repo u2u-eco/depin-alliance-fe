@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
@@ -11,9 +12,10 @@ import { formatNumber } from '@/helper/common'
 import { useRouter } from 'next/navigation'
 import { userLeague } from '@/services/league'
 import { motion } from 'framer-motion'
+import { FUNDING_TYPE } from '@/constants'
 
 const MEMBER_TAB = {
-  FUNDING: 'funding',
+  FUNDING: FUNDING_TYPE,
   CONTRIBUTE: 'contribute'
 }
 
@@ -137,7 +139,7 @@ export default function MemberPage() {
                 ))}
               </div>
             </div>
-            <AllMember setTotalMember={setTotalMember} />
+            <AllMember setTotalMember={setTotalMember} activeTab={activeTab} />
           </div>
         </div>
       </CustomPage>

@@ -60,8 +60,15 @@ export const FILTER_TYPE = {
   SORT: 'SORT'
 }
 
+export const FUNDING_TYPE = 'funding'
+
 export const TYPE_MISSION = {
   BOX: 'BOX'
+}
+
+export const ROLE_LEAGUE = {
+  ADMIN_REQUEST: 'ADMIN_REQUEST',
+  ADMIN_KICK: 'ADMIN_KICK'
 }
 
 export const LIST_STATUS_MISSION = {

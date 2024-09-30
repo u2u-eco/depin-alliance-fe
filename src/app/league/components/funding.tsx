@@ -1,8 +1,45 @@
+import CustomButton from '@/app/components/button'
 import CustomInput from '@/app/components/custom-input'
 import { IconFund, IconPoint } from '@/app/components/icons'
-import React from 'react'
+import CustomToast from '@/app/components/ui/custom-toast'
+import { formatNumber } from '@/helper/common'
+import { funding } from '@/services/league'
+import useCommonStore from '@/stores/commonStore'
+import React, { useMemo, useState } from 'react'
+import { toast } from 'sonner'
+interface IFundingModal {
+  closeModal: () => void
+}
+const FundingModal = ({ closeModal }: IFundingModal) => {
+  const { userInfo, getUserInfo } = useCommonStore()
+  const [amount, setAmount] = useState<string>('')
+  const [isLoading, setLoading] = useState<boolean>(false)
 
-const FundingModal = () => {
+  const handleUpdateAmount = (amount: string) => {
+    setAmount(amount)
+  }
+
+  const handleMax = () => {
+    setAmount(userInfo?.point ? userInfo?.point.toString() : '')
+  }
+
+  const handleConfirm = async () => {
+    if (isLoading) return
+    setLoading(true)
+    const res = await funding(amount)
+    if (res.status) {
+      toast.success(<CustomToast type="success" title="Funding successfully" />)
+      getUserInfo()
+      closeModal()
+    }
+    setLoading(false)
+  }
+
+  const isInvalid = useMemo(() => {
+    if (amount === '' || !userInfo?.point) return false
+    return Number(amount) > userInfo?.point ? true : false
+  }, [amount, userInfo?.point])
+
   return (
     <div>
       <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
@@ -27,21 +64,28 @@ const FundingModal = () => {
         </div>
       </div>
       <div className="space-y-3">
-        <CustomInput label="Amount:" placeholder="Enter amount..." amount />
+        <CustomInput
+          label="Amount:"
+          placeholder="Enter amount..."
+          amount
+          value={amount}
+          isInvalid={isInvalid}
+          errorMessage="Your balance not enough"
+          onValueChange={handleUpdateAmount}
+          onMax={handleMax}
+        />
         <div className="flex items-center space-x-1">
           <p className="text-inactive leading-[18px] tracking-[-1px]">Balance:</p>
           <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
             <IconPoint className="size-4 xs:size-5 2xs:size-6" />
-            <p className="text-green-500 font-semibold">10,000</p>
+            <p className="text-green-500 font-semibold">
+              {formatNumber(userInfo?.point || 0, 0, 0)}
+            </p>
           </div>
         </div>
       </div>
       <div className="mt-6 xs:mt-7 2xs:mt-8">
-        <div className="btn">
-          <div className="btn-border"></div>
-          <div className="btn-primary">Confirm</div>
-          <div className="btn-border"></div>
-        </div>
+        <CustomButton title="Confirm" isLoading={isLoading} onAction={handleConfirm} />
       </div>
     </div>
   )

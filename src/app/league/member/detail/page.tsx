@@ -13,38 +13,60 @@ import { CustomHeader } from '@/app/components/ui/custom-header'
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import CustomModal from '@/app/components/custom-modal'
-import { formatNumber } from '@/helper/common'
+import { formatNumber, kFormatter } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
 import { IJoinRequest } from '@/interfaces/i.league'
-import { kickUserInLeague } from '@/services/league'
+import { getDetailMember, kickUserInLeague, updateRoleMember } from '@/services/league'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import useCommonStore from '@/stores/commonStore'
+import { BUTTON_TYPE, ROLE_LEAGUE } from '@/constants'
+import { MESSAGES } from '@/constants/messages'
+import CustomButton from '@/app/components/button'
 
 export default function MemberDetailPage() {
+  const { currentLeague } = useCommonStore()
   const [isOwner] = useState(true)
-  const [isMod] = useState(false)
-  const [activeJoin, setActiveJoin] = useState(false)
-  const [activeKick, setActiveKick] = useState(false)
+  const params = useSearchParams()
+  const router = useRouter()
+  const userId: any = params.get('id')
+  const { data: detail, refetch } = useQuery({
+    queryKey: ['getUserDetail', userId],
+    queryFn: () => getDetailMember(userId),
+    enabled: Boolean(userId)
+  })
+
+  const activeJoin = detail?.data?.role?.includes(ROLE_LEAGUE.ADMIN_REQUEST) ? true : false
+  const activeKick = detail?.data?.role?.includes(ROLE_LEAGUE.ADMIN_KICK) ? true : false
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentUser = useRef<IJoinRequest | null>(null)
   const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
-  const handleActiveJoin = () => {
-    setActiveJoin(!activeJoin)
-  }
-  const handleActiveKick = () => {
-    setActiveKick(!activeKick)
+
+  const handleUpdateRole = async (role: string) => {
+    const res = await updateRoleMember({
+      userId,
+      role,
+      isActive: detail?.data?.role?.includes(role) ? false : true
+    })
+    if (res.status) {
+      toast.dismiss()
+      toast.success(<CustomToast type="success" title={MESSAGES['MSG_UPDATE_ROLE_SUCCESS']} />)
+      refetch()
+    }
   }
   const handleKickModal = () => {
     onOpen()
   }
   const handleKick = async () => {
     if (isLoadingAction) return
-    if (currentUser?.current?.id) {
+    if (detail?.data?.id) {
       setIsLoadingAction(true)
-      const res = await kickUserInLeague(currentUser.current.id)
+      const res = await kickUserInLeague(detail?.data.id)
       if (res.status) {
         toast.dismiss()
         toast.success(<CustomToast title="Kick member successfully" type="success" />)
+        router.push('/league/member')
         onClose()
       }
       setIsLoadingAction(false)
@@ -69,7 +91,7 @@ export default function MemberDetailPage() {
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
                   className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
-                  src={`/assets/images/league/league-03@2x.png`}
+                  src={detail?.data?.avatar || `/assets/images/league/league-03@2x.png`}
                   alt="DePIN Alliance"
                 />
               </div>
@@ -78,7 +100,7 @@ export default function MemberDetailPage() {
               <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
                 <div className="size-1.5 min-w-1.5 bg-white"></div>
                 <div className="text-center font-airnt font-medium text-title text-lg xs:text-xl 2xs:text-2xl tracking-[1px] !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] [word-break:_break-word;]">
-                  BLACK RHINOS
+                  {detail?.data?.username}
                 </div>
                 <div className="size-1.5 min-w-1.5 bg-white"></div>
               </div>
@@ -106,7 +128,7 @@ export default function MemberDetailPage() {
                     alt=""
                   />
                   <p className="text-green-500 uppercase font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                    100K
+                    {kFormatter(detail?.data?.totalProfit || 0, 0, 0)}
                   </p>
                 </div>
               </div>
@@ -117,7 +139,7 @@ export default function MemberDetailPage() {
                 <div className="flex items-center space-x-2">
                   <IconGroupUser className="size-6 xs:size-7 2xs:size-8 text-white" />
                   <p className="text-green-500 uppercase font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                    581
+                    {kFormatter(detail?.data?.contributed || 0, 0, 0)}
                   </p>
                 </div>
               </div>
@@ -137,7 +159,7 @@ export default function MemberDetailPage() {
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                         <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                          100K
+                          {kFormatter(detail?.data?.totalFunding || 0, 0, 0)}
                         </p>
                       </div>
                     </div>
@@ -159,7 +181,7 @@ export default function MemberDetailPage() {
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                         <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                          100K/h
+                          {formatNumber(detail?.data?.totalEarned || 0, 0, 0)}/h
                         </p>
                       </div>
                     </div>
@@ -169,7 +191,7 @@ export default function MemberDetailPage() {
               </div>
             </div>
           </div>
-          {(isOwner || isMod) && (
+          {currentLeague?.isOwner && (
             <div className="space-y-4 mt-6 xs:mt-7 2xs:mt-8">
               {isOwner && (
                 <>
@@ -186,7 +208,7 @@ export default function MemberDetailPage() {
                       <motion.div
                         whileTap={{ scale: 0.86 }}
                         className="cursor-pointer"
-                        onClick={() => handleActiveJoin()}
+                        onClick={() => handleUpdateRole(ROLE_LEAGUE.ADMIN_REQUEST)}
                       >
                         <div
                           className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${activeJoin ? 'bg-white/10' : ''}`}
@@ -211,7 +233,7 @@ export default function MemberDetailPage() {
                       <motion.div
                         whileTap={{ scale: 0.86 }}
                         className="cursor-pointer"
-                        onClick={() => handleActiveKick()}
+                        onClick={() => handleUpdateRole(ROLE_LEAGUE.ADMIN_KICK)}
                       >
                         <div
                           className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${activeKick ? 'bg-white/10' : ''}`}
@@ -225,14 +247,17 @@ export default function MemberDetailPage() {
                   </div>
                 </>
               )}
-              <div className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5 cursor-pointer">
+              <div
+                onClick={handleKickModal}
+                className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5 cursor-pointer"
+              >
                 <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
                   <div className="space-y-1.5 xs:space-y-2">
                     <p className="font-mona text-[15px] xs:text-base 2xs:text-lg font-semibold text-white !leading-[20px] 2xs:!leading-[22px]">
                       Delete this member{' '}
                     </p>
                   </div>
-                  <div className="cursor-pointer" onClick={handleKickModal}>
+                  <div className="cursor-pointer">
                     <IconDelete className="size-7 xs:size-8 2xs:size-9 text-error-blur" />
                   </div>
                 </div>
@@ -246,7 +271,7 @@ export default function MemberDetailPage() {
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>
               Are you sure you want to kick this member{' '}
-              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${currentUser.current?.username}"`}</span>
+              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${detail?.data?.username}"`}</span>
               ?
             </p>
           </div>
@@ -256,31 +281,28 @@ export default function MemberDetailPage() {
             >
               <img
                 className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                src={currentUser.current?.avatar || '/assets/images/league/league-04@2x.png'}
+                src={detail?.data?.avatar || '/assets/images/league/league-04@2x.png'}
                 alt="DePIN Alliance"
               />
             </div>
             <div className="space-y-1.5 xs:space-y-2">
               <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
-                {currentUser.current?.username}
+                {detail?.data?.username}
               </p>
               <div className="flex items-center space-x-1.5 xs:space-x-2">
                 <IconPoint className="size-5 xs:size-6" />
-                <span className="text-primary font-semibold">{`${formatNumber(currentUser?.current?.miningPower || 0, 0, 2)}/h`}</span>
+                <span className="text-primary font-semibold">{`${formatNumber(detail?.data?.miningPower || 0, 0, 2)}/h`}</span>
               </div>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="btn default" onClick={onClose}>
-              <div className="btn-border"></div>
-              <div className="btn-default">Cancel</div>
-              <div className="btn-border"></div>
-            </div>
-            <div className="btn error" onClick={handleKick}>
-              <div className="btn-border"></div>
-              <div className="btn-error">KICK</div>
-              <div className="btn-border"></div>
-            </div>
+            <CustomButton type={BUTTON_TYPE.DEFAULT} onAction={onClose} title="Cancel" />
+            <CustomButton
+              type={BUTTON_TYPE.CANCEL}
+              onAction={handleKick}
+              title="KICK"
+              isLoading={isLoadingAction}
+            />
           </div>
         </div>
       </CustomModal>

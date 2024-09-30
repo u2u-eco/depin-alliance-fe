@@ -85,8 +85,27 @@ export const updateAvatarLeague = (formData: any) => {
 
 export const getListMemberOfLeague = (params: {
   page: number
+  'is-funding': boolean
   size?: number
   username?: string
 }) => {
   return https.get(`/league/member`, { params })
+}
+
+export const contribute = (data: { number: number; code: string }) => {
+  return https.post(`/league/contribute`, data)
+}
+
+export const funding = (amount: string) => {
+  return https.post('/league/funding', {
+    amount
+  })
+}
+
+export const getDetailMember = (id: any) => {
+  return https.get(`/league/detail-member/${id}`)
+}
+
+export const updateRoleMember = (data: { userId: number; role: string; isActive: boolean }) => {
+  return https.post(`/league/role`, data)
 }

@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getListMemberOfLeague, kickUserInLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
-import { PAGE_SIZE, TELE_URI } from '@/constants'
+import { FUNDING_TYPE, PAGE_SIZE, TELE_URI } from '@/constants'
 import CustomInputSearch from '@/app/components/ui/custom-input-search'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -20,8 +20,9 @@ import { useAppSound } from '@/hooks/useAppSound'
 import CustomRank from '@/app/components/ui/custom-rank'
 interface IMember {
   setTotalMember: (total: number) => void
+  activeTab: string
 }
-const AllMember = ({ setTotalMember }: IMember) => {
+const AllMember = ({ setTotalMember, activeTab }: IMember) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
@@ -38,12 +39,17 @@ const AllMember = ({ setTotalMember }: IMember) => {
   const { buttonSound } = useAppSound()
 
   useQuery({
-    queryKey: ['getListMemberOfLeague', page, search],
+    queryKey: ['getListMemberOfLeague', page, search, activeTab],
     queryFn: async () => {
       try {
         if (isUpdatePage.current) return
         setIsLoading(true)
-        const res: any = await getListMemberOfLeague({ page, size: PAGE_SIZE, username: search })
+        const res: any = await getListMemberOfLeague({
+          page,
+          size: PAGE_SIZE,
+          username: search,
+          'is-funding': activeTab === FUNDING_TYPE ? true : false
+        })
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
@@ -52,7 +58,7 @@ const AllMember = ({ setTotalMember }: IMember) => {
           setIsLoading(false)
           return []
         }
-        let _listItem = res.data
+        let _listItem = res.data?.ranking
 
         if (page > 1) {
           _listItem = [...dataList.current, ...res.data]
@@ -66,49 +72,49 @@ const AllMember = ({ setTotalMember }: IMember) => {
       }
     }
   })
-  const handleCancel = (item: IJoinRequest, index: number) => {
-    currentUser.current = { ...item, index }
-  }
+  // const handleCancel = (item: IJoinRequest, index: number) => {
+  //   currentUser.current = { ...item, index }
+  // }
 
-  const handleUpdateData = async (index: number) => {
-    setIsLoading(true)
-    isUpdatePage.current = true
-    const currentPage = Math.floor(index / PAGE_SIZE)
-    setPage(currentPage + 1)
-    const res: any = await getListMemberOfLeague({
-      page: currentPage + 1,
-      size: PAGE_SIZE,
-      username: search
-    })
+  // const handleUpdateData = async (index: number) => {
+  //   setIsLoading(true)
+  //   isUpdatePage.current = true
+  //   const currentPage = Math.floor(index / PAGE_SIZE)
+  //   setPage(currentPage + 1)
+  //   const res: any = await getListMemberOfLeague({
+  //     page: currentPage + 1,
+  //     size: PAGE_SIZE,
+  //     username: search
+  //   })
 
-    if (res.status) {
-      setTotalMember(res?.pagination?.totalRecord || 0)
-      dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
-      setListItem([...dataList.current])
-    }
-    isUpdatePage.current = false
+  //   if (res.status) {
+  //     setTotalMember(res?.pagination?.totalRecord || 0)
+  //     dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
+  //     setListItem([...dataList.current])
+  //   }
+  //   isUpdatePage.current = false
 
-    setIsLoading(false)
-  }
+  //   setIsLoading(false)
+  // }
 
   const handleKickModal = () => {
     onOpen()
   }
 
-  const handleKick = async () => {
-    if (isLoadingAction) return
-    if (currentUser?.current?.id) {
-      setIsLoadingAction(true)
-      const res = await kickUserInLeague(currentUser.current.id)
-      if (res.status) {
-        handleUpdateData(currentUser.current.index || 0)
-        toast.dismiss()
-        toast.success(<CustomToast title="Kick member successfully" type="success" />)
-        onClose()
-      }
-      setIsLoadingAction(false)
-    }
-  }
+  // const handleKick = async () => {
+  //   if (isLoadingAction) return
+  //   if (currentUser?.current?.id) {
+  //     setIsLoadingAction(true)
+  //     const res = await kickUserInLeague(currentUser.current.id)
+  //     if (res.status) {
+  //       handleUpdateData(currentUser.current.index || 0)
+  //       toast.dismiss()
+  //       toast.success(<CustomToast title="Kick member successfully" type="success" />)
+  //       onClose()
+  //     }
+  //     setIsLoadingAction(false)
+  //   }
+  // }
 
   const handleUpdateText = (text: string) => {
     clearTimeout(timeoutSearch.current)
@@ -132,6 +138,10 @@ const AllMember = ({ setTotalMember }: IMember) => {
     currentRank: 150,
     ranking: listItem
   }
+
+  useEffect(() => {
+    setPage(1)
+  }, [activeTab])
 
   useEffect(() => {
     if (isInView && page < maxPage.current && !isLoading) {

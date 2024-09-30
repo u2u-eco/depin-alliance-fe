@@ -41,7 +41,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
       case RANK_TYPE.LEAGUE:
         return router.push('/league/all-league/detail')
       case RANK_TYPE.MEMBER:
-        return router.push('/league/member/detail')
+        return router.push(`/league/member/detail?id=${item.id}`)
     }
   }
 
@@ -53,6 +53,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
         <div
           className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${data?.currentRank > 3 && (data?.currentRank === index + 1 || data.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)} ${data?.currentRank > data?.ranking?.length && data.currentRank === item.rank ? '!fixed bottom-0 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto' : ''}`}
           key={index}
+          onClick={() => handleClick(item)}
         >
           <div
             className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${data?.currentRank > 3 && (data?.currentRank === index + 1 || data.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)}`}
@@ -83,10 +84,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
                 )}
               </div>
               <div className="space-y-2 xs:space-y-3">
-                <div
-                  className="flex items-center space-x-1 cursor-pointer"
-                  onClick={() => handleClick(item)}
-                >
+                <div className="flex items-center space-x-1 cursor-pointer">
                   <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px] [word-break:_break-word;]">
                     {type === RANK_TYPE.LEAGUE ? item.name : item.username}
                   </div>
