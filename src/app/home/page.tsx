@@ -47,7 +47,7 @@ export default function HomePage() {
             'bg-[linear-gradient(to_bottom,#0f0f0f_26%,#083421_55%,#00663a_66%,#093321_74%,#0f0f0f_86%)]'
         }}
       >
-        <div className="absolute top-0 left-0 right-0 h-full mix-blend-lighten">
+        <div className="absolute top-0 left-0 right-0 h-full mix-blend-lighten z-[-1]">
           <video autoPlay muted loop className="h-full object-cover">
             <source src="/assets/images/video.mp4" type="video/mp4" />
           </video>
@@ -73,9 +73,11 @@ export default function HomePage() {
                 alt="Figure"
               />
             </div>
-            <div className={`absolute bottom-0 right-0 z-[2] ${isShowInfo ? 'left-0' : ''}`}>
+            <div
+              className={`absolute bottom-0 right-0 z-[2] transition-all ${isShowInfo ? 'w-full left-0' : ''}`}
+            >
               <div
-                className={`relative before:content-[''] before:absolute before:top-[2.5px] before:left-[2.5px] before:size-2 before:border-[4px] before:border-transparent before:border-t-green-700 before:border-l-green-700 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-green-700 after:border-r-green-700 after:z-[3] ${isShowInfo ? 'w-full h-auto' : 'size-[60px] xs:size-[70px] 2xs:size-[80px]'}`}
+                className={`relative before:content-[''] before:absolute before:top-[2.5px] before:left-[2.5px] before:size-2 before:border-[4px] before:border-transparent before:border-t-green-700 before:border-l-green-700 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-green-700 after:border-r-green-700 after:z-[3] transition-all ${isShowInfo ? 'w-full h-auto' : 'size-[60px] xs:size-[70px] 2xs:size-[80px]'}`}
                 onClick={() => {
                   setIsShowInfo(true)
                   if (!isShowInfo) {
@@ -90,12 +92,12 @@ export default function HomePage() {
                     {isShowInfo ? (
                       <>
                         <div className="space-y-1.5 xs:space-y-2">
-                          <div className="font-airnt text-sm min-[355px]:text-[15px] xs:text-base font-medium !leading-[20px] min-[355px]:!leading-[22px] xs:!leading-[24px] uppercase tracking-[1px] text-white">
+                          <div className="font-airnt text-sm min-[355px]:text-[15px] xs:text-base font-medium !leading-[20px] min-[355px]:!leading-[22px] xs:!leading-[24px] uppercase tracking-[1px] text-white whitespace-nowrap">
                             Workspace
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
-                              <p className="text-body text-[11px] xs:text-xs !leading-[16px] tracking-[-1px]">
+                              <p className="text-body text-[11px] xs:text-xs !leading-[16px] tracking-[-1px] whitespace-nowrap">
                                 TOTAL PROFIT:
                               </p>
                               <div className="flex items-center space-x-1">
@@ -131,7 +133,7 @@ export default function HomePage() {
                         </div>
                       </>
                     ) : (
-                      <div className="size-full [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape));] bg-black/20 p-1">
+                      <div className="size-full [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape));] bg-black/20 p-1 transition-all">
                         <img
                           className="size-full"
                           src="/assets/images/workspace/workspace-image.png"
@@ -145,7 +147,7 @@ export default function HomePage() {
               </div>
               {isShowInfo && (
                 <div
-                  className="absolute top-2 right-2 cursor-pointer z-[1]"
+                  className="absolute top-2 right-2 cursor-pointer z-[1] transition-all"
                   onClick={() => {
                     setIsShowInfo(false)
                     buttonSound.play()
