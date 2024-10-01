@@ -10,6 +10,7 @@ import {
   IconRank
 } from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import Loader from '@/app/components/ui/loader'
 import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { getLeagueDetailByCode } from '@/services/league'
@@ -23,7 +24,7 @@ export default function DetailLeaguePage() {
   const { tabSound } = useAppSound()
   const params = useSearchParams()
   const code: any = params.get('code')
-  const { data: leagueDetail } = useQuery({
+  const { data: leagueDetail, isLoading } = useQuery({
     queryKey: ['getLeagueDetailByCode', code],
     queryFn: () => {
       return getLeagueDetailByCode(code)
@@ -56,15 +57,24 @@ export default function DetailLeaguePage() {
             </div>
             <div className="space-y-6 mb-6">
               <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
-                <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
-                  <Image
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
-                    src={leagueDetail?.data?.avatar || `/assets/images/league/league-03@2x.png`}
-                    alt="DePIN Alliance"
-                  />
+                <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white relative">
+                  {isLoading ? (
+                    <Loader
+                      classNames={{
+                        wrapper: 'w-full absolute pointer-events-none z-[4] p top-0 bg-black/50',
+                        icon: 'w-[30px] h-[45px] text-white'
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
+                      src={leagueDetail?.data?.avatar || `/assets/images/league/league-03@2x.png`}
+                      alt="DePIN Alliance"
+                    />
+                  )}
                 </div>
               </div>
               <div className="space-y-2">

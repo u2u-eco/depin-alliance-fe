@@ -93,6 +93,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
   }
 
   useEffect(() => {
+    setListItem([])
     setPage(1)
   }, [activeTab])
 
