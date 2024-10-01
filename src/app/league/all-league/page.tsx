@@ -9,7 +9,7 @@ import CustomList from '@/app/components/custom-list'
 import { useInView } from 'react-intersection-observer'
 import { ILeagueItem } from '@/interfaces/i.league'
 import { useQuery } from '@tanstack/react-query'
-import { getListLeague } from '@/services/league'
+import { getListLeagueAll } from '@/services/league'
 import NoItem from '@/app/components/ui/no-item'
 import { useRouter } from 'next/navigation'
 import Loader from '@/app/components/ui/loader'
@@ -24,9 +24,9 @@ export default function AllLeaguePage() {
   const [search, setSearch] = useState<string>('')
   const [listItem, setListItem] = useState<ILeagueItem[]>([])
   const { isLoading } = useQuery({
-    queryKey: ['fetchListLeague', page, search],
+    queryKey: ['fetchListLeagueAll', page, search],
     queryFn: async () => {
-      const res: any = await getListLeague({ page, name: search })
+      const res: any = await getListLeagueAll({ page, name: search })
       if (res.pagination?.totalPage) {
         maxPage.current = res.pagination?.totalPage
       }
@@ -56,8 +56,8 @@ export default function AllLeaguePage() {
     }
   }, [isInView])
 
-  const handleClickItem = () => {
-    router.push('/league/all-league/detail')
+  const handleClickItem = (item: any) => {
+    router.push(`/league/all-league/detail?code=${item.code}`)
   }
   return (
     <>

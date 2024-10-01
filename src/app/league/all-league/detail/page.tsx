@@ -10,13 +10,26 @@ import {
   IconRank
 } from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
-import { useRouter } from 'next/navigation'
+import { getLeagueDetailByCode } from '@/services/league'
+import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
 export default function DetailLeaguePage() {
   const router = useRouter()
   const { tabSound } = useAppSound()
+  const params = useSearchParams()
+  const code: any = params.get('code')
+  const { data: leagueDetail } = useQuery({
+    queryKey: ['getLeagueDetailByCode', code],
+    queryFn: () => {
+      return getLeagueDetailByCode(code)
+    },
+    enabled: Boolean(code)
+  })
 
   const handleTabSound = () => {
     tabSound.play()
@@ -44,9 +57,12 @@ export default function DetailLeaguePage() {
             <div className="space-y-6 mb-6">
               <div className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white">
                 <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
-                  <img
+                  <Image
+                    width={0}
+                    height={0}
+                    sizes="100vw"
                     className="size-full object-cover [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)]"
-                    src={`/assets/images/league/league-03@2x.png`}
+                    src={leagueDetail?.data?.avatar || `/assets/images/league/league-03@2x.png`}
                     alt="DePIN Alliance"
                   />
                 </div>
@@ -55,14 +71,14 @@ export default function DetailLeaguePage() {
                 <div className="flex items-center justify-center space-x-2 xs:space-x-4 2xs:space-x-6">
                   <div className="size-1.5 min-w-1.5 bg-white"></div>
                   <div className="text-center font-airnt font-medium text-title text-lg xs:text-xl 2xs:text-2xl tracking-[1px] !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px] [text-shadow:_0_0_8px_rgba(255,255,255,0.5)] [word-break:_break-word;]">
-                    BLACK RHINOS
+                    {leagueDetail?.data?.name}
                   </div>
                   <div className="size-1.5 min-w-1.5 bg-white"></div>
                 </div>
                 <div className="flex items-center justify-center space-x-10">
                   <div className="w-8 h-[1px] bg-yellow-800"></div>
                   <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                    LV. 12
+                    LV. {formatNumber(leagueDetail?.data?.level || 0, 0, 0)}
                   </div>
                   <div className="w-8 h-[1px] bg-yellow-800"></div>
                 </div>
@@ -85,7 +101,7 @@ export default function DetailLeaguePage() {
                   >
                     <IconRank className="text-white size-6 xs:size-7 2xs:size-8" />
                     <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      10,000
+                      {kFormatter(leagueDetail?.data?.rank || 0, 0, 0)}
                     </p>
                     <IconOpenLink className="size-6 xs:size-7 2xs:size-8" gradient />
                   </div>
@@ -97,7 +113,7 @@ export default function DetailLeaguePage() {
                   <div className="flex items-center space-x-1.5 xs:space-x-2">
                     <IconGroupUser className="size-6 xs:size-7 2xs:size-8 text-white" />
                     <p className="text-green-500 uppercase font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      581
+                      {kFormatter(leagueDetail?.data?.totalContributors || 0, 0, 0)}
                     </p>
                   </div>
                 </div>
@@ -117,7 +133,7 @@ export default function DetailLeaguePage() {
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                            100K
+                            {kFormatter(leagueDetail?.data?.point || 0, 0, 0)}
                           </p>
                         </div>
                       </div>
@@ -139,7 +155,7 @@ export default function DetailLeaguePage() {
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                           <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
-                            101K/h
+                            {kFormatter(leagueDetail?.data?.profit || 0, 0, 2)}/h
                           </p>
                         </div>
                       </div>

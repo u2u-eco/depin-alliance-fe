@@ -12,6 +12,6 @@ export const kFormatter = (num: number, minPrecision = 2, maxPrecision = 2) => {
   const absNum: any = Math.abs(num)
   const absNumToFixed: any = (absNum / 1000).toFixed(1)
   return absNum > 99999
-    ? `${Math.sign(num) * absNumToFixed}k`
+    ? `${formatNumber(Math.sign(num) * absNumToFixed || 0, 0, 0)}k`
     : formatNumber(num, minPrecision, maxPrecision)
 }
