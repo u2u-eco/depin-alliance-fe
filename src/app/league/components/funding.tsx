@@ -47,7 +47,8 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
 
   const isInvalid = useMemo(() => {
     if (amount === '' || !userInfo?.point) return false
-    return Number(amount) > userInfo?.point ? true : false
+    const _total = formatNumber(userInfo?.point || 0, 0, 0).replaceAll(',', '')
+    return Number(amount) > Number(_total) ? true : false
   }, [amount, userInfo?.point])
 
   return (
