@@ -30,7 +30,7 @@ export default function JoinRequestPage() {
   const [total, setTotal] = useState<number>(0)
   const isUpdatePage = useRef<boolean>(false)
   const { buttonSound } = useAppSound()
-  const hasRoleAdminRequest = currentLeague?.role.includes('ADMIN_REQUEST')
+  const hasRoleAdminRequest = currentLeague?.role?.includes('ADMIN_REQUEST')
   useQuery({
     queryKey: ['getListJoinRequest', page],
     queryFn: async () => {

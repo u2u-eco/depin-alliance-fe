@@ -112,7 +112,7 @@ export default function InLeaguePage() {
       class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
     }
   ]
-  const hasRoleAdminRequest = currentLeague?.role.includes('ADMIN_REQUEST')
+  const hasRoleAdminRequest = currentLeague?.role?.includes('ADMIN_REQUEST')
 
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
