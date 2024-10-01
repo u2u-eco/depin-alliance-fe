@@ -6,7 +6,7 @@ import NoItem from '@/app/components/ui/no-item'
 import SellItem from '@/app/workspace/components/sell-item'
 import { BUTTON_TYPE, PAGE_SIZE, QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
-import { listUserItemDevice } from '@/services/devices'
+import { listUserItemContribute, listUserItemDevice } from '@/services/devices'
 import { contribute } from '@/services/league'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
@@ -28,11 +28,11 @@ const ContributeModal = ({ closeModal }: ModalProps) => {
   const [listDeviceItem, setListDeviceItem] = useState<IDeviceTypeItem[]>([])
   const dataList = useRef<IDeviceTypeItem[]>([])
   useQuery({
-    queryKey: ['getUserItemDevice', page],
+    queryKey: ['getListUserItemContribute', page],
     queryFn: async () => {
       try {
         setLoading(true)
-        const res: any = await listUserItemDevice({ page, size: PAGE_SIZE })
+        const res: any = await listUserItemContribute({ page, size: PAGE_SIZE })
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
