@@ -120,6 +120,8 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
                 ranking: listItem
               }}
               type="member"
+              maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
+              suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
             />
             <div ref={scrollTrigger} className="text-[transparent]">
               Loading...

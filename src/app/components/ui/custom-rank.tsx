@@ -12,6 +12,8 @@ interface IListRankingItem {
   }
   isEarn?: boolean
   type: string
+  maxPrecision?: number
+  suffix?: string
 }
 
 const RANK_TYPE = {
@@ -20,7 +22,7 @@ const RANK_TYPE = {
   MEMBER: 'member'
 }
 
-const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
+const CustomRank = ({ data, isEarn, type, maxPrecision, suffix }: IListRankingItem) => {
   const router = useRouter()
   const getBgByRank = (index: number) => {
     switch (index) {
@@ -59,7 +61,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
             <IconPoint className="size-4" />
             <p className="text-primary font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
               {type === RANK_TYPE.MEMBER ? (
-                `${formatNumber(item?.value || 0, 0, 0)}`
+                `${formatNumber(item?.value || 0, 0, maxPrecision || 0)}${suffix ? suffix : ''}`
               ) : (
                 <>
                   {isEarn
