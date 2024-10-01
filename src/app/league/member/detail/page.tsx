@@ -132,7 +132,7 @@ export default function MemberDetailPage() {
               </div>
             </div>
           </div>
-          <div className="relative w-fit mx-auto my-6 xs:my-7 2xs:my-8">
+          {/* <div className="relative w-fit mx-auto my-6 xs:my-7 2xs:my-8">
             <img src="/assets/images/league/in-league-frame.svg" alt="" />
             <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
               <div className="space-y-1 xs:space-y-2">
@@ -163,7 +163,7 @@ export default function MemberDetailPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex space-x-3 xs:space-x-4">
             <div className="flex-1">
               <div className="btn cursor-default">
@@ -173,7 +173,7 @@ export default function MemberDetailPage() {
                     <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                     <div className="space-y-1.5 xs:space-y-2">
                       <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                        FUND
+                        FUNDING
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
@@ -195,7 +195,7 @@ export default function MemberDetailPage() {
                     <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                     <div className="space-y-1.5 xs:space-y-2">
                       <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                        POWER
+                        CONTRIBUTED
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
