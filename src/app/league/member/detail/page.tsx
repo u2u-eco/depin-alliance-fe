@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import CustomModal from '@/app/components/custom-modal'
 import { formatNumber, kFormatter } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
-import { getDetailMember, kickUserInLeague, updateRoleMember } from '@/services/league'
+import { getDetailMember, kickUserInLeague, updateRoleMember, userLeague } from '@/services/league'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -20,7 +20,7 @@ import { MESSAGES } from '@/constants/messages'
 import CustomButton from '@/app/components/button'
 
 export default function MemberDetailPage() {
-  const { currentLeague } = useCommonStore()
+  const { currentLeague, setCurrentLeague } = useCommonStore()
   const params = useSearchParams()
   const router = useRouter()
   const userId: any = params.get('id')
@@ -34,6 +34,13 @@ export default function MemberDetailPage() {
   const activeKick = detail?.data?.role?.includes(ROLE_LEAGUE.ADMIN_KICK) ? true : false
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
+
+  const updateUserLeague = async () => {
+    const res = await userLeague()
+    if (res.status && res.data && !res.data?.isPendingRequest) {
+      setCurrentLeague({ league: res.data })
+    }
+  }
 
   const handleUpdateRole = async (role: string) => {
     const res = await updateRoleMember({
@@ -55,12 +62,18 @@ export default function MemberDetailPage() {
     if (isLoadingAction) return
     if (detail?.data?.id) {
       setIsLoadingAction(true)
-      const res = await kickUserInLeague(detail?.data.id)
-      if (res.status) {
-        toast.dismiss()
-        toast.success(<CustomToast title="Kick member successfully" type="success" />)
-        router.push('/league/member')
-        onClose()
+      try {
+        const res = await kickUserInLeague(detail?.data.id)
+        if (res.status) {
+          toast.dismiss()
+          toast.success(<CustomToast title="Kick member successfully" type="success" />)
+          router.push('/league/member')
+          onClose()
+        } else {
+          updateUserLeague()
+        }
+      } catch (ex) {
+        updateUserLeague()
       }
       setIsLoadingAction(false)
     }

@@ -2,7 +2,7 @@ import { formatNumber } from '@/helper/common'
 import { IRankingItem } from '@/interfaces/i.user'
 import Image from 'next/image'
 import React from 'react'
-import { IconOpenLink, IconPoint } from '../icons'
+import { IconAdmin, IconOpenLink, IconPoint } from '../icons'
 import { useRouter } from 'next/navigation'
 
 interface IListRankingItem {
@@ -11,6 +11,7 @@ interface IListRankingItem {
     ranking: Array<IRankingItem>
   }
   isEarn?: boolean
+  admin?: any
   type: string
   maxPrecision?: number
   suffix?: string
@@ -22,7 +23,7 @@ const RANK_TYPE = {
   MEMBER: 'member'
 }
 
-const CustomRank = ({ data, isEarn, type, maxPrecision, suffix }: IListRankingItem) => {
+const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRankingItem) => {
   const router = useRouter()
   const getBgByRank = (index: number) => {
     switch (index) {
@@ -75,6 +76,15 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix }: IListRankingIt
     }
   }
 
+  const getIcon = (item: any) => {
+    if (type === RANK_TYPE.MEMBER && admin && admin?.id === item?.id) {
+      return <IconAdmin gradient className="size-5" />
+    }
+    if (type !== RANK_TYPE.RANKING) {
+      return <IconOpenLink gradient className="size-6" />
+    }
+  }
+
   return (
     <div
       className={`flex flex-col space-y-3 xs:space-y-4 ${data?.currentRank > data?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}
@@ -118,7 +128,7 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix }: IListRankingIt
                   <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px] [word-break:_break-word;]">
                     {type === RANK_TYPE.LEAGUE ? item.name : item.username}
                   </div>
-                  {type !== RANK_TYPE.RANKING && <IconOpenLink gradient className="size-6" />}
+                  {getIcon(item)}
                 </div>
                 {getSubContent(item)}
               </div>

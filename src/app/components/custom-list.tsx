@@ -32,7 +32,6 @@ const CustomList = ({
   pointKey,
   imageDefault,
   levelKey,
-  partners,
   cb,
   onClickItem
 }: ListProps) => {

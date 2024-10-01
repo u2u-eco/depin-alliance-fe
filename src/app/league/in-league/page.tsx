@@ -133,7 +133,6 @@ export default function InLeaguePage() {
     queryKey: ['getRankOfLeague'],
     queryFn: getRankOfLeague
   })
-  console.log('🚀 ~ InLeaguePage ~ rank:', rank)
 
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -276,6 +275,16 @@ export default function InLeaguePage() {
     }
   }
 
+  const getRole = () => {
+    if (currentLeague?.isOwner) {
+      return 'Admin'
+    }
+    if (currentLeague?.role) {
+      return 'MODER'
+    }
+    return 'MEMBER'
+  }
+
   useEffect(() => {
     _getUserLeague()
   }, [])
@@ -340,7 +349,7 @@ export default function InLeaguePage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {currentLeague?.isOwner ? '</ Admin />' : '</ Member />'}
+                  {getRole()}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>

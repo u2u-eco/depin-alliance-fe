@@ -1,23 +1,17 @@
 import NoItem from '@/app/components/ui/no-item'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import MemberItem from '../../components/member-item'
-import CustomModal from '@/app/components/custom-modal'
-import { useDisclosure } from '@nextui-org/react'
-import { IconPoint } from '@/app/components/icons'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { useQuery } from '@tanstack/react-query'
-import { getListMemberOfLeague, kickUserInLeague } from '@/services/league'
+import { getListMemberOfLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
 import { FUNDING_TYPE, PAGE_SIZE, TELE_URI } from '@/constants'
 import CustomInputSearch from '@/app/components/ui/custom-input-search'
-import { formatNumber } from '@/helper/common'
-import { toast } from 'sonner'
-import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
 import { useAppSound } from '@/hooks/useAppSound'
 import CustomRank from '@/app/components/ui/custom-rank'
+import LastUpdateBox from '@/app/components/last-update-box'
 interface IMember {
   setTotalMember: (total: number) => void
   activeTab: string
@@ -59,6 +53,17 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
         if (page > 1) {
           _listItem = [...dataList.current, ...res.data]
         }
+
+        if (!res.pagination && res?.data?.currentRank > _listItem?.ranking?.length) {
+          _listItem = [
+            ..._listItem,
+            {
+              ...res?.data.currentMember,
+              rank: res.data.currentRank
+            }
+          ]
+        }
+
         dataList.current = _listItem
         setListItem([...dataList.current])
         setIsLoading(false)
@@ -102,6 +107,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
       {currentLeague?.isOwner && (
         <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
       )}
+      <LastUpdateBox />
       <div>
         {listItem.length === 0 && !isLoading ? (
           <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
@@ -119,6 +125,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
                 currentRank: listMemberData?.data.currentRank,
                 ranking: listItem
               }}
+              admin={listMemberData?.data?.admin}
               type="member"
               maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
               suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
