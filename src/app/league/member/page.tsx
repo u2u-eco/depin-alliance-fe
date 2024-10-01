@@ -45,6 +45,8 @@ export default function MemberPage() {
     router.push('/league/in-league')
   }
 
+  const isModer = currentLeague?.isOwner || currentLeague?.role
+
   useEffect(() => {
     _getUserLeague()
   }, [])
@@ -102,7 +104,7 @@ export default function MemberPage() {
                 {(currentLeague?.isOwner || currentLeague?.role) && (
                   <div
                     className="flex items-center space-x-2 cursor-pointer"
-                    onClick={handleShowModer}
+                    // onClick={handleShowModer}
                   >
                     <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
                       MODER
@@ -112,10 +114,10 @@ export default function MemberPage() {
                       className="relative size-5 xs:size-6 min-w-5 xs:min-w-6 flex items-center justify-center"
                     >
                       <div
-                        className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isShowModer ? 'bg-white/10' : ''}`}
+                        className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isModer ? 'bg-white/10' : ''}`}
                       >
                         <div
-                          className={`size-full bg-gradient transition-opacity ${isShowModer ? 'opacity-100' : 'opacity-0'}`}
+                          className={`size-full bg-gradient transition-opacity ${isModer ? 'opacity-100' : 'opacity-0'}`}
                         ></div>
                       </div>
                     </motion.div>
