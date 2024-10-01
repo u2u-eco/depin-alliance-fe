@@ -12,7 +12,7 @@ import { approveJoinLeague, getListJoinRequest, rejectJoinLeague } from '@/servi
 import { useInView } from 'react-intersection-observer'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { toast } from 'sonner'
-import { MAX_SIZE_PER_PAGE, PAGE_SIZE, TELE_URI } from '@/constants'
+import { PAGE_SIZE, TELE_URI } from '@/constants'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'

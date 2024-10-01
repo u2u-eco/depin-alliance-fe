@@ -7,6 +7,7 @@ import { useAppSound } from '@/hooks/useAppSound'
 interface HeaderProps {
   title: string
   cb?: () => void
+  back?: () => void
 }
 
 export const CustomHeader = ({ title, cb }: HeaderProps) => {
