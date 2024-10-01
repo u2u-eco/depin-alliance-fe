@@ -75,11 +75,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (initData && !token && !isProgressLogin.current) {
-      login(initData)
-    }
     if (token) {
       setIsLoading(false)
+    }
+    if (initData && !token && !isProgressLogin.current) {
+      login(initData)
     }
   }, [initData, token])
 
