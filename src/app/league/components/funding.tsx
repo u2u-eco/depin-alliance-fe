@@ -30,9 +30,10 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
     const _total = formatNumber(userInfo?.point || 0, 0, 0).replaceAll(',', '')
     setAmount(userInfo?.point ? _total : '')
   }
+  const isDisable = Number(amount) <= 0 || amount?.length === 0
 
   const handleConfirm = async () => {
-    if (isLoading) return
+    if (isLoading || isDisable) return
     setLoading(true)
     const res = await funding(amount)
     if (res.status) {
@@ -67,7 +68,7 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
           <div className="flex items-center space-x-1.5 xs:space-x-2">
             <IconPoint className="size-6 xs:size-7 2xs:size-8" />
             <p className="text-point text-xl xs:text-2xl 2xs:text-[28px] font-bold !leading-[26px] xs:!leading-[32px] 2xs:!leading-[38px] tracking-[-1px]">
-              {kFormatter(currentLeague?.point || 0, 0, 2)}
+              {kFormatter(currentLeague?.point || 0, 0, 0)}
             </p>
           </div>
         </div>
@@ -94,7 +95,12 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
         </div>
       </div>
       <div className="mt-6 xs:mt-7 2xs:mt-8">
-        <CustomButton title="Confirm" isLoading={isLoading} onAction={handleConfirm} />
+        <CustomButton
+          title="Confirm"
+          disable={isDisable}
+          isLoading={isLoading}
+          onAction={handleConfirm}
+        />
       </div>
     </div>
   )

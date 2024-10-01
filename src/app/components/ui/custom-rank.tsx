@@ -45,6 +45,34 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
     }
   }
 
+  const getSubContent = (item: any) => {
+    switch (type) {
+      case RANK_TYPE.LEAGUE:
+        return (
+          <p className="text-yellow-600 text-[15px] xs:text-base !leading-[20px]">
+            LV. {item.level}
+          </p>
+        )
+      default:
+        return (
+          <div className="flex items-center space-x-1">
+            <IconPoint className="size-4" />
+            <p className="text-primary font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
+              {type === RANK_TYPE.MEMBER ? (
+                `${formatNumber(item?.value || 0, 0, 0)}`
+              ) : (
+                <>
+                  {isEarn
+                    ? `${formatNumber(item?.pointEarned || 0, 0, 0)}`
+                    : `${formatNumber(item?.miningPower || 0, 0, 2)}/h`}
+                </>
+              )}
+            </p>
+          </div>
+        )
+    }
+  }
+
   return (
     <div
       className={`flex flex-col space-y-3 xs:space-y-4 ${data?.currentRank > data?.ranking?.length ? 'mb-20 xs:mb-[90px]' : ''}`}
@@ -90,20 +118,7 @@ const CustomRank = ({ data, isEarn, type }: IListRankingItem) => {
                   </div>
                   {type !== RANK_TYPE.RANKING && <IconOpenLink gradient className="size-6" />}
                 </div>
-                {type === RANK_TYPE.LEAGUE ? (
-                  <p className="text-yellow-600 text-[15px] xs:text-base !leading-[20px]">
-                    LV. {item.level}
-                  </p>
-                ) : (
-                  <div className="flex items-center space-x-1">
-                    <IconPoint className="size-4" />
-                    <p className="text-primary font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-                      {isEarn
-                        ? `${formatNumber(item.pointEarned || 0, 0, 0)}`
-                        : `${formatNumber(item.miningPower || 0, 0, 2)}/h`}
-                    </p>
-                  </div>
-                )}
+                {getSubContent(item)}
               </div>
             </div>
             <div className="mr-1 xs:mr-2 2xs:mr-3">
