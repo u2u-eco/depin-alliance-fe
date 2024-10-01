@@ -122,7 +122,7 @@ export default function SettingPage() {
       >
         <CustomHeader title="setting" />
         <div className="[--space:_48px] xs:[--space:_52px] 2xs:[--space:_56px] flex flex-col justify-between h-[calc(100%_-_var(--space))]">
-          <div className="my-8">
+          <div className="my-6 xs:my-7 2xs:my-8">
             <div className="space-y-3 xs:space-y-4">
               {listSetting.map((item: any) => (
                 <div
@@ -172,13 +172,13 @@ export default function SettingPage() {
           </div>
           <div>
             <img className="mx-auto" src="/assets/images/navbar-frame.svg" alt="" />
-            <div className="flex justify-center mt-6 mb-4 space-x-3 xs:space-x-4">
+            <div className="flex justify-center mt-4 xs:mt-5 2xs:mt-6 mb-4 space-x-3 xs:space-x-4">
               {listSocial.map((item: any) => (
                 <Link href={item.link} className="btn default w-auto" target="_blank" key={item.id}>
                   <div className="btn-border"></div>
                   <div
                     onClick={handleClickLink}
-                    className="btn-default !p-2 !size-[60px] xs:!size-[70px] 2xs:!size-[80px] flex items-center justify-center"
+                    className="btn-default !p-2 !size-[50px] min-[355px]:!size-[60px] xs:!size-[70px] 2xs:!size-[80px] flex items-center justify-center"
                   >
                     <img
                       className="h-6 xs:h-7 2xs:h-8"
