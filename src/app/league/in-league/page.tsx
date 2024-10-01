@@ -215,6 +215,7 @@ export default function InLeaguePage() {
   const handleSound = () => {
     buttonSound.play()
   }
+
   const handleAction = (type: string) => {
     switch (type) {
       case LEAGUE_TYPE.MISSION:

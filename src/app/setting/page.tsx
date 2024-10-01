@@ -126,7 +126,7 @@ export default function SettingPage() {
             <div className="space-y-3 xs:space-y-4">
               {listSetting.map((item: any) => (
                 <div
-                  className="relative before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
+                  className="relative before:z-[-1] before:content-[''] before:absolute before:bottom-0 before:right-0 before:size-6 xs:before:size-7 2xs:before:size-8 before:border-[12px] xs:before:border-[14px] 2xs:before:border-[16px] before:border-transparent before:border-b-white/5 before:border-r-white/5"
                   key={item.id}
                 >
                   <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] p-2 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5">

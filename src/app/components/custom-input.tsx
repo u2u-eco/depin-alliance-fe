@@ -30,7 +30,6 @@ const CustomInput = ({
   return (
     <div className="relative pt-0.5">
       <Input
-        type={amount ? 'number' : 'string'}
         isDisabled={isDisabled}
         label={label}
         defaultValue={value || ''}
