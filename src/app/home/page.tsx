@@ -62,7 +62,7 @@ export default function HomePage() {
           <div className="flex-1 relative h-full mt-6 xs:mt-7 2xs:mt-8">
             <div
               onClick={handleClickFigure}
-              className="relative h-full w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:bottom-0 before:left-[50%] before:translate-x-[-50%] before:w-[240px] before:h-[30px] before:rounded-full before:[background:_radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0))] before:z-[-1]"
+              className="relative h-full w-fit mx-auto cursor-pointer before:content-[''] before:absolute before:bottom-[-10px] before:left-[50%] before:translate-x-[-50%] before:w-[160px] xs:before:w-[200px] 2xs:before:w-[240px] before:h-[30px] before:[clip-path:_ellipse(50%_50%_at_50%_50%)] before:bg-[radial-gradient(rgba(24,24,24,1),rgba(24,24,24,0)_60%)] before:z-[-1]"
             >
               <img
                 className="h-full"
