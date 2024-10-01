@@ -2,7 +2,7 @@ import CustomButton from '@/app/components/button'
 import CustomInput from '@/app/components/custom-input'
 import { IconFund, IconPoint } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { formatNumber } from '@/helper/common'
+import { formatNumber, kFormatter } from '@/helper/common'
 import { funding } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import React, { useMemo, useState } from 'react'
@@ -11,7 +11,7 @@ interface IFundingModal {
   closeModal: () => void
 }
 const FundingModal = ({ closeModal }: IFundingModal) => {
-  const { userInfo, getUserInfo } = useCommonStore()
+  const { userInfo, getUserInfo, currentLeague } = useCommonStore()
   const [amount, setAmount] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
 
@@ -20,7 +20,8 @@ const FundingModal = ({ closeModal }: IFundingModal) => {
   }
 
   const handleMax = () => {
-    setAmount(userInfo?.point ? userInfo?.point.toString() : '')
+    const _total = formatNumber(userInfo?.point || 0, 0, 0).replaceAll(',', '')
+    setAmount(userInfo?.point ? _total : '')
   }
 
   const handleConfirm = async () => {
@@ -58,7 +59,7 @@ const FundingModal = ({ closeModal }: IFundingModal) => {
           <div className="flex items-center space-x-1.5 xs:space-x-2">
             <IconPoint className="size-6 xs:size-7 2xs:size-8" />
             <p className="text-point text-xl xs:text-2xl 2xs:text-[28px] font-bold !leading-[26px] xs:!leading-[32px] 2xs:!leading-[38px] tracking-[-1px]">
-              5,000
+              {kFormatter(currentLeague?.point || 0, 0, 2)}
             </p>
           </div>
         </div>

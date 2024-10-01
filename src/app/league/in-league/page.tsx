@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
+import copy from 'copy-to-clipboard'
 import {
   IconChange,
   IconChat,
@@ -12,9 +14,7 @@ import {
   IconLeague,
   IconLeave,
   IconMember,
-  IconMinusCircle,
   IconPlus,
-  IconPlusCircle,
   IconPoint,
   IconProfit,
   IconResearch,
@@ -22,7 +22,7 @@ import {
   IconUserAddCircle
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { BUTTON_TYPE, MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
+import { MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
 import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
@@ -112,11 +112,12 @@ export default function InLeaguePage() {
       class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
     }
   ]
+  const hasRoleAdminRequest = currentLeague?.role.includes('ADMIN_REQUEST')
 
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
-    enabled: Boolean(currentLeague?.isOwner)
+    enabled: Boolean(currentLeague?.isOwner) || Boolean(hasRoleAdminRequest)
   })
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
@@ -206,6 +207,7 @@ export default function InLeaguePage() {
 
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
+      copy(`${TELE_URI}?start=${currentLeague.inviteLink}`)
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
@@ -220,23 +222,19 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.MEMBER:
         return router.push('/league/member')
       case LEAGUE_TYPE.INVITE:
-        return handleShare()
+        // return handleShare()
+        handleCopy()
+        break
       case LEAGUE_TYPE.LEAGUES:
         return router.push('/league/all-league')
       case LEAGUE_TYPE.RESEARCH:
         return router.push('/league/research')
       case LEAGUE_TYPE.INNOVATE:
         return router.push('/league/innovate')
-      case LEAGUE_TYPE.LEAVE:
-        setActiveType(LEAGUE_TYPE.LEAVE)
-        onOpen()
-        break
       case LEAGUE_TYPE.FUNDING:
-        setActiveType(LEAGUE_TYPE.FUNDING)
-        onOpen()
-        break
+      case LEAGUE_TYPE.LEAVE:
       case LEAGUE_TYPE.CONTRIBUTE:
-        setActiveType(LEAGUE_TYPE.CONTRIBUTE)
+        setActiveType(type)
         onOpen()
         break
     }
@@ -464,7 +462,7 @@ export default function InLeaguePage() {
               ))}
             </div>
             {/* Join Request */}
-            {currentLeague?.isOwner && (
+            {(currentLeague?.isOwner || hasRoleAdminRequest) && (
               <Link
                 onClick={() => {
                   tabSound.play()

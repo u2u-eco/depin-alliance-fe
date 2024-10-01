@@ -23,7 +23,6 @@ interface IMember {
   activeTab: string
 }
 const AllMember = ({ setTotalMember, activeTab }: IMember) => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -32,17 +31,13 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
   const timeoutSearch = useRef<any>(null)
   const [search, setSearch] = useState<string>('')
   const [scrollTrigger, isInView] = useInView()
-  const currentUser = useRef<IJoinRequest | null>(null)
-  const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const isUpdatePage = useRef<boolean>(false)
   const { buttonSound } = useAppSound()
 
-  useQuery({
+  const { data: listMemberData } = useQuery({
     queryKey: ['getListMemberOfLeague', page, search, activeTab],
     queryFn: async () => {
       try {
-        if (isUpdatePage.current) return
         setIsLoading(true)
         const res: any = await getListMemberOfLeague({
           page,
@@ -53,8 +48,9 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
         if (res.pagination?.totalPage) {
           maxPage.current = res.pagination?.totalPage
         }
-        setTotalMember(res.pagination?.totalRecord || 0)
-        if (page !== res.pagination.page) {
+
+        setTotalMember(res.pagination?.totalRecord || res.data?.ranking?.length)
+        if (res.pagination && page !== res.pagination.page) {
           setIsLoading(false)
           return []
         }
@@ -72,49 +68,6 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
       }
     }
   })
-  // const handleCancel = (item: IJoinRequest, index: number) => {
-  //   currentUser.current = { ...item, index }
-  // }
-
-  // const handleUpdateData = async (index: number) => {
-  //   setIsLoading(true)
-  //   isUpdatePage.current = true
-  //   const currentPage = Math.floor(index / PAGE_SIZE)
-  //   setPage(currentPage + 1)
-  //   const res: any = await getListMemberOfLeague({
-  //     page: currentPage + 1,
-  //     size: PAGE_SIZE,
-  //     username: search
-  //   })
-
-  //   if (res.status) {
-  //     setTotalMember(res?.pagination?.totalRecord || 0)
-  //     dataList.current.splice(currentPage * PAGE_SIZE, dataList?.current?.length, ...res.data)
-  //     setListItem([...dataList.current])
-  //   }
-  //   isUpdatePage.current = false
-
-  //   setIsLoading(false)
-  // }
-
-  const handleKickModal = () => {
-    onOpen()
-  }
-
-  // const handleKick = async () => {
-  //   if (isLoadingAction) return
-  //   if (currentUser?.current?.id) {
-  //     setIsLoadingAction(true)
-  //     const res = await kickUserInLeague(currentUser.current.id)
-  //     if (res.status) {
-  //       handleUpdateData(currentUser.current.index || 0)
-  //       toast.dismiss()
-  //       toast.success(<CustomToast title="Kick member successfully" type="success" />)
-  //       onClose()
-  //     }
-  //     setIsLoadingAction(false)
-  //   }
-  // }
 
   const handleUpdateText = (text: string) => {
     clearTimeout(timeoutSearch.current)
@@ -132,11 +85,6 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
         '_self'
       )
     }
-  }
-
-  const data = {
-    currentRank: 150,
-    ranking: listItem
   }
 
   useEffect(() => {
@@ -164,8 +112,18 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.35 }}
             key="all"
+            className="!will-change-auto"
           >
-            <CustomRank data={data} type="member" />
+            <CustomRank
+              data={{
+                currentRank: listMemberData?.data.currentRank,
+                ranking: listItem
+              }}
+              type="member"
+            />
+            <div ref={scrollTrigger} className="text-[transparent]">
+              Loading...
+            </div>
           </motion.div>
         )}
         {isLoading && (
@@ -177,61 +135,6 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
           />
         )}
       </div>
-      {/* <CustomModal title="Kick member" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
-        <div>
-          <div className=" text-body text-base tracking-[-1px] text-center">
-            <p>
-              Are you sure you want to kick this member{' '}
-              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${currentUser.current?.username}"`}</span>
-              ?
-            </p>
-          </div>
-          <div className="mt-8 mb-10 flex items-center justify-center space-x-3 xs:space-x-4">
-            <div
-              className={`p-[1px] size-[110px] min-w-[110px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center`}
-            >
-              <img
-                className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                src={currentUser.current?.avatar || '/assets/images/league/league-04@2x.png'}
-                alt="DePIN Alliance"
-              />
-            </div>
-            <div className="space-y-1.5 xs:space-y-2">
-              <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
-                {currentUser.current?.username}
-              </p>
-              <div className="flex items-center space-x-1.5 xs:space-x-2">
-                <IconPoint className="size-5 xs:size-6" />
-                <span className="text-primary font-semibold">{`${formatNumber(currentUser?.current?.miningPower || 0, 0, 2)}/h`}</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div
-              className="btn default"
-              onClick={() => {
-                onClose()
-                buttonSound.play()
-              }}
-            >
-              <div className="btn-border"></div>
-              <div className="btn-default">Cancel</div>
-              <div className="btn-border"></div>
-            </div>
-            <div
-              className="btn error"
-              onClick={() => {
-                handleKick()
-                buttonSound.play()
-              }}
-            >
-              <div className="btn-border"></div>
-              <div className="btn-error">KICK</div>
-              <div className="btn-border"></div>
-            </div>
-          </div>
-        </div>
-      </CustomModal> */}
     </div>
   )
 }

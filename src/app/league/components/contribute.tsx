@@ -2,6 +2,7 @@ import CustomButton from '@/app/components/button'
 import ListUserItem from '@/app/components/list-user-item'
 import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
+import NoItem from '@/app/components/ui/no-item'
 import SellItem from '@/app/workspace/components/sell-item'
 import { BUTTON_TYPE, PAGE_SIZE, QUERY_CONFIG } from '@/constants'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
@@ -148,6 +149,14 @@ const ContributeModal = ({ closeModal }: ModalProps) => {
                   }}
                 />
               )}
+              {listDeviceItem?.length === 0 && !loading ? (
+                <NoItem
+                  title="No item"
+                  classNames={{
+                    icon: 'text-body'
+                  }}
+                />
+              ) : null}
             </div>
             <p className="text-center text-error text-[13px] xs:text-sm !leading-[18px] tracking-[-1px]">
               After contributing, your items will not be returned. So select carefully

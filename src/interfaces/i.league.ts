@@ -25,6 +25,7 @@ export interface IUserLeague {
   role: string
   point: number
   id: number
+  adminId: number
 }
 export interface IUserConfig {
   maxDevice: number
