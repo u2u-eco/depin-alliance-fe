@@ -246,7 +246,7 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.LEAVE:
         return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleLeave} />
       case LEAGUE_TYPE.FUNDING:
-        return <FundingModal closeModal={onClose} />
+        return <FundingModal closeModal={onClose} cb={_getUserLeague} />
       default:
         return <ContributeModal closeModal={onClose} />
     }
@@ -423,7 +423,7 @@ export default function InLeaguePage() {
                       <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                       <div className="space-y-1.5 xs:space-y-2">
                         <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] !leading-[18px]">
-                          PROFIT
+                          POWER
                         </p>
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />

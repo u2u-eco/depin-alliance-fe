@@ -9,8 +9,9 @@ import React, { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 interface IFundingModal {
   closeModal: () => void
+  cb: () => void
 }
-const FundingModal = ({ closeModal }: IFundingModal) => {
+const FundingModal = ({ closeModal, cb }: IFundingModal) => {
   const { userInfo, getUserInfo, currentLeague } = useCommonStore()
   const [amount, setAmount] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
@@ -31,6 +32,7 @@ const FundingModal = ({ closeModal }: IFundingModal) => {
     if (res.status) {
       toast.success(<CustomToast type="success" title="Funding successfully" />)
       getUserInfo()
+      cb && cb()
       closeModal()
     }
     setLoading(false)

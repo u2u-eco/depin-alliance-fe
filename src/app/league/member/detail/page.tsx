@@ -74,8 +74,23 @@ export default function MemberDetailPage() {
     }
   }
 
+  const handleBack = () => {
+    router.push('/league/member')
+  }
+
   const isAdmin = currentLeague?.adminId === Number(userId)
+  const isModer = detail?.data?.role
   const isMe = currentLeague?.id === Number(userId)
+
+  const getRole = () => {
+    if (isAdmin) {
+      return 'Admin'
+    }
+    if (isModer) {
+      return 'MODER'
+    }
+    return 'MEMBER'
+  }
 
   return (
     <>
@@ -85,7 +100,7 @@ export default function MemberDetailPage() {
             "before:content-[''] before:absolute before:top-[5%] before:left-[-255px] before:size-[355px] before:rounded-[50%] before:blur-[75px] before:bg-green-500 before:opacity-30 before:z-[-1] after:content-[''] after:absolute after:top-[5%] after:right-[-255px] after:size-[355px] after:rounded-[50%] after:blur-[75px] after:bg-yellow-500 after:opacity-30 after:z-[-1]"
         }}
       >
-        <CustomHeader title="Member Detail" />
+        <CustomHeader title="Member Detail" back={handleBack} />
         <div className="relative mt-10 xs:mt-12 2xs:mt-14">
           <div className="absolute top-0 left-[50%] translate-x-[-50%] w-full z-[-1]">
             <img className="mx-auto" src="/assets/images/league/league-background.svg" alt="" />
@@ -111,7 +126,7 @@ export default function MemberDetailPage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {`</ ${isAdmin ? 'ADMIN' : 'MEMBER'} />`}
+                  {`</ ${getRole()} />`}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
@@ -158,7 +173,7 @@ export default function MemberDetailPage() {
                     <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                     <div className="space-y-1.5 xs:space-y-2">
                       <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                        TOTAL FUNDING
+                        FUND
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
@@ -180,7 +195,7 @@ export default function MemberDetailPage() {
                     <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                     <div className="space-y-1.5 xs:space-y-2">
                       <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                        CONTRIBUTED
+                        POWER
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
@@ -257,7 +272,7 @@ export default function MemberDetailPage() {
                   </div>
                 </>
               )}
-              {activeKick && !isMe && (
+              {currentLeague?.role.includes(ROLE_LEAGUE.ADMIN_KICK) && !isMe && !isModer ? (
                 <div className="relative !bg-transparent" onClick={handleKickModal}>
                   <div className="relative  cursor-pointer">
                     <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
@@ -273,7 +288,7 @@ export default function MemberDetailPage() {
                   </div>
                   <div className="absolute bottom-0 right-0  border-[12px] xs:border-[14px] 2xs:border-[16px] border-transparent  border-b-white border-r-white opacity-5" />
                 </div>
-              )}
+              ) : null}
             </div>
           )}
         </div>

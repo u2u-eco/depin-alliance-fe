@@ -10,11 +10,15 @@ interface HeaderProps {
   back?: () => void
 }
 
-export const CustomHeader = ({ title, cb }: HeaderProps) => {
+export const CustomHeader = ({ title, cb, back }: HeaderProps) => {
   const router = useRouter()
   const { tabSound } = useAppSound()
   const handleBack = () => {
     tabSound.play()
+    if (back) {
+      back()
+      return
+    }
     if (cb) {
       cb()
     }

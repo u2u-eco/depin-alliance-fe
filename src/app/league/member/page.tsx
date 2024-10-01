@@ -42,7 +42,7 @@ export default function MemberPage() {
   }
 
   const backToMember = () => {
-    router.push('/league/member')
+    router.push('/league/in-league')
   }
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function MemberPage() {
         }}
       >
         <div className="space-y-6 xs:space-y-8">
-          <CustomHeader title="member" cb={backToMember} />
+          <CustomHeader title="member" back={backToMember} />
           <div className="space-y-3 xs:space-y-4">
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
               ADMIN
