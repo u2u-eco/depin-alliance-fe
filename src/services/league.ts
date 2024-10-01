@@ -109,3 +109,7 @@ export const getDetailMember = (id: any) => {
 export const updateRoleMember = (data: { userId: number; role: string; isActive: boolean }) => {
   return https.post(`/league/role`, data)
 }
+
+export const getRankOfLeague = () => {
+  return https.get(`/league/user-league-current-rank`)
+}

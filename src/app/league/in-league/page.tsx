@@ -28,7 +28,13 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import { MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
 import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
-import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
+import {
+  getRankOfLeague,
+  getTotalJoinRequest,
+  leaveLeague,
+  updateAvatarLeague,
+  userLeague
+} from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
@@ -122,6 +128,13 @@ export default function InLeaguePage() {
     queryFn: getTotalJoinRequest,
     enabled: Boolean(currentLeague?.isOwner) || Boolean(hasRoleAdminRequest)
   })
+
+  const { data: rank } = useQuery({
+    queryKey: ['getRankOfLeague'],
+    queryFn: getRankOfLeague
+  })
+  console.log('🚀 ~ InLeaguePage ~ rank:', rank)
+
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       tabSound.play()
@@ -259,7 +272,7 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.FUNDING:
         return <FundingModal closeModal={onClose} cb={_getUserLeague} />
       default:
-        return <ContributeModal closeModal={onClose} />
+        return <ContributeModal closeModal={onClose} cb={_getUserLeague} />
     }
   }
 
@@ -370,7 +383,7 @@ export default function InLeaguePage() {
                   >
                     <IconRank className="text-white size-6 xs:size-7 2xs:size-8" />
                     <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      10,000
+                      {kFormatter(rank?.data || 0, 0, 0)}
                     </p>
                     <IconOpenLink className="size-6 xs:size-7 2xs:size-8" gradient />
                   </div>

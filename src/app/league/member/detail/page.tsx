@@ -2,21 +2,13 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import {
-  IconDelete,
-  IconFund,
-  IconGroupUser,
-  IconLeave,
-  IconPoint,
-  IconProfit
-} from '@/app/components/icons'
+import { IconDelete, IconFund, IconPoint, IconProfit } from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import CustomModal from '@/app/components/custom-modal'
 import { formatNumber, kFormatter } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
-import { IJoinRequest } from '@/interfaces/i.league'
 import { getDetailMember, kickUserInLeague, updateRoleMember } from '@/services/league'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
@@ -200,7 +192,7 @@ export default function MemberDetailPage() {
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
                         <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
-                          {formatNumber(detail?.data?.contributed || 0, 0, 0)}/h
+                          {formatNumber(detail?.data?.contributed || 0, 0, 2)}/h
                         </p>
                       </div>
                     </div>

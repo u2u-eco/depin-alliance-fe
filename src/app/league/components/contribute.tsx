@@ -15,9 +15,10 @@ import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
 interface ModalProps {
   closeModal: () => void
+  cb: () => void
 }
 
-const ContributeModal = ({ closeModal }: ModalProps) => {
+const ContributeModal = ({ closeModal, cb }: ModalProps) => {
   const [activeItem, setActiveItem] = useState<any>()
   const amountSell = useRef<any>()
   const [isLoadingAction, setLoadingAction] = useState<boolean>(false)
@@ -75,6 +76,7 @@ const ContributeModal = ({ closeModal }: ModalProps) => {
     })
     if (res.status) {
       toast.success(<CustomToast type="success" title="Contribute successfully" />)
+      cb && cb()
       closeModal()
     }
     setLoadingAction(false)
