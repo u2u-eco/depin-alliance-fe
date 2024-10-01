@@ -99,7 +99,7 @@ export default function MemberPage() {
                 <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
                   MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
                 </p>
-                {currentLeague?.isOwner && (
+                {(currentLeague?.isOwner || currentLeague?.role) && (
                   <div
                     className="flex items-center space-x-2 cursor-pointer"
                     onClick={handleShowModer}
