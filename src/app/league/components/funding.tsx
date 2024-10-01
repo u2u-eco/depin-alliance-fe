@@ -17,7 +17,13 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
   const [isLoading, setLoading] = useState<boolean>(false)
 
   const handleUpdateAmount = (amount: string) => {
-    setAmount(amount)
+    const re = /^[0-9\b]+$/
+
+    // if value is not blank, then test the regex
+
+    if (amount === '' || re.test(amount)) {
+      setAmount(amount)
+    }
   }
 
   const handleMax = () => {

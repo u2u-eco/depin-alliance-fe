@@ -199,8 +199,8 @@ export default function MemberDetailPage() {
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
-                        <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                          {formatNumber(detail?.data?.totalEarned || 0, 0, 0)}/h
+                        <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] lowercase">
+                          {formatNumber(detail?.data?.contributed || 0, 0, 0)}/h
                         </p>
                       </div>
                     </div>
@@ -272,7 +272,7 @@ export default function MemberDetailPage() {
                   </div>
                 </>
               )}
-              {currentLeague?.role.includes(ROLE_LEAGUE.ADMIN_KICK) && !isMe && !isModer ? (
+              {currentLeague?.role?.includes(ROLE_LEAGUE.ADMIN_KICK) && !isMe && !isModer ? (
                 <div className="relative !bg-transparent" onClick={handleKickModal}>
                   <div className="relative  cursor-pointer">
                     <div className="[--shape:_34px] xs:[--shape:_40px] 2xs:[--shape:_46px] py-3 xs:py-4 2xs:py-5 px-6 xs:px-7 2xs:px-8 flex items-center justify-between [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_20px)] bg-white/5 min-h-[70px] xs:min-h-[80px] 2xs:min-h-[90px]">
