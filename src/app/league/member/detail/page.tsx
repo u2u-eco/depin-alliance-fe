@@ -199,7 +199,7 @@ export default function MemberDetailPage() {
                       </p>
                       <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                         <IconPoint className="size-5 xs:size-6 2xs:size-7" />
-                        <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] lowercase">
+                        <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
                           {formatNumber(detail?.data?.contributed || 0, 0, 0)}/h
                         </p>
                       </div>

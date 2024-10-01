@@ -1,11 +1,32 @@
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
-import { IconFund, IconGroupUser, IconPoint, IconProfit } from '@/app/components/icons'
+import {
+  IconFund,
+  IconGroupUser,
+  IconOpenLink,
+  IconPoint,
+  IconProfit,
+  IconRank
+} from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
+import { useAppSound } from '@/hooks/useAppSound'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function DetailLeaguePage() {
+  const router = useRouter()
+  const { tabSound } = useAppSound()
+
+  const handleTabSound = () => {
+    tabSound.play()
+  }
+
+  const handleRank = () => {
+    handleTabSound()
+    router.push('/league/all-league')
+  }
+
   return (
     <>
       <CustomPage
@@ -56,25 +77,24 @@ export default function DetailLeaguePage() {
               <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
-                    TOTAL MINING
+                    Rank
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-6 xs:size-7 2xs:size-8"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt=""
-                    />
-                    <p className="text-green-500 uppercase font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      100K
+                  <div
+                    className="flex items-center space-x-1.5 xs:space-x-2 cursor-pointer"
+                    onClick={handleRank}
+                  >
+                    <IconRank className="text-white size-6 xs:size-7 2xs:size-8" />
+                    <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      10,000
                     </p>
+                    <IconOpenLink className="size-6 xs:size-7 2xs:size-8" gradient />
                   </div>
                 </div>
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
                     CONTRIBUTORS
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1.5 xs:space-x-2">
                     <IconGroupUser className="size-6 xs:size-7 2xs:size-8 text-white" />
                     <p className="text-green-500 uppercase font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                       581
@@ -92,7 +112,7 @@ export default function DetailLeaguePage() {
                       <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                       <div className="space-y-1.5 xs:space-y-2">
                         <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                          TOTAL FUNDING
+                          FUND
                         </p>
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
@@ -114,12 +134,12 @@ export default function DetailLeaguePage() {
                       <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
                       <div className="space-y-1.5 xs:space-y-2">
                         <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] leading-[18px]">
-                          TOTAL CONTRIBUTED
+                          POWER
                         </p>
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
-                          <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
-                            100K/h
+                          <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
+                            101K/h
                           </p>
                         </div>
                       </div>

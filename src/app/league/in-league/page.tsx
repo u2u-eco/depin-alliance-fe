@@ -10,13 +10,16 @@ import {
   IconChat,
   IconClipboard,
   IconFund,
+  IconGroupUser,
   IconInnovate,
   IconLeague,
   IconLeave,
   IconMember,
+  IconOpenLink,
   IconPlus,
   IconPoint,
   IconProfit,
+  IconRank,
   IconResearch,
   IconUserAdd,
   IconUserAddCircle
@@ -67,7 +70,7 @@ export default function InLeaguePage() {
       id: 1,
       icon: <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'mission',
-      class: ''
+      class: 'pointer-events-none text-inactive'
     },
     {
       id: 2,
@@ -91,13 +94,13 @@ export default function InLeaguePage() {
       id: 5,
       icon: <IconResearch className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'research',
-      class: ''
+      class: 'pointer-events-none text-inactive'
     },
     {
       id: 6,
       icon: <IconInnovate className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'innovate',
-      class: ''
+      class: 'pointer-events-none text-inactive'
     },
     {
       id: 7,
@@ -212,8 +215,16 @@ export default function InLeaguePage() {
     }
   }
 
-  const handleSound = () => {
+  const handleButtonSound = () => {
     buttonSound.play()
+  }
+  const handleTabSound = () => {
+    tabSound.play()
+  }
+
+  const handleRank = () => {
+    handleTabSound()
+    router.push('/league/all-league')
   }
 
   const handleAction = (type: string) => {
@@ -271,7 +282,7 @@ export default function InLeaguePage() {
           <div className="space-y-5 mb-6">
             <div
               className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white"
-              onClick={handleSound}
+              onClick={handleButtonSound}
             >
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
@@ -351,31 +362,26 @@ export default function InLeaguePage() {
               <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
-                    TOTAL MINING
+                    Rank
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-6 xs:size-7 2xs:size-8"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt=""
-                    />
-                    <p className="text-inactive font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      0
+                  <div
+                    className="flex items-center space-x-1.5 xs:space-x-2 cursor-pointer"
+                    onClick={handleRank}
+                  >
+                    <IconRank className="text-white size-6 xs:size-7 2xs:size-8" />
+                    <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      10,000
                     </p>
+                    <IconOpenLink className="size-6 xs:size-7 2xs:size-8" gradient />
                   </div>
                 </div>
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
                     CONTRIBUTORS
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-6 xs:size-7 2xs:size-8"
-                      src="/assets/images/icons/icon-group-user-white.svg"
-                      alt=""
-                    />
-                    <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                  <div className="flex items-center space-x-1.5 xs:space-x-2">
+                    <IconGroupUser className="text-white size-6 xs:size-7 2xs:size-8" />
+                    <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                       {currentLeague?.totalContributors
                         ? formatNumber(currentLeague.totalContributors, 0, 0)
                         : 0}
@@ -427,7 +433,7 @@ export default function InLeaguePage() {
                         </p>
                         <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
                           <IconPoint className="size-5 xs:size-6 2xs:size-7" />
-                          <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
+                          <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
                             {kFormatter(currentLeague?.profit || 0, 0, 2)}/h
                           </p>
                         </div>
