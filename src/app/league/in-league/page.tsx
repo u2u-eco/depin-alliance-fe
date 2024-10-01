@@ -507,6 +507,7 @@ export default function InLeaguePage() {
         onOpen={onOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+        maxHeight={500}
       >
         <>{getContentOfModal()}</>
       </CustomModal>
