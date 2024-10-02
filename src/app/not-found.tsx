@@ -14,7 +14,7 @@ export default function NotFoundPage() {
 
   return (
     <CustomModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} onOpenChange={onOpenChange} full>
-      <div className="flex flex-col justify-between h-full p-3 3xs:p-4">
+      <div className="flex flex-col justify-between h-full p-3 3xs:p-4 overflow-hidden">
         <div className="flex-1 my-8 xs:my-10 flex flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
           <div className="relative h-[100px] min-[355px]:h-[120px] xs:h-[140px] 2xs:h-[160px] mx-auto ">
             <img

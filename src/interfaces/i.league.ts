@@ -21,6 +21,11 @@ export interface IUserLeague {
   adminMiningPower: number
   adminUsername: string
   adminAvatar: string
+  profit: number
+  role: string
+  point: number
+  id: number
+  adminId: number
 }
 export interface IUserConfig {
   maxDevice: number

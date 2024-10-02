@@ -110,13 +110,14 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   }
 
   useEffect(() => {
+    if (isLoading) return
     if (listPartners?.data) {
       showTabPartner(true)
       countTaskDone(listPartners.data)
     } else {
       showTabPartner(false)
     }
-  }, [listPartners])
+  }, [listPartners, isLoading])
 
   useEffect(() => {
     if (listPartners?.data) {

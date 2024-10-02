@@ -112,8 +112,10 @@ export interface IUserLevel {
 
 export interface IRankingItem {
   avatar: string
-  miningPower: number
-  username: string
+  miningPower?: number
+  username?: string
+  name?: string
   pointEarned?: number
   rank?: number
+  level?: number
 }

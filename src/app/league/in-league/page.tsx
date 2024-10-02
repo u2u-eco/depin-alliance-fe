@@ -1,24 +1,40 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import { filetoDataURL, dataURLtoFile, EImageType } from 'image-conversion'
+import copy from 'copy-to-clipboard'
 import {
   IconChange,
   IconChat,
   IconClipboard,
+  IconFund,
   IconGroupUser,
+  IconInnovate,
+  IconLeague,
   IconLeave,
   IconMember,
-  IconShare,
+  IconOpenLink,
+  IconPlus,
+  IconPoint,
+  IconProfit,
+  IconRank,
+  IconResearch,
+  IconUserAdd,
   IconUserAddCircle
 } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { BUTTON_TYPE, MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
-import { formatNumber } from '@/helper/common'
+import { MAX_SIZE_UPLOAD, TELE_URI } from '@/constants'
+import { formatNumber, kFormatter } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
-import { getTotalJoinRequest, leaveLeague, updateAvatarLeague, userLeague } from '@/services/league'
+import {
+  getRankOfLeague,
+  getTotalJoinRequest,
+  leaveLeague,
+  updateAvatarLeague,
+  userLeague
+} from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
@@ -27,20 +43,98 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import Loader from '@/app/components/ui/loader'
+import LeaveModal from '../components/leave'
+import FundingModal from '../components/funding'
+import ContributeModal from '../components/contribute'
+
+const LEAGUE_TYPE = {
+  LEAVE: 'leave',
+  FUNDING: 'funding',
+  CONTRIBUTE: 'contribute',
+  MISSION: 'mission',
+  MEMBER: 'member',
+  CHAT: 'chat',
+  INVITE: 'invite',
+  RESEARCH: 'research',
+  INNOVATE: 'innovate',
+  LEAGUES: 'leagues'
+}
 
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
+  const [role, setRole] = useState<string | null>(null)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+
   const [loadingButton, setLoadingButton] = useState(false)
   const { buttonSound, tabSound } = useAppSound()
   const [isLoadingAvatar, setLoadingAvatar] = useState<boolean>(false)
   const file = useRef<any>()
+  const [activeType, setActiveType] = useState(LEAGUE_TYPE.LEAVE)
+
+  const listLink = [
+    {
+      id: 1,
+      icon: <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'mission',
+      class: 'pointer-events-none text-inactive'
+    },
+    {
+      id: 2,
+      icon: <IconMember className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'member',
+      class: ''
+    },
+    {
+      id: 3,
+      icon: <IconChat className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'chat',
+      class: 'pointer-events-none text-inactive'
+    },
+    {
+      id: 4,
+      icon: <IconUserAdd className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'invite',
+      class: ''
+    },
+    {
+      id: 5,
+      icon: <IconResearch className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'research',
+      class: 'pointer-events-none text-inactive'
+    },
+    {
+      id: 6,
+      icon: <IconInnovate className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'innovate',
+      class: 'pointer-events-none text-inactive'
+    },
+    {
+      id: 7,
+      icon: <IconLeague className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'leagues',
+      class: ''
+    },
+    {
+      id: 8,
+      icon: <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
+      type: 'leave',
+      class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
+    }
+  ]
+  const hasRoleAdminRequest = role?.includes('ADMIN_REQUEST')
+
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
     queryFn: getTotalJoinRequest,
-    enabled: Boolean(currentLeague?.isOwner)
+    enabled: Boolean(currentLeague?.isOwner) || Boolean(hasRoleAdminRequest)
   })
+
+  const { data: rank } = useQuery({
+    queryKey: ['getRankOfLeague'],
+    queryFn: getRankOfLeague
+  })
+
   const handleShare = () => {
     if (currentLeague?.inviteLink) {
       tabSound.play()
@@ -55,6 +149,7 @@ export default function InLeaguePage() {
     const res = await userLeague()
     if (res.status && res.data && !res.data?.isPendingRequest) {
       setCurrentLeague({ league: res.data })
+      setRole(res.data.role)
     } else {
       router.push('/league')
     }
@@ -69,6 +164,7 @@ export default function InLeaguePage() {
       const res = await leaveLeague()
       if (res.status) {
         // _getUserLeague()
+        onClose()
         setCurrentLeague({ league: null })
         toast.success(<CustomToast type="success" title="Leave League successfully!" />)
         router.push('/league')
@@ -128,12 +224,72 @@ export default function InLeaguePage() {
 
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
+      copy(`${TELE_URI}?start=${currentLeague.inviteLink}`)
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
 
-  const handleSound = () => {
-    buttonSound.play()
+  const handleButtonSound = () => {
+    buttonSound?.play()
+  }
+  const handleTabSound = () => {
+    tabSound?.play()
+  }
+
+  const handleRank = () => {
+    handleTabSound()
+    router.push('/league/all-league')
+  }
+
+  const handleAction = (type: string) => {
+    switch (type) {
+      case LEAGUE_TYPE.MISSION:
+        handleTabSound()
+        return router.push('/league/mission')
+      case LEAGUE_TYPE.MEMBER:
+        handleTabSound()
+        return router.push('/league/member')
+      case LEAGUE_TYPE.INVITE:
+        handleButtonSound()
+        // return handleShare()
+        handleCopy()
+        break
+      case LEAGUE_TYPE.LEAGUES:
+        handleTabSound()
+        return router.push('/league/all-league')
+      case LEAGUE_TYPE.RESEARCH:
+        return router.push('/league/research')
+      case LEAGUE_TYPE.INNOVATE:
+        return router.push('/league/innovate')
+      case LEAGUE_TYPE.FUNDING:
+      case LEAGUE_TYPE.LEAVE:
+      case LEAGUE_TYPE.CONTRIBUTE:
+        handleButtonSound()
+        setActiveType(type)
+        onOpen()
+        break
+    }
+  }
+
+  const getContentOfModal = () => {
+    switch (activeType) {
+      case LEAGUE_TYPE.LEAVE:
+        return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleLeave} />
+      case LEAGUE_TYPE.FUNDING:
+        return <FundingModal closeModal={onClose} cb={_getUserLeague} />
+      default:
+        return <ContributeModal closeModal={onClose} cb={_getUserLeague} />
+    }
+  }
+
+  const getRole = () => {
+    if (currentLeague?.isOwner) {
+      return 'Admin'
+    }
+    if (currentLeague?.role) {
+      return 'MODER'
+    }
+    return 'MEMBER'
   }
 
   useEffect(() => {
@@ -155,7 +311,7 @@ export default function InLeaguePage() {
           <div className="space-y-5 mb-6">
             <div
               className="relative size-[160px] xs:size-[180px] 2xs:size-[200px] mx-auto before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-[14px] before:border-[7px] before:border-transparent before:border-t-white before:border-l-white after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-8 after:border-[16px] after:border-transparent after:border-b-white after:border-r-white"
-              onClick={handleSound}
+              onClick={handleButtonSound}
             >
               <div className="size-full p-[1px] [clip-path:_polygon(22px_0%,100%_0,100%_calc(100%_-_44px),calc(100%_-_44px)_100%,0_100%,0_22px)] bg-white">
                 <img
@@ -200,10 +356,14 @@ export default function InLeaguePage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {currentLeague?.isOwner ? 'Admin' : 'Member'}
+                  {`</ ${getRole()} />`}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
+              {/* <Link href="/league/ranking" className="flex items-center justify-center space-x-1">
+                <p className="text-gradient uppercase font-mona font-semibold">VIEW LEAGUE RANK</p>
+                <IconOpenLink gradient className="size-6" />
+              </Link> */}
             </div>
           </div>
           {/* Progress */}
@@ -231,31 +391,26 @@ export default function InLeaguePage() {
               <div className="absolute top-0 left-0 right-0 w-full h-full flex items-center justify-between px-4 xs:px-6 2xs:px-8 space-x-3 xs:space-x-4">
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
-                    TOTAL MINING
+                    Rank
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-6 xs:size-7 2xs:size-8"
-                      src="/assets/images/point.png"
-                      srcSet="/assets/images/point.png 1x, /assets/images/point@2x.png 2x"
-                      alt=""
-                    />
-                    <p className="text-inactive font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
-                      0
+                  <div
+                    className="flex items-center space-x-1.5 xs:space-x-2 cursor-pointer"
+                    onClick={handleRank}
+                  >
+                    <IconRank className="text-white size-6 xs:size-7 2xs:size-8" />
+                    <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                      {kFormatter(rank?.data || 0, 0, 0)}
                     </p>
+                    <IconOpenLink className="size-6 xs:size-7 2xs:size-8" gradient />
                   </div>
                 </div>
                 <div className="space-y-1 xs:space-y-2">
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
                     CONTRIBUTORS
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <img
-                      className="size-6 xs:size-7 2xs:size-8"
-                      src="/assets/images/icons/icon-group-user-white.svg"
-                      alt=""
-                    />
-                    <p className="text-green-500 font-semibold text-xl xs:text-2xl 2xs:text-[28px] !leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
+                  <div className="flex items-center space-x-1.5 xs:space-x-2">
+                    <IconGroupUser className="text-white size-6 xs:size-7 2xs:size-8" />
+                    <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                       {currentLeague?.totalContributors
                         ? formatNumber(currentLeague.totalContributors, 0, 0)
                         : 0}
@@ -264,55 +419,86 @@ export default function InLeaguePage() {
                 </div>
               </div>
             </div>
-            {/* Link */}
-            <div className="flex items-center justify-between min-[355px]:space-x-2 xs:space-x-3">
-              <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
-                <IconChat className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="text-[13px] xs:text-sm !leading-[18px]">Chat</p>
+            {/* Fund - Profit */}
+            <div className="flex space-x-3 xs:space-x-4">
+              <div className="flex-1">
+                <div className="btn cursor-default">
+                  <div className="btn-border"></div>
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(146,152,32,0),rgba(146,152,32,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconFund className="text-yellow-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] !leading-[18px]">
+                          FUND
+                        </p>
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
+                          <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+                          <p className="text-yellow-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] uppercase">
+                            {kFormatter(currentLeague?.point || 0, 0, 0)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="btn-border"></div>
+                </div>
+                <div className="btn group" onClick={() => handleAction(LEAGUE_TYPE.FUNDING)}>
+                  <div className="btn-border"></div>
+                  <div className="btn-primary relative flex items-center justify-center !p-2 xs:!p-2.5 2xs:!p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
+                    <IconPlus gradient className="size-6 mx-auto" />
+                  </div>
+                  <div className="btn-border"></div>
+                </div>
               </div>
-              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              <div className="space-y-1 text-center text-inactive pointer-events-none cursor-pointer transition-colors hover:text-green-500">
-                <IconClipboard className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="text-[13px] xs:text-sm !leading-[18px]">Mission</p>
-              </div>
-              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              {/* <CopyToClipboard
-                text={`${TELE_URI}?start=${currentLeague?.inviteLink}`}
-                onCopy={handleCopy}
-              > */}
-              <div
-                className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
-                onClick={handleShare}
-              >
-                <IconShare className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="text-[13px] xs:text-sm !leading-[18px]">Share</p>
-              </div>
-              {/* </CopyToClipboard> */}
-              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              <Link
-                onClick={() => {
-                  tabSound.play()
-                }}
-                href="/league/member"
-                className="space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500"
-              >
-                <IconMember className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="text-[13px] xs:text-sm !leading-[18px]">Member</p>
-              </Link>
-              <div className="min-[355px]:w-4 xs:w-5 2xs:w-6 h-[1px] bg-green-800"></div>
-              <div
-                className={`space-y-1 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''}`}
-                onClick={() => {
-                  buttonSound.play()
-                  onOpen()
-                }}
-              >
-                <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />
-                <p className="text-[13px] xs:text-sm !leading-[18px]">Leave</p>
+              <div className="flex-1">
+                <div className="btn cursor-default">
+                  <div className="btn-border"></div>
+                  <div className="font-geist !px-2 !py-4 xs:!py-5 2xs:!py-6 relative w-full before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:[background:_linear-gradient(to_bottom,rgba(0,153,86,0),rgba(0,153,86,1))] before:opacity-15 before:z-[-1]">
+                    <div className="space-y-3 xs:space-y-4">
+                      <IconProfit className="text-green-500 size-8 xs:size-10 2xs:size-12 mx-auto" />
+                      <div className="space-y-1.5 xs:space-y-2">
+                        <p className="text-center text-[13px] xs:text-sm font-normal uppercase text-title tracking-[-1px] !leading-[18px]">
+                          POWER
+                        </p>
+                        <div className="flex items-center justify-center space-x-1.5 xs:space-x-2">
+                          <IconPoint className="size-5 xs:size-6 2xs:size-7" />
+                          <p className="text-green-500 font-semibold text-[15px] xs:text-base 2xs:text-lg !leading-[20px] 2xs:!leading-[22px] normal-case">
+                            {kFormatter(currentLeague?.profit || 0, 0, 2)}/h
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="btn-border"></div>
+                </div>
+                <div className="btn group" onClick={() => handleAction(LEAGUE_TYPE.CONTRIBUTE)}>
+                  <div className="btn-border"></div>
+                  <div className="btn-primary relative flex items-center justify-center !p-2 xs:!p-2.5 2xs:!p-3 !shadow-none ![background:_transparent] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-white/5 before:z-[-1] group-hover:before:bg-white/10">
+                    <IconPlus gradient className="size-6 mx-auto" />
+                  </div>
+                  <div className="btn-border"></div>
+                </div>
               </div>
             </div>
+            {/* Link */}
+            <div className="grid grid-cols-4 gap-1 xs:gap-1.5 2xs:gap-2">
+              {listLink.map((item: any) => (
+                <div
+                  key={item.id}
+                  className={`space-y-1 p-2 text-center text-body cursor-pointer transition-colors hover:text-green-500 ${item.class}`}
+                  onClick={() => handleAction(item.type)}
+                >
+                  {item.icon ? (
+                    item.icon
+                  ) : (
+                    <div className="mx-auto min-h-6 xs:min-h-7 2xs:min-h-8" />
+                  )}
+                  <p className="text-[13px] xs:text-sm !leading-[18px] capitalize">{item.type}</p>
+                </div>
+              ))}
+            </div>
             {/* Join Request */}
-            {currentLeague?.isOwner && (
+            {(currentLeague?.isOwner || hasRoleAdminRequest) && (
               <Link
                 onClick={() => {
                   tabSound.play()
@@ -339,70 +525,20 @@ export default function InLeaguePage() {
         </div>
       </CustomPage>
       <CustomModal
-        title="Leave League"
+        title={
+          activeType === LEAGUE_TYPE.LEAVE
+            ? 'Leave League'
+            : activeType === LEAGUE_TYPE.FUNDING
+              ? 'Funding'
+              : 'Contribute'
+        }
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+        maxHeight={500}
       >
-        <div>
-          <div className=" text-body text-base tracking-[-1px] text-center">
-            <p>
-              Do you want to leave this league{' '}
-              <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${currentLeague?.name}"`}</span>
-              ?
-            </p>
-          </div>
-          <div className="mt-8 mb-10 flex items-center justify-center space-x-3 xs:space-x-4">
-            <div
-              className={`p-[1px] size-[110px] min-w-[110px] bg-white [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center`}
-            >
-              <img
-                className="size-full object-cover [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]"
-                src={`${currentLeague?.avatar ? `${currentLeague.avatar}` : '/assets/images/league/league-04@2x.png'}`}
-                alt="DePIN Alliance"
-              />
-            </div>
-            <div className="space-y-1.5 xs:space-y-2">
-              <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
-                {currentLeague?.name}
-              </p>
-              <div className="flex items-center space-x-1.5 xs:space-x-2">
-                <IconGroupUser className="size-5 xs:size-6 2xs:size-7 text-primary" />
-                <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
-                  {formatNumber(currentLeague?.totalContributors || 0, 0, 0)}
-                </span>
-              </div>
-              {/* <div className="flex items-center space-x-1.5 xs:space-x-2">
-                <IconPoint className="size-5 xs:size-6 2xs:size-7" />
-                <span className="text-primary font-semibold xs:text-base 2xs:text-lg">
-                  {currentLeague?.totalMining ? formatNumber(currentLeague.totalMining, 0, 2) : 0}/h
-                </span>
-              </div> */}
-              {/* <p className="text-base leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                LV. {currentLeague?.level}
-              </p> */}
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <CustomButton
-              type={BUTTON_TYPE.DEFAULT}
-              title="Cancel"
-              onAction={() => {
-                onClose()
-                buttonSound.play()
-              }}
-            />
-            <CustomButton
-              type={BUTTON_TYPE.CANCEL}
-              title="Leave"
-              onAction={() => {
-                handleLeave()
-                buttonSound.play()
-              }}
-            />
-          </div>
-        </div>
+        <>{getContentOfModal()}</>
       </CustomModal>
     </>
   )

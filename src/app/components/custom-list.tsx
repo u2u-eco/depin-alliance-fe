@@ -3,7 +3,7 @@ import React from 'react'
 import CustomItem from './custom-item'
 import { LIST_TYPE } from '@/constants'
 import { formatNumber } from '@/helper/common'
-import { IconGroupUser } from './icons'
+import { IconGroupUser, IconPoint, IconUpDown } from './icons'
 import Image from 'next/image'
 import { useAppSound } from '@/hooks/useAppSound'
 
@@ -18,6 +18,7 @@ interface ListProps {
   imageDefault?: string
   imageUrlPath?: string
   partners?: boolean
+  activeId?: string
   cb?: () => void
   onClickItem?: (item: any) => void
 }
@@ -32,7 +33,7 @@ const CustomList = ({
   pointKey,
   imageDefault,
   levelKey,
-  partners,
+  activeId,
   cb,
   onClickItem
 }: ListProps) => {
@@ -55,7 +56,11 @@ const CustomList = ({
         </div>
       )}
       {data?.map((item: any, index: number) => (
-        <div onClick={() => handleClickItem(item)} key={index}>
+        <div
+          className={type === LIST_TYPE.RESEARCH && item.lock ? 'pointer-events-none' : ''}
+          onClick={() => handleClickItem(item)}
+          key={index}
+        >
           <CustomItem
             type={type}
             title={(titleItemKey && item[titleItemKey]) || item.title || `${item.name}`}
@@ -69,15 +74,39 @@ const CustomList = ({
             done={isDone(item)}
             key={item.code}
             item={item}
+            activeId={activeId}
             status={item.status}
             cb={cb}
           >
-            {type === LIST_TYPE.SKILL ? (
-              <div
-                className={`text-yellow-600 ${type === LIST_TYPE.SKILL ? 'text-[13px] xs:text-sm !leading-[16px]' : 'text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]'}`}
-              >
-                LV. {levelKey ? item[levelKey] : item.level}
-              </div>
+            {type === LIST_TYPE.SKILL || type === LIST_TYPE.RESEARCH ? (
+              item.lock ? (
+                <div className="flex items-center space-x-1.5 xs:space-x-2  tracking-[-1px] leading-[18px]">
+                  <p className="text-white-50 uppercase">PROFIT</p>
+                  <IconPoint className="size-4" />
+                  <p className="text-title ">{formatNumber(item.profit, 0, 0)}</p>
+                </div>
+              ) : (
+                <div className="space-y-1 xs:space-y-1.5 !mt-1 xs:!mt-1.5">
+                  <div
+                    className={`text-yellow-600 ${type === LIST_TYPE.SKILL || type === LIST_TYPE.RESEARCH ? 'text-[13px] xs:text-sm !leading-[16px]' : 'text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]'}`}
+                  >
+                    LV. {levelKey ? item[levelKey] : item.level}
+                  </div>
+                  {type === LIST_TYPE.RESEARCH && (
+                    <div className="flex items-center space-x-2">
+                      <IconUpDown
+                        className={`size-4 ${(item.effectCurrent + item.rateEffect) * 100 >= 100 ? 'text-green-500 drop-shadow-[0_0_8px_rgba(0,153,86,0.8)]' : 'text-[#E53935] rotate-180 drop-shadow-[0_0_8px_rgba(229,57,53,0.8)]'} `}
+                      />
+                      <p className="tracking-[-1px] text-title capitalize font-normal leading-[18px]">
+                        {item?.description}:
+                      </p>
+                      <p
+                        className={`font-semibold leading-[18px] ${(item.effectCurrent + item.rateEffect) * 1 >= 1 ? 'text-green-300' : 'text-error-blur'}`}
+                      >{`${formatNumber(item.effectCurrent + item.rateEffect, 0, 2)}%`}</p>
+                    </div>
+                  )}
+                </div>
+              )
             ) : item.text ? (
               <div className="text-body text-base tracking-[-1px]">{item.text}</div>
             ) : (
