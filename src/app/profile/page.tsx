@@ -40,6 +40,9 @@ export default function ProfilePage() {
     const res = await getSkills()
     if (res.status) {
       setListSkill(res.data.skill)
+      if (disableLoading) {
+        getUserInfo()
+      }
     }
     setIsLoading(false)
   }

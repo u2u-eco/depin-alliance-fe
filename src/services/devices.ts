@@ -74,6 +74,20 @@ export const listUserItemDevice = (params: {
     }
   })
 }
+export const listUserItemContribute = (params: {
+  sortBy?: string
+  sortAscending?: boolean
+  type?: string
+  page: number
+  size?: number
+}) => {
+  return https.get(`/devices/user-device-item-contribute`, {
+    params: {
+      ...params,
+      size: params.size || PAGE_SIZE
+    }
+  })
+}
 
 export const changeNameDevice = (data: { index: number; name: string }) => {
   return https.post('/devices/change-name', data)

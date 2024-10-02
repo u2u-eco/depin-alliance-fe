@@ -1,4 +1,4 @@
-import { IconCheck, IconClose, IconPoint } from '@/app/components/icons'
+import { IconCheck, IconClose, IconPoint, IconSettings } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 import { IJoinRequest } from '@/interfaces/i.league'
@@ -20,7 +20,6 @@ const ITEM_TYPE = {
 }
 
 const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemProps) => {
-  const { currentLeague } = useCommonStore()
   const [selectCode, setSelectedCode] = useState<number>(0)
   const { buttonSound } = useAppSound()
 
@@ -63,9 +62,10 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
             </div>
           </div>
         </div>
-        {currentLeague?.isOwner && (
-          <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
-            {type === ITEM_TYPE.REQUEST && (
+
+        <div className="ml-2 mr-1 xs:mr-2 2xs:mr-3 flex items-center space-x-4 xs:space-x-5 2xs:space-x-6">
+          {type === ITEM_TYPE.REQUEST ? (
+            <>
               <div
                 className="cursor-pointer"
                 onClick={() => {
@@ -76,19 +76,30 @@ const MemberItem = ({ item, type, handleCheck, handleCancel, handleKick }: ItemP
                   className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-green-500'} `}
                 />
               </div>
-            )}
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  handleClick('cancel')
+                }}
+              >
+                <IconClose
+                  className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : 'text-error-blur'}`}
+                />
+              </div>
+            </>
+          ) : (
             <div
               className="cursor-pointer"
               onClick={() => {
                 handleClick('cancel')
               }}
             >
-              <IconClose
-                className={`size-6 xs:size-7 2xs:size-8 ${isDisable ? 'text-inactive' : type === ITEM_TYPE.REQUEST ? 'text-error-blur' : 'text-yellow-800'}`}
+              <IconSettings
+                className={`size-5 xs:size-6 2xs:size-7 ${isDisable ? 'text-inactive' : 'text-green-800'}`}
               />
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )
