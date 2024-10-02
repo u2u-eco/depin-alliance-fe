@@ -6,7 +6,7 @@ import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
-import { IconMusic, IconSound } from '../components/icons'
+import { IconMusic, IconNotification, IconSound } from '../components/icons'
 import { motion } from 'framer-motion'
 import useCommonStore from '@/stores/commonStore'
 import { SETTING_TYPE } from '@/constants'
@@ -52,6 +52,15 @@ export default function SettingPage() {
     // { id: 1, image: SETTING_TYPE.WALLET, title: 'Connect Wallet', text: 'UQBC4...9BGL', icon: 'link' },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
+      id: 2,
+      type: SETTING_TYPE.NOTIFICATION,
+      image: <IconNotification className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: 'Notification',
+      text: userSetting?.enableNotification ? 'Turn on' : 'Turn off',
+      active: userSetting?.enableNotification,
+      icon: ''
+    },
+    {
       id: 3,
       type: SETTING_TYPE.MUSIC_THEME,
       image: <IconMusic className="size-7 xs:size-8 2xs:size-9" gradient />,
@@ -82,6 +91,12 @@ export default function SettingPage() {
         break
       case SETTING_TYPE.LANGUAGE:
         console.log(111)
+        break
+      case SETTING_TYPE.NOTIFICATION:
+        handleUpdateSetting({
+          setting: type,
+          enable: !userSetting?.enableNotification
+        })
         break
       case SETTING_TYPE.MUSIC_THEME:
         handleUpdateSetting({
@@ -147,7 +162,8 @@ export default function SettingPage() {
                         onClick={() => handleClick(item.type)}
                       >
                         {item.type === SETTING_TYPE.SOUND_EFFECT ||
-                        item.type === SETTING_TYPE.MUSIC_THEME ? (
+                        item.type === SETTING_TYPE.MUSIC_THEME ||
+                        item.type === SETTING_TYPE.NOTIFICATION ? (
                           <div
                             className={`relative size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${item.active ? 'bg-white/10' : ''}`}
                           >
