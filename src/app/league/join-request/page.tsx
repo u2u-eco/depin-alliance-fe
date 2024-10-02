@@ -12,7 +12,7 @@ import { approveJoinLeague, getListJoinRequest, rejectJoinLeague } from '@/servi
 import { useInView } from 'react-intersection-observer'
 import { IJoinRequest } from '@/interfaces/i.league'
 import { toast } from 'sonner'
-import { MAX_SIZE_PER_PAGE, PAGE_SIZE, TELE_URI } from '@/constants'
+import { PAGE_SIZE, TELE_URI } from '@/constants'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import useCommonStore from '@/stores/commonStore'
@@ -30,9 +30,9 @@ export default function JoinRequestPage() {
   const [total, setTotal] = useState<number>(0)
   const isUpdatePage = useRef<boolean>(false)
   const { buttonSound } = useAppSound()
-
+  const hasRoleAdminRequest = currentLeague?.role?.includes('ADMIN_REQUEST')
   useQuery({
-    queryKey: ['getListDevice', page],
+    queryKey: ['getListJoinRequest', page],
     queryFn: async () => {
       try {
         if (isUpdatePage.current) return
@@ -59,7 +59,7 @@ export default function JoinRequestPage() {
         setIsLoading(false)
       }
     },
-    enabled: Boolean(currentLeague?.isOwner)
+    enabled: Boolean(currentLeague?.isOwner) || Boolean(hasRoleAdminRequest)
   })
 
   const handleUpdateData = async (index: number) => {

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import CustomPage from '@/app/components/custom-page'
@@ -5,26 +6,30 @@ import { IconAdmin, IconPoint } from '@/app/components/icons'
 
 import React, { useEffect, useRef, useState } from 'react'
 import AllMember from './components/all-member'
-import RankingMember from './components/ranking-member'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import useCommonStore from '@/stores/commonStore'
 import { formatNumber } from '@/helper/common'
 import { useRouter } from 'next/navigation'
 import { userLeague } from '@/services/league'
+import { motion } from 'framer-motion'
+import { FUNDING_TYPE } from '@/constants'
+import { useAppSound } from '@/hooks/useAppSound'
 
-const MEMBER_TYPE = {
-  ALL: 'all',
-  RANKING: 'ranking'
+const MEMBER_TAB = {
+  FUNDING: FUNDING_TYPE,
+  CONTRIBUTE: 'contribute'
 }
 
 export default function MemberPage() {
   const router = useRouter()
-  const [activeType, setActiveType] = useState(MEMBER_TYPE.ALL)
-  const { userInfo, currentLeague } = useCommonStore()
+  const { currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
-
+  const [activeTab, setActiveTab] = useState(MEMBER_TAB.FUNDING)
+  const [isShowModer, setIsShowModer] = useState(false)
+  const { tabSound } = useAppSound()
   const handleSelectTab = (tab: string) => {
-    setActiveType(tab)
+    tabSound?.play()
+    setActiveTab(tab)
   }
 
   const _getUserLeague = async () => {
@@ -33,6 +38,16 @@ export default function MemberPage() {
       router.push('/league')
     }
   }
+
+  const handleShowModer = () => {
+    setIsShowModer(!isShowModer)
+  }
+
+  const backToMember = () => {
+    router.push('/league/in-league')
+  }
+
+  const isModer = currentLeague?.isOwner || currentLeague?.role
 
   useEffect(() => {
     _getUserLeague()
@@ -47,7 +62,7 @@ export default function MemberPage() {
         }}
       >
         <div className="space-y-6 xs:space-y-8">
-          <CustomHeader title="member" />
+          <CustomHeader title="member" back={backToMember} />
           <div className="space-y-3 xs:space-y-4">
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
               ADMIN
@@ -72,48 +87,67 @@ export default function MemberPage() {
                     <p className="text-white font-mona text-base xs:text-lg font-semibold leading-[22px] [word-break:_break-word;]">
                       {currentLeague?.adminUsername}
                     </p>
-                    <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+                    {/* <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                       <IconPoint className="size-4 xs:size-5 2xs:size-6" />
                       <p className="text-green-500 font-semibold">{`${formatNumber(currentLeague?.adminMiningPower || 0, 0, 2)}/h`}</p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <IconAdmin gradient className="size-7 xs:size-8 2xs:size-9 mx-2 xs:mx-3 2xs:mx-4" />
               </div>
             </div>
           </div>
-          <div className="space-y-3 xs:space-y-4">
-            <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
-              MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
-            </p>
-            <div className="space-y-6">
-              {/* <div className="flex items-center justify-center space-x-2 xs:space-x-3 2xs:space-x-4">
-                {Object.values(MEMBER_TYPE).map((item, index) => (
-                  <motion.div
-                    whileTap={{ scale: 0.95 }}
+          <div className="space-y-6">
+            <div className="space-y-4 xs:space-y-5">
+              <div className="flex items-center justify-between">
+                <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+                  MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
+                </p>
+                {/* {(currentLeague?.isOwner || currentLeague?.role) && (
+                  <div
+                    className="flex items-center space-x-2 cursor-pointer"
+                    // onClick={handleShowModer}
+                  >
+                    <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
+                      MODER
+                    </p>
+                    <motion.div
+                      whileTap={{ scale: 0.8 }}
+                      className="relative size-5 xs:size-6 min-w-5 xs:min-w-6 flex items-center justify-center"
+                    >
+                      <div
+                        className={`border-1.5 border-green-700 rotate-45 size-[15px] xs:size-[18px] p-0.5 xs:p-[3px] transition-background ${isModer ? 'bg-white/10' : ''}`}
+                      >
+                        <div
+                          className={`size-full bg-gradient transition-opacity ${isModer ? 'opacity-100' : 'opacity-0'}`}
+                        ></div>
+                      </div>
+                    </motion.div>
+                  </div>
+                )} */}
+              </div>
+              <div className="flex items-center justify-center">
+                {Object.values(MEMBER_TAB).map((item, index) => (
+                  <div
                     key={index}
                     className="relative cursor-pointer"
                     onClick={() => handleSelectTab(item)}
                   >
                     <img
-                      className="mx-auto transition-all"
-                      src={`/assets/images/upgrade/upgrade-tab${activeType === item ? '-active' : ''}.svg`}
-                      alt="DePIN Alliance"
+                      className="mx-auto max-w-[101%] w-[101%]"
+                      src={`/assets/images/league/tab${activeTab === item ? '-active' : ''}.svg`}
+                      alt="Upgrade Tab"
                     />
                     <div
-                      className={`absolute transition-all top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+                      className={`absolute top-0 h-full left-0 w-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeTab === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
                     >
                       {item}
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </div> */}
-              {activeType === MEMBER_TYPE.RANKING ? (
-                <RankingMember />
-              ) : (
-                <AllMember setTotalMember={setTotalMember} />
-              )}
+              </div>
             </div>
+            <AllMember setTotalMember={setTotalMember} activeTab={activeTab} />
           </div>
         </div>
       </CustomPage>

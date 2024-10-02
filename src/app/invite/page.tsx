@@ -16,18 +16,9 @@ import CustomToast from '../components/ui/custom-toast'
 import { formatNumber } from '@/helper/common'
 import CustomButton from '../components/button'
 import { useAppSound } from '@/hooks/useAppSound'
-// const listFriend = {
-//   title: 'FRIEND LIST',
-//   data: [
-//     { id: 1, image: 'user-01', title: 'DojaDoja26', point: '5,000' },
-//     { id: 2, image: 'user-02', title: 'Tornando L', point: '5,000' },
-//     { id: 3, image: 'user-03', title: 'Artisian', point: '5,000' }
-//   ]
-// }
 
 export default function InvitePage() {
-  const { userInfo } = useCommonStore()
-
+  const userInfo = useCommonStore((state) => state.userInfo)
   const { buttonSound } = useAppSound()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
