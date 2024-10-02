@@ -63,6 +63,7 @@ const LEAGUE_TYPE = {
 export default function InLeaguePage() {
   const router = useRouter()
   const { currentLeague, setCurrentLeague } = useCommonStore()
+  const [role, setRole] = useState<string | null>(null)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 
   const [loadingButton, setLoadingButton] = useState(false)
@@ -121,7 +122,7 @@ export default function InLeaguePage() {
       class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
     }
   ]
-  const hasRoleAdminRequest = currentLeague?.role?.includes('ADMIN_REQUEST')
+  const hasRoleAdminRequest = role?.includes('ADMIN_REQUEST')
 
   const { data: totalJoinRequest } = useQuery({
     queryKey: ['getTotalJoinRequest'],
@@ -148,6 +149,7 @@ export default function InLeaguePage() {
     const res = await userLeague()
     if (res.status && res.data && !res.data?.isPendingRequest) {
       setCurrentLeague({ league: res.data })
+      setRole(res.data.role)
     } else {
       router.push('/league')
     }
