@@ -329,10 +329,10 @@ export default function MemberDetailPage() {
               <p className="text-white font-semibold font-mona text-lg xs:text-xl 2xs:text-2xl !leading-[24px] xs:!leading-[26px] 2xs:!leading-[28px]  [word-break:_break-word;]">
                 {detail?.data?.username}
               </p>
-              <div className="flex items-center space-x-1.5 xs:space-x-2">
+              {/* <div className="flex items-center space-x-1.5 xs:space-x-2">
                 <IconPoint className="size-5 xs:size-6" />
                 <span className="text-primary font-semibold">{`${formatNumber(detail?.data?.miningPower || 0, 0, 2)}/h`}</span>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex items-center space-x-4">

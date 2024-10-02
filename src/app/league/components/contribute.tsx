@@ -97,7 +97,7 @@ const ContributeModal = ({ closeModal, cb }: ModalProps) => {
             <span className="text-gradient">“{activeItem?.name}”</span>
           </p>
         ) : (
-          <p> Fund your points to League to unlock special features</p>
+          <p> Contribute your wasted items to League to increase League’s profit</p>
         )}
       </div>
 
