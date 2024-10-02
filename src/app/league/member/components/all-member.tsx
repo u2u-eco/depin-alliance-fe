@@ -132,9 +132,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
               maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
               suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
             />
-            <div ref={scrollTrigger} className="text-[transparent]">
-              Loading...
-            </div>
+            <div ref={scrollTrigger} className="text-[transparent]"></div>
           </motion.div>
         )}
         {isLoading && (

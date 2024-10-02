@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CURRENT_STATUS as CURRENT_STATUS_STORAGE, INIT_DATA, TOKEN } from '@/constants'
+import { CURRENT_STATUS as CURRENT_STATUS_STORAGE, INIT_DATA } from '@/constants'
 import { userAuth } from '@/services/user'
 import Cookies from 'js-cookie'
 import https from '@/constants/https'
@@ -26,7 +26,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
     getUserInfo,
     setCurrentLeague
   } = useCommonStore((state) => state)
-  // const _tokenLocal = localStorage.getItem(TOKEN)
   const [isLoading, setIsLoading] = useState<boolean>(token ? false : true)
   const [loginError, setIsLoginError] = useState<boolean>(false)
 
@@ -51,7 +50,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
       const res = await userAuth({ initData })
       if (res.status) {
         https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
-        localStorage.setItem(TOKEN, res.data?.accessToken)
         setCurrentStatus({ status: res.data.currentStatus })
         await getUserInfo()
         await getUserConfig()
