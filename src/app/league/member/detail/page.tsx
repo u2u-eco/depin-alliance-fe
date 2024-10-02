@@ -24,7 +24,11 @@ export default function MemberDetailPage() {
   const params = useSearchParams()
   const router = useRouter()
   const userId: any = params.get('id')
-  const { data: detail, refetch } = useQuery({
+  const {
+    data: detail,
+    refetch,
+    isLoading
+  } = useQuery({
     queryKey: ['getUserDetail', userId],
     queryFn: () => getDetailMember(userId),
     enabled: Boolean(userId)
@@ -215,7 +219,7 @@ export default function MemberDetailPage() {
               </div>
             </div>
           </div>
-          {!isAdmin && (
+          {!isAdmin && !isLoading && (
             <div className="flex flex-col space-y-4 mt-6 xs:mt-7 2xs:mt-8">
               {currentLeague?.isOwner && (
                 <>
