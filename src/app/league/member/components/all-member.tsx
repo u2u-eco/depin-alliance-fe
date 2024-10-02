@@ -106,7 +106,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
 
   return (
     <div className="space-y-8">
-      {currentLeague?.isOwner && (
+      {(currentLeague?.isOwner || currentLeague?.role) && (
         <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
       )}
       <LastUpdateBox />

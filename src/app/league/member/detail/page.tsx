@@ -18,6 +18,7 @@ import useCommonStore from '@/stores/commonStore'
 import { BUTTON_TYPE, ROLE_LEAGUE } from '@/constants'
 import { MESSAGES } from '@/constants/messages'
 import CustomButton from '@/app/components/button'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function MemberDetailPage() {
   const { currentLeague, setCurrentLeague } = useCommonStore()
@@ -38,7 +39,7 @@ export default function MemberDetailPage() {
   const activeKick = detail?.data?.role?.includes(ROLE_LEAGUE.ADMIN_KICK) ? true : false
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false)
-
+  const { buttonSound } = useAppSound()
   const updateUserLeague = async () => {
     const res = await userLeague()
     if (res.status && res.data && !res.data?.isPendingRequest) {
@@ -47,6 +48,7 @@ export default function MemberDetailPage() {
   }
 
   const handleUpdateRole = async (role: string) => {
+    buttonSound?.play()
     const res = await updateRoleMember({
       userId,
       role,
@@ -59,6 +61,7 @@ export default function MemberDetailPage() {
     }
   }
   const handleKickModal = () => {
+    buttonSound?.play()
     onOpen()
   }
 

@@ -228,10 +228,10 @@ export default function InLeaguePage() {
   }
 
   const handleButtonSound = () => {
-    buttonSound.play()
+    buttonSound?.play()
   }
   const handleTabSound = () => {
-    tabSound.play()
+    tabSound?.play()
   }
 
   const handleRank = () => {
@@ -242,14 +242,18 @@ export default function InLeaguePage() {
   const handleAction = (type: string) => {
     switch (type) {
       case LEAGUE_TYPE.MISSION:
+        handleTabSound()
         return router.push('/league/mission')
       case LEAGUE_TYPE.MEMBER:
+        handleTabSound()
         return router.push('/league/member')
       case LEAGUE_TYPE.INVITE:
+        handleButtonSound()
         // return handleShare()
         handleCopy()
         break
       case LEAGUE_TYPE.LEAGUES:
+        handleTabSound()
         return router.push('/league/all-league')
       case LEAGUE_TYPE.RESEARCH:
         return router.push('/league/research')
@@ -258,6 +262,7 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.FUNDING:
       case LEAGUE_TYPE.LEAVE:
       case LEAGUE_TYPE.CONTRIBUTE:
+        handleButtonSound()
         setActiveType(type)
         onOpen()
         break

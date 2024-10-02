@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import { IconAdmin, IconOpenLink, IconPoint } from '../icons'
 import { useRouter } from 'next/navigation'
+import { useAppSound } from '@/hooks/useAppSound'
 
 interface IListRankingItem {
   data: {
@@ -25,6 +26,8 @@ const RANK_TYPE = {
 
 const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRankingItem) => {
   const router = useRouter()
+  const { tabSound } = useAppSound()
+
   const getBgByRank = (index: number) => {
     switch (index) {
       case 0:
@@ -40,6 +43,7 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRa
     }
   }
   const handleClick = (item: any) => {
+    tabSound?.play()
     switch (type) {
       case RANK_TYPE.LEAGUE:
         return router.push('/league/all-league/detail')

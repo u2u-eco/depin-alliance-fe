@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { userLeague } from '@/services/league'
 import { motion } from 'framer-motion'
 import { FUNDING_TYPE } from '@/constants'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const MEMBER_TAB = {
   FUNDING: FUNDING_TYPE,
@@ -21,12 +22,13 @@ const MEMBER_TAB = {
 
 export default function MemberPage() {
   const router = useRouter()
-  const { userInfo, currentLeague } = useCommonStore()
+  const { currentLeague } = useCommonStore()
   const [totalMember, setTotalMember] = useState<number>(0)
   const [activeTab, setActiveTab] = useState(MEMBER_TAB.FUNDING)
   const [isShowModer, setIsShowModer] = useState(false)
-
+  const { tabSound } = useAppSound()
   const handleSelectTab = (tab: string) => {
+    tabSound?.play()
     setActiveTab(tab)
   }
 
