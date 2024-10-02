@@ -18,5 +18,7 @@ export const MESSAGES: { [key: string]: string } = {
   MSG_LEAGUE_REQUEST_INVALID: 'Request does not exist',
   MSG_LEAGUE_MEMBER_NOT_EXIST: 'Request does not exist',
   MSG_MISSION_CLAIM_ERROR: 'Can not claim mission',
-  MSG_UPDATE_ROLE_SUCCESS: 'Update role successfully'
+  MSG_UPDATE_ROLE_SUCCESS: 'Update role successfully',
+  MSG_LEAGUE_ROLE_INVALID: 'Invalid permission',
+  MSG_LEAGUE_ITEM_CONTRIBUTE_NOT_ENOUGH: 'Not enough item contribute'
 }
