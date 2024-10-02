@@ -85,10 +85,10 @@ export default function MemberPage() {
                     <p className="text-white font-mona text-base xs:text-lg font-semibold leading-[22px] [word-break:_break-word;]">
                       {currentLeague?.adminUsername}
                     </p>
-                    <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
+                    {/* <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2">
                       <IconPoint className="size-4 xs:size-5 2xs:size-6" />
                       <p className="text-green-500 font-semibold">{`${formatNumber(currentLeague?.adminMiningPower || 0, 0, 2)}/h`}</p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <IconAdmin gradient className="size-7 xs:size-8 2xs:size-9 mx-2 xs:mx-3 2xs:mx-4" />
