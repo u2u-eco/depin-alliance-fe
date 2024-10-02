@@ -85,13 +85,13 @@ export default function DetailLeaguePage() {
                   </div>
                   <div className="size-1.5 min-w-1.5 bg-white"></div>
                 </div>
-                <div className="flex items-center justify-center space-x-10">
+                {/* <div className="flex items-center justify-center space-x-10">
                   <div className="w-8 h-[1px] bg-yellow-800"></div>
                   <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
                     LV. {formatNumber(leagueDetail?.data?.level || 0, 0, 0)}
                   </div>
                   <div className="w-8 h-[1px] bg-yellow-800"></div>
-                </div>
+                </div> */}
                 {/* <Link href="/league/ranking" className="flex items-center justify-center space-x-1">
                 <p className="text-gradient uppercase font-mona font-semibold">VIEW LEAGUE RANK</p>
                 <IconOpenLink gradient className="size-6" />
