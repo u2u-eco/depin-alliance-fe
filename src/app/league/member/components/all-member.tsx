@@ -43,7 +43,6 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
           maxPage.current = res.pagination?.totalPage
         }
 
-        setTotalMember(res.pagination?.totalRecord || res.data?.ranking?.length)
         if (res.pagination && page !== res.pagination.page) {
           setIsLoading(false)
           return []
@@ -51,10 +50,10 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
         let _listItem = res.data?.ranking
 
         if (page > 1) {
-          _listItem = [...dataList.current, ...res.data]
+          _listItem = [...dataList.current, ...res.data.ranking]
         }
 
-        if (!res.pagination && res?.data?.currentRank > _listItem?.ranking?.length) {
+        if (!res.pagination && res?.data?.currentRank > res.data?.ranking?.length) {
           _listItem = [
             ..._listItem,
             {
@@ -63,6 +62,8 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
             }
           ]
         }
+
+        setTotalMember(res.pagination?.totalRecord || _listItem?.length)
 
         dataList.current = _listItem
         setListItem([...dataList.current])

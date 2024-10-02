@@ -12,6 +12,7 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
+import { TOKEN } from '@/constants'
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
@@ -25,6 +26,7 @@ export default function Layout({ children }: any) {
       const _safeAreaBottomNumber = Number(_safeAreaBottom.replaceAll('px', ''))
       setSafeAreaBottom(_safeAreaBottomNumber)
     }
+    localStorage.removeItem(TOKEN)
   }, [])
 
   const handleBack = () => {

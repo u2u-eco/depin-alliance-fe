@@ -27,7 +27,7 @@ const CustomModal = ({
   maxHeight
 }: ModalProps) => {
   const { webApp } = useTelegram()
-  const [placement, setPlacement] = useState<any>('top')
+  const [placement, setPlacement] = useState<any>('bottom')
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
   const { buttonSound } = useAppSound()
 
