@@ -354,7 +354,7 @@ export default function InLeaguePage() {
               <div className="flex items-center justify-center space-x-10">
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
                 <div className="text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-yellow-500 uppercase">
-                  {getRole()}
+                  {`</ ${getRole()} />`}
                 </div>
                 <div className="w-8 h-[1px] bg-yellow-800"></div>
               </div>
