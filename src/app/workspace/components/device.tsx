@@ -1,6 +1,5 @@
 'use client'
 
-import CustomInput from '@/app/components/custom-input'
 import CustomModal from '@/app/components/custom-modal'
 import { IconPoint } from '@/app/components/icons'
 import { QUERY_CONFIG } from '@/constants'
@@ -28,6 +27,7 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import Loader from '@/app/components/ui/loader'
 import CustomButton from '@/app/components/button'
 import { useAppSound } from '@/hooks/useAppSound'
+import EditDeviceName from './edit-device-name'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -49,7 +49,7 @@ export default function Device({ height }: IDevice) {
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
   const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
-
+  const [emptyName, setEmptyName] = useState<boolean>(false)
   const [loadingButton, setLoadingButton] = useState(false)
 
   const currentName = useRef<string>('')
@@ -417,19 +417,10 @@ export default function Device({ height }: IDevice) {
                 </div>
               </div>
               {activeType === DEVICE_TYPE.EDIT && (
-                <div className="mb-10">
-                  <CustomInput
-                    label="Device Name:"
-                    value={currentName.current}
-                    placeholder="DEVICE MARS"
-                    onValueChange={handleInputName}
-                  />
-                  {currentName.current.trim().length === 0 && (
-                    <p className="text-xs text-error mt-1 font-semibold">
-                      Device Name is required!
-                    </p>
-                  )}
-                </div>
+                <EditDeviceName
+                  defaultName={currentName.current}
+                  handleInputName={handleInputName}
+                />
               )}
               {activeType === DEVICE_TYPE.BUY && (
                 <div className="btn default mb-6 xs:mb-7 2xs:mb-8 cursor-default">
