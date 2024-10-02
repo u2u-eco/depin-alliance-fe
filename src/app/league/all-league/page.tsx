@@ -14,8 +14,11 @@ import NoItem from '@/app/components/ui/no-item'
 import { useRouter } from 'next/navigation'
 import Loader from '@/app/components/ui/loader'
 import LastUpdateBox from '@/app/components/last-update-box'
+import { LIST_TYPE } from '@/constants'
+import useCommonStore from '@/stores/commonStore'
 
 export default function AllLeaguePage() {
+  const currentLeague = useCommonStore((state) => state.currentLeague)
   const router = useRouter()
   const [scrollTrigger, isInView] = useInView()
   const maxPage = useRef<number>(0)
@@ -88,11 +91,12 @@ export default function AllLeaguePage() {
             ) : (
               <div>
                 <CustomList
-                  type="league"
+                  type={LIST_TYPE.LEAGUE}
                   title="All Leagues"
                   data={listItem}
                   titleItemKey="name"
                   imageItemKey="avatar"
+                  activeId={currentLeague?.code}
                   onClickItem={handleClickItem}
                 />
                 <div ref={scrollTrigger} className="text-[transparent]">

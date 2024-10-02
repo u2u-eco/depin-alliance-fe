@@ -26,6 +26,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     getUserInfo,
     setCurrentLeague
   } = useCommonStore((state) => state)
+
   const [isLoading, setIsLoading] = useState<boolean>(token ? false : true)
   const [loginError, setIsLoginError] = useState<boolean>(false)
 

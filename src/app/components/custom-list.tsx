@@ -18,6 +18,7 @@ interface ListProps {
   imageDefault?: string
   imageUrlPath?: string
   partners?: boolean
+  activeId?: string
   cb?: () => void
   onClickItem?: (item: any) => void
 }
@@ -32,6 +33,7 @@ const CustomList = ({
   pointKey,
   imageDefault,
   levelKey,
+  activeId,
   cb,
   onClickItem
 }: ListProps) => {
@@ -72,6 +74,7 @@ const CustomList = ({
             done={isDone(item)}
             key={item.code}
             item={item}
+            activeId={activeId}
             status={item.status}
             cb={cb}
           >

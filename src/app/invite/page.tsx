@@ -18,8 +18,7 @@ import CustomButton from '../components/button'
 import { useAppSound } from '@/hooks/useAppSound'
 
 export default function InvitePage() {
-  const { userInfo } = useCommonStore()
-
+  const userInfo = useCommonStore((state) => state.userInfo)
   const { buttonSound } = useAppSound()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
