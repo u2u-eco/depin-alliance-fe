@@ -61,7 +61,7 @@ export default function WorkspaceContent() {
             <motion.div
               whileTap={{ scale: 0.95 }}
               key={index}
-              className="relative cursor-pointer"
+              className="relative cursor-pointer outline-none"
               onClick={() => handleSelectTab(item)}
             >
               <img
