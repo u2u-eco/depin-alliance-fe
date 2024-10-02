@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getListMemberOfLeague } from '@/services/league'
 import { useInView } from 'react-intersection-observer'
 import Loader from '@/app/components/ui/loader'
-import { FUNDING_TYPE, PAGE_SIZE, TELE_URI } from '@/constants'
+import { FUNDING_TYPE, PAGE_SIZE, ROLE_LEAGUE, TELE_URI } from '@/constants'
 import CustomInputSearch from '@/app/components/ui/custom-input-search'
 import useCommonStore from '@/stores/commonStore'
 import { useAppSound } from '@/hooks/useAppSound'
@@ -106,7 +106,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
 
   return (
     <div className="space-y-8">
-      {(currentLeague?.isOwner || currentLeague?.role) && (
+      {(currentLeague?.isOwner || currentLeague?.role?.includes(ROLE_LEAGUE.ADMIN_KICK)) && (
         <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
       )}
       <LastUpdateBox />
