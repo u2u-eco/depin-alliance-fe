@@ -130,7 +130,7 @@ export default function InLeaguePage() {
     enabled: Boolean(currentLeague?.isOwner) || Boolean(hasRoleAdminRequest)
   })
 
-  const { data: rank } = useQuery({
+  const { data: rank, refetch } = useQuery({
     queryKey: ['getRankOfLeague'],
     queryFn: getRankOfLeague
   })
@@ -241,6 +241,11 @@ export default function InLeaguePage() {
     router.push('/league/all-league')
   }
 
+  const handleViewMember = () => {
+    handleTabSound()
+    router.push('/league/member')
+  }
+
   const handleAction = (type: string) => {
     switch (type) {
       case LEAGUE_TYPE.MISSION:
@@ -271,6 +276,11 @@ export default function InLeaguePage() {
     }
   }
 
+  const handleCbContribute = () => {
+    _getUserLeague()
+    refetch()
+  }
+
   const getContentOfModal = () => {
     switch (activeType) {
       case LEAGUE_TYPE.LEAVE:
@@ -278,7 +288,7 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.FUNDING:
         return <FundingModal closeModal={onClose} cb={_getUserLeague} />
       default:
-        return <ContributeModal closeModal={onClose} cb={_getUserLeague} />
+        return <ContributeModal closeModal={onClose} cb={handleCbContribute} />
     }
   }
 
@@ -380,11 +390,11 @@ export default function InLeaguePage() {
           </div> */}
           <div className="space-y-6 xs:space-y-7 2xs:space-y-8">
             {/* Mining Together */}
-            <div className="btn inactive">
+            {/* <div className="btn inactive">
               <div className="btn-border"></div>
               <div className="btn-inactive !px-3">Mining Together (Coming Soon)</div>
               <div className="btn-border"></div>
-            </div>
+            </div> */}
             {/* Total Mining */}
             <div className="relative w-fit mx-auto">
               <img src="/assets/images/league/in-league-frame.svg" alt="" />
@@ -408,7 +418,10 @@ export default function InLeaguePage() {
                   <div className="text-title uppercase text-[13px] xs:text-sm !leading-[18px]">
                     CONTRIBUTORS
                   </div>
-                  <div className="flex items-center space-x-1.5 xs:space-x-2">
+                  <div
+                    onClick={handleViewMember}
+                    className="flex items-center space-x-1.5 xs:space-x-2"
+                  >
                     <IconGroupUser className="text-white size-6 xs:size-7 2xs:size-8" />
                     <p className="text-green-500 font-semibold text-lg min-[355px]:text-xl xs:text-2xl 2xs:text-[28px] !leading-[24px] min-[355px]:!leading-[28px] xs:!leading-[32px] 2xs:!leading-[34px]">
                       {currentLeague?.totalContributors

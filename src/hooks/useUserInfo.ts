@@ -7,19 +7,21 @@ export const useUserInfo = () => {
   return useQuery({
     queryKey: ['fetchUserInfo'],
     queryFn: async () => {
-      mining()
+      if (userInfo?.timeStartMining) {
+        mining()
+      }
       const res = await getUserInfo()
       if (res.status) {
         setUserInfo({ info: res.data })
       }
       return res.data
     },
-    enabled: Boolean(token) && Boolean(userInfo?.timeStartMining),
+    enabled: Boolean(token),
     retry: 3,
     retryDelay: 3000,
     refetchOnMount: true,
     refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchInterval: 30000
+    refetchOnWindowFocus: false
+    // refetchInterval: 30000
   })
 }

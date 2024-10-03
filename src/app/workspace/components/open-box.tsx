@@ -39,7 +39,7 @@ export default function OpenBox({ isOpen, onOpenChange, onOpen, onClose, listIte
       onClose={onClose}
       background={
         <img
-          className="absolute top-0 left-0 right-0 mx-auto min-[460px]:h-full object-cover w-full z-[-1]"
+          className="absolute top-0 left-0 right-0 mx-auto h-full object-cover w-full z-[-1]"
           src={`/assets/images/workspace/special-background-02.png`}
           srcSet={`/assets/images/workspace/special-background-02.png 1x, /assets/images/workspace/special-background-02@2x.png 2x`}
           alt="DePIN Alliance"
