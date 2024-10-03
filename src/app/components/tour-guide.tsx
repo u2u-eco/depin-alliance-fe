@@ -1,12 +1,14 @@
 import useCommonStore from '@/stores/commonStore'
+import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
-import Joyride, { STATUS, Step } from 'react-joyride'
+import Joyride, { STATUS, Step, ACTIONS } from 'react-joyride'
 interface State {
   run: boolean
   steps: Step[]
 }
 export default function TourGuide() {
   const { userInfo } = useCommonStore()
+  const router = useRouter()
   const [{ run, steps }, setState] = useState<State>({
     run: false,
     steps: [
@@ -33,21 +35,24 @@ export default function TourGuide() {
             width: 300
           }
         },
+        data: {
+          next: '/workspace'
+        },
         target: '.workspace',
         title: 'Our projects'
+      },
+      {
+        content: (
+          <div>
+            You can render anything!
+            <br />
+            <h3>Like this H3 title</h3>
+          </div>
+        ),
+        placement: 'top',
+        target: '.demo__how-it-works h2',
+        title: 'Our Mission'
       }
-      // {
-      //   content: (
-      //     <div>
-      //       You can render anything!
-      //       <br />
-      //       <h3>Like this H3 title</h3>
-      //     </div>
-      //   ),
-      //   placement: 'top',
-      //   target: '.demo__how-it-works h2',
-      //   title: 'Our Mission'
-      // },
       // {
       //   content: (
       //     <div>
@@ -79,9 +84,13 @@ export default function TourGuide() {
     ]
   })
   const handleJoyrideCallback = (data: any) => {
-    const { status, type } = data
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
+    console.log('🚀 ~ handleJoyrideCallback ~ data:', data)
+    const { status, type, action, index } = data
 
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
+    if (action === ACTIONS.NEXT && index === 3) {
+      router.push('/workspace')
+    }
     if (finishedStatuses.includes(status)) {
       setState({ run: false, steps })
     }
