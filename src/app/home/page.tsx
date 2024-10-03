@@ -47,17 +47,24 @@ export default function HomePage() {
             'bg-[linear-gradient(to_bottom,#0f0f0f_26%,#083421_55%,#00663a_66%,#093321_74%,#0f0f0f_86%)]'
         }}
       >
-        <div className="absolute top-0 left-0 right-0 h-full mix-blend-lighten z-[-1]">
-          <video autoPlay muted loop className="h-full object-cover">
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-full mix-blend-lighten z-[-1]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 6 }}
+        >
+          <video autoPlay muted loop className="h-full object-cover mx-auto">
             <source src="/assets/images/video.mp4" type="video/mp4" />
           </video>
-        </div>
+        </motion.div>
         <motion.div
           className="relative h-full flex flex-col"
           initial={{ y: 25, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -25, opacity: 0 }}
           transition={{ duration: 0.35 }}
+          key="figure"
         >
           <div className="flex-1 relative h-full mt-6 xs:mt-7 2xs:mt-8">
             <div
@@ -103,7 +110,9 @@ export default function HomePage() {
                               <div className="flex items-center space-x-1">
                                 <IconPoint className="size-4" />
                                 <p className="text-green-500 text-[13px] xs:text-sm !leading-[16px] font-semibold">
-                                  10,000/h
+                                  {userInfo?.miningPower
+                                    ? `${formatNumber(userInfo.miningPower, 0, 2)}/h`
+                                    : '0/h'}
                                 </p>
                               </div>
                             </div>
@@ -115,7 +124,7 @@ export default function HomePage() {
                               <div className="flex items-center space-x-1">
                                 <IconDevice className="size-4 text-body" />
                                 <p className="text-green-500 text-[13px] xs:text-sm !leading-[16px] font-semibold">
-                                  05
+                                  {userInfo?.totalDevice}
                                 </p>
                               </div>
                             </div>
@@ -133,7 +142,7 @@ export default function HomePage() {
                         </div>
                       </>
                     ) : (
-                      <div className="size-full [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape));] bg-black/20 p-1 transition-all">
+                      <div className="size-full cursor-pointer [clip-path:_polygon(var(--shape)_0%,100%_0,100%_100%,0_100%,0%_var(--shape));] bg-black/20 p-1 transition-all">
                         <img
                           className="size-full"
                           src="/assets/images/workspace/workspace-image.png"
@@ -146,15 +155,20 @@ export default function HomePage() {
                 </div>
               </div>
               {isShowInfo && (
-                <div
+                <motion.div
                   className="absolute top-2 right-2 cursor-pointer z-[1] transition-all"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  key="close"
                   onClick={() => {
                     setIsShowInfo(false)
                     buttonSound.play()
                   }}
                 >
                   <IconMinus className="text-body size-6" />
-                </div>
+                </motion.div>
               )}
             </div>
           </div>
