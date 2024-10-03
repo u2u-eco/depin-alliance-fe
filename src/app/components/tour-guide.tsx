@@ -2,6 +2,9 @@ import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Joyride, { STATUS, Step, ACTIONS } from 'react-joyride'
+import TutorialModal from '../home/components/tutorial'
+import CustomTutorial from './ui/custom-tutorial'
+import ItemTutorial from './ui/item-tutorial'
 interface State {
   run: boolean
   steps: Step[]
@@ -52,13 +55,21 @@ export default function TourGuide() {
         target: '.my-first-step'
       },
       {
-        content: 'These are our super awesome projects!',
+        content: <ItemTutorial />,
+        // floaterProps: {
+        //   disableAnimation: true
+        // },
         placement: 'top',
+        target: '.my-first-step',
         styles: {
           options: {
-            width: 300
+            width: '100%'
           }
-        },
+        }
+      },
+      {
+        content: <ItemTutorial />,
+        placement: 'top',
         data: {
           next: '/workspace'
         },
@@ -133,8 +144,10 @@ export default function TourGuide() {
     <div>
       {window && (
         <Joyride
+          // tooltipComponent={CustomTutorial}
           callback={handleJoyrideCallback}
           steps={steps}
+          disableOverlayClose
           run={run}
           continuous
           scrollToFirstStep
@@ -144,8 +157,10 @@ export default function TourGuide() {
           hideCloseButton={true}
           styles={{
             options: {
-              width: '100%',
-              zIndex: 10000
+              zIndex: 10000,
+              backgroundColor: 'transparent',
+              overlayColor: 'rgba(0,0,0,0.8)',
+              width: '100%'
             }
           }}
         />
