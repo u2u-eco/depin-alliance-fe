@@ -337,4 +337,20 @@ button {
   -webkit-text-fill-color: transparent;
 }
 
+// .__floater__open {
+//   width: 100% !important;
+//   transition: opacity 0.3s !important;
+// }
+
+.react-joyride__tooltip {
+  padding: 0 !important;
+  > div {
+    &:first-child {
+      > div {
+        padding: 0 !important;
+      }
+    }
+  }
+}
+
 /* End Reset CSS */

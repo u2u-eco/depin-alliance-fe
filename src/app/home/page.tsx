@@ -154,13 +154,13 @@ export default function HomePage() {
           </div>
         </div>
       </CustomPage>
-      <TutorialModal
+      {/* <TutorialModal
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
         onClose={onClose}
         handleClick={handleStart}
-      />
+      /> */}
     </>
   )
 }
