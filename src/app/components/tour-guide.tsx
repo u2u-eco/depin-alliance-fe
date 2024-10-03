@@ -1,6 +1,6 @@
 import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Joyride, { STATUS, Step, ACTIONS } from 'react-joyride'
 interface State {
   run: boolean
@@ -9,17 +9,41 @@ interface State {
 export default function TourGuide() {
   const { userInfo } = useCommonStore()
   const router = useRouter()
+  const helpers = useRef<any>()
+
+  const handleGetHelpers = (_helpers: any) => {
+    helpers.current = _helpers
+  }
+  const handleNext = () => {
+    helpers.current.next()
+  }
+
+  const handleSkip = () => {
+    helpers.current.skip()
+  }
+  const handleBack = () => {
+    helpers.current.prev()
+  }
   const [{ run, steps }, setState] = useState<State>({
     run: false,
     steps: [
       {
-        content: <h2>Let's begin our journey!</h2>,
+        content: (
+          <div>
+            <h2>Let's begin our journey!</h2>
+            <button onClick={handleNext}>Next</button>
+          </div>
+        ),
         locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
         placement: 'center',
         target: 'body'
       },
       {
-        content: <h2>Sticky elements</h2>,
+        content: (
+          <div>
+            <h2>Sticky elements</h2> <button onClick={handleBack}>Back</button>
+          </div>
+        ),
         floaterProps: {
           disableAnimation: true
         },
@@ -84,9 +108,11 @@ export default function TourGuide() {
     ]
   })
   const handleJoyrideCallback = (data: any) => {
-    console.log('🚀 ~ handleJoyrideCallback ~ data:', data)
     const { status, type, action, index } = data
-
+    // if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+    //   // Update state to advance the tour
+    //   setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1))
+    // }
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
     if (action === ACTIONS.NEXT && index === 3) {
       router.push('/workspace')
@@ -112,10 +138,13 @@ export default function TourGuide() {
           run={run}
           continuous
           scrollToFirstStep
-          showProgress
-          showSkipButton
+          getHelpers={handleGetHelpers}
+          showSkipButton={false}
+          hideBackButton={true}
+          hideCloseButton={true}
           styles={{
             options: {
+              width: '100%',
               zIndex: 10000
             }
           }}
