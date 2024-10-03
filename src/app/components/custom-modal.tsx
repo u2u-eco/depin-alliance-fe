@@ -3,6 +3,8 @@ import { Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import useIsOnScreenKeyboardOpen from '@/hooks/useIsOnScreenKeyboardOpen'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useTelegram } from '@/hooks/useTelegram'
+import type { ClassValue } from 'clsx'
+import { cn } from '@/lib/utils'
 
 interface ModalProps {
   title?: string
@@ -14,6 +16,9 @@ interface ModalProps {
   onClose?: any
   full?: boolean
   maxHeight?: number
+  classNames?: {
+    base?: ClassValue
+  }
 }
 
 const CustomModal = ({
@@ -24,6 +29,7 @@ const CustomModal = ({
   onClose,
   onOpenChange,
   full,
+  classNames,
   maxHeight
 }: ModalProps) => {
   const { webApp } = useTelegram()
@@ -49,9 +55,12 @@ const CustomModal = ({
       hideCloseButton
       classNames={{
         wrapper: `${placement === 'top' && maxHeight && webApp?.platform === 'ios' ? `max-h-[60vh] overflow-y-auto no-scrollbar` : ''}`,
-        base: full
-          ? `max-w-full m-0 rounded-none w-full h-full p-0 bg-black/80 backdrop-blur-[4px]`
-          : `max-w-full m-0 rounded-none h-full max-h-[100vh] overscroll-none xs:h-auto bg-transparent xs:bg-green-600 before:content-[''] before:bottom-0 before:absolute before:left-0 before:size-full before:z-[-1] before:bg-[linear-gradient(to_top,#000000,#002012)] pt-10 xs:pt-12 pb-8 xs:pb-10 px-4 xs:border-t-[0.5px] min-[355px]:border-t-green-600 xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] before:xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] after:content-[''] after:absolute after:top-0 after:right-[40px] after:w-[60px] after:h-[160px] after:rounded-full after:rotate-[-150deg] after:bg-gradient after:blur-[68px] after:opacity-80 after:z-[-1] `,
+        base: cn(
+          full
+            ? `max-w-full m-0 rounded-none w-full h-full p-0 bg-black/80 backdrop-blur-[4px]`
+            : `max-w-full m-0 rounded-none h-full max-h-[100vh] overscroll-none xs:h-auto bg-transparent xs:bg-green-600 before:content-[''] before:bottom-0 before:absolute before:left-0 before:size-full before:z-[-1] before:bg-[linear-gradient(to_top,#000000,#002012)] pt-10 xs:pt-12 pb-8 xs:pb-10 px-4 xs:border-t-[0.5px] min-[355px]:border-t-green-600 xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] before:xs:[clip-path:_polygon(40px_0,100%_0,100%_100%,_0_100%,0_40px)] after:content-[''] after:absolute after:top-0 after:right-[40px] after:w-[60px] after:h-[160px] after:rounded-full after:rotate-[-150deg] after:bg-gradient after:blur-[68px] after:opacity-80 after:z-[-1] `,
+          classNames?.base
+        ),
         backdrop: full ? 'bg-transparent ' : 'bg-black/30 backdrop-blur-[4px]'
       }}
     >
