@@ -58,7 +58,7 @@ const CustomNavbar = () => {
                 tabSound.play()
               }}
               href={item.link}
-              className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative`}
+              className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative ${item.title}`}
               key={item.id}
             >
               {item.id === 3 ? (
