@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 // import CustomNavbar from './custom-navbar'
 // import { usePathname } from 'next/navigation'
@@ -12,6 +12,8 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
+import TourGuide from './tour-guide'
+
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
@@ -47,6 +49,7 @@ export default function Layout({ children }: any) {
           }
         }}
       />
+      <TourGuide />
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>

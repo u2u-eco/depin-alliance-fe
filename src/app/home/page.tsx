@@ -30,9 +30,9 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    main.play()
+    main?.play()
     return () => {
-      main.stop()
+      main?.stop()
     }
   }, [])
 
@@ -79,7 +79,10 @@ export default function HomePage() {
           </div>
         </motion.div>
         {/* Button */}
-        <Mining />
+        <div className="my-first-step">
+          <Mining />
+        </div>
+
         {/* Info */}
         <div className="mt-6">
           {/* <Card /> */}
