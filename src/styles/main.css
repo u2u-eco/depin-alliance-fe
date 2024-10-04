@@ -1083,6 +1083,10 @@ button {
   padding: 0 !important;
 }
 
+.react-joyride__overlay {
+  pointer-events: none !important;
+}
+
 /* End Reset CSS */
 /* Start Header */
 /* End Header */
