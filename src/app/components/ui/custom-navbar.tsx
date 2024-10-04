@@ -62,7 +62,7 @@ const CustomNavbar = () => {
               key={item.id}
             >
               {item.id === 3 ? (
-                <div className="btn w-fit -mt-12 group bg-transparent">
+                <div className="btn w-fit -mt-12 group bg-transparent icon-home">
                   <div className="btn-border"></div>
                   <div className="btn-primary group-hover:bg-gradient !p-2 xs:!p-3 shadow-[0_0_16px_rgba(123,255,99,0.35)]">
                     <img

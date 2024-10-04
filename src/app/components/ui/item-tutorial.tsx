@@ -8,16 +8,17 @@ interface ItemProps {
   placement?: string
   content: string
   hideImage?: boolean
-  handleNext: () => void
+  handleNext?: () => void
+  handleComplete?: () => void
 }
 
-const ItemTutorial = ({ placement, handleNext, content, hideImage }: ItemProps) => {
+const ItemTutorial = ({ placement, handleNext, content, hideImage, handleComplete }: ItemProps) => {
   return (
     <div
-      className={`flex flex-col pl-5 ${!hideImage ? (placement === 'top-center' ? '' : 'pt-10 2xs:pt-16') : ''}`}
+      className={`flex flex-col pl-5 ${!hideImage ? (placement === 'top-center' || placement === 'top-right' ? '' : 'pt-10 2xs:pt-16') : ''}`}
     >
       <div
-        className={`relative w-full max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500 ${placement === 'top-center' ? 'order-2' : ''}`}
+        className={`relative w-full max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500 ${placement === 'top-center' || placement === 'top-right' ? 'order-2' : ''}`}
       >
         <div className="absolute bottom-0 left-0 bg-gradient-reverse h-3 w-[calc(100%_-_106px)] [clip-path:_polygon(0_0,calc(100%_-_12px)_0%,100%_100%,0%_100%)] z-[1]"></div>
         {!hideImage && (
@@ -39,21 +40,30 @@ const ItemTutorial = ({ placement, handleNext, content, hideImage }: ItemProps) 
                 {parse(content)}
               </div>
             </div>
-            <div
-              className="absolute bottom-1.5 xs:bottom-2 right-4 mt-0 flex items-center space-x-1 uppercase text-green-500 cursor-pointer"
-              onClick={handleNext}
-            >
-              <p className="font-mona font-semibold text-sm leading-[16px]">Next</p>
-              <IconChevron className="size-5 xs:size-6 -rotate-90" />
-            </div>
+            {handleComplete && (
+              <div className="btn" onClick={handleComplete}>
+                <div className="btn-border"></div>
+                <div className="btn-primary">COMPLETE TUTORIAL</div>
+                <div className="btn-border"></div>
+              </div>
+            )}
+            {handleNext && (
+              <div
+                className="absolute bottom-1.5 xs:bottom-2 right-4 mt-0 flex items-center space-x-1 uppercase text-green-500 cursor-pointer"
+                onClick={handleNext}
+              >
+                <p className="font-mona font-semibold text-sm leading-[16px]">Next</p>
+                <IconChevron className="size-5 xs:size-6 -rotate-90" />
+              </div>
+            )}
           </div>
         </div>
       </div>
       {placement && (
         <div
-          className={`flex mt-6 xs:mt-8 2xs:mt-10 ${placement === 'bottom-center' ? 'justify-center' : placement === 'top-center' ? 'order-1 justify-center rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : ''}`}
+          className={`flex mt-6 xs:mt-8 2xs:mt-10 ${placement === 'bottom-center' ? 'justify-center' : placement === 'top-center' ? 'order-1 justify-center rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : placement === 'top-right' ? 'justify-end order-1 rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : ''}`}
         >
-          <div className="w-12 xs:w-14 2xs:w-16">
+          <div className={placement !== 'top-right' ? `w-12 xs:w-14 2xs:w-16` : ''}>
             <img
               className="max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
               src="/assets/images/level/level-arrow-color@2x.png"
