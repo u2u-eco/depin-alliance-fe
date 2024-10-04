@@ -29,7 +29,7 @@ const TutorialModal = ({ handleStart, handleSkip }: ModalProps) => {
             </div>
             <div className="size-1.5 min-w-1.5 bg-green-800"></div>
           </div>
-          <div className="xs:text-[15px] 2xs:text-base text-body font-geist !leading-[20px] tracking-[-1px]">
+          <div className="text-sm xs:text-[15px] 2xs:text-base text-body font-geist !leading-[18px] xs:!leading-[20px] tracking-[-1px]">
             {`Before you start contributing, the DePIN Leader will give you more information on how everything works. After completing tutorial, you'll get bonus reward.`}
           </div>
         </div>

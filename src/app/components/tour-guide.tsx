@@ -59,30 +59,29 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: 'These are our super awesome projects!',
-      placement: 'top',
-      styles: {
-        options: {
-          width: 300
-        }
-      },
+      content: <ItemTutorial handleNext={handleNext} placement="left" />,
+      placement: 'left-end',
       data: {
         next: '/workspace'
       },
       target: '.workspace',
-      title: 'Our projects'
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
     },
     {
-      content: (
-        <div>
-          You can render anything!
-          <br />
-          <h3>Like this H3 title</h3>
-        </div>
-      ),
+      content: <ItemTutorial handleNext={handleNext} />,
       placement: 'top',
       target: '.device-0',
-      title: 'Our Mission'
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: <ItemTutorial handleNext={handleNext} />,
+      placement: 'top',
+      target: '.device-0',
+      hideFooter: true
     }
     // {
     //   content: (
@@ -165,13 +164,16 @@ export default function TourGuide() {
           getHelpers={handleGetHelpers}
           // showSkipButton={false}
           // hideBackButton={true}
-          // hideCloseButton={true}
+          hideCloseButton={true}
           styles={{
             options: {
               zIndex: 10000,
               backgroundColor: 'transparent',
-              overlayColor: 'rgba(0,0,0,0.8)',
+              overlayColor: 'rgba(0,0,0,0.95)',
               width: '100%'
+            },
+            spotlight: {
+              borderRadius: 0
             }
           }}
         />
