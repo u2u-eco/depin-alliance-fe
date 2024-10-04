@@ -6,8 +6,12 @@ import Joyride, { STATUS, Step, ACTIONS, StoreHelpers, EVENTS, Events } from 're
 import TutorialModal from '../home/components/tutorial'
 import ItemTutorial from './ui/item-tutorial'
 import { DEPIN_GUIDE } from '@/constants'
+import ModalReward from './ui/modal-reward'
+import { useDisclosure } from '@nextui-org/react'
+import { formatNumber } from '@/helper/common'
 
 export default function TourGuide() {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo } = useCommonStore()
   const [mounted, setMounted] = useState<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
@@ -26,6 +30,9 @@ export default function TourGuide() {
   }
   const handleBack = () => {
     helpers?.prev()
+  }
+  const handleComplete = () => {
+    onOpen()
   }
 
   const _steps: Step[] = [
@@ -184,18 +191,25 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
       placement: 'top',
       target: '.device-0',
-      spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -225,8 +239,6 @@ export default function TourGuide() {
           background: 'transparent'
         }
       },
-      spotlightClicks: true,
-      spotlightPadding: 0,
       hideFooter: true
     },
     {
@@ -241,12 +253,14 @@ export default function TourGuide() {
       },
       placement: 'top',
       target: 'body',
-      spotlightClicks: true,
-      spotlightPadding: 0,
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -257,7 +271,11 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -268,7 +286,11 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -279,7 +301,11 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: '...',
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -309,8 +335,93 @@ export default function TourGuide() {
           background: 'transparent'
         }
       },
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          placement="top-center"
+          handleNext={handleNext}
+          content="All the items you have are listed in the ITEM, making it easy to manage and equip them as needed."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.workspace-tab-item',
       spotlightClicks: true,
       spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content="You can check the items you've acquired in your inventory, where you'll find all the equipment ready to enhance your mining power."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        options: {
+          overlayColor: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        }
+      },
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          placement="bottom-center"
+          handleNext={handleNext}
+          content={`Now go back to "Home" you can track your contributions and make informed decisions about enhancing your setup.`}
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      data: {
+        next: '/home'
+      },
+      placement: 'top',
+      target: '.icon-home',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleComplete={handleComplete}
+          content={`
+          <div className="space-y-2 xs:space-y-3">
+            <p>Some tips for your growth:</p>
+            <p>&#8226; Mining Power is everything</p>
+            <p>&#8226; Be active to claim your mining rewards and use your points wisely.</p>
+            <p>&#8226; Invite your friends to join and earn bonuses together.</p>
+            <p>&#8226; Engage in community discussions to learn and share strategies.</p>
+            <p>&#8226; Regularly check for new items in the Shop to enhance your setup.</p>
+          </div>
+          `}
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        spotlight: {
+          background: 'transparent'
+        }
+      },
       hideFooter: true
     }
   ]
@@ -368,33 +479,49 @@ export default function TourGuide() {
   }, [])
 
   return (
-    <div>
-      {mounted && (
-        <Joyride
-          callback={handleJoyrideCallback}
-          steps={steps}
-          disableOverlayClose
-          run={run}
-          stepIndex={stepIndex}
-          continuous
-          scrollToFirstStep
-          getHelpers={handleGetHelpers}
-          showSkipButton={false}
-          hideBackButton={true}
-          hideCloseButton={true}
-          styles={{
-            options: {
-              zIndex: 10000,
-              backgroundColor: 'transparent',
-              overlayColor: 'rgba(0,0,0,0.95)',
-              width: '100%'
-            },
-            spotlight: {
-              borderRadius: 0
-            }
-          }}
-        />
-      )}
-    </div>
+    <>
+      <div>
+        {mounted && (
+          <Joyride
+            callback={handleJoyrideCallback}
+            steps={steps}
+            disableOverlayClose
+            run={run}
+            stepIndex={stepIndex}
+            continuous
+            scrollToFirstStep
+            getHelpers={handleGetHelpers}
+            showSkipButton={false}
+            hideBackButton={true}
+            hideCloseButton={true}
+            styles={{
+              options: {
+                zIndex: 10000,
+                backgroundColor: 'transparent',
+                overlayColor: 'rgba(0,0,0,0.95)',
+                width: '100%'
+              },
+              spotlight: {
+                borderRadius: 0
+              }
+            }}
+          />
+        )}
+      </div>
+      <ModalReward
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        onCloseModal={onClose}
+        title="tutorial reward"
+        point={formatNumber(5000, 0, 0)}
+        text={
+          <>
+            <p>You’ve received the tutorial reward.</p>
+            <p>Start contributing and save the world now!</p>
+          </>
+        }
+      />
+    </>
   )
 }
