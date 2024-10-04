@@ -56,6 +56,7 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
+          hideImage
           handleNext={handleNext}
           content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
         />
@@ -72,6 +73,7 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
+          hideImage
           handleNext={handleNext}
           content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
         />
@@ -151,7 +153,7 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <ItemTutorial handleNext={handleNext} />,
+      content: <ItemTutorial handleNext={handleNext} content="" />,
       placement: 'top',
       target: '.device-0',
       spotlightClicks: true,
