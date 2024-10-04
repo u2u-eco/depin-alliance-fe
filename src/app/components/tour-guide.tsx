@@ -34,7 +34,12 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <ItemTutorial handleNext={handleNext} />,
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content="Welcome to DePIN Alliance, the Odyssey of Decentralists, your first step is here to make your mark on the decentralized future. Together, we’ll build a more decentralized world."
+        />
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -48,7 +53,12 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <ItemTutorial handleNext={handleNext} />,
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
+        />
+      ),
       floaterProps: {
         disableAnimation: true
       },
@@ -59,7 +69,29 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <ItemTutorial handleNext={handleNext} placement="left" />,
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      target: '.my-first-step',
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          placement="left"
+          content={`Workspace, the place where you can unlock devices, buy and equip necessary items to enhance your mining power and engage deeply with DePIN network.`}
+        />
+      ),
       placement: 'left-end',
       data: {
         next: '/workspace'
@@ -67,6 +99,54 @@ export default function TourGuide() {
       target: '.workspace',
       spotlightClicks: true,
       spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content={`The devices you have can significantly contribute to the DePIN network. By unlocking more of your devices, you play a crucial role in building a robust and interconnected DePIN network.`}
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        options: {
+          overlayColor: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        }
+      },
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content={`
+            
+            <p>Depending on your current level, you will be able to unlock more devices:</p>
+
+            `}
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        options: {
+          overlayColor: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        }
+      },
       hideFooter: true
     },
     {
