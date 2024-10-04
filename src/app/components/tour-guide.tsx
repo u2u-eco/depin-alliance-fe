@@ -1,13 +1,14 @@
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Joyride, { STATUS, Step, ACTIONS, StoreHelpers, EVENTS, Events } from 'react-joyride'
 import TutorialModal from '../home/components/tutorial'
 import ItemTutorial from './ui/item-tutorial'
 
 export default function TourGuide() {
   const { userInfo } = useCommonStore()
+  const [mounted, setMounted] = useState<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
   const { run, stepIndex, steps, tourActive } = state
   const router = useRouter()
@@ -156,13 +157,13 @@ export default function TourGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
-    },
-    {
-      content: <ItemTutorial handleNext={handleNext} />,
-      placement: 'top',
-      target: '.device-0',
-      hideFooter: true
     }
+    // {
+    //   content: <ItemTutorial handleNext={handleNext} />,
+    //   placement: 'top',
+    //   target: '.device-0',
+    //   hideFooter: true
+    // }
     // {
     //   content: (
     //     <div>
@@ -197,7 +198,7 @@ export default function TourGuide() {
     const { status, type, action, index, step } = data
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       // Need to set our running state to false, so we can restart if we click start again.
-      setState({ run: false, stepIndex: 0 })
+      setState({ run: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
       if (step?.data?.next) {
@@ -215,13 +216,13 @@ export default function TourGuide() {
     //   // Update state to advance the tour
     //   setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1))
     // }
-    // const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
     // // if (action === ACTIONS.NEXT && index === 3) {
     // //   router.push('/workspace')
     // // }
-    // if (finishedStatuses.includes(status)) {
-    //   setState({ run: false, steps })
-    // }
+    if (finishedStatuses.includes(status)) {
+      setState({ run: false, steps })
+    }
   }
 
   useEffect(() => {
@@ -230,9 +231,13 @@ export default function TourGuide() {
     }
   }, [userInfo, tourActive])
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <div>
-      {window && (
+      {mounted && (
         <Joyride
           callback={handleJoyrideCallback}
           steps={steps}
