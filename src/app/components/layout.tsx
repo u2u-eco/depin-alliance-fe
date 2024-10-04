@@ -13,6 +13,7 @@ import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
 import TourGuide from './tour-guide'
+import { TourGuideProvider } from '@/contexts/tour.guide.context'
 
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
@@ -49,21 +50,23 @@ export default function Layout({ children }: any) {
           }
         }}
       />
-      <TourGuide />
-      <TelegramProvider>
-        <QueryClientProvider client={queryClient}>
-          <NextUIProvider>
-            <SoundsProvider>
-              <Swipeable onSwipeRight={handleBack}>
-                <AnimatePresence key="custom-page">
-                  {children}
-                  {/* {pathName !== '/' && <CustomNavbar />} */}
-                </AnimatePresence>
-              </Swipeable>
-            </SoundsProvider>
-          </NextUIProvider>
-        </QueryClientProvider>
-      </TelegramProvider>
+      <TourGuideProvider>
+        <TourGuide />
+        <TelegramProvider>
+          <QueryClientProvider client={queryClient}>
+            <NextUIProvider>
+              <SoundsProvider>
+                <Swipeable onSwipeRight={handleBack}>
+                  <AnimatePresence key="custom-page">
+                    {children}
+                    {/* {pathName !== '/' && <CustomNavbar />} */}
+                  </AnimatePresence>
+                </Swipeable>
+              </SoundsProvider>
+            </NextUIProvider>
+          </QueryClientProvider>
+        </TelegramProvider>
+      </TourGuideProvider>
     </div>
   )
 }

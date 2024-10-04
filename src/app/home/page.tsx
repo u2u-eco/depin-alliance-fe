@@ -12,7 +12,6 @@ import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { SoundsContextValue } from '@/contexts/sounds.context'
 import { useRouter } from 'next/navigation'
-import TutorialModal from './components/tutorial'
 import { useDisclosure } from '@nextui-org/react'
 
 export default function HomePage() {
@@ -154,13 +153,6 @@ export default function HomePage() {
           </div>
         </div>
       </CustomPage>
-      {/* <TutorialModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        onClose={onClose}
-        handleClick={handleStart}
-      /> */}
     </>
   )
 }

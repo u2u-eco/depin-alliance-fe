@@ -15,7 +15,6 @@ export default function WorkspaceContent() {
   const refList = useRef<any>()
   const { heightNav, safeAreaBottom } = useCommonStore()
   const { tabSound } = useAppSound()
-
   const { webApp } = useTelegram()
   const [maxHeight, setMaxHeightListContent] = useState<number>(200)
   const { activeTab, setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
