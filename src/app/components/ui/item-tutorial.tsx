@@ -5,10 +5,11 @@ import { IconChevron } from '../icons'
 
 interface ItemProps {
   placement?: string
+  content?: string
   handleNext: () => void
 }
 
-const ItemTutorial = ({ placement, handleNext }: ItemProps) => {
+const ItemTutorial = ({ placement, handleNext, content }: ItemProps) => {
   return (
     <div className="pt-10 2xs:pt-16">
       <div className="relative max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500">
@@ -25,14 +26,9 @@ const ItemTutorial = ({ placement, handleNext }: ItemProps) => {
               </div>
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
             </div>
-            <div className="max-h-[130px] no-scrollbar overflow-y-auto">
+            <div className="max-h-[140px] no-scrollbar overflow-y-auto">
               <div className="text-left text-sm xs:text-[15px] 2xs:text-base !leading-[16px] xs:!leading-[18px] 2xs:!leading-[20px] text-body tracking-[-1px] max-w-[240px] xs:max-w-[300px] 2xs:max-w-[360px]">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate reiciendis
-                dolorem, omnis officia optio a ratione nulla provident amet architecto doloribus
-                ullam autem perferendis unde asperiores saepe eum iste eligendi. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit. Voluptate reiciendis dolorem, omnis officia
-                optio a ratione nulla provident amet architecto doloribus ullam autem perferendis
-                unde asperiores saepe eum iste eligendi.
+                {content}
               </div>
             </div>
             <div
