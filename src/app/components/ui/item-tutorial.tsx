@@ -3,7 +3,12 @@
 import React from 'react'
 import { IconChevron } from '../icons'
 
-const ItemTutorial = ({ placement }: any) => {
+interface ItemProps {
+  placement?: string
+  handleNext: () => void
+}
+
+const ItemTutorial = ({ placement, handleNext }: ItemProps) => {
   return (
     <div className="relative max-w-[480px] mx-auto mt-[140px] xs:mt-[150px] 2xs:mt-[160px] drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500">
       <div className="absolute bottom-0 left-0 bg-gradient-reverse h-3 w-[calc(100%_-_106px)] [clip-path:_polygon(0_0,calc(100%_-_12px)_0%,100%_100%,0%_100%)] z-[1]"></div>
@@ -19,12 +24,15 @@ const ItemTutorial = ({ placement }: any) => {
             </div>
             <div className="size-1.5 min-w-1.5 bg-green-800"></div>
           </div>
-          <div className="text-left text-sm xs:text-[15px] 2xs:text-base !leading-[16px] xs:!leading-[18px] 2xs:!leading-[20px] text-body tracking-[-1px] max-w-[200px]">
+          <div className="text-left text-sm xs:text-[15px] 2xs:text-base !leading-[16px] xs:!leading-[18px] 2xs:!leading-[20px] text-body tracking-[-1px] max-w-[240px] xs:max-w-[300px] 2xs:max-w-[360px]">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate reiciendis dolorem,
             omnis officia optio a ratione nulla provident amet architecto doloribus ullam autem
             perferendis unde asperiores saepe eum iste eligendi.
           </div>
-          <div className="absolute bottom-2 right-4 flex items-center space-x-1 uppercase text-green-500 cursor-pointer">
+          <div
+            className="absolute bottom-2 right-4 flex items-center space-x-1 uppercase text-green-500 cursor-pointer"
+            onClick={handleNext}
+          >
             <p className="font-mona font-semibold leading-[16px]">Next</p>
             <IconChevron className="size-6 -rotate-90" />
           </div>

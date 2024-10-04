@@ -1072,6 +1072,10 @@ button {
   -webkit-text-fill-color: transparent;
 }
 
+.__floater__arrow {
+  display: none;
+}
+
 .react-joyride__tooltip {
   padding: 0 !important;
 }

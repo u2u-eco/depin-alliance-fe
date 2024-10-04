@@ -342,6 +342,10 @@ button {
 //   transition: opacity 0.3s !important;
 // }
 
+.__floater__arrow {
+  display: none;
+}
+
 .react-joyride__tooltip {
   padding: 0 !important;
   > div {
@@ -352,5 +356,23 @@ button {
     }
   }
 }
+
+// .react-joyride__overlay {
+//   &::before {
+//     --size: 355px;
+//     content: '';
+//     position: absolute;
+//     top: -255px;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     border-radius: 50%;
+//     width: var(--size);
+//     height: var(--size);
+//     background: theme('colors.green.500');
+//     opacity: 0.5;
+//     filter: blur(125px);
+//     mix-blend-mode: unset;
+//   }
+// }
 
 /* End Reset CSS */

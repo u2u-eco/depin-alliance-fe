@@ -8,16 +8,13 @@ const CustomTutorial = (props: TooltipRenderProps) => {
     props
 
   return (
-    <div
-      className="relative w-[100vw] max-w-[480px] h-[100vh] top-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-[4px] flex flex-col justify-between"
-      {...tooltipProps}
-    >
+    <div {...tooltipProps}>
       {/* <button className="tooltip__close" {...closeProps}>
         &times;
       </button> */}
       {step.title && <h4 className="tooltip__title">{step.title}</h4>}
       <div className="tooltip__content h-full">{step.content}</div>
-      <div className="tooltip__footer">
+      {/* <div className="tooltip__footer">
         <button className="tooltip__button" {...skipProps}>
           {skipProps.title}
         </button>
@@ -33,7 +30,7 @@ const CustomTutorial = (props: TooltipRenderProps) => {
             </button>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
