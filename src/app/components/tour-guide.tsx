@@ -58,7 +58,7 @@ export default function TourGuide() {
         <ItemTutorial
           hideImage
           handleNext={handleNext}
-          content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
+          content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
         />
       ),
       floaterProps: {
@@ -154,7 +154,7 @@ export default function TourGuide() {
     },
     {
       content: <ItemTutorial handleNext={handleNext} content="" />,
-      placement: 'top',
+      placement: 'bottom',
       target: '.device-0',
       spotlightClicks: true,
       spotlightPadding: 0,
@@ -203,6 +203,12 @@ export default function TourGuide() {
       setState({ run: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+      if (nextStepIndex === 1) {
+        setTimeout(() => {
+          const jsBody = document.getElementById('jsBody')
+          jsBody?.scrollTo({ top: jsBody.scrollHeight, behavior: 'smooth' })
+        })
+      }
       if (step?.data?.next) {
         setState({
           run: false
@@ -247,10 +253,10 @@ export default function TourGuide() {
           run={run}
           stepIndex={stepIndex}
           continuous
-          // scrollToFirstStep
+          scrollToFirstStep
           getHelpers={handleGetHelpers}
-          // showSkipButton={false}
-          // hideBackButton={true}
+          showSkipButton={false}
+          hideBackButton={true}
           hideCloseButton={true}
           styles={{
             options: {
