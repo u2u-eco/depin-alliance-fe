@@ -16,7 +16,7 @@ import {
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -28,6 +28,7 @@ import Loader from '@/app/components/ui/loader'
 import CustomButton from '@/app/components/button'
 import { useAppSound } from '@/hooks/useAppSound'
 import EditDeviceName from './edit-device-name'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -51,6 +52,7 @@ export default function Device({ height }: IDevice) {
   const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
   const [emptyName, setEmptyName] = useState<boolean>(false)
   const [loadingButton, setLoadingButton] = useState(false)
+  const { state: tourState, setState } = useTourGuideContext()
 
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
@@ -253,6 +255,17 @@ export default function Device({ height }: IDevice) {
     setExpanded(index)
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (tourState.tourActive && !tourState.run) {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }, 500)
+  }, [tourState, setState])
+
   const disableBtn =
     (activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP) && !activeItem
       ? true
@@ -272,9 +285,10 @@ export default function Device({ height }: IDevice) {
           />
         )}
         <div className="space-y-4">
-          {listDevice?.data.map((item: IUserDeviceItem) => {
+          {listDevice?.data.map((item: IUserDeviceItem, index: number) => {
             return (
               <AccordionItem
+                className={`device-${index}`}
                 key={item.index}
                 index={item.index}
                 item={item}

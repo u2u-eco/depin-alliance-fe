@@ -7,6 +7,7 @@ import { formatNumber } from '@/helper/common'
 import { useAppSound } from '@/hooks/useAppSound'
 interface IAccordionItem {
   index: number
+  className: string
   item: IUserDeviceItem
   expanded: number | false
   setExpanded: (item: number | false) => void
@@ -18,6 +19,7 @@ export default function AccordionItem({
   index,
   item,
   expanded,
+  className,
   setExpanded,
   handleClickItem,
   children,
@@ -35,7 +37,7 @@ export default function AccordionItem({
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
   return (
-    <div>
+    <div className={className}>
       <motion.header
         initial={false}
         // onClick={() => setExpanded(isOpen ? false : index)}
