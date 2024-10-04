@@ -46,6 +46,7 @@ import Loader from '@/app/components/ui/loader'
 import LeaveModal from '../components/leave'
 import FundingModal from '../components/funding'
 import ContributeModal from '../components/contribute'
+import SelectAdminModal from '../components/select-admin'
 
 const LEAGUE_TYPE = {
   LEAVE: 'leave',
@@ -57,7 +58,8 @@ const LEAGUE_TYPE = {
   INVITE: 'invite',
   RESEARCH: 'research',
   INNOVATE: 'innovate',
-  LEAGUES: 'leagues'
+  LEAGUES: 'leagues',
+  SELECT: 'select'
 }
 
 export default function InLeaguePage() {
@@ -281,10 +283,34 @@ export default function InLeaguePage() {
     refetch()
   }
 
+  const handleOpenSelectMember = () => {
+    handleButtonSound()
+    setActiveType(LEAGUE_TYPE.SELECT)
+    onOpen()
+  }
+
+  const handleSelectAdmin = () => {
+    handleLeave()
+  }
+
   const getContentOfModal = () => {
     switch (activeType) {
       case LEAGUE_TYPE.LEAVE:
-        return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleLeave} />
+        return (
+          <LeaveModal
+            item={currentLeague}
+            onClose={onClose}
+            handleAction={currentLeague?.isOwner ? handleOpenSelectMember : handleLeave}
+          />
+        )
+      case LEAGUE_TYPE.SELECT:
+        return (
+          <SelectAdminModal
+            item={currentLeague}
+            onClose={onClose}
+            handleAction={handleSelectAdmin}
+          />
+        )
       case LEAGUE_TYPE.FUNDING:
         return <FundingModal closeModal={onClose} cb={_getUserLeague} />
       default:
@@ -539,7 +565,7 @@ export default function InLeaguePage() {
       </CustomPage>
       <CustomModal
         title={
-          activeType === LEAGUE_TYPE.LEAVE
+          activeType === LEAGUE_TYPE.LEAVE || activeType === LEAGUE_TYPE.SELECT
             ? 'Leave League'
             : activeType === LEAGUE_TYPE.FUNDING
               ? 'Funding'
