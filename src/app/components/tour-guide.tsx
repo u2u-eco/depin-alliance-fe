@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import Joyride, { STATUS, Step, ACTIONS, StoreHelpers, EVENTS, Events } from 'react-joyride'
 import TutorialModal from '../home/components/tutorial'
 import ItemTutorial from './ui/item-tutorial'
+import { DEPIN_GUIDE } from '@/constants'
 
 export default function TourGuide() {
   const { userInfo } = useCommonStore()
@@ -234,8 +235,13 @@ export default function TourGuide() {
   }
 
   useEffect(() => {
+    const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
+    if (isShowGuide === 'true') {
+      return
+    }
     if ((userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') && !tourActive) {
       setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      localStorage.setItem(DEPIN_GUIDE, 'true')
     }
   }, [userInfo, tourActive])
 
