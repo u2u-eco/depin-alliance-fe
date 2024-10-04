@@ -132,8 +132,21 @@ export default function TourGuide() {
         <ItemTutorial
           handleNext={handleNext}
           content={`
-            
-            <p>Depending on your current level, you will be able to unlock more devices:</p>
+            <div className="space-y-3">
+              <p>Depending on your current level, you will be able to unlock more devices:</p>
+              <p className="flex items-center justify-between space-x-2 text-title">
+                - From Level 1 -> Level 4:
+                <span className="text-green-500">1 Device</span>
+              </p>
+              <p className="flex items-center justify-between space-x-2 text-title">
+                - From Level 5 -> Level 14:
+                <span className="text-green-500">2 Device</span>
+              </p>
+              <p className="flex items-center justify-between space-x-2 text-title">
+                - From Level 15 onwards:
+                <span className="text-green-500">3 Device</span>
+              </p>
+            </div>
 
             `}
         />
@@ -154,47 +167,152 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <ItemTutorial handleNext={handleNext} content="" />,
-      placement: 'bottom',
+      content: (
+        <ItemTutorial
+          placement="top-center"
+          handleNext={handleNext}
+          content="Click on each device, it will expand a list of the items included. Equip the items you have: CPU, RAM, GPU, and SSD."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
       target: '.device-0',
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content="To increase your mining power, you can buy items in the Shop. By investing in these, you can enhance your contribution to the DePIN network and boost your performance."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        options: {
+          overlayColor: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        }
+      },
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content="Click on the item you want and buy it. Once purchased, it will be automatically added to the ITEM section or you can equip now to enhance your mining power."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: '...',
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '.device-0',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
+    },
+    {
+      content: (
+        <ItemTutorial
+          handleNext={handleNext}
+          content="After equipping the items, you'll notice an increase in your mining power. Apply the same to your other devices to boost your contributions to the DePIN network."
+        />
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: 'body',
+      styles: {
+        options: {
+          overlayColor: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        }
+      },
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true
     }
-    // {
-    //   content: <ItemTutorial handleNext={handleNext} />,
-    //   placement: 'top',
-    //   target: '.device-0',
-    //   hideFooter: true
-    // }
-    // {
-    //   content: (
-    //     <div>
-    //       <h3>All about us</h3>
-    //       <svg
-    //         height="50px"
-    //         preserveAspectRatio="xMidYMid"
-    //         viewBox="0 0 96 96"
-    //         width="50px"
-    //         xmlns="http://www.w3.org/2000/svg"
-    //       >
-    //         <g>
-    //           <path
-    //             d="M83.2922435,72.3864207 C69.5357835,69.2103145 56.7313553,66.4262214 62.9315626,54.7138297 C81.812194,19.0646376 67.93573,0 48.0030634,0 C27.6743835,0 14.1459311,19.796662 33.0745641,54.7138297 C39.4627778,66.4942237 26.1743334,69.2783168 12.7138832,72.3864207 C0.421472164,75.2265157 -0.0385432192,81.3307198 0.0014581185,92.0030767 L0.0174586536,96.0032105 L95.9806678,96.0032105 L95.9966684,92.1270809 C96.04467,81.3747213 95.628656,75.2385161 83.2922435,72.3864207 Z"
-    //             fill="#000000"
-    //           />
-    //         </g>
-    //       </svg>
-    //     </div>
-    //   ),
-    //   placement: 'left',
-    //   target: '.demo__about h2'
-    // },
-    // {
-    //   content: <h2>Let's all folks</h2>,
-    //   placement: 'center',
-    //   target: 'body'
-    // }
   ]
 
   const handleJoyrideCallback = (data: any) => {

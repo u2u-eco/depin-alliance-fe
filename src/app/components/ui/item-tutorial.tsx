@@ -13,8 +13,12 @@ interface ItemProps {
 
 const ItemTutorial = ({ placement, handleNext, content, hideImage }: ItemProps) => {
   return (
-    <div className={`pl-5 ${!hideImage ? 'pt-10 2xs:pt-16' : ''}`}>
-      <div className="relative max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500">
+    <div
+      className={`flex flex-col pl-5 ${!hideImage ? (placement === 'top-center' ? '' : 'pt-10 2xs:pt-16') : ''}`}
+    >
+      <div
+        className={`relative w-full max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500 ${placement === 'top-center' ? 'order-2' : ''}`}
+      >
         <div className="absolute bottom-0 left-0 bg-gradient-reverse h-3 w-[calc(100%_-_106px)] [clip-path:_polygon(0_0,calc(100%_-_12px)_0%,100%_100%,0%_100%)] z-[1]"></div>
         {!hideImage && (
           <div className="absolute top-[-80px] left-0 max-w-[100px] 2xs:max-w-[120px] pointer-events-none">
@@ -22,7 +26,7 @@ const ItemTutorial = ({ placement, handleNext, content, hideImage }: ItemProps) 
           </div>
         )}
         <div className="relative mt-auto p-[1px] bg-gradient-reverse [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_100px)_100%,calc(100%_-_116px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
-          <div className="relative space-y-2 p-4 xs:p-5 2xs:p-6 !pb-8 xs:!pb-10 bg-[linear-gradient(to_bottom,#000,#00331d)] [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_99px)_100%,calc(100%_-_115px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
+          <div className="relative min-h-[200px] space-y-2 p-4 xs:p-5 2xs:p-6 !pb-10 xs:!pb-12 bg-[linear-gradient(to_bottom,#000,#00331d)] [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_99px)_100%,calc(100%_-_115px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
             <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6 mx-auto">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white !leading-[calc(24/20)] tracking-[1px] uppercase">
@@ -47,7 +51,7 @@ const ItemTutorial = ({ placement, handleNext, content, hideImage }: ItemProps) 
       </div>
       {placement && (
         <div
-          className={`flex mt-6 xs:mt-8 2xs:mt-10 ${placement === 'bottom-center' ? 'justify-center' : ''}`}
+          className={`flex mt-6 xs:mt-8 2xs:mt-10 ${placement === 'bottom-center' ? 'justify-center' : placement === 'top-center' ? 'order-1 justify-center rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : ''}`}
         >
           <div className="w-12 xs:w-14 2xs:w-16">
             <img
