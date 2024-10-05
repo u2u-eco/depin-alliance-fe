@@ -252,7 +252,7 @@ export default function TourGuide() {
         disableAnimation: true
       },
       placement: 'top',
-      target: 'body',
+      target: '.shop-item-2',
       hideFooter: true
     },
     {
@@ -490,6 +490,7 @@ export default function TourGuide() {
             stepIndex={stepIndex}
             continuous
             scrollToFirstStep
+            disableScrolling
             getHelpers={handleGetHelpers}
             showSkipButton={false}
             hideBackButton={true}
