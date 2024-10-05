@@ -85,15 +85,24 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     <div className=" relative">
       <div className="h-[300px] overflow-y-auto no-scrollbar mt-8 mb-6">
         {listDeviceItemByFilter?.length === 0 && !isLoading ? (
-          <NoItem
-            title="No item"
-            textLink="Buy now"
-            action={handleGoToShop}
-            classNames={{
-              link: 'jsBuyNow',
-              icon: 'text-body'
-            }}
-          />
+          <>
+            <NoItem
+              title="No item"
+              textLink="Buy now"
+              action={handleGoToShop}
+              classNames={{
+                link: 'jsBuyNow',
+                icon: 'text-body'
+              }}
+            />
+            <div className="absolute left-[50%] translate-x-[-50%] bottom-5 rotate-180">
+              <img
+                className="mx-auto max-w-[40px]"
+                src="/assets/images/level/level-arrow-color@2x.png"
+                alt="DePIN Alliance"
+              />
+            </div>
+          </>
         ) : null}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (

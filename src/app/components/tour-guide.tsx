@@ -50,6 +50,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="Welcome to DePIN Alliance, the Odyssey of Decentralists, your first step is here to make your mark on the decentralized future. Together, we’ll build a more decentralized world."
         />
       ),
@@ -71,8 +72,8 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
-          hideImage
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
         />
       ),
@@ -88,8 +89,8 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
-          hideImage
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
         />
       ),
@@ -106,6 +107,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           placement="left"
           content={`Workspace, the place where you can unlock devices, buy and equip necessary items to enhance your mining power and engage deeply with DePIN network.`}
         />
@@ -123,6 +125,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content={`The devices you have can significantly contribute to the DePIN network. By unlocking more of your devices, you play a crucial role in building a robust and interconnected DePIN network.`}
         />
       ),
@@ -145,6 +148,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content={`
             <div className="space-y-3">
               <p>Depending on your current level, you will be able to unlock more devices:</p>
@@ -188,6 +192,7 @@ export default function TourGuide() {
         <ItemTutorial
           placement="top-center"
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="Click on each device, it will expand a list of the items included. Equip the items you have: CPU, RAM, GPU, and SSD."
         />
       ),
@@ -213,7 +218,7 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: <h2></h2>,
+      content: '',
       floaterProps: {
         disableAnimation: true
       },
@@ -221,12 +226,10 @@ export default function TourGuide() {
       placement: 'top',
       target: '.jsBuyNow',
       styles: {
-        // options: {
-        //   overlayColor: 'rgba(0,0,0,0.3)'
-        // },
-        // spotlight: {
-        //   background: 'transparent'
-        // }
+        overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        }
       },
       spotlightClicks: true,
       spotlightPadding: 0,
@@ -236,6 +239,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="To increase your mining power, you can buy items in the Shop. By investing in these, you can enhance your contribution to the DePIN network and boost your performance."
         />
       ),
@@ -261,6 +265,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="Click on the item you want and buy it. Once purchased, it will be automatically added to the ITEM section or you can equip now to enhance your mining power."
         />
       ),
@@ -335,6 +340,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="After equipping the items, you'll notice an increase in your mining power. Apply the same to your other devices to boost your contributions to the DePIN network."
         />
       ),
@@ -358,6 +364,7 @@ export default function TourGuide() {
         <ItemTutorial
           placement="top-center"
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="All the items you have are listed in the ITEM, making it easy to manage and equip them as needed."
         />
       ),
@@ -374,6 +381,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content="You can check the items you've acquired in your inventory, where you'll find all the equipment ready to enhance your mining power."
         />
       ),
@@ -396,6 +404,7 @@ export default function TourGuide() {
       content: (
         <ItemTutorial
           handleNext={handleNext}
+          handleSkip={handleSkip}
           content={`Now go back to "Home" you can track your contributions and make informed decisions about enhancing your setup.`}
         />
       ),
