@@ -234,6 +234,9 @@ export default function TourGuide() {
         overlay: {
           background: 'transparent',
           pointerEvents: 'none'
+        },
+        spotlight: {
+          background: 'transparent'
         }
       },
       spotlightClicks: true,
@@ -279,6 +282,8 @@ export default function TourGuide() {
       },
       placement: 'top',
       target: '.shop-item-1',
+      spotlightClicks: true,
+      spotlightPadding: 5,
       hideFooter: true
     },
     {
@@ -390,7 +395,7 @@ export default function TourGuide() {
       placement: 'top',
       target: '.workspace-tab-item',
       spotlightClicks: true,
-      spotlightPadding: 0,
+      spotlightPadding: 5,
       hideFooter: true
     },
     {

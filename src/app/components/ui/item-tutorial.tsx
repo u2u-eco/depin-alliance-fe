@@ -30,7 +30,7 @@ const ItemTutorial = ({
       {arrow ? (
         <div className={arrowClass}>
           <img
-            className="max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
+            className="animate-bounce max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
             src="/assets/images/level/level-arrow-color@2x.png"
             alt="DePIN Alliance"
           />
