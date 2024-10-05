@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
