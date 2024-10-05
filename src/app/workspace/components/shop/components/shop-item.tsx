@@ -79,6 +79,9 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     currentItem.current = item
     onOpen()
     buttonSound?.play()
+    if (tourState.tourActive && tourState.run) {
+      helpers?.next()
+    }
   }
 
   const buy = async () => {
