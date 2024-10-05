@@ -10,6 +10,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 interface IChooseDevice {
   setActiveItem: (id: number) => void
   type: string
@@ -23,6 +24,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const { setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { state: tourState, setState, helpers } = useTourGuideContext()
   const { buttonSound } = useAppSound()
   useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
@@ -49,6 +51,11 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     buttonSound.play()
     setTypeItemShop(type)
     setActiveTab(WORKSPACE_TYPE.SHOP)
+    if (tourState.run && tourState.tourActive) {
+      setTimeout(() => {
+        helpers?.next()
+      }, 300)
+    }
   }
 
   useEffect(() => {
@@ -56,6 +63,19 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
       setPage(page + 1)
     }
   }, [isInView])
+
+  useEffect(() => {
+    if (!tourState.run && tourState.tourActive) {
+      console.log('🚀 ~ useEffect ~ tourState.stepIndex:', tourState.stepIndex)
+
+      if (tourState.stepIndex === 13 && listDeviceItemByFilter?.length > 0) {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }
+  }, [tourState, listDeviceItemByFilter, setState])
 
   useEffect(() => {
     setPage(1)
@@ -70,6 +90,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
             textLink="Buy now"
             action={handleGoToShop}
             classNames={{
+              link: 'jsBuyNow',
               icon: 'text-body'
             }}
           />
@@ -78,6 +99,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
             <div
               key={index}
+              id={`item-${index}`}
               className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all h-full ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
             >
               <div

@@ -10,6 +10,7 @@ import useCommonStore from '@/stores/commonStore'
 import ShopPage from './components/shop/shop'
 import { WORKSPACE_TYPE, WorkspaceContext } from './context/workspace-context'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 export default function WorkspaceContent() {
   const refList = useRef<any>()
@@ -18,6 +19,7 @@ export default function WorkspaceContent() {
   const { webApp } = useTelegram()
   const [maxHeight, setMaxHeightListContent] = useState<number>(200)
   const { activeTab, setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
+  const { state: tourState } = useTourGuideContext()
   // const [activeTab, setActiveTab] = useState(WORKSPACE_TYPE.DEVICE)
 
   const handleSelectTab = (tab: string) => {
@@ -38,7 +40,9 @@ export default function WorkspaceContent() {
           const marginOfWrap = window.getComputedStyle(wrapChidden)
           margin = Number(marginOfWrap.marginBottom.replaceAll('px', ''))
         }
-        const heightTopBottom = offsetTop + margin + heightNav - 10
+        const _heightNav = tourState.tourActive ? 0 : heightNav
+        const heightTopBottom = offsetTop + margin + _heightNav - 10
+
         setMaxHeightListContent(webApp?.viewportStableHeight + safeAreaBottom - heightTopBottom)
       } else {
         setMaxHeightListContent(400)

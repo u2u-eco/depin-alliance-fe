@@ -178,7 +178,10 @@ export default function TourGuide() {
           background: 'transparent'
         }
       },
-      hideFooter: true
+      hideFooter: true,
+      data: {
+        index: 7
+      }
     },
     {
       content: (
@@ -194,34 +197,37 @@ export default function TourGuide() {
       placement: 'top',
       target: '.device-0',
       spotlightClicks: true,
-      spotlightPadding: 0,
+      spotlightPadding: 5,
       hideFooter: true
     },
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: '',
       floaterProps: {
         disableAnimation: true
       },
+      isFixed: true,
+      spotlightClicks: true,
       placement: 'top',
       target: '.device-0',
-      spotlightPadding: 0,
+      spotlightPadding: 10,
       hideFooter: true
     },
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: <h2></h2>,
       floaterProps: {
         disableAnimation: true
       },
+      isFixed: true,
       placement: 'top',
-      target: '.device-0',
+      target: '.jsBuyNow',
+      styles: {
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
+        // spotlight: {
+        //   background: 'transparent'
+        // }
+      },
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
@@ -246,7 +252,10 @@ export default function TourGuide() {
           background: 'transparent'
         }
       },
-      hideFooter: true
+      hideFooter: true,
+      data: {
+        index: 11
+      }
     },
     {
       content: (
@@ -259,20 +268,16 @@ export default function TourGuide() {
         disableAnimation: true
       },
       placement: 'top',
-      target: '.shop-item-2',
+      target: '.shop-item-1',
       hideFooter: true
     },
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: '',
       floaterProps: {
         disableAnimation: true
       },
       placement: 'top',
-      target: '.device-0',
+      target: '.jsBuyItem',
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
@@ -287,7 +292,26 @@ export default function TourGuide() {
         disableAnimation: true
       },
       placement: 'top',
-      target: '.device-0',
+      target: '.jsEquipNow',
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      hideFooter: true,
+      data: {
+        index: 13
+      }
+    },
+
+    {
+      content: (
+        <div className="text-title" onClick={handleNext}>
+          Next
+        </div>
+      ),
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'top',
+      target: '#item-0',
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
@@ -302,22 +326,7 @@ export default function TourGuide() {
         disableAnimation: true
       },
       placement: 'top',
-      target: '.device-0',
-      spotlightClicks: true,
-      spotlightPadding: 0,
-      hideFooter: true
-    },
-    {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
-      floaterProps: {
-        disableAnimation: true
-      },
-      placement: 'top',
-      target: '.device-0',
+      target: '#jsConfirm',
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true
@@ -442,12 +451,12 @@ export default function TourGuide() {
       setState({ run: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
-      // if (nextStepIndex === 1) {
-      //   // setTimeout(() => {
-      //   //   const jsBody = document.getElementById('jsBody')
-      //   //   jsBody?.scrollTo({ top: jsBody.scrollHeight, behavior: 'smooth' })
-      //   // })
-      // }
+      if (nextStepIndex === 8 || nextStepIndex === 12) {
+        setState({
+          run: false
+        })
+        return
+      }
       if (step?.data?.next) {
         setState({
           run: false
