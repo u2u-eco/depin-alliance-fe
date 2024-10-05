@@ -153,7 +153,7 @@ export default function TourGuide() {
           handleNext={handleNext}
           handleSkip={handleSkip}
           content={`
-            <div className="space-y-3">
+            <div className="space-y-2 xs:space-y-3">
               <p>Depending on your current level, you will be able to unlock more devices:</p>
               <p className="flex items-center justify-between space-x-2 text-title">
                 - From Level 1 -> Level 4:

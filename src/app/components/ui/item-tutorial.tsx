@@ -58,7 +58,7 @@ const ItemTutorial = ({
               </div>
             )}
             <div className="relative mt-auto p-[1px] bg-gradient-reverse [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_100px)_100%,calc(100%_-_116px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
-              <div className="relative min-h-[200px] space-y-2 p-4 xs:p-5 2xs:p-6 !pb-10 xs:!pb-12 bg-[linear-gradient(to_bottom,#000,#00331d)] [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_99px)_100%,calc(100%_-_115px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
+              <div className="relative min-h-[160px] space-y-2 p-4 xs:p-5 2xs:p-6 !pb-10 xs:!pb-12 bg-[linear-gradient(to_bottom,#000,#00331d)] [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_99px)_100%,calc(100%_-_115px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
                 <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6 mx-auto">
                   <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                   <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white !leading-[calc(24/20)] tracking-[1px] uppercase">
@@ -66,10 +66,8 @@ const ItemTutorial = ({
                   </div>
                   <div className="size-1.5 min-w-1.5 bg-green-800"></div>
                 </div>
-                <div className="max-h-[140px] no-scrollbar overflow-y-auto">
-                  <div className="text-left text-sm xs:text-[15px] 2xs:text-base !leading-[16px] xs:!leading-[18px] 2xs:!leading-[20px] text-body tracking-[-1px] ">
-                    {content && parse(content)}
-                  </div>
+                <div className="text-left text-sm xs:text-[15px] 2xs:text-base !leading-[16px] xs:!leading-[18px] 2xs:!leading-[20px] text-body tracking-[-1px] ">
+                  {content && parse(content)}
                 </div>
                 {handleComplete && (
                   <div className="btn !mt-8" onClick={handleComplete}>
@@ -96,7 +94,7 @@ const ItemTutorial = ({
             >
               <div className={placement !== 'top-right' ? `w-12 xs:w-14 2xs:w-16` : ''}>
                 <img
-                  className="max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
+                  className="animate-bounce max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
                   src="/assets/images/level/level-arrow-color@2x.png"
                   alt="DePIN Alliance"
                 />
