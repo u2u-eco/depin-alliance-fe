@@ -109,7 +109,7 @@ export default function TourGuide() {
       },
       target: '.workspace',
       spotlightClicks: true,
-      spotlightPadding: 0,
+      spotlightPadding: 10,
       hideFooter: true
     },
     {
@@ -433,12 +433,12 @@ export default function TourGuide() {
       setState({ run: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
-      if (nextStepIndex === 1) {
-        setTimeout(() => {
-          const jsBody = document.getElementById('jsBody')
-          jsBody?.scrollTo({ top: jsBody.scrollHeight, behavior: 'smooth' })
-        })
-      }
+      // if (nextStepIndex === 1) {
+      //   // setTimeout(() => {
+      //   //   const jsBody = document.getElementById('jsBody')
+      //   //   jsBody?.scrollTo({ top: jsBody.scrollHeight, behavior: 'smooth' })
+      //   // })
+      // }
       if (step?.data?.next) {
         setState({
           run: false
@@ -465,9 +465,9 @@ export default function TourGuide() {
 
   useEffect(() => {
     const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
-    if (isShowGuide === 'true') {
-      return
-    }
+    // if (isShowGuide === 'true') {
+    //   return
+    // }
     if ((userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') && !tourActive) {
       setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
       localStorage.setItem(DEPIN_GUIDE, 'true')
