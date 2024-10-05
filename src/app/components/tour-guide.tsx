@@ -35,6 +35,7 @@ export default function TourGuide() {
   }
   const handleClose = () => {
     helpers?.close()
+    setState({ run: false, tourActive: false })
   }
   const handleComplete = () => {
     handleClose()
@@ -518,9 +519,10 @@ export default function TourGuide() {
 
   useEffect(() => {
     const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
-    // if (isShowGuide === 'true') {
-    //   return
-    // }
+    if (isShowGuide === 'true') {
+      setMounted(false)
+      return
+    }
     if (
       (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
       !tourActive &&
@@ -528,6 +530,7 @@ export default function TourGuide() {
     ) {
       setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
       setInitToured(true)
+
       localStorage.setItem(DEPIN_GUIDE, 'true')
     }
   }, [userInfo, tourActive])

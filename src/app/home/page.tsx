@@ -18,12 +18,9 @@ import { useTourGuideContext } from '@/contexts/tour.guide.context'
 export default function HomePage() {
   const router = useRouter()
   const { userInfo } = useCommonStore()
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { main } = useContext(SoundsContextValue)
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
-
-  const handleStart = () => {}
 
   const handleClickFigure = () => {
     tabSound.play()
