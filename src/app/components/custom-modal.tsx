@@ -37,7 +37,7 @@ const CustomModal = ({
 }: ModalProps) => {
   const { webApp } = useTelegram()
   const [placement, setPlacement] = useState<any>('bottom')
-  const { state: tourState } = useTourGuideContext()
+  const { state: tourState, helpers } = useTourGuideContext()
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
   const { buttonSound } = useAppSound()
 
@@ -49,11 +49,18 @@ const CustomModal = ({
     }
   }, [isOpen, isKeyboardOpen])
 
+  const handleClose = () => {
+    onClose()
+    if (tourState.tourActive) {
+      helpers?.skip()
+    }
+  }
+
   return (
     <Modal
       id={id}
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       onOpenChange={onOpenChange}
       placement={placement}
       isDismissable={tourState?.tourActive ? false : true}

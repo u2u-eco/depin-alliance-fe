@@ -201,7 +201,7 @@ export default function Device({ height }: IDevice) {
       }
     }
     currentIndex.current = index
-    if (tourState.tourActive) {
+    if (tourState.tourActive && tourState.stepIndex === 7) {
       helpers?.next()
     }
   }

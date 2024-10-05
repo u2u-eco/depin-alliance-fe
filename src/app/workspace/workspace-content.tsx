@@ -51,7 +51,7 @@ export default function WorkspaceContent() {
         setMaxHeightListContent(400)
       }
     }, 500)
-  }, [webApp?.viewportStableHeight])
+  }, [webApp?.viewportStableHeight, tourState.tourActive])
 
   useEffect(() => {
     if (tourState.stepIndex === 18) {
