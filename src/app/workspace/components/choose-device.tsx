@@ -54,7 +54,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     if (tourState.run && tourState.tourActive) {
       setTimeout(() => {
         helpers?.next()
-      }, 300)
+      }, 500)
     }
   }
 
