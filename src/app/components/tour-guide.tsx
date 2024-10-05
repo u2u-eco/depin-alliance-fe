@@ -233,7 +233,8 @@ export default function TourGuide() {
       styles: {
         overlay: {
           background: 'transparent',
-          pointerEvents: 'none'
+          mixBlendMode: 'unset'
+          // pointerEvents: 'none'
         },
         spotlight: {
           background: 'transparent'
