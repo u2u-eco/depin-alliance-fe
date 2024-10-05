@@ -26,7 +26,6 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
   const [listInfo, setListInfo] = useState<any>({})
   const { buttonSound } = useAppSound()
   const { state: tourState, setState, helpers } = useTourGuideContext()
-
   const listInfoByFilter = useRef<any>({})
   const updateData = () => {
     listInfoByFilter.current.current = {}
@@ -67,7 +66,16 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
   }, [item])
 
   return (
-    <div className="btn default cursor-default">
+    <div className="relative btn default cursor-default">
+      {tourState.tourActive && tourState.stepIndex === 8 && (
+        <div className="absolute left-[50%] translate-x-[-50%] top-16 z-20">
+          <img
+            className="mx-auto max-w-[40px]"
+            src="/assets/images/level/level-arrow-color@2x.png"
+            alt="DePIN Alliance"
+          />
+        </div>
+      )}
       <div className="btn-border"></div>
       <div className="btn-default !p-3 xs:!p-4 text-left">
         <div className="space-y-3 xs:space-y-4">
@@ -104,7 +112,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                           return (
                             <div
                               key={index}
-                              className={`flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer ${tourState.tourActive ? 'drop-shadow-green' : ''}`}
+                              className={`flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer ${tourState.tourActive && keyItem === 'RAM' && index === 1 ? 'opacity-100' : 'opacity-50'}`}
                               onClick={() => {
                                 buttonSound.play()
                                 handleEquip(keyItem)

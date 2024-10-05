@@ -164,6 +164,9 @@ export default function Device({ height }: IDevice) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
           handleAddItem()
+          if (tourState.tourActive) {
+            helpers?.next()
+          }
           return
         }
         break
@@ -179,9 +182,6 @@ export default function Device({ height }: IDevice) {
       case DEVICE_TYPE.SWAP:
         handleSwapItem()
         break
-    }
-    if (tourState.tourActive) {
-      helpers?.next()
     }
   }
 

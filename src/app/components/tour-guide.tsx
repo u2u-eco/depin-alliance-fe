@@ -109,7 +109,7 @@ export default function TourGuide() {
         <ItemTutorial
           handleNext={handleNext}
           handleSkip={handleSkip}
-          placement="left"
+          // placement="left"
           content={`Workspace, the place where you can unlock devices, buy and equip necessary items to enhance your mining power and engage deeply with DePIN network.`}
         />
       ),
@@ -216,15 +216,19 @@ export default function TourGuide() {
       placement: 'top',
       target: '.device-0',
       spotlightPadding: 10,
+      styles: {
+        overlay: {
+          pointerEvents: 'none'
+        }
+      },
       hideFooter: true
     },
     {
-      content: '',
+      content: <ItemTutorial arrow arrowClass="rotate-180" />,
       floaterProps: {
         disableAnimation: true
       },
-      isFixed: true,
-      placement: 'top',
+      placement: 'bottom',
       target: '.jsBuyNow',
       styles: {
         overlay: {
@@ -278,7 +282,7 @@ export default function TourGuide() {
       hideFooter: true
     },
     {
-      content: '',
+      content: <ItemTutorial arrow />,
       floaterProps: {
         disableAnimation: true
       },
@@ -286,14 +290,16 @@ export default function TourGuide() {
       target: '.jsBuyItem',
       spotlightClicks: true,
       spotlightPadding: 0,
+      styles: {
+        overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        }
+      },
       hideFooter: true
     },
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: <ItemTutorial arrow />,
       floaterProps: {
         disableAnimation: true
       },
@@ -301,33 +307,36 @@ export default function TourGuide() {
       target: '.jsEquipNow',
       spotlightClicks: true,
       spotlightPadding: 0,
+      styles: {
+        overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        }
+      },
       hideFooter: true,
       data: {
         index: 13
       }
     },
-
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: <ItemTutorial arrow arrowClass="rotate-180" />,
       floaterProps: {
         disableAnimation: true
       },
-      placement: 'top',
+      placement: 'bottom',
       target: '#item-0',
       spotlightClicks: true,
       spotlightPadding: 0,
+      styles: {
+        overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        }
+      },
       hideFooter: true
     },
     {
-      content: (
-        <div className="text-title" onClick={handleNext}>
-          Next
-        </div>
-      ),
+      content: <ItemTutorial arrow />,
       floaterProps: {
         disableAnimation: true
       },
@@ -335,6 +344,12 @@ export default function TourGuide() {
       target: '#jsConfirm',
       spotlightClicks: true,
       spotlightPadding: 0,
+      styles: {
+        overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        }
+      },
       hideFooter: true
     },
     {
