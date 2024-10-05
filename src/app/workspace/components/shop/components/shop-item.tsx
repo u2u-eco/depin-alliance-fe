@@ -139,7 +139,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
             {listItem?.map((item: any, index: number) => (
               <div
                 key={index}
-                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
+                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col shop-item-${index}`}
                 onClick={() => handleClick(item)}
               >
                 <div className="relative p-[1px] bg-green-100 size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]">
