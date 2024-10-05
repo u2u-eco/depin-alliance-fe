@@ -13,6 +13,7 @@ import { useAppSound } from '@/hooks/useAppSound'
 import { SoundsContextValue } from '@/contexts/sounds.context'
 import { useRouter } from 'next/navigation'
 import { useDisclosure } from '@nextui-org/react'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 export default function HomePage() {
   const router = useRouter()
@@ -20,6 +21,7 @@ export default function HomePage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { main } = useContext(SoundsContextValue)
   const { tabSound } = useAppSound()
+  const { state: tourState, setState } = useTourGuideContext()
 
   const handleStart = () => {}
 
@@ -34,6 +36,17 @@ export default function HomePage() {
       main?.stop()
     }
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (tourState.tourActive && !tourState.run) {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }, 500)
+  }, [tourState, setState])
 
   useUserInfo()
 
