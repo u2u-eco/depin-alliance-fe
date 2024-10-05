@@ -201,6 +201,7 @@ export default function Device({ height }: IDevice) {
       }
     }
     currentIndex.current = index
+
     if (tourState.tourActive && tourState.stepIndex === 7) {
       helpers?.next()
     }
@@ -289,7 +290,7 @@ export default function Device({ height }: IDevice) {
 
   useEffect(() => {
     setTimeout(() => {
-      if (tourState.tourActive && !tourState.run) {
+      if (tourState.tourActive && !tourState.run && tourState.tourActive) {
         if (tourState.stepIndex < 7) {
           setState({
             run: true,
@@ -299,7 +300,7 @@ export default function Device({ height }: IDevice) {
       }
     }, 500)
 
-    if (tourState.stepIndex === 7 && !tourState.run) {
+    if (tourState.stepIndex === 7 && !tourState.run && tourState.tourActive) {
       // handleClickItem(1)
       setExpanded(1)
       setTimeout(() => {
@@ -310,7 +311,7 @@ export default function Device({ height }: IDevice) {
       })
     }
 
-    if (tourState.stepIndex === 13 && !tourState.run) {
+    if (tourState.stepIndex === 13 && !tourState.run && tourState.tourActive) {
       handleClickItem(1)
       setExpanded(1)
     }
