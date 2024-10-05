@@ -50,10 +50,9 @@ export default function Device({ height }: IDevice) {
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
   const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
-  const [emptyName, setEmptyName] = useState<boolean>(false)
   const [loadingButton, setLoadingButton] = useState(false)
   const { state: tourState, setState, helpers } = useTourGuideContext()
-
+  const checkingTourEquip = useRef<boolean>(false)
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   const currentIndex = useRef<number>(0)
@@ -75,10 +74,6 @@ export default function Device({ height }: IDevice) {
       const res = await getUserDevice({ index })
       if (res.status) {
         deviceItemDetail.current[index] = res.data
-
-        if (!tourState.run && tourState.tourActive && tourState.stepIndex > 10) {
-          handleEquip(res.data?.[0].type)
-        }
       }
       setIsLoadingDetail(false)
     } catch (ex) {
@@ -191,14 +186,9 @@ export default function Device({ height }: IDevice) {
     setActiveType(DEVICE_TYPE.SWAP)
   }
 
-  const handleClickItem = (index: number) => {
+  const handleClickItem = async (index: number) => {
     if (!deviceItemDetail.current[index]) {
-      const _index = tourState.tourActive ? 0 : index
-      getDeviceItemDetail(_index)
-    } else {
-      if (tourState.tourActive && tourState.stepIndex > 10) {
-        handleEquip(detailDeviceItem.current[index][0].type)
-      }
+      getDeviceItemDetail(index)
     }
     currentIndex.current = index
 
@@ -219,18 +209,23 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleEquip = (type: string) => {
+    if (tourState.tourActive && tourState.stepIndex === 8) {
+      setState({
+        run: false
+      })
+    }
     equipType.current = type
     setActiveType(DEVICE_TYPE.EQUIP)
     onOpen()
 
-    if (tourState.tourActive && tourState.stepIndex !== 13) {
-      setState({
-        run: true
-      })
-      setTimeout(() => {
-        helpers?.next()
-      }, 500)
-    }
+    // if (tourState.tourActive && tourState.stepIndex !== 13) {
+    //   setState({
+    //     run: true
+    //   })
+    //   setTimeout(() => {
+    //     helpers?.next()
+    //   }, 500)
+    // }
   }
 
   const handleInfo = (item: IDeviceTypeItem) => {
@@ -288,6 +283,16 @@ export default function Device({ height }: IDevice) {
     }
   }
 
+  const handleTourEquip = async () => {
+    setState({
+      run: false
+    })
+    const res = await getUserDevice({ index: 0 })
+    if (res.status) {
+      handleEquip(res.data[0]?.type)
+    }
+  }
+
   useEffect(() => {
     setTimeout(() => {
       if (tourState.tourActive && !tourState.run && tourState.tourActive) {
@@ -301,8 +306,8 @@ export default function Device({ height }: IDevice) {
     }, 500)
 
     if (tourState.stepIndex === 7 && !tourState.run && tourState.tourActive) {
-      // handleClickItem(1)
       setExpanded(1)
+      currentIndex.current = 1
       setTimeout(() => {
         setState({
           run: true,
@@ -311,8 +316,15 @@ export default function Device({ height }: IDevice) {
       })
     }
 
-    if (tourState.stepIndex === 13 && !tourState.run && tourState.tourActive) {
-      handleClickItem(1)
+    if (
+      tourState.stepIndex === 13 &&
+      !tourState.run &&
+      tourState.tourActive &&
+      !checkingTourEquip.current
+    ) {
+      checkingTourEquip.current = true
+      currentIndex.current = 1
+      handleTourEquip()
       setExpanded(1)
     }
   }, [tourState, setState])

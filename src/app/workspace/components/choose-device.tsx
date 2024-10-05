@@ -39,23 +39,48 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         if (page > 1) {
           _listItem = [...dataList.current, ...res.data]
         }
+
         dataList.current = _listItem
         setListDeviceItemByFilter(dataList.current)
         setIsLoading(false)
+        if (page === 1 && tourState.tourActive) {
+          handleTour(_listItem)
+        }
       }
       return res
     }
   })
 
+  const handleTour = (list: any) => {
+    if (tourState.tourActive && !tourState.run) {
+      if (list?.length > 0) {
+        if (tourState.stepIndex === 13 || tourState.stepIndex === 8) {
+          setState({
+            run: true,
+            stepIndex: 14
+          })
+        }
+      } else {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }
+  }
+
   const handleGoToShop = () => {
     buttonSound.play()
     setTypeItemShop(type)
-    setActiveTab(WORKSPACE_TYPE.SHOP)
     if (tourState.run && tourState.tourActive) {
+      helpers?.next()
       setTimeout(() => {
-        helpers?.next()
-      }, 500)
+        setActiveTab(WORKSPACE_TYPE.SHOP)
+      })
+      return
     }
+
+    setActiveTab(WORKSPACE_TYPE.SHOP)
   }
 
   useEffect(() => {
@@ -64,16 +89,34 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     }
   }, [isInView])
 
-  useEffect(() => {
-    if (!tourState.run && tourState.tourActive) {
-      if (tourState.stepIndex === 13 && listDeviceItemByFilter?.length > 0) {
-        setState({
-          run: true,
-          stepIndex: tourState.stepIndex + 1
-        })
-      }
-    }
-  }, [tourState, listDeviceItemByFilter, setState])
+  // useEffect(() => {
+  //   console.log('🚀 ~ useEffect ~ tourState:', tourState, isLoading, listDeviceItemByFilter)
+  //   if (tourState.tourActive && !tourState.run) {
+  //     if (listDeviceItemByFilter?.length > 0) {
+  //       if (tourState.stepIndex === 13 || tourState.stepIndex === 8) {
+  //         setState({
+  //           run: true,
+  //           stepIndex: 14
+  //         })
+  //       }
+  //     } else {
+  //       setState({
+  //         run: true
+  //       })
+
+  //       setTimeout(() => {
+  //         helpers?.next()
+  //       }, 500)
+  //       // setTimeout(() => {
+  //       //   setState({
+  //       //     run: true,
+  //       //     stepIndex: 9
+  //       //   })
+  //       //   // helpers?.next()
+  //       // })
+  //     }
+  //   }
+  // }, [tourState, listDeviceItemByFilter, setState])
 
   useEffect(() => {
     setPage(1)
