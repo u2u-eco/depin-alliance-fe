@@ -476,6 +476,7 @@ export default function TourGuide() {
       setState({ run: false, tourActive: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+      console.log('🚀 ~ handleJoyrideCallback ~ nextStepIndex:', nextStepIndex)
       if (nextStepIndex === 8 || nextStepIndex === 12) {
         setState({
           run: false

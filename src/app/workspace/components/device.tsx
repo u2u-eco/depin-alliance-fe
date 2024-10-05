@@ -76,7 +76,7 @@ export default function Device({ height }: IDevice) {
       if (res.status) {
         deviceItemDetail.current[index] = res.data
 
-        if (!tourState.run && tourState.tourActive) {
+        if (!tourState.run && tourState.tourActive && tourState.stepIndex > 10) {
           handleEquip(res.data?.[0].type)
         }
       }
@@ -196,7 +196,7 @@ export default function Device({ height }: IDevice) {
       const _index = tourState.tourActive ? 0 : index
       getDeviceItemDetail(_index)
     } else {
-      if (tourState.tourActive) {
+      if (tourState.tourActive && tourState.stepIndex > 10) {
         handleEquip(detailDeviceItem.current[index][0].type)
       }
     }
@@ -221,7 +221,11 @@ export default function Device({ height }: IDevice) {
     equipType.current = type
     setActiveType(DEVICE_TYPE.EQUIP)
     onOpen()
+
     if (tourState.tourActive && tourState.stepIndex !== 13) {
+      setState({
+        run: true
+      })
       setTimeout(() => {
         helpers?.next()
       }, 500)
@@ -294,6 +298,7 @@ export default function Device({ height }: IDevice) {
         }
       }
     }, 500)
+
     if (tourState.stepIndex === 7 && !tourState.run) {
       // handleClickItem(1)
       setExpanded(1)
