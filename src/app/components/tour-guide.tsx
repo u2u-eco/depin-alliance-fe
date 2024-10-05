@@ -31,7 +31,11 @@ export default function TourGuide() {
   const handleBack = () => {
     helpers?.prev()
   }
+  const handleClose = () => {
+    helpers?.close()
+  }
   const handleComplete = () => {
+    handleClose()
     onOpen()
   }
 
@@ -55,6 +59,9 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
+        overlay: {
+          mixBlendMode: 'unset'
+        },
         spotlight: {
           background: 'transparent'
         }
@@ -66,7 +73,7 @@ export default function TourGuide() {
         <ItemTutorial
           hideImage
           handleNext={handleNext}
-          content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
+          content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
         />
       ),
       floaterProps: {
@@ -379,7 +386,6 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
-          placement="bottom-center"
           handleNext={handleNext}
           content={`Now go back to "Home" you can track your contributions and make informed decisions about enhancing your setup.`}
         />
@@ -391,9 +397,12 @@ export default function TourGuide() {
         next: '/home'
       },
       placement: 'top',
-      target: '.icon-home',
-      spotlightClicks: true,
-      spotlightPadding: 0,
+      target: 'body',
+      styles: {
+        spotlight: {
+          background: 'transparent'
+        }
+      },
       hideFooter: true
     },
     {
