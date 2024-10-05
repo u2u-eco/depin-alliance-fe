@@ -48,13 +48,15 @@ const ItemTutorial = ({
                 <img src="/assets/images/tutorial-char.png" alt="DePIN Alliance" />
               </div>
             )}
-            <div
-              className="absolute top-[-30px] right-8 cursor-pointer text-gradient flex items-center space-x-2 font-mona font-semibold text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]"
-              onClick={handleSkip}
-            >
-              Skip
-              <IconDoubleArrow className="size-5 xs:size-6 rotate-90" gradient />
-            </div>
+            {handleSkip && (
+              <div
+                className="absolute top-[-30px] right-8 cursor-pointer text-gradient flex items-center space-x-2 font-mona font-semibold text-sm xs:text-[15px] 2xs:text-base !leading-[18px] xs:!leading-[20px]"
+                onClick={handleSkip}
+              >
+                Skip
+                <IconDoubleArrow className="size-5 xs:size-6 rotate-90" gradient />
+              </div>
+            )}
             <div className="relative mt-auto p-[1px] bg-gradient-reverse [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_100px)_100%,calc(100%_-_116px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
               <div className="relative min-h-[200px] space-y-2 p-4 xs:p-5 2xs:p-6 !pb-10 xs:!pb-12 bg-[linear-gradient(to_bottom,#000,#00331d)] [clip-path:_polygon(0_0,calc(100%_-_20px)_0,100%_20px,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,calc(100%_-_99px)_100%,calc(100%_-_115px)_calc(100%_-_16px),0_calc(100%_-_16px))]">
                 <div className="flex items-center space-x-4 xs:space-x-5 2xs:space-x-6 mx-auto">
@@ -70,7 +72,7 @@ const ItemTutorial = ({
                   </div>
                 </div>
                 {handleComplete && (
-                  <div className="btn" onClick={handleComplete}>
+                  <div className="btn !mt-8" onClick={handleComplete}>
                     <div className="btn-border"></div>
                     <div className="btn-primary">COMPLETE TUTORIAL</div>
                     <div className="btn-border"></div>

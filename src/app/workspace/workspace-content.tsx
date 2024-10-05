@@ -19,7 +19,7 @@ export default function WorkspaceContent() {
   const { webApp } = useTelegram()
   const [maxHeight, setMaxHeightListContent] = useState<number>(200)
   const { activeTab, setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
-  const { state: tourState } = useTourGuideContext()
+  const { state: tourState, setState, helpers } = useTourGuideContext()
   // const [activeTab, setActiveTab] = useState(WORKSPACE_TYPE.DEVICE)
 
   const handleSelectTab = (tab: string) => {
@@ -28,6 +28,9 @@ export default function WorkspaceContent() {
       setTypeItemShop(null)
     }
     setActiveTab(tab)
+    if (tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   useEffect(() => {
@@ -49,6 +52,13 @@ export default function WorkspaceContent() {
       }
     }, 500)
   }, [webApp?.viewportStableHeight])
+
+  useEffect(() => {
+    if (tourState.stepIndex === 18) {
+      setActiveTab(WORKSPACE_TYPE.ITEM)
+    }
+  }, [tourState, setState])
+
   return (
     <>
       <CustomPage
