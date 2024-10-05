@@ -483,7 +483,7 @@ export default function TourGuide() {
       // Need to set our running state to false, so we can restart if we click start again.
       // setState({ run: false, tourActive: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
-      if (type === EVENTS.TARGET_NOT_FOUND && index !== 9) {
+      if (type === EVENTS.TARGET_NOT_FOUND) {
         handleSkip()
         return
       }
@@ -519,10 +519,10 @@ export default function TourGuide() {
 
   useEffect(() => {
     const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
-    if (isShowGuide === 'true') {
-      setMounted(false)
-      return
-    }
+    // if (isShowGuide === 'true') {
+    //   setMounted(false)
+    //   return
+    // }
     if (
       (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
       !tourActive &&
