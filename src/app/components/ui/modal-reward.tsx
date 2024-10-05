@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react'
 import { IconPoint } from '../icons'
 import CustomModal from '../custom-modal'
 import { useAppSound } from '@/hooks/useAppSound'
+import CustomButton from '../button'
 
 interface ModalProps {
   isOpen: any
@@ -54,17 +55,7 @@ const ModalReward = ({
           </div>
         </div>
         <div className="m-4 xs:m-6 2xs:m-8">
-          <div
-            className="btn"
-            onClick={() => {
-              onCloseModal()
-              buttonSound.play()
-            }}
-          >
-            <div className="btn-border"></div>
-            <div className="btn-primary">CLAIM REWARD</div>
-            <div className="btn-border"></div>
-          </div>
+          <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
         </div>
       </div>
     </CustomModal>
