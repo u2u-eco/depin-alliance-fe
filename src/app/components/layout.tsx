@@ -50,23 +50,24 @@ export default function Layout({ children }: any) {
           }
         }}
       />
-      <TourGuideProvider>
-        <TourGuide />
-        <TelegramProvider>
-          <QueryClientProvider client={queryClient}>
-            <NextUIProvider>
-              <SoundsProvider>
+
+      <TelegramProvider>
+        <QueryClientProvider client={queryClient}>
+          <NextUIProvider>
+            <SoundsProvider>
+              <TourGuideProvider>
                 <Swipeable onSwipeRight={handleBack}>
                   <AnimatePresence key="custom-page">
                     {children}
                     {/* {pathName !== '/' && <CustomNavbar />} */}
                   </AnimatePresence>
                 </Swipeable>
-              </SoundsProvider>
-            </NextUIProvider>
-          </QueryClientProvider>
-        </TelegramProvider>
-      </TourGuideProvider>
+                <TourGuide />
+              </TourGuideProvider>
+            </SoundsProvider>
+          </NextUIProvider>
+        </QueryClientProvider>
+      </TelegramProvider>
     </div>
   )
 }
