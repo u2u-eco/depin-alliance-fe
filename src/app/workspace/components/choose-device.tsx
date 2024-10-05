@@ -66,8 +66,6 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
 
   useEffect(() => {
     if (!tourState.run && tourState.tourActive) {
-      console.log('🚀 ~ useEffect ~ tourState.stepIndex:', tourState.stepIndex)
-
       if (tourState.stepIndex === 13 && listDeviceItemByFilter?.length > 0) {
         setState({
           run: true,

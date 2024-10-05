@@ -75,7 +75,6 @@ export default function Device({ height }: IDevice) {
       const res = await getUserDevice({ index })
       if (res.status) {
         deviceItemDetail.current[index] = res.data
-        console.log('🚀 ~ getDeviceItemDetail ~ res.data:', res.data)
 
         if (!tourState.run && tourState.tourActive) {
           handleEquip(res.data?.[0].type)
@@ -194,10 +193,10 @@ export default function Device({ height }: IDevice) {
 
   const handleClickItem = (index: number) => {
     if (!deviceItemDetail.current[index]) {
-      const _index = !tourState.run && tourState.tourActive ? 0 : index
+      const _index = tourState.tourActive ? 0 : index
       getDeviceItemDetail(_index)
     } else {
-      if (!tourState.run && tourState.tourActive) {
+      if (tourState.tourActive) {
         handleEquip(detailDeviceItem.current[index][0].type)
       }
     }

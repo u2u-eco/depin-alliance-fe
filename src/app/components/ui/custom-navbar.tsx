@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
 import useCommonStore from '@/stores/commonStore'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -13,6 +14,7 @@ const CustomNavbar = () => {
   const navRef = useRef<any>(null)
   const { currentLeague, setHeightNav } = useCommonStore()
   const { tabSound } = useAppSound()
+  const { state: tourState, setState } = useTourGuideContext()
   const listMenu = [
     { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
@@ -25,6 +27,15 @@ const CustomNavbar = () => {
       title: 'league'
     }
   ]
+
+  const handleSidebar = (link: string) => {
+    tabSound.play()
+    if (tourState.tourActive && link === '/workspace') {
+      setState({
+        run: false
+      })
+    }
+  }
 
   useEffect(() => {
     if (navRef?.current?.clientHeight) {
@@ -55,7 +66,7 @@ const CustomNavbar = () => {
           {listMenu.map((item) => (
             <Link
               onClick={() => {
-                tabSound.play()
+                handleSidebar(item.link)
               }}
               href={item.link}
               className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative ${item.title}`}
