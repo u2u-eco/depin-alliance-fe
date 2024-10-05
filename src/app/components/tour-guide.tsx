@@ -14,6 +14,7 @@ export default function TourGuide() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo } = useCommonStore()
   const [mounted, setMounted] = useState<boolean>(false)
+  const [initToured, setInitToured] = useState<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
   const { run, stepIndex, steps, tourActive } = state
   const router = useRouter()
@@ -457,7 +458,7 @@ export default function TourGuide() {
     const { status, type, action, index, step } = data
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       // Need to set our running state to false, so we can restart if we click start again.
-      setState({ run: false })
+      setState({ run: false, tourActive: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
       if (nextStepIndex === 8 || nextStepIndex === 12) {
@@ -481,13 +482,12 @@ export default function TourGuide() {
     //   // Update state to advance the tour
     //   setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1))
     // }
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
-    // // if (action === ACTIONS.NEXT && index === 3) {
-    // //   router.push('/workspace')
-    // // }
-    if (finishedStatuses.includes(status)) {
-      setState({ run: false, steps })
-    }
+    // const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
+    // console.log('🚀 ~ handleJoyrideCallback ~ finishedStatuses:', status)
+
+    // if (finishedStatuses.includes(status)) {
+    //   setState({ run: false, steps, tourActive: false })
+    // }
   }
 
   useEffect(() => {
@@ -495,8 +495,13 @@ export default function TourGuide() {
     // if (isShowGuide === 'true') {
     //   return
     // }
-    if ((userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') && !tourActive) {
+    if (
+      (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
+      !tourActive &&
+      !initToured
+    ) {
       setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      setInitToured(true)
       localStorage.setItem(DEPIN_GUIDE, 'true')
     }
   }, [userInfo, tourActive])
