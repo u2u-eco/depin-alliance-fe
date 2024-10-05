@@ -14,8 +14,8 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import NotificationModal from './notification'
-import ItemDevice from '@/app/components/item-device'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number
@@ -24,6 +24,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const { getUserInfo, token, userInfo } = useCommonStore()
+  const { state: tourState, helpers, setState } = useTourGuideContext()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
@@ -97,6 +98,11 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
           getUserInfo()
           onClose()
           onOpenNotification()
+          if (tourState.run && tourState.tourActive) {
+            setTimeout(() => {
+              helpers?.next()
+            }, 300)
+          }
         }
         setLoadingButton(false)
       }
@@ -123,6 +129,20 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     setListItem([])
     setPage(1)
   }, [filterOptions])
+
+  useEffect(() => {
+    if (tourState.tourActive && !tourState.run) {
+      if (tourState.stepIndex === 11) {
+        handleClick(listItem[1])
+        setTimeout(() => {
+          setState({
+            run: true,
+            stepIndex: tourState.stepIndex + 1
+          })
+        }, 300)
+      }
+    }
+  }, [tourState])
 
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
@@ -267,7 +287,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
               </div>
             </div>
           </motion.div>
-          <div className="btn" onClick={buy}>
+          <div className="btn jsBuyItem" onClick={buy}>
             <div className="btn-border"></div>
             <div className="btn-primary !px-3">
               <div className="flex items-center justify-center text-sm xs:text-[15px] 2xs:text-base space-x-2 xs:space-x-3 2xs:space-x-4 text-green-900 whitespace-nowrap">
