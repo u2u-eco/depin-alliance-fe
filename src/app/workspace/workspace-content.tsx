@@ -54,10 +54,10 @@ export default function WorkspaceContent() {
   }, [webApp?.viewportStableHeight, tourState.tourActive])
 
   useEffect(() => {
-    if (tourState.stepIndex === 18) {
+    if (tourState.stepIndex === 18 && tourState.tourActive) {
       setActiveTab(WORKSPACE_TYPE.ITEM)
     }
-  }, [tourState, setState])
+  }, [tourState])
 
   return (
     <>

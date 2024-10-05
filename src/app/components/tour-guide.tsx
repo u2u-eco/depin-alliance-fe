@@ -27,6 +27,7 @@ export default function TourGuide() {
   }
 
   const handleSkip = () => {
+    setState({ run: false, tourActive: false })
     helpers?.skip()
   }
   const handleBack = () => {
@@ -479,14 +480,13 @@ export default function TourGuide() {
     const { status, type, action, index, step } = data
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       // Need to set our running state to false, so we can restart if we click start again.
-      setState({ run: false, tourActive: false })
+      // setState({ run: false, tourActive: false })
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as Events[]).includes(type)) {
-      if (type === EVENTS.TARGET_NOT_FOUND) {
+      if (type === EVENTS.TARGET_NOT_FOUND && index !== 9) {
         handleSkip()
+        return
       }
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
-      console.log('🚀 ~ handleJoyrideCallback ~ nextStepIndex:', nextStepIndex)
-
       if (nextStepIndex === 8 || nextStepIndex === 12) {
         setState({
           run: false

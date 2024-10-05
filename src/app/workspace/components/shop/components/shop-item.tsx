@@ -62,7 +62,9 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
         _listItem = [...dataList.current, ...res.data]
       }
       dataList.current = _listItem
+
       setListItem(dataList.current)
+
       return res
     },
     enabled: Boolean(token)
@@ -134,8 +136,8 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   }, [filterOptions])
 
   useEffect(() => {
-    if (tourState.tourActive && !tourState.run) {
-      if (tourState.stepIndex === 11) {
+    if (tourState.tourActive) {
+      if (tourState.stepIndex === 11 && !tourState.run) {
         handleClick(listItem[1])
         setTimeout(() => {
           setState({
