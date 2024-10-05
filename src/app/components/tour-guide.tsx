@@ -521,7 +521,7 @@ export default function TourGuide() {
             run={run}
             stepIndex={stepIndex}
             continuous
-            scrollToFirstStep
+            // scrollToFirstStep
             disableScrolling
             getHelpers={handleGetHelpers}
             showSkipButton={false}

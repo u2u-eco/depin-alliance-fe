@@ -115,7 +115,9 @@ export default function Mining() {
       case HOME_TYPE.START:
         if (isLoading) return
         handleMining()
-
+        if (tourState.run && helpers?.next) {
+          helpers.next()
+        }
         break
       case HOME_TYPE.MINING:
         if (
