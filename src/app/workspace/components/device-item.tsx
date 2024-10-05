@@ -1,5 +1,6 @@
 import { IconPlus, IconReload } from '@/app/components/icons'
 import { UPGRADE_TAB } from '@/constants'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import { useEffect, useRef, useState } from 'react'
@@ -24,6 +25,7 @@ const LIST_TYPE = [UPGRADE_TAB.RAM, UPGRADE_TAB.GPU, UPGRADE_TAB.STORAGE, UPGRAD
 export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }: IDeviceItem) {
   const [listInfo, setListInfo] = useState<any>({})
   const { buttonSound } = useAppSound()
+  const { state: tourState, setState, helpers } = useTourGuideContext()
 
   const listInfoByFilter = useRef<any>({})
   const updateData = () => {
@@ -102,7 +104,7 @@ export default function DeviceItem({ isLoading, item, handleEquip, handleInfo }:
                           return (
                             <div
                               key={index}
-                              className="flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer"
+                              className={`flex items-center justify-center py-2 px-2 xs:px-3 2xs:px-4 bg-white/10 [clip-path:_polygon(12px_0%,100%_0,100%_calc(100%_-_12px),calc(100%_-_12px)_100%,0_100%,0_12px)] cursor-pointer ${tourState.tourActive ? 'drop-shadow-green' : ''}`}
                               onClick={() => {
                                 buttonSound.play()
                                 handleEquip(keyItem)

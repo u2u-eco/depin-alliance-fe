@@ -202,6 +202,9 @@ export default function Device({ height }: IDevice) {
       }
     }
     currentIndex.current = index
+    if (tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   const handleClick = (type: string, device?: IUserDeviceItem) => {
