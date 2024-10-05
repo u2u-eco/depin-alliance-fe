@@ -5,6 +5,7 @@ import { useAppSound } from '@/hooks/useAppSound'
 import { useTelegram } from '@/hooks/useTelegram'
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 interface ModalProps {
   id?: string
@@ -36,6 +37,7 @@ const CustomModal = ({
 }: ModalProps) => {
   const { webApp } = useTelegram()
   const [placement, setPlacement] = useState<any>('bottom')
+  const { state: tourState } = useTourGuideContext()
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
   const { buttonSound } = useAppSound()
 
@@ -54,6 +56,7 @@ const CustomModal = ({
       onClose={onClose}
       onOpenChange={onOpenChange}
       placement={placement}
+      isDismissable={tourState?.tourActive ? false : true}
       scrollBehavior={placement === 'top' ? 'outside' : 'normal'}
       hideCloseButton
       classNames={{
