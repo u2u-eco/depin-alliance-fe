@@ -37,7 +37,7 @@ const CustomModal = ({
 }: ModalProps) => {
   const { webApp } = useTelegram()
   const [placement, setPlacement] = useState<any>('bottom')
-  const { state: tourState, helpers } = useTourGuideContext()
+  const { state: tourState, helpers, setState } = useTourGuideContext()
   const { isOpen: isKeyboardOpen, setOpen } = useIsOnScreenKeyboardOpen()
   const { buttonSound } = useAppSound()
 
@@ -52,7 +52,7 @@ const CustomModal = ({
   const handleClose = () => {
     onClose()
     if (tourState.tourActive) {
-      helpers?.skip()
+      setState({ run: false, tourActive: false })
     }
   }
 
