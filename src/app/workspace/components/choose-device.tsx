@@ -93,13 +93,6 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
                 icon: 'text-body'
               }}
             />
-            <div className="absolute left-[50%] translate-x-[-50%] bottom-5 rotate-180">
-              <img
-                className="mx-auto max-w-[40px]"
-                src="/assets/images/level/level-arrow-color@2x.png"
-                alt="DePIN Alliance"
-              />
-            </div>
           </>
         ) : null}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
