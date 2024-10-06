@@ -13,6 +13,7 @@ import { formatNumber } from '@/helper/common'
 export default function TourGuide() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo } = useCommonStore()
+  // const [htmlT, setHtmlT] = useState<string>('')
   const [mounted, setMounted] = useState<boolean>(false)
   const [initToured, setInitToured] = useState<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
@@ -47,7 +48,21 @@ export default function TourGuide() {
       content: <TutorialModal handleSkip={handleSkip} handleStart={handleNext} />,
       placement: 'center',
       target: 'body',
-      hideFooter: true
+      hideFooter: true,
+      styles: {
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.95)'
+        },
+        overlayLegacyCenter: {
+          background: 'rgba(0,0,0,0.95)'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.95)'
+        }
+        // overlayLegacy: {
+        //   mixBlendMode: 'unset'
+        // }
+      }
     },
     {
       content: (
@@ -73,7 +88,7 @@ export default function TourGuide() {
           background: 'transparent'
         },
         spotlightLegacy: {
-          background: 'transparent'
+          background: 'rgba(0,0,0,0.8)'
         }
       },
       hideFooter: true
@@ -144,10 +159,19 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
-        options: {
-          overlayColor: 'rgba(0,0,0,0.3)'
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
+        overlay: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.3)'
         },
         spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -184,11 +208,20 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
-        options: {
-          overlayColor: 'rgba(0,0,0,0.3)'
-        },
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
         spotlight: {
           background: 'transparent'
+        },
+        spotlightLegacy: {
+          background: 'transparent'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.3)'
         }
       },
       hideFooter: true,
@@ -227,6 +260,9 @@ export default function TourGuide() {
       styles: {
         overlay: {
           pointerEvents: 'none'
+        },
+        overlayLegacy: {
+          pointerEvents: 'none'
         }
       },
       hideFooter: true
@@ -246,6 +282,13 @@ export default function TourGuide() {
         },
         spotlight: {
           background: 'transparent'
+        },
+        spotlightLegacy: {
+          background: 'transparent'
+        },
+        overlayLegacy: {
+          background: 'transparent',
+          mixBlendMode: 'unset'
         }
       },
       spotlightClicks: true,
@@ -266,10 +309,19 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
-        options: {
-          overlayColor: 'rgba(0,0,0,0.3)'
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
+        overlay: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.3)'
         },
         spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -305,9 +357,27 @@ export default function TourGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       styles: {
+        // overlay: {
+        //   background: 'transparent',
+        //   pointerEvents: 'none'
+        // },
+        // overlayLegacy: {
+        //   background: 'transparent',
+        //   pointerEvents: 'none'
+        // },
         overlay: {
           background: 'transparent',
           pointerEvents: 'none'
+        },
+        spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
+          background: 'transparent'
+        },
+        overlayLegacy: {
+          background: 'transparent',
+          mixBlendMode: 'unset'
         }
       },
       hideFooter: true
@@ -323,6 +393,10 @@ export default function TourGuide() {
       spotlightPadding: 0,
       styles: {
         overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        },
+        overlayLegacy: {
           background: 'transparent',
           pointerEvents: 'none'
         }
@@ -345,7 +419,14 @@ export default function TourGuide() {
         overlay: {
           background: 'transparent',
           pointerEvents: 'none'
+        },
+        overlayLegacy: {
+          background: 'transparent',
+          pointerEvents: 'none'
         }
+        // spotlightLegacy: {
+        //   background: 'transparent'
+        // }
       },
       hideFooter: true
     },
@@ -360,6 +441,17 @@ export default function TourGuide() {
       spotlightPadding: 0,
       styles: {
         overlay: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        },
+        overlayLegacy: {
+          background: 'transparent',
+          pointerEvents: 'none'
+        },
+        spotlightLegacy: {
+          background: 'transparent'
+        },
+        overlayLegacyCenter: {
           background: 'transparent',
           pointerEvents: 'none'
         }
@@ -380,11 +472,17 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
-        options: {
-          overlayColor: 'rgba(0,0,0,0.3)'
-        },
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
         spotlight: {
           background: 'transparent'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.3)'
         }
       },
       hideFooter: true
@@ -421,10 +519,19 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
-        options: {
-          overlayColor: 'rgba(0,0,0,0.3)'
-        },
+        // options: {
+        //   overlayColor: 'rgba(0,0,0,0.3)'
+        // },
         spotlight: {
+          background: 'transparent'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.3)'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -448,6 +555,9 @@ export default function TourGuide() {
       target: 'body',
       styles: {
         spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -476,6 +586,9 @@ export default function TourGuide() {
       target: 'body',
       styles: {
         spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -510,6 +623,12 @@ export default function TourGuide() {
           stepIndex: nextStepIndex
         })
       }
+
+      // setTimeout(() => {
+      //   const _t: any = document.getElementsByClassName('react-joyride__overlay')
+      //   console.log('🚀 ~ setTimeout ~ _t:', _t)
+      //   setHtmlT(_t[0]?.parentNode?.innerHTML)
+      // }, 1000)
     }
     // if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
     //   // Update state to advance the tour
@@ -534,8 +653,16 @@ export default function TourGuide() {
       !tourActive &&
       !initToured
     ) {
-      setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      setTimeout(() => {
+        setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      }, 1000)
       setInitToured(true)
+
+      // setTimeout(() => {
+      //   const _t: any = document.getElementsByClassName('react-joyride__overlay')
+      //   console.log('🚀 ~ setTimeout ~ _t:', _t)
+      //   setHtmlT(_t[0]?.parentNode?.innerHTML)
+      // }, 1000)
 
       localStorage.setItem(DEPIN_GUIDE, 'true')
     }
@@ -566,22 +693,28 @@ export default function TourGuide() {
               options: {
                 zIndex: 10000,
                 backgroundColor: 'transparent',
-                overlayColor: 'rgba(0,0,0,0.95)',
+                // overlayColor: 'rgba(0,0,0,0.95)',
                 width: '100%'
               },
+              overlay: {
+                background: 'rgba(0,0,0,0.8)'
+              },
+              overlayLegacy: {
+                background: 'rgba(0,0,0,0.8)',
+                mixBlendMode: 'hard-light'
+              },
+
               spotlight: {
                 borderRadius: 0
               },
               spotlightLegacy: {
-                background: 'transparent'
-              },
-              overlayLegacy: {
-                background: 'rgba(0,0,0,0.95)'
+                background: 'gray'
               }
             }}
           />
         )}
       </div>
+      {/* <div className=" absolute z-[2000000] bg-slate-50">{htmlT}</div> */}
       <ModalReward
         isOpen={isOpen}
         onOpen={onOpen}

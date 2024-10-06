@@ -336,7 +336,7 @@ export default function Device({ height }: IDevice) {
   return (
     <>
       <div
-        className="flex flex-col h-full  overflow-x-hidden overflow-y-auto no-scrollbar"
+        className="flex flex-col h-full  overflow-x-hidden !overflow-y-auto no-scrollbar"
         style={{ height: height }}
       >
         {isLoading && (

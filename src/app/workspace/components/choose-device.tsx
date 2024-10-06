@@ -44,7 +44,9 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         setListDeviceItemByFilter(dataList.current)
         setIsLoading(false)
         if (page === 1 && tourState.tourActive) {
-          handleTour(_listItem)
+          setTimeout(() => {
+            handleTour(_listItem)
+          }, 300)
         }
       }
       return res
