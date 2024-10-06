@@ -66,7 +66,13 @@ export default function TourGuide() {
         overlay: {
           mixBlendMode: 'unset'
         },
+        overlayLegacy: {
+          mixBlendMode: 'unset'
+        },
         spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
           background: 'transparent'
         }
       },
@@ -565,6 +571,12 @@ export default function TourGuide() {
               },
               spotlight: {
                 borderRadius: 0
+              },
+              spotlightLegacy: {
+                background: 'transparent'
+              },
+              overlayLegacy: {
+                background: 'rgba(0,0,0,0.95)'
               }
             }}
           />
