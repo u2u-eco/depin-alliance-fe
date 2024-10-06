@@ -43,6 +43,8 @@ export default function WorkspaceContent() {
           const marginOfWrap = window.getComputedStyle(wrapChidden)
           margin = Number(marginOfWrap.marginBottom.replaceAll('px', ''))
         }
+        console.log('🚀 ~ setTimeout ~ tourState.tourActive:', tourState.tourActive)
+
         const _heightNav = tourState.tourActive ? 0 : heightNav
         const heightTopBottom = offsetTop + margin + _heightNav - 10
 

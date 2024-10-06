@@ -82,7 +82,12 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     onOpen()
     buttonSound?.play()
     if (tourState.tourActive && tourState.run) {
-      helpers?.next()
+      setTimeout(() => {
+        setState({
+          stepIndex: tourState.stepIndex + 1
+        })
+        // helpers?.next()
+      }, 300)
     }
   }
 
@@ -156,7 +161,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
       <div className="relative" ref={refList} style={{ minHeight: height - 20 || '60vh' }}>
         <div className=" absolute"></div>
         <div
-          className="overflow-y-auto no-scrollbar"
+          className="!overflow-y-auto no-scrollbar"
           ref={refListScroll}
           style={{ maxHeight: height - 40 }}
         >
