@@ -662,10 +662,10 @@ export default function TourGuide() {
 
   useEffect(() => {
     const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
-    // if (isShowGuide === 'true') {
-    //   setMounted(false)
-    //   return
-    // }
+    if (isShowGuide === 'true') {
+      setMounted(false)
+      return
+    }
     if (
       (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
       !tourActive &&
@@ -675,12 +675,6 @@ export default function TourGuide() {
         setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
       }, 1000)
       setInitToured(true)
-
-      // setTimeout(() => {
-      //   const _t: any = document.getElementsByClassName('react-joyride__overlay')
-      //   console.log('🚀 ~ setTimeout ~ _t:', _t)
-      //   setHtmlT(_t[0]?.parentNode?.innerHTML)
-      // }, 1000)
 
       localStorage.setItem(DEPIN_GUIDE, 'true')
     }
