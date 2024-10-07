@@ -15,8 +15,11 @@ import LastUpdateBox from '@/app/components/last-update-box'
 interface IMember {
   setTotalMember: (total: number) => void
   activeTab: string
+  hideUpdateTime?: boolean
+  type?: string
+  handleClick?: (item: any) => void
 }
-const AllMember = ({ setTotalMember, activeTab }: IMember) => {
+const AllMember = ({ setTotalMember, activeTab, hideUpdateTime, type, handleClick }: IMember) => {
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -109,7 +112,7 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
       {(currentLeague?.isOwner || currentLeague?.role?.includes(ROLE_LEAGUE.ADMIN_KICK)) && (
         <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
       )}
-      <LastUpdateBox />
+      {!hideUpdateTime && <LastUpdateBox />}
       <div>
         {listItem.length === 0 && !isLoading ? (
           <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
@@ -128,9 +131,10 @@ const AllMember = ({ setTotalMember, activeTab }: IMember) => {
                 ranking: listItem
               }}
               admin={listMemberData?.data?.admin}
-              type="member"
+              type={type || 'member'}
               maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
               suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
+              onClick={handleClick}
             />
             <div ref={scrollTrigger} className="text-[transparent]"></div>
           </motion.div>

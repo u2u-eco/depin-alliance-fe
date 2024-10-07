@@ -12,12 +12,15 @@ import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { SoundsContextValue } from '@/contexts/sounds.context'
 import { useRouter } from 'next/navigation'
+import { useDisclosure } from '@nextui-org/react'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
+
 export default function HomePage() {
   const router = useRouter()
   const { userInfo } = useCommonStore()
-
   const { main } = useContext(SoundsContextValue)
   const { tabSound } = useAppSound()
+  const { state: tourState, setState } = useTourGuideContext()
 
   const handleClickFigure = () => {
     tabSound.play()
@@ -25,11 +28,22 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    main.play()
+    main?.play()
     return () => {
-      main.stop()
+      main?.stop()
     }
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (tourState.tourActive && !tourState.run) {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }, 500)
+  }, [tourState, setState])
 
   useUserInfo()
 
@@ -74,7 +88,10 @@ export default function HomePage() {
           </div>
         </motion.div>
         {/* Button */}
-        <Mining />
+        <div className="my-first-step">
+          <Mining />
+        </div>
+
         {/* Info */}
         <div className="mt-6">
           {/* <Card /> */}

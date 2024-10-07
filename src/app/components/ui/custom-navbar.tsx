@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
 import useCommonStore from '@/stores/commonStore'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -13,6 +14,7 @@ const CustomNavbar = () => {
   const navRef = useRef<any>(null)
   const { currentLeague, setHeightNav } = useCommonStore()
   const { tabSound } = useAppSound()
+  const { state: tourState, setState } = useTourGuideContext()
   const listMenu = [
     { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
@@ -25,6 +27,15 @@ const CustomNavbar = () => {
       title: 'league'
     }
   ]
+
+  const handleSidebar = (link: string) => {
+    tabSound.play()
+    if (tourState.tourActive && link === '/workspace') {
+      setState({
+        run: false
+      })
+    }
+  }
 
   useEffect(() => {
     if (navRef?.current?.clientHeight) {
@@ -55,14 +66,14 @@ const CustomNavbar = () => {
           {listMenu.map((item) => (
             <Link
               onClick={() => {
-                tabSound.play()
+                handleSidebar(item.link)
               }}
               href={item.link}
-              className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative`}
+              className={`${item.id === 3 ? 'space-y-2' : 'space-y-1'} flex-1 text-center relative ${item.title}`}
               key={item.id}
             >
               {item.id === 3 ? (
-                <div className="btn w-fit -mt-12 group bg-transparent">
+                <div className="btn w-fit -mt-12 group bg-transparent icon-home">
                   <div className="btn-border"></div>
                   <div className="btn-primary group-hover:bg-gradient !p-2 xs:!p-3 shadow-[0_0_16px_rgba(123,255,99,0.35)]">
                     <img

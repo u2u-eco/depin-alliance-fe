@@ -1,5 +1,6 @@
 import { IconGroupUser } from '@/app/components/icons'
 import { formatNumber } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import React from 'react'
 
 interface ModalProps {
@@ -9,6 +10,13 @@ interface ModalProps {
 }
 
 const LeaveModal = ({ item, onClose, handleAction }: ModalProps) => {
+  const { buttonSound } = useAppSound()
+
+  const handleClose = () => {
+    buttonSound?.play()
+    onClose()
+  }
+
   return (
     <div>
       <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
@@ -49,7 +57,7 @@ const LeaveModal = ({ item, onClose, handleAction }: ModalProps) => {
         </div>
       </div>
       <div className="flex items-center space-x-4">
-        <div className="btn default" onClick={() => onClose()}>
+        <div className="btn default" onClick={handleClose}>
           <div className="btn-border"></div>
           <div className="btn-default">Cancel</div>
           <div className="btn-border"></div>

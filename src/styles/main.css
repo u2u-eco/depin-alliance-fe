@@ -1072,6 +1072,17 @@ button {
   -webkit-text-fill-color: transparent;
 }
 
+.__floater__arrow {
+  display: none;
+}
+
+.react-joyride__tooltip {
+  padding: 0 !important;
+}
+.react-joyride__tooltip > div:first-child > div {
+  padding: 0 !important;
+}
+
 /* End Reset CSS */
 /* Start Header */
 /* End Header */
