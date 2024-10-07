@@ -1,7 +1,7 @@
 import { formatNumber } from '@/helper/common'
 import { IRankingItem } from '@/interfaces/i.user'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { IconAdmin, IconOpenLink, IconPoint } from '../icons'
 import { useRouter } from 'next/navigation'
 import { useAppSound } from '@/hooks/useAppSound'
@@ -16,18 +16,28 @@ interface IListRankingItem {
   type: string
   maxPrecision?: number
   suffix?: string
+  onClick?: (item: any) => void
 }
 
 const RANK_TYPE = {
   RANKING: 'ranking',
   LEAGUE: 'league',
-  MEMBER: 'member'
+  MEMBER: 'member',
+  MEMBER_ADMIN_LEAVE: 'leave-admin'
 }
 
-const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRankingItem) => {
+const CustomRank = ({
+  data,
+  isEarn,
+  type,
+  maxPrecision,
+  suffix,
+  admin,
+  onClick
+}: IListRankingItem) => {
   const router = useRouter()
-  const { tabSound } = useAppSound()
-
+  const { tabSound, buttonSound } = useAppSound()
+  const [activeId, setActiveId] = useState<number>(0)
   const getBgByRank = (index: number) => {
     switch (index) {
       case 0:
@@ -43,7 +53,17 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRa
     }
   }
   const handleClick = (item: any) => {
+    if (type === RANK_TYPE.MEMBER_ADMIN_LEAVE) {
+      if (item.id === admin.id) {
+        return
+      }
+      buttonSound?.play()
+      setActiveId(item.id)
+      onClick && onClick(item)
+      return
+    }
     tabSound?.play()
+
     switch (type) {
       case RANK_TYPE.LEAGUE:
         return router.push('/league/all-league/detail')
@@ -80,9 +100,32 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRa
     }
   }
 
+  const getClassBg = (index: number, item: any) => {
+    if (type === RANK_TYPE.MEMBER_ADMIN_LEAVE) {
+      if (item.id === admin.id) {
+        return 'opacity-60 before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
+      }
+      if (item.id === activeId) {
+        return getBgByRank(99999)
+      }
+      return 'before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
+    }
+    return data?.currentRank > 3 &&
+      (data?.currentRank === index + 1 || data.currentRank === item.rank)
+      ? getBgByRank(99999)
+      : getBgByRank(index)
+  }
+
   const getIcon = (item: any) => {
-    if (type === RANK_TYPE.MEMBER && admin && admin?.id === item?.id) {
+    if (
+      (type === RANK_TYPE.MEMBER || type === RANK_TYPE.MEMBER_ADMIN_LEAVE) &&
+      admin &&
+      admin?.id === item?.id
+    ) {
       return <IconAdmin gradient className="size-5" />
+    }
+    if (type === RANK_TYPE.MEMBER_ADMIN_LEAVE) {
+      return null
     }
     if (type !== RANK_TYPE.RANKING) {
       return <IconOpenLink gradient className="size-6" />
@@ -95,12 +138,12 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRa
     >
       {data?.ranking?.map((item: IRankingItem, index: number) => (
         <div
-          className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${data?.currentRank > 3 && (data?.currentRank === index + 1 || data.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)} ${data?.currentRank > data?.ranking?.length && data.currentRank === item.rank ? '!fixed bottom-0 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto' : ''}`}
+          className={`relative !bg-transparent before:hidden after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent ${getClassBg(index, item)} ${data?.currentRank > data?.ranking?.length && data.currentRank === item.rank ? '!fixed bottom-0 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto' : ''}`}
           key={index}
           onClick={() => handleClick(item)}
         >
           <div
-            className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${data?.currentRank > 3 && (data?.currentRank === index + 1 || data.currentRank === item.rank) ? getBgByRank(99999) : getBgByRank(index)}`}
+            className={`relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between ${getClassBg(index, item)}`}
           >
             <div className="flex items-center space-x-3 xs:space-x-4">
               <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
@@ -137,19 +180,21 @@ const CustomRank = ({ data, isEarn, type, maxPrecision, suffix, admin }: IListRa
                 {getSubContent(item)}
               </div>
             </div>
-            <div className="mr-1 xs:mr-2 2xs:mr-3">
-              {[0, 1, 2].indexOf(index) === -1 ? (
-                <div className="text-white text-base xs:text-lg size-12 xs:size-[60px] flex items-center justify-center">
-                  #{item.rank ? item.rank : index + 1}
-                </div>
-              ) : (
-                <img
-                  className="size-12 xs:size-[60px]"
-                  src={`/assets/images/ranking/rank-0${index + 1}.png`}
-                  alt="Rank"
-                />
-              )}
-            </div>
+            {type !== RANK_TYPE.MEMBER_ADMIN_LEAVE && (
+              <div className="mr-1 xs:mr-2 2xs:mr-3">
+                {[0, 1, 2].indexOf(index) === -1 ? (
+                  <div className="text-white text-base xs:text-lg size-12 xs:size-[60px] flex items-center justify-center">
+                    #{item.rank ? item.rank : index + 1}
+                  </div>
+                ) : (
+                  <img
+                    className="size-12 xs:size-[60px]"
+                    src={`/assets/images/ranking/rank-0${index + 1}.png`}
+                    alt="Rank"
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       ))}

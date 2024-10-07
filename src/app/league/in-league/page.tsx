@@ -158,16 +158,14 @@ export default function InLeaguePage() {
     }
   }
 
-  const handleLeave = async () => {
-    handleButtonSound()
+  const leave = async (id: number) => {
     if (loadingButton) {
       return
     }
     setLoadingButton(true)
     try {
-      const res = currentLeague?.isOwner ? await leaveLeagueAdmin(0) : await leaveLeague()
+      const res = currentLeague?.isOwner ? await leaveLeagueAdmin(id) : await leaveLeague()
       if (res.status) {
-        // _getUserLeague()
         onClose()
         setCurrentLeague({ league: null })
         toast.success(<CustomToast type="success" title="Leave League successfully!" />)
@@ -179,6 +177,11 @@ export default function InLeaguePage() {
     } catch (ex) {
       setLoadingButton(false)
     }
+  }
+
+  const handleLeave = async () => {
+    handleButtonSound()
+    leave(0)
   }
 
   const updateAvatar = async () => {
@@ -299,10 +302,6 @@ export default function InLeaguePage() {
     onOpen()
   }
 
-  const handleSelectAdmin = () => {
-    handleLeave()
-  }
-
   const handleCheckLeave = () => {
     if (currentLeague?.isOwner) {
       if (currentLeague.totalContributors === 1) {
@@ -315,17 +314,17 @@ export default function InLeaguePage() {
     }
   }
 
+  const handleAdminLeave = (id: number) => {
+    leave(id)
+  }
+
   const getContentOfModal = () => {
     switch (activeType) {
       case LEAGUE_TYPE.LEAVE:
         return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleCheckLeave} />
       case LEAGUE_TYPE.SELECT:
         return (
-          <SelectAdminModal
-            item={currentLeague}
-            onClose={onClose}
-            handleAction={handleSelectAdmin}
-          />
+          <SelectAdminModal item={currentLeague} onClose={onClose} handleLeave={handleAdminLeave} />
         )
       case LEAGUE_TYPE.FUNDING:
         return <FundingModal closeModal={onClose} cb={_getUserLeague} />

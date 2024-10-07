@@ -7,9 +7,17 @@ interface ICustomButton {
   disable?: boolean
   isLoading?: boolean
   type?: string
+  buttonClass?: string
   onAction?: () => void
 }
-export default function CustomButton({ title, onAction, disable, isLoading, type }: ICustomButton) {
+export default function CustomButton({
+  title,
+  onAction,
+  disable,
+  isLoading,
+  type,
+  buttonClass
+}: ICustomButton) {
   const { buttonSound } = useAppSound()
   const handleClick = () => {
     buttonSound.play()
@@ -41,7 +49,7 @@ export default function CustomButton({ title, onAction, disable, isLoading, type
   return (
     <div className={`btn ${getTypeButton()}`} onClick={handleClick}>
       <div className="btn-border"></div>
-      <div className={`flex justify-center items-center ${getBtnClass()}`}>
+      <div className={`flex justify-center items-center ${getBtnClass()} ${buttonClass}`}>
         {title}
         {isLoading && (
           <Loader

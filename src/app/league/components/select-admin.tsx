@@ -1,37 +1,23 @@
 import { formatNumber } from '@/helper/common'
-import React, { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+
+import AllMember from '../member/components/all-member'
+import { BUTTON_TYPE, FUNDING_TYPE } from '@/constants'
+import CustomButton from '@/app/components/button'
 import useCommonStore from '@/stores/commonStore'
-import CustomInputSearch from '@/app/components/ui/custom-input-search'
-import Image from 'next/image'
-import { IconPoint } from '@/app/components/icons'
+import { leaveLeagueAdmin } from '@/services/league'
 
 interface ModalProps {
   item?: any
-  onClose?: () => void
-  handleAction?: () => void
+  onClose: () => void
+  handleLeave: (id: number) => void
 }
 
-const SelectAdminModal = ({ item, onClose, handleAction }: ModalProps) => {
-  const { currentLeague } = useCommonStore()
+const SelectAdminModal = ({ item, onClose, handleLeave }: ModalProps) => {
   const [totalMember, setTotalMember] = useState<number>(0)
-  const isModer = currentLeague?.isOwner || currentLeague?.role
-  const [isShowModer, setIsShowModer] = useState(false)
-  const timeoutSearch = useRef<any>(null)
-  const [page, setPage] = useState<number>(1)
-  const [search, setSearch] = useState<string>('')
-  const [activeMember, setActiveMember] = useState()
-
-  const handleUpdateText = (text: string) => {
-    clearTimeout(timeoutSearch.current)
-    timeoutSearch.current = setTimeout(() => {
-      setPage(1)
-      setSearch(text?.trim())
-    }, 500)
-  }
-
-  const handleShowModer = () => {
-    setIsShowModer(!isShowModer)
+  const [currentId, setCurrentId] = useState<number>(0)
+  const handleSelectItem = (item: any) => {
+    setCurrentId(item.id)
   }
 
   return (
@@ -48,7 +34,7 @@ const SelectAdminModal = ({ item, onClose, handleAction }: ModalProps) => {
           <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
             MEMBERS <span className="text-title">({formatNumber(totalMember, 0, 0)})</span>
           </p>
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={handleShowModer}>
+          {/* <div className="flex items-center space-x-2 cursor-pointer" onClick={handleShowModer}>
             <p className="text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] uppercase">
               MODER
             </p>
@@ -64,10 +50,17 @@ const SelectAdminModal = ({ item, onClose, handleAction }: ModalProps) => {
                 ></div>
               </div>
             </motion.div>
-          </div>
+          </div> */}
         </div>
-        <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} />
-        <div className="max-h-[400px] no-scrollbar overflow-y-auto">
+        {/* <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} /> */}
+        <AllMember
+          hideUpdateTime
+          type="leave-admin"
+          setTotalMember={setTotalMember}
+          activeTab={FUNDING_TYPE}
+          handleClick={handleSelectItem}
+        />
+        {/* <div className="max-h-[400px] no-scrollbar overflow-y-auto">
           <div className="flex flex-col space-y-3 xs:space-y-4">
             <div className="relative after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent after:border-b-green-900 after:border-r-green-900 after:border-b-green-500 after:border-r-green-500">
               <div className="relative after:hidden [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:w-[calc(100%_-_2px)] before:h-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] p-2 flex items-center justify-between before:bg-item-default before:opacity-20 before:bg-item-green bg-green-500 drop-shadow-green">
@@ -102,21 +95,19 @@ const SelectAdminModal = ({ item, onClose, handleAction }: ModalProps) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
-        <div className="btn default" onClick={onClose}>
-          <div className="btn-border"></div>
-          <div className="btn-default text-sm xs:text-[15px] 2xs:text-base">Cancel</div>
-          <div className="btn-border"></div>
-        </div>
-        <div className="btn error" onClick={handleAction}>
-          <div className="btn-border"></div>
-          <div className="btn-error !px-0 text-sm xs:text-[15px] 2xs:text-base">
-            CONFIRM & LEAVE
-          </div>
-          <div className="btn-border"></div>
-        </div>
+        <CustomButton type={BUTTON_TYPE.DEFAULT} title="CANCEL" onAction={onClose} />
+        <CustomButton
+          type={BUTTON_TYPE.CANCEL}
+          disable={!currentId}
+          title="CONFIRM & LEAVE"
+          buttonClass="!px-0 text-sm xs:text-[15px] 2xs:text-base"
+          onAction={() => {
+            handleLeave(currentId)
+          }}
+        />
       </div>
     </div>
   )
