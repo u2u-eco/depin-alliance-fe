@@ -280,14 +280,12 @@ export default function InLeaguePage() {
         onOpen()
         break
       case LEAGUE_TYPE.LEAVE:
-        if (currentLeague?.isOwner) {
-          if (currentLeague?.totalContributors <= 1) {
-            setActiveType(type)
-            onOpen()
-            handleButtonSound()
-          } else {
-            handleOpenSelectMember()
-          }
+        if (currentLeague?.isOwner && currentLeague?.totalContributors > 1) {
+          handleOpenSelectMember()
+        } else {
+          setActiveType(type)
+          onOpen()
+          handleButtonSound()
         }
         break
     }
