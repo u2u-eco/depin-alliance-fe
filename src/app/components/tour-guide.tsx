@@ -663,7 +663,6 @@ export default function TourGuide() {
   useEffect(() => {
     const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
     if (isShowGuide === 'true') {
-      setMounted(false)
       return
     }
     if (
