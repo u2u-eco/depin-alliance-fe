@@ -661,21 +661,33 @@ export default function TourGuide() {
   }
 
   useEffect(() => {
-    const isShowGuide = localStorage.getItem(DEPIN_GUIDE)
-    if (isShowGuide === 'true') {
-      return
-    }
-    if (
-      (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
-      !tourActive &&
-      !initToured
-    ) {
-      setTimeout(() => {
-        setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
-      }, 1000)
-      setInitToured(true)
+    if (userInfo?.code) {
+      const listGuideByIdStr: any = localStorage.getItem(DEPIN_GUIDE)
+      let listGuideById: any = JSON.parse(listGuideByIdStr)
+      if (!listGuideById) {
+        listGuideById = {}
+      }
+      if (userInfo?.code && listGuideById[userInfo.code]) {
+        return
+      }
+      if (
+        (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
+        !tourActive &&
+        !initToured
+      ) {
+        setTimeout(() => {
+          setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+        }, 500)
+        setInitToured(true)
 
-      localStorage.setItem(DEPIN_GUIDE, 'true')
+        localStorage.setItem(
+          DEPIN_GUIDE,
+          JSON.stringify({
+            ...listGuideById,
+            [userInfo?.code]: true
+          })
+        )
+      }
     }
   }, [userInfo, tourActive])
 
