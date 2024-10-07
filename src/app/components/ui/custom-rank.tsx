@@ -85,7 +85,7 @@ const CustomRank = ({
           <div className="flex items-center space-x-1">
             <IconPoint className="size-4" />
             <p className="text-primary font-semibold overflow-hidden max-w-[120px] xs:max-w-[160px] 2xs:max-w-[200px] text-ellipsis">
-              {type === RANK_TYPE.MEMBER ? (
+              {type === RANK_TYPE.MEMBER || type === RANK_TYPE.MEMBER_ADMIN_LEAVE ? (
                 `${formatNumber(item?.value || 0, 0, maxPrecision || 0)}${suffix ? suffix : ''}`
               ) : (
                 <>
@@ -102,7 +102,7 @@ const CustomRank = ({
 
   const getClassBg = (index: number, item: any) => {
     if (type === RANK_TYPE.MEMBER_ADMIN_LEAVE) {
-      if (item.id === admin.id) {
+      if (item.id === admin?.id) {
         return 'opacity-60 before:bg-item-default after:border-b-green-900 after:border-r-green-900 before:opacity-20'
       }
       if (item.id === activeId) {

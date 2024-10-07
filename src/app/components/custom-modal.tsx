@@ -50,7 +50,7 @@ const CustomModal = ({
   }, [isOpen, isKeyboardOpen])
 
   const handleClose = () => {
-    onClose()
+    onClose && onClose()
     if (tourState.tourActive) {
       setState({ run: false, tourActive: false })
     }

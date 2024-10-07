@@ -24,8 +24,7 @@ const SelectAdminModal = ({ item, onClose, handleLeave }: ModalProps) => {
     <div className="r">
       <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
         <p>
-          Before you leave this league, please select 1 member to become the new admin for “Space
-          Cartel”Before you leave this league, please select 1 member to become the new admin for{' '}
+          Before you leave this league, please select 1 member to become the new admin for{' '}
           <span className="text-[#1AF7A8] [word-break:_break-word;]">{`"${item?.name}"`}</span>?
         </p>
       </div>
