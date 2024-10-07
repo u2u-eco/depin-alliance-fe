@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import AllMember from '../member/components/all-member'
 import { BUTTON_TYPE, FUNDING_TYPE } from '@/constants'
 import CustomButton from '@/app/components/button'
-import useCommonStore from '@/stores/commonStore'
-import { leaveLeagueAdmin } from '@/services/league'
 
 interface ModalProps {
   item?: any

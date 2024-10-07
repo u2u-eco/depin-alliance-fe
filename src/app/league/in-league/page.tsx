@@ -315,6 +315,7 @@ export default function InLeaguePage() {
   }
 
   const handleAdminLeave = (id: number) => {
+    if (!id) return
     leave(id)
   }
 
