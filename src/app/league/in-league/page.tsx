@@ -32,6 +32,7 @@ import {
   getRankOfLeague,
   getTotalJoinRequest,
   leaveLeague,
+  leaveLeagueAdmin,
   updateAvatarLeague,
   userLeague
 } from '@/services/league'
@@ -121,7 +122,7 @@ export default function InLeaguePage() {
       id: 8,
       icon: <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'leave',
-      class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
+      class: ''
     }
   ]
   const hasRoleAdminRequest = role?.includes('ADMIN_REQUEST')
@@ -159,12 +160,12 @@ export default function InLeaguePage() {
 
   const handleLeave = async () => {
     handleButtonSound()
-    if (currentLeague?.isOwner || loadingButton) {
+    if (loadingButton) {
       return
     }
     setLoadingButton(true)
     try {
-      const res = await leaveLeague()
+      const res = currentLeague?.isOwner ? await leaveLeagueAdmin(0) : await leaveLeague()
       if (res.status) {
         // _getUserLeague()
         onClose()
@@ -270,11 +271,19 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.INNOVATE:
         return router.push('/league/innovate')
       case LEAGUE_TYPE.FUNDING:
-      case LEAGUE_TYPE.LEAVE:
       case LEAGUE_TYPE.CONTRIBUTE:
         handleButtonSound()
         setActiveType(type)
         onOpen()
+        break
+      case LEAGUE_TYPE.LEAVE:
+        if (currentLeague?.isOwner && currentLeague.totalContributors === 1) {
+          setActiveType(type)
+        } else {
+        }
+        onOpen()
+        handleButtonSound()
+
         break
     }
   }
@@ -294,16 +303,22 @@ export default function InLeaguePage() {
     handleLeave()
   }
 
+  const handleCheckLeave = () => {
+    if (currentLeague?.isOwner) {
+      if (currentLeague.totalContributors === 1) {
+        handleLeave()
+      } else {
+        handleOpenSelectMember()
+      }
+    } else {
+      handleLeave()
+    }
+  }
+
   const getContentOfModal = () => {
     switch (activeType) {
       case LEAGUE_TYPE.LEAVE:
-        return (
-          <LeaveModal
-            item={currentLeague}
-            onClose={onClose}
-            handleAction={currentLeague?.isOwner ? handleOpenSelectMember : handleLeave}
-          />
-        )
+        return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleCheckLeave} />
       case LEAGUE_TYPE.SELECT:
         return (
           <SelectAdminModal
