@@ -83,10 +83,10 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     buttonSound?.play()
     if (tourState.tourActive && tourState.run) {
       setTimeout(() => {
-        setState({
-          stepIndex: tourState.stepIndex + 1
-        })
-        // helpers?.next()
+        // setState({
+        //   stepIndex: tourState.stepIndex + 1
+        // })
+        helpers?.next()
       }, 300)
     }
   }
