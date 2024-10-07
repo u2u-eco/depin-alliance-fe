@@ -1,6 +1,7 @@
 import CustomModal from '@/app/components/custom-modal'
 import ImageDevice from '@/app/components/image-device'
 import { WORKSPACE_TYPE, WorkspaceContext } from '@/app/workspace/context/workspace-context'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
 import { IDeviceTypeItem } from '@/interfaces/i.devices'
 import React, { useContext } from 'react'
@@ -15,11 +16,15 @@ interface ModalProps {
 
 const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: ModalProps) => {
   const { setActiveTab } = useContext(WorkspaceContext)
+  const { setState } = useTourGuideContext()
   const { buttonSound } = useAppSound()
 
   const handleClick = () => {
     buttonSound.play()
     setActiveTab(WORKSPACE_TYPE.DEVICE)
+    setState({
+      run: false
+    })
   }
 
   return (
@@ -62,7 +67,7 @@ const NotificationModal = ({ isOpen, onOpen, onOpenChange, onClose, item }: Moda
             </div>
             <div className="btn-border"></div>
           </div>
-          <div className="btn" onClick={handleClick}>
+          <div className="btn jsEquipNow" onClick={handleClick}>
             <div className="btn-border"></div>
             <div className="btn-primary text-sm xs:text-15px 2xs:text-base !p-3 xs:!p-[14px]">
               EQUIP NOW

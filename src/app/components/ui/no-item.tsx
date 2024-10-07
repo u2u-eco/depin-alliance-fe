@@ -14,6 +14,7 @@ interface ItemProps {
     shape?: ClassValue
     icon?: ClassValue
     text?: ClassValue
+    link?: ClassValue
   }
 }
 
@@ -43,7 +44,7 @@ export default function NoItem({ title, classNames, link, textLink, action }: It
       </p>
       {link && (
         <div onClick={handleSound}>
-          <Link href={link || '#'} className="flex items-center space-x-1">
+          <Link href={link || '#'} className={cn('flex items-center space-x-1', classNames?.link)}>
             <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">
               {textLink || 'Buy Now'}
             </p>
@@ -52,7 +53,10 @@ export default function NoItem({ title, classNames, link, textLink, action }: It
         </div>
       )}
       {action && (
-        <div onClick={action} className="flex items-center space-x-1 cursor-pointer">
+        <div
+          onClick={action}
+          className={cn('flex items-center space-x-1 cursor-pointer', classNames?.link)}
+        >
           <p className="font-mona text-gradient uppercase text-[15px] xs:text-base leading-[20px] font-semibold">
             {textLink}
           </p>
