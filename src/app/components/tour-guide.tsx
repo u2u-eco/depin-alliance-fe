@@ -40,7 +40,7 @@ export default function TourGuide() {
   }
   const handleComplete = () => {
     handleClose()
-    onOpen()
+    // onOpen()
   }
 
   const _steps: Step[] = [
@@ -67,6 +67,7 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
+          placement="top-center"
           handleNext={handleNext}
           handleSkip={handleSkip}
           content="Welcome to DePIN Alliance, the Odyssey of Decentralists, your first step is here to make your mark on the decentralized future. Together, we’ll build a more decentralized world."
@@ -96,6 +97,7 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
+          placement="bottom-center"
           handleNext={handleNext}
           handleSkip={handleSkip}
           content={`Click the "Start Contributing" button to start mining, this process will generate passive points for you.`}
@@ -113,6 +115,7 @@ export default function TourGuide() {
     {
       content: (
         <ItemTutorial
+          placement="bottom-center"
           handleNext={handleNext}
           handleSkip={handleSkip}
           content={`The mining process will count down, allowing you to claim your mining reward anytime. Once the timer runs out and your capacity is full, you must claim to continue passive mining. When you claim, you will also receive a random Bonus reward.`}
@@ -132,11 +135,11 @@ export default function TourGuide() {
         <ItemTutorial
           handleNext={handleNext}
           handleSkip={handleSkip}
-          // placement="left"
+          placement="bottom"
           content={`Workspace, the place where you can unlock devices, buy and equip necessary items to enhance your mining power and engage deeply with DePIN network.`}
         />
       ),
-      placement: 'left-end',
+      placement: 'top',
       data: {
         next: '/workspace'
       },
@@ -241,7 +244,7 @@ export default function TourGuide() {
       floaterProps: {
         disableAnimation: true
       },
-      placement: 'top',
+      placement: 'bottom',
       target: '.device-0',
       spotlightClicks: true,
       spotlightPadding: 5,
@@ -475,14 +478,17 @@ export default function TourGuide() {
         // options: {
         //   overlayColor: 'rgba(0,0,0,0.3)'
         // },
-        spotlight: {
-          background: 'transparent'
-        },
         overlay: {
           background: 'rgba(0,0,0,0.3)'
         },
         overlayLegacy: {
           background: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
+        },
+        spotlightLegacy: {
+          background: 'transparent'
         }
       },
       hideFooter: true
@@ -522,14 +528,14 @@ export default function TourGuide() {
         // options: {
         //   overlayColor: 'rgba(0,0,0,0.3)'
         // },
-        spotlight: {
-          background: 'transparent'
-        },
         overlay: {
           background: 'rgba(0,0,0,0.3)'
         },
         overlayLegacy: {
           background: 'rgba(0,0,0,0.3)'
+        },
+        spotlight: {
+          background: 'transparent'
         },
         spotlightLegacy: {
           background: 'transparent'
@@ -554,6 +560,12 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
+        overlay: {
+          background: 'rgba(0,0,0,0.95)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.95)'
+        },
         spotlight: {
           background: 'transparent'
         },
@@ -585,6 +597,12 @@ export default function TourGuide() {
       placement: 'top',
       target: 'body',
       styles: {
+        overlay: {
+          background: 'rgba(0,0,0,0.95)'
+        },
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.95)'
+        },
         spotlight: {
           background: 'transparent'
         },
