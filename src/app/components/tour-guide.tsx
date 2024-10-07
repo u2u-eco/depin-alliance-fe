@@ -670,11 +670,7 @@ export default function TourGuide() {
       if (userInfo?.code && listGuideById[userInfo.code]) {
         return
       }
-      if (
-        (userInfo?.status === 'MINING' || userInfo?.status === 'CLAIMED') &&
-        !tourActive &&
-        !initToured
-      ) {
+      if (userInfo?.status === 'CLAIMED' && !tourActive && !initToured) {
         setTimeout(() => {
           setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
         }, 500)

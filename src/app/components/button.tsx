@@ -49,7 +49,9 @@ export default function CustomButton({
   return (
     <div className={`btn ${getTypeButton()}`} onClick={handleClick}>
       <div className="btn-border"></div>
-      <div className={`flex justify-center items-center ${getBtnClass()} ${buttonClass}`}>
+      <div
+        className={`flex justify-center items-center ${getBtnClass()} ${buttonClass ? buttonClass : ''}`}
+      >
         {title}
         {isLoading && (
           <Loader
