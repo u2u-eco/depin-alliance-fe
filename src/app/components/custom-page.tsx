@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import Info from './ui/info'
 import CustomNavbar from './ui/custom-navbar'
 import type { ClassValue } from 'clsx'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import useCommonStore from '@/stores/commonStore'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 interface Pageprops {
   children: ReactNode
   classNames?: {
@@ -17,6 +18,7 @@ interface Pageprops {
 
 const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pageprops) => {
   const { heightNav } = useCommonStore()
+  const { state: tourState } = useTourGuideContext()
   const pathName = usePathname()
   const isShowInfo =
     pathName !== '/avatar' &&
@@ -35,7 +37,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
-  const isShowSidebar =
+  let isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
     pathName !== '/setting' &&
@@ -51,6 +53,14 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
+
+  if (
+    tourState.tourActive &&
+    (pathName === '/workspace' || tourState.stepIndex === 2 || tourState.stepIndex === 3)
+  ) {
+    isShowSidebar = false
+  }
+
   const full = pathName === '/setting'
   return (
     <>

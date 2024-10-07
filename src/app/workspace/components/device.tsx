@@ -16,7 +16,7 @@ import {
 import useCommonStore from '@/stores/commonStore'
 import { useDisclosure } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DeviceItem from './device-item'
 import { formatNumber } from '@/helper/common'
 import { toast } from 'sonner'
@@ -28,6 +28,7 @@ import Loader from '@/app/components/ui/loader'
 import CustomButton from '@/app/components/button'
 import { useAppSound } from '@/hooks/useAppSound'
 import EditDeviceName from './edit-device-name'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 const DEVICE_TYPE = {
   INFO: 'info',
@@ -49,9 +50,9 @@ export default function Device({ height }: IDevice) {
   const currentDevice = useRef<any>()
   const [expanded, setExpanded] = useState<number | false>(false)
   const { dropdownOpen, dropdownClose, buttonSound } = useAppSound()
-  const [emptyName, setEmptyName] = useState<boolean>(false)
   const [loadingButton, setLoadingButton] = useState(false)
-
+  const { state: tourState, setState, helpers } = useTourGuideContext()
+  const checkingTourEquip = useRef<boolean>(false)
   const currentName = useRef<string>('')
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false)
   const currentIndex = useRef<number>(0)
@@ -158,6 +159,9 @@ export default function Device({ height }: IDevice) {
       case DEVICE_TYPE.EQUIP:
         if (activeItem) {
           handleAddItem()
+          if (tourState.tourActive) {
+            helpers?.next()
+          }
           return
         }
         break
@@ -182,11 +186,15 @@ export default function Device({ height }: IDevice) {
     setActiveType(DEVICE_TYPE.SWAP)
   }
 
-  const handleClickItem = (index: number) => {
+  const handleClickItem = async (index: number) => {
     if (!deviceItemDetail.current[index]) {
       getDeviceItemDetail(index)
     }
     currentIndex.current = index
+
+    if (tourState.tourActive && tourState.stepIndex === 7) {
+      helpers?.next()
+    }
   }
 
   const handleClick = (type: string, device?: IUserDeviceItem) => {
@@ -201,9 +209,23 @@ export default function Device({ height }: IDevice) {
   }
 
   const handleEquip = (type: string) => {
+    if (tourState.tourActive && tourState.stepIndex === 8) {
+      setState({
+        run: false
+      })
+    }
     equipType.current = type
     setActiveType(DEVICE_TYPE.EQUIP)
     onOpen()
+
+    // if (tourState.tourActive && tourState.stepIndex !== 13) {
+    //   setState({
+    //     run: true
+    //   })
+    //   setTimeout(() => {
+    //     helpers?.next()
+    //   }, 500)
+    // }
   }
 
   const handleInfo = (item: IDeviceTypeItem) => {
@@ -225,6 +247,9 @@ export default function Device({ height }: IDevice) {
   const handleSelectItem = (index: number) => {
     buttonSound.play()
     setActiveItem(index)
+    if (tourState.run && tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   const handleAddNewDevice = async () => {
@@ -251,7 +276,58 @@ export default function Device({ height }: IDevice) {
       dropdownClose.play()
     }
     setExpanded(index)
+    if (tourState.run && tourState.tourActive) {
+      setState({
+        stepIndex: tourState.stepIndex + 1
+      })
+    }
   }
+
+  const handleTourEquip = async () => {
+    setState({
+      run: false
+    })
+    const res = await getUserDevice({ index: 0 })
+    if (res.status) {
+      handleEquip(res.data[0]?.type)
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (tourState.tourActive && !tourState.run && tourState.tourActive) {
+        if (tourState.stepIndex < 7) {
+          setState({
+            run: true,
+            stepIndex: tourState.stepIndex + 1
+          })
+        }
+      }
+    }, 500)
+
+    if (tourState.stepIndex === 7 && !tourState.run && tourState.tourActive) {
+      setExpanded(1)
+      currentIndex.current = 1
+      setTimeout(() => {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      })
+    }
+
+    if (
+      tourState.stepIndex === 13 &&
+      !tourState.run &&
+      tourState.tourActive &&
+      !checkingTourEquip.current
+    ) {
+      checkingTourEquip.current = true
+      currentIndex.current = 1
+      handleTourEquip()
+      setExpanded(1)
+    }
+  }, [tourState, setState])
 
   const disableBtn =
     (activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP) && !activeItem
@@ -260,7 +336,7 @@ export default function Device({ height }: IDevice) {
   return (
     <>
       <div
-        className="flex flex-col h-full  overflow-x-hidden overflow-y-auto no-scrollbar"
+        className="flex flex-col h-full  overflow-x-hidden !overflow-y-auto no-scrollbar"
         style={{ height: height }}
       >
         {isLoading && (
@@ -272,9 +348,10 @@ export default function Device({ height }: IDevice) {
           />
         )}
         <div className="space-y-4">
-          {listDevice?.data.map((item: IUserDeviceItem) => {
+          {listDevice?.data.map((item: IUserDeviceItem, index: number) => {
             return (
               <AccordionItem
+                className={`device-${index}`}
                 key={item.index}
                 index={item.index}
                 item={item}
@@ -302,6 +379,7 @@ export default function Device({ height }: IDevice) {
       </div>
 
       <CustomModal
+        id="item-modal"
         title={
           activeType === DEVICE_TYPE.INFO
             ? 'ITEM Info'
@@ -474,13 +552,17 @@ export default function Device({ height }: IDevice) {
               </div>
             </div>
           ) : (
-            <div className={`btn z-[2] ${disableBtn ? 'inactive' : ''}`} onClick={handleConfirm}>
+            <div
+              id="jsConfirm"
+              className={`btn z-[2] ${disableBtn ? 'inactive' : ''}`}
+              onClick={handleConfirm}
+            >
               <div className="btn-border"></div>
               <div className={`btn-${disableBtn ? 'inactive' : 'primary'}`}>
                 {activeType === DEVICE_TYPE.EQUIP || activeType === DEVICE_TYPE.SWAP ? (
                   'CONFIRM'
                 ) : activeType === DEVICE_TYPE.BUY ? (
-                  <div className="flex items-center justify-center space-x-4 text-green-900">
+                  <div className="flex  items-center justify-center space-x-4 text-green-900">
                     <p>BUY NOW</p>
                     <div className="w-[30px] h-[1px] bg-green-800"></div>
                     <div className="flex items-center space-x-1">

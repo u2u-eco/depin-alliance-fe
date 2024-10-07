@@ -10,6 +10,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { WORKSPACE_TYPE, WorkspaceContext } from '../context/workspace-context'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 interface IChooseDevice {
   setActiveItem: (id: number) => void
   type: string
@@ -23,6 +24,7 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
   const { setActiveTab, setTypeItemShop } = useContext(WorkspaceContext)
   const [scrollTrigger, isInView] = useInView()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { state: tourState, setState, helpers } = useTourGuideContext()
   const { buttonSound } = useAppSound()
   useQuery({
     queryKey: ['fetchListDeviceItem', type, page],
@@ -37,17 +39,49 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
         if (page > 1) {
           _listItem = [...dataList.current, ...res.data]
         }
+
         dataList.current = _listItem
         setListDeviceItemByFilter(dataList.current)
         setIsLoading(false)
+        if (page === 1 && tourState.tourActive) {
+          setTimeout(() => {
+            handleTour(_listItem)
+          }, 300)
+        }
       }
       return res
     }
   })
 
+  const handleTour = (list: any) => {
+    if (tourState.tourActive && !tourState.run) {
+      if (list?.length > 0) {
+        if (tourState.stepIndex === 13 || tourState.stepIndex === 8) {
+          setState({
+            run: true,
+            stepIndex: 14
+          })
+        }
+      } else {
+        setState({
+          run: true,
+          stepIndex: tourState.stepIndex + 1
+        })
+      }
+    }
+  }
+
   const handleGoToShop = () => {
     buttonSound.play()
     setTypeItemShop(type)
+    if (tourState.run && tourState.tourActive) {
+      helpers?.next()
+      setTimeout(() => {
+        setActiveTab(WORKSPACE_TYPE.SHOP)
+      })
+      return
+    }
+
     setActiveTab(WORKSPACE_TYPE.SHOP)
   }
 
@@ -57,6 +91,35 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     }
   }, [isInView])
 
+  // useEffect(() => {
+  //   console.log('🚀 ~ useEffect ~ tourState:', tourState, isLoading, listDeviceItemByFilter)
+  //   if (tourState.tourActive && !tourState.run) {
+  //     if (listDeviceItemByFilter?.length > 0) {
+  //       if (tourState.stepIndex === 13 || tourState.stepIndex === 8) {
+  //         setState({
+  //           run: true,
+  //           stepIndex: 14
+  //         })
+  //       }
+  //     } else {
+  //       setState({
+  //         run: true
+  //       })
+
+  //       setTimeout(() => {
+  //         helpers?.next()
+  //       }, 500)
+  //       // setTimeout(() => {
+  //       //   setState({
+  //       //     run: true,
+  //       //     stepIndex: 9
+  //       //   })
+  //       //   // helpers?.next()
+  //       // })
+  //     }
+  //   }
+  // }, [tourState, listDeviceItemByFilter, setState])
+
   useEffect(() => {
     setPage(1)
   }, [type])
@@ -65,19 +128,23 @@ export default function ChooseDevice({ setActiveItem, type, activeItem }: IChoos
     <div className=" relative">
       <div className="h-[300px] overflow-y-auto no-scrollbar mt-8 mb-6">
         {listDeviceItemByFilter?.length === 0 && !isLoading ? (
-          <NoItem
-            title="No item"
-            textLink="Buy now"
-            action={handleGoToShop}
-            classNames={{
-              icon: 'text-body'
-            }}
-          />
+          <>
+            <NoItem
+              title="No item"
+              textLink="Buy now"
+              action={handleGoToShop}
+              classNames={{
+                link: 'jsBuyNow',
+                icon: 'text-body'
+              }}
+            />
+          </>
         ) : null}
         <div className="grid grid-cols-3 gap-2 xs:gap-3 2xs:gap-4 mb-8">
           {listDeviceItemByFilter?.map((item: IDeviceTypeItem, index: number) => (
             <div
               key={index}
+              id={`item-${index}`}
               className={`relative before:content-[''] before:absolute before:top-0 before:left-0 before:size-5 before:border-[10px] before:border-transparent before:transition-all h-full ${activeItem === item.id ? 'before:border-l-green-500 before:border-t-green-500 drop-shadow-green' : ''}`}
             >
               <div

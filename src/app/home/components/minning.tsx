@@ -8,6 +8,7 @@ import Loader from '@/app/components/ui/loader'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 const HOME_TYPE = {
   START: 'start',
@@ -17,6 +18,7 @@ const HOME_TYPE = {
 export default function Mining() {
   const [type, setType] = useState(HOME_TYPE.START)
   const [bonusReward, setBonusReward] = useState<number>(0)
+  const { helpers, state: tourState, setState } = useTourGuideContext()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
 
@@ -113,6 +115,9 @@ export default function Mining() {
       case HOME_TYPE.START:
         if (isLoading) return
         handleMining()
+        if (tourState.run && helpers?.next) {
+          helpers.next()
+        }
         break
       case HOME_TYPE.MINING:
         if (
@@ -120,6 +125,9 @@ export default function Mining() {
           (userInfo?.pointUnClaimed && userInfo?.pointUnClaimed > 0)
         ) {
           setType(HOME_TYPE.CLAIM)
+        }
+        if (tourState.run && helpers?.next) {
+          helpers.next()
         }
         break
       case HOME_TYPE.CLAIM:

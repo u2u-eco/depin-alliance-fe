@@ -65,9 +65,7 @@ const listSkill = [
 ]
 
 export default function ResearchPage() {
-  const handleClickItem = () => {
-    console.log(333)
-  }
+  const handleClickItem = () => {}
 
   return (
     <>

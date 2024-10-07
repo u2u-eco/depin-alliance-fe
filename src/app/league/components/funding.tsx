@@ -3,6 +3,7 @@ import CustomInput from '@/app/components/custom-input'
 import { IconFund, IconPoint } from '@/app/components/icons'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { formatNumber, kFormatter } from '@/helper/common'
+import { useAppSound } from '@/hooks/useAppSound'
 import { funding } from '@/services/league'
 import useCommonStore from '@/stores/commonStore'
 import React, { useMemo, useState } from 'react'
@@ -15,6 +16,7 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
   const { userInfo, getUserInfo, currentLeague } = useCommonStore()
   const [amount, setAmount] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
+  const { buttonSound } = useAppSound()
 
   const handleUpdateAmount = (amount: string) => {
     const re = /^[0-9\b]+$/
@@ -27,6 +29,7 @@ const FundingModal = ({ closeModal, cb }: IFundingModal) => {
   }
 
   const handleMax = () => {
+    buttonSound.play()
     const _total = formatNumber(userInfo?.point || 0, 0, 0).replaceAll(',', '')
     setAmount(userInfo?.point ? _total : '')
   }

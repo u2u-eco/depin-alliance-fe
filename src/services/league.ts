@@ -64,6 +64,10 @@ export const leaveLeague = () => {
   return https.get('/league/leave')
 }
 
+export const leaveLeagueAdmin = (id: number) => {
+  return https.get(`/league/leave-admin/${id}`)
+}
+
 export const getTotalJoinRequest = () => {
   return https.get('/league/total-join-request')
 }

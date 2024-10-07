@@ -14,8 +14,8 @@ import useCommonStore from '@/stores/commonStore'
 import Loader from '@/app/components/ui/loader'
 import CustomToast from '@/app/components/ui/custom-toast'
 import NotificationModal from './notification'
-import ItemDevice from '@/app/components/item-device'
 import { useAppSound } from '@/hooks/useAppSound'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 interface IShopItem {
   filterOptions: IFilterDevice
   height: number
@@ -24,6 +24,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
   const maxPage = useRef<number>(0)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const { getUserInfo, token, userInfo } = useCommonStore()
+  const { state: tourState, helpers, setState } = useTourGuideContext()
   const currentItem = useRef<IDeviceTypeItem>()
   const [amount, setAmount] = useState<number>(1)
   const [listItem, setListItem] = useState<IDeviceTypeItem[]>([])
@@ -61,7 +62,9 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
         _listItem = [...dataList.current, ...res.data]
       }
       dataList.current = _listItem
+
       setListItem(dataList.current)
+
       return res
     },
     enabled: Boolean(token)
@@ -78,6 +81,14 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     currentItem.current = item
     onOpen()
     buttonSound?.play()
+    if (tourState.tourActive && tourState.run) {
+      setTimeout(() => {
+        // setState({
+        //   stepIndex: tourState.stepIndex + 1
+        // })
+        helpers?.next()
+      }, 300)
+    }
   }
 
   const buy = async () => {
@@ -97,6 +108,11 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
           getUserInfo()
           onClose()
           onOpenNotification()
+          if (tourState.run && tourState.tourActive) {
+            setTimeout(() => {
+              helpers?.next()
+            }, 300)
+          }
         }
         setLoadingButton(false)
       }
@@ -124,6 +140,20 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
     setPage(1)
   }, [filterOptions])
 
+  useEffect(() => {
+    if (tourState.tourActive) {
+      if (tourState.stepIndex === 11 && !tourState.run) {
+        handleClick(listItem[1])
+        setTimeout(() => {
+          setState({
+            run: true,
+            stepIndex: tourState.stepIndex + 1
+          })
+        }, 300)
+      }
+    }
+  }, [tourState])
+
   const totalAmount = currentItem.current?.price ? currentItem.current.price * amount : 0
 
   return (
@@ -131,7 +161,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
       <div className="relative" ref={refList} style={{ minHeight: height - 20 || '60vh' }}>
         <div className=" absolute"></div>
         <div
-          className="overflow-y-auto no-scrollbar"
+          className="!overflow-y-auto no-scrollbar"
           ref={refListScroll}
           style={{ maxHeight: height - 40 }}
         >
@@ -139,7 +169,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
             {listItem?.map((item: any, index: number) => (
               <div
                 key={index}
-                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col`}
+                className={`[clip-path:_polygon(32px_0,100%_0,100%_100%,0_100%,0_32px)] bg-white/10 transition-all px-2 xs:px-3 2xs:px-4 py-3 xs:py-4 text-center cursor-pointer flex flex-col shop-item-${index}`}
                 onClick={() => handleClick(item)}
               >
                 <div className="relative p-[1px] bg-green-100 size-[70px] xs:size-20 2xs:size-[90px] mx-auto [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)]">
@@ -267,7 +297,7 @@ export default function ShopItem({ filterOptions, height }: IShopItem) {
               </div>
             </div>
           </motion.div>
-          <div className="btn" onClick={buy}>
+          <div className="btn jsBuyItem" onClick={buy}>
             <div className="btn-border"></div>
             <div className="btn-primary !px-3">
               <div className="flex items-center justify-center text-sm xs:text-[15px] 2xs:text-base space-x-2 xs:space-x-3 2xs:space-x-4 text-green-900 whitespace-nowrap">

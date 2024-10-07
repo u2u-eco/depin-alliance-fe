@@ -32,6 +32,7 @@ import {
   getRankOfLeague,
   getTotalJoinRequest,
   leaveLeague,
+  leaveLeagueAdmin,
   updateAvatarLeague,
   userLeague
 } from '@/services/league'
@@ -46,6 +47,7 @@ import Loader from '@/app/components/ui/loader'
 import LeaveModal from '../components/leave'
 import FundingModal from '../components/funding'
 import ContributeModal from '../components/contribute'
+import SelectAdminModal from '../components/select-admin'
 
 const LEAGUE_TYPE = {
   LEAVE: 'leave',
@@ -57,7 +59,8 @@ const LEAGUE_TYPE = {
   INVITE: 'invite',
   RESEARCH: 'research',
   INNOVATE: 'innovate',
-  LEAGUES: 'leagues'
+  LEAGUES: 'leagues',
+  SELECT: 'select'
 }
 
 export default function InLeaguePage() {
@@ -119,7 +122,7 @@ export default function InLeaguePage() {
       id: 8,
       icon: <IconLeave className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
       type: 'leave',
-      class: currentLeague?.isOwner ? 'pointer-events-none text-inactive' : ''
+      class: ''
     }
   ]
   const hasRoleAdminRequest = role?.includes('ADMIN_REQUEST')
@@ -155,15 +158,14 @@ export default function InLeaguePage() {
     }
   }
 
-  const handleLeave = async () => {
-    if (currentLeague?.isOwner || loadingButton) {
+  const leave = async (id: number) => {
+    if (loadingButton) {
       return
     }
     setLoadingButton(true)
     try {
-      const res = await leaveLeague()
+      const res = currentLeague?.isOwner ? await leaveLeagueAdmin(id) : await leaveLeague()
       if (res.status) {
-        // _getUserLeague()
         onClose()
         setCurrentLeague({ league: null })
         toast.success(<CustomToast type="success" title="Leave League successfully!" />)
@@ -175,6 +177,11 @@ export default function InLeaguePage() {
     } catch (ex) {
       setLoadingButton(false)
     }
+  }
+
+  const handleLeave = async () => {
+    handleButtonSound()
+    leave(0)
   }
 
   const updateAvatar = async () => {
@@ -267,11 +274,19 @@ export default function InLeaguePage() {
       case LEAGUE_TYPE.INNOVATE:
         return router.push('/league/innovate')
       case LEAGUE_TYPE.FUNDING:
-      case LEAGUE_TYPE.LEAVE:
       case LEAGUE_TYPE.CONTRIBUTE:
         handleButtonSound()
         setActiveType(type)
         onOpen()
+        break
+      case LEAGUE_TYPE.LEAVE:
+        if (currentLeague?.isOwner && currentLeague?.totalContributors > 1) {
+          handleOpenSelectMember()
+        } else {
+          setActiveType(type)
+          onOpen()
+          handleButtonSound()
+        }
         break
     }
   }
@@ -281,10 +296,37 @@ export default function InLeaguePage() {
     refetch()
   }
 
+  const handleOpenSelectMember = () => {
+    handleButtonSound()
+    setActiveType(LEAGUE_TYPE.SELECT)
+    onOpen()
+  }
+
+  const handleCheckLeave = () => {
+    if (currentLeague?.isOwner) {
+      if (currentLeague.totalContributors === 1) {
+        handleLeave()
+      } else {
+        handleOpenSelectMember()
+      }
+    } else {
+      handleLeave()
+    }
+  }
+
+  const handleAdminLeave = (id: number) => {
+    if (!id) return
+    leave(id)
+  }
+
   const getContentOfModal = () => {
     switch (activeType) {
       case LEAGUE_TYPE.LEAVE:
-        return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleLeave} />
+        return <LeaveModal item={currentLeague} onClose={onClose} handleAction={handleCheckLeave} />
+      case LEAGUE_TYPE.SELECT:
+        return (
+          <SelectAdminModal item={currentLeague} onClose={onClose} handleLeave={handleAdminLeave} />
+        )
       case LEAGUE_TYPE.FUNDING:
         return <FundingModal closeModal={onClose} cb={_getUserLeague} />
       default:
@@ -539,7 +581,7 @@ export default function InLeaguePage() {
       </CustomPage>
       <CustomModal
         title={
-          activeType === LEAGUE_TYPE.LEAVE
+          activeType === LEAGUE_TYPE.LEAVE || activeType === LEAGUE_TYPE.SELECT
             ? 'Leave League'
             : activeType === LEAGUE_TYPE.FUNDING
               ? 'Funding'
