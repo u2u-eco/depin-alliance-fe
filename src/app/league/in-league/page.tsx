@@ -158,6 +158,7 @@ export default function InLeaguePage() {
   }
 
   const handleLeave = async () => {
+    handleButtonSound()
     if (currentLeague?.isOwner || loadingButton) {
       return
     }
