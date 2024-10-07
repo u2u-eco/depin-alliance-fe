@@ -54,7 +54,10 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail'
 
-  if (pathName === '/workspace' && tourState.tourActive) {
+  if (
+    tourState.tourActive &&
+    (pathName === '/workspace' || tourState.stepIndex === 2 || tourState.stepIndex === 3)
+  ) {
     isShowSidebar = false
   }
 
