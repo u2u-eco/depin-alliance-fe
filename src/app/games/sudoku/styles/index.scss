@@ -1,0 +1,392 @@
+// *,
+// *::before,
+// *::after {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
+
+// :root {
+//   --background-color: #eceff7;
+//   --icon-color: #777d9c;
+//   --text-color: #51566a;
+//   --border-color: #c9cde7;
+//   --highlight-bg-color: #d7ddef;
+//   --shape-size: 2.6rem;
+// }
+
+// html {
+//   font-size: 62.5%;
+// }
+
+// html,
+// body {
+//   height: 100%;
+// }
+
+.sudoku {
+  --background-color: #eceff7;
+  --icon-color: #777d9c;
+  --text-color: #51566a;
+  --border-color: #c9cde7;
+  --highlight-bg-color: #d7ddef;
+  --shape-size: 2.6rem;
+  // display: flex;
+  // flex-direction: column;
+  // background-color: var(--background-color);
+  // font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  // color: var(--text-color);
+}
+
+.sudoku-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.container {
+  background: #eceff7;
+  box-shadow:
+    41px 41px 82px #c9cbd2,
+    -41px -41px 82px #ffffff;
+  padding: 3rem 2rem;
+  border-radius: 3rem;
+  width: 44rem;
+}
+
+.material-icons-outlined {
+  font-size: 2.4rem;
+  color: var(--icon-color);
+}
+
+/*Utils*/
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.ml-15 {
+  margin-left: 1.5rem;
+}
+
+/*Icon Button*/
+.icon-button {
+  height: 4.8rem;
+  width: 4.8rem;
+  border-radius: 10px;
+  background: #eceff7;
+  box-shadow:
+    5px 5px 18px #d2d5dc,
+    -5px -5px 18px #ffffff;
+}
+
+.icon-button:active {
+  background: linear-gradient(145deg, #d4d7de, #fdffff);
+}
+
+.icon-button.round {
+  border-radius: 50%;
+}
+
+/*Number Button*/
+.number-button {
+  height: 6rem;
+  width: 100%;
+  border-radius: 10px;
+  background: #eceff7;
+  box-shadow:
+    3px 3px 8px #dbdee6,
+    -3px -3px 8px #fdffff;
+}
+
+.number-button.clear {
+  border: 3px solid #ebeefb;
+  background: linear-gradient(to right, #a4abc7, #7a82a4);
+}
+
+.number-button:active {
+  background: linear-gradient(145deg, #d4d7de, #fdffff);
+}
+
+.number-button.clear:active {
+  background: linear-gradient(to right, #a4abc7, #7f8aab);
+}
+
+.number-text {
+  color: var(--text-color);
+  font-size: 2.8rem;
+  font-weight: 500;
+}
+
+.number-button.clear .number-text {
+  font-size: 2.2rem;
+  color: #fff;
+}
+
+/*Time*/
+.time {
+  height: 4.8rem;
+  border-radius: 2.4rem;
+  padding-left: 3rem;
+  background-color: #e6e8f3;
+}
+
+.time-text {
+  font-size: 2rem;
+  margin-right: 1.5rem;
+}
+
+/*Sub Header*/
+.sub-header {
+  margin: 3rem 0 2rem 0;
+}
+
+.sub-header-title {
+  font-size: 2.8rem;
+  font-weight: 600;
+}
+
+.mistake-text {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+
+.mistake-number {
+  color: #ff7043;
+}
+
+/*Game*/
+.game-container {
+  position: relative;
+  border-radius: 15px;
+  background: var(--background-color);
+  box-shadow:
+    5px 5px 10px #d4d7de,
+    -5px -5px 10px #ffffff;
+  padding: 0.5rem;
+}
+
+.game-container::before,
+.game-container::after,
+.game-wrapper::before,
+.game-wrapper::after {
+  content: '';
+  position: absolute;
+  border-radius: 2px;
+  background-color: var(--border-color);
+}
+
+.game-container::before,
+.game-container::after {
+  top: 13.4rem;
+  right: 1.5rem;
+  left: 1.5rem;
+  height: 4px;
+}
+
+.game-container::after {
+  top: initial;
+  bottom: 13.4rem;
+}
+
+.game-wrapper::before,
+.game-wrapper::after {
+  left: 13.4rem;
+  bottom: 1.5rem;
+  top: 1.5rem;
+  width: 4px;
+}
+
+.game-wrapper::after {
+  left: initial;
+  right: 13.4rem;
+}
+
+.shape {
+  position: absolute;
+  fill: var(--border-color);
+  width: var(--shape-size);
+  height: var(--shape-size);
+  z-index: 1;
+}
+
+.shape-1 {
+  top: calc(13.6rem - var(--shape-size) / 2);
+  left: calc(13.6rem - var(--shape-size) / 2);
+}
+
+.shape-2 {
+  bottom: calc(13.6rem - var(--shape-size) / 2);
+  left: calc(13.6rem - var(--shape-size) / 2);
+}
+
+.shape-3 {
+  top: calc(13.6rem - var(--shape-size) / 2);
+  right: calc(13.6rem - var(--shape-size) / 2);
+}
+
+.shape-4 {
+  bottom: calc(13.6rem - var(--shape-size) / 2);
+  right: calc(13.6rem - var(--shape-size) / 2);
+}
+
+.game-wrapper {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-gap: 1rem;
+  border-radius: 15px;
+  background: var(--background-color);
+  box-shadow:
+    inset 5px 5px 10px #d4d7de,
+    inset -5px -5px 10px #ffffff;
+  padding: 1rem;
+}
+
+.game-input {
+  outline: none;
+  text-align: center;
+  width: 100%;
+  height: 3.2rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--background-color);
+  box-shadow:
+    3px 3px 3px #d4d7de,
+    -3px -3px 3px #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: #323647;
+}
+
+.game-input.prefilled-text {
+  color: #777d9c;
+}
+
+.game-input:focus:not(.game-input:read-only) {
+  outline: 2px solid #fff;
+  box-shadow:
+    inset 4px 4px 7px #c9cbd2,
+    inset -4px -4px 7px #ffffff;
+}
+
+/*Select rows*/
+.select-row-1 .game-input:nth-child(-n + 9):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-2 .game-input:nth-child(n + 10):not(:nth-child(n + 19), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-3 .game-input:nth-child(n + 19):not(:nth-child(n + 28), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-4 .game-input:nth-child(n + 28):not(:nth-child(n + 37), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-5 .game-input:nth-child(n + 37):not(:nth-child(n + 46), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-6 .game-input:nth-child(n + 46):not(:nth-child(n + 55), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-7 .game-input:nth-child(n + 55):not(:nth-child(n + 64), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-8 .game-input:nth-child(n + 64):not(:nth-child(n + 73), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-row-9 .game-input:nth-child(n + 73):not(:nth-child(n + 82), :focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+/*Select cols*/
+.select-col-1 .game-input:nth-child(9n + 1):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-2 .game-input:nth-child(9n + 2):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-3 .game-input:nth-child(9n + 3):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-4 .game-input:nth-child(9n + 4):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-5 .game-input:nth-child(9n + 5):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-6 .game-input:nth-child(9n + 6):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-7 .game-input:nth-child(9n + 7):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-8 .game-input:nth-child(9n + 8):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+.select-col-9 .game-input:nth-child(9n + 9):not(:focus) {
+  background-color: var(--highlight-bg-color);
+}
+
+/*Actions*/
+.actions {
+  margin: 3rem 0 4.5rem 0;
+}
+
+/*Numbers*/
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1.5rem;
+}
