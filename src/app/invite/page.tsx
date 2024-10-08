@@ -16,12 +16,14 @@ import CustomToast from '../components/ui/custom-toast'
 import { formatNumber } from '@/helper/common'
 import CustomButton from '../components/button'
 import { useAppSound } from '@/hooks/useAppSound'
+import { IconCopy } from '../components/icons'
 
 export default function InvitePage() {
   const userInfo = useCommonStore((state) => state.userInfo)
   const { buttonSound } = useAppSound()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
+  const [isCopy, setIsCopy] = useState(false)
   const [scrollTrigger, isInView] = useInView()
   const dataList = useRef<any[]>([])
   const [listItem, setListItem] = useState<any[]>([])
@@ -47,13 +49,14 @@ export default function InvitePage() {
   const handleCopy = () => {
     if (userInfo) {
       buttonSound.play()
+      setIsCopy(true)
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
   const handleShare = () => {
     if (userInfo) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}?start=${userInfo.code}`,
+        `https://t.me/share/url?url=${TELE_URI}?startapp=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}?startapp=${userInfo.code}`,
         '_self'
       )
     }
@@ -115,17 +118,16 @@ export default function InvitePage() {
               <div className="flex items-center space-x-3 xs:space-x-4">
                 <CustomButton title="INVITE FRIEND" onAction={handleShare} />
 
-                <CopyToClipboard text={`${TELE_URI}?start=${userInfo?.code}`} onCopy={handleCopy}>
+                <CopyToClipboard
+                  text={`${TELE_URI}?startapp=${userInfo?.code}`}
+                  onCopy={handleCopy}
+                >
                   <div className="btn w-fit">
                     <div className="btn-border"></div>
-                    <div className="btn-default !p-2">
-                      <Image
-                        className="size-8 max-[399px]:size-7 max-[354px]:size-5 min-w-8 max-[399px]:min-w-7 max-[354px]:min-w-5"
-                        src="/assets/images/icons/icon-copy-gradient.svg"
-                        alt="Icon Copy"
-                        width={0}
-                        height={0}
-                        sizes="100vw"
+                    <div className={`btn-default !p-2 ${isCopy ? '!bg-gradient' : ''}`}>
+                      <IconCopy
+                        gradient={!isCopy}
+                        className={`size-6 xs:size-7 2xs:size-8 ${isCopy ? 'text-green-900' : ''}`}
                       />
                     </div>
                     <div className="btn-border"></div>

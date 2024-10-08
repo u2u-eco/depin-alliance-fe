@@ -92,7 +92,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         const folder = userInfo.devicePlatform === 'iOS' ? 'IOS' : 'Android'
         const link = `${SHARE_URL}/${folder}/${folder.toLowerCase()}-${userInfo.pointBonus}.png`
 
-        const shareLink = `${TELE_URI}?start=${userInfo?.code}`
+        const shareLink = `${TELE_URI}?startapp=${userInfo?.code}`
         const botName = TELE_URI?.replaceAll('https://', '')
         if (userInfo.isPremium) {
           webApp?.shareToStory(link, {

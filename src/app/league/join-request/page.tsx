@@ -104,7 +104,7 @@ export default function JoinRequestPage() {
     buttonSound.play()
     if (currentLeague?.inviteLink) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
+        `https://t.me/share/url?url=${TELE_URI}?startapp=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?startapp=${currentLeague.inviteLink}`,
         '_self'
       )
     }
