@@ -48,7 +48,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
     setIsLoginError(false)
     try {
       isProgressLogin.current = true
-      const res = await userAuth({ initData })
+      let request: any = { initData }
+      if (webApp?.initDataUnsafe.start_param) {
+        request = { ...request, refCode: webApp?.initDataUnsafe.start_param }
+      }
+      const res = await userAuth(request)
       if (res.status) {
         https.defaults.headers.common['Authorization'] = `Bearer ${res.data?.accessToken}`
         setCurrentStatus({ status: res.data.currentStatus })

@@ -56,7 +56,7 @@ export default function InvitePage() {
   const handleShare = () => {
     if (userInfo) {
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}?start=${userInfo.code}`,
+        `https://t.me/share/url?url=${TELE_URI}?startapp=${userInfo.code}&text=🤝 Let's contribute together, we can make it! The revolution has begun, 👉 Start now: ${TELE_URI}?startapp=${userInfo.code}`,
         '_self'
       )
     }
@@ -118,7 +118,10 @@ export default function InvitePage() {
               <div className="flex items-center space-x-3 xs:space-x-4">
                 <CustomButton title="INVITE FRIEND" onAction={handleShare} />
 
-                <CopyToClipboard text={`${TELE_URI}?start=${userInfo?.code}`} onCopy={handleCopy}>
+                <CopyToClipboard
+                  text={`${TELE_URI}?startapp=${userInfo?.code}`}
+                  onCopy={handleCopy}
+                >
                   <div className="btn w-fit">
                     <div className="btn-border"></div>
                     <div className={`btn-default !p-2 ${isCopy ? '!bg-gradient' : ''}`}>

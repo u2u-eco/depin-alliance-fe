@@ -142,7 +142,7 @@ export default function InLeaguePage() {
     if (currentLeague?.inviteLink) {
       tabSound.play()
       window.open(
-        `https://t.me/share/url?url=${TELE_URI}?start=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?start=${currentLeague.inviteLink}`,
+        `https://t.me/share/url?url=${TELE_URI}?startapp=${currentLeague.inviteLink}&text=🔰 Let's unite and make a difference!, 👉 Join now: ${TELE_URI}?startapp=${currentLeague.inviteLink}`,
         '_self'
       )
     }
@@ -231,7 +231,7 @@ export default function InLeaguePage() {
 
   const handleCopy = () => {
     if (currentLeague?.inviteLink) {
-      copy(`${TELE_URI}?start=${currentLeague.inviteLink}`)
+      copy(`${TELE_URI}?startapp=${currentLeague.inviteLink}`)
       toast.success(<CustomToast type="success" title="Copied!" />)
     }
   }
