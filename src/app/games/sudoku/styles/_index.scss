@@ -1,29 +1,3 @@
-// *,
-// *::before,
-// *::after {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-// }
-
-// :root {
-//   --background-color: #eceff7;
-//   --icon-color: #777d9c;
-//   --text-color: #51566a;
-//   --border-color: #c9cde7;
-//   --highlight-bg-color: #d7ddef;
-//   --shape-size: 2.6rem;
-// }
-
-// html {
-//   font-size: 62.5%;
-// }
-
-// html,
-// body {
-//   height: 100%;
-// }
-
 .sudoku {
   --bg-line: rgba(255, 255, 255, 0.3);
   --bg-border: rgba(255, 255, 255, 0.1);
@@ -80,13 +54,14 @@ input[type='number'] {
   font-family: theme('fontFamily.geist');
   text-align: center;
   width: 100%;
-  font-weight: 500;
+  font-weight: 500 !important;
   font-size: 24px;
   box-shadow: 0px 0px 0px 1px var(--bg-border);
   background: var(--bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: theme('colors.title');
   @media screen and (max-width: 424px) {
     font-size: 20px;
   }
@@ -99,90 +74,24 @@ input[type='number'] {
       inset -2px 0 0 var(--bg-line);
   }
   &.prefilled-text {
-    color: #fff;
+    color: theme('colors.body');
     background: var(--bg-filled);
   }
   &.error {
+    background: var(--bg-error);
+  }
+  &.selected {
+    background: var(--bg-selected);
+  }
+  &.success {
+    background: var(--bg-success);
   }
 }
 
-.game-input:focus:not(.game-input:read-only) {
-  outline: 2px solid #fff;
-  box-shadow:
-    inset 4px 4px 7px #c9cbd2,
-    inset -4px -4px 7px #ffffff;
-}
-
-/*Select rows*/
-.select-row-1 .game-input:nth-child(-n + 9):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-2 .game-input:nth-child(n + 10):not(:nth-child(n + 19), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-3 .game-input:nth-child(n + 19):not(:nth-child(n + 28), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-4 .game-input:nth-child(n + 28):not(:nth-child(n + 37), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-5 .game-input:nth-child(n + 37):not(:nth-child(n + 46), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-6 .game-input:nth-child(n + 46):not(:nth-child(n + 55), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-7 .game-input:nth-child(n + 55):not(:nth-child(n + 64), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-8 .game-input:nth-child(n + 64):not(:nth-child(n + 73), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-row-9 .game-input:nth-child(n + 73):not(:nth-child(n + 82), :focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-/*Select cols*/
-.select-col-1 .game-input:nth-child(9n + 1):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-2 .game-input:nth-child(9n + 2):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-3 .game-input:nth-child(9n + 3):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-4 .game-input:nth-child(9n + 4):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-5 .game-input:nth-child(9n + 5):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-6 .game-input:nth-child(9n + 6):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-7 .game-input:nth-child(9n + 7):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-8 .game-input:nth-child(9n + 8):not(:focus) {
-  background-color: var(--highlight-bg-color);
-}
-
-.select-col-9 .game-input:nth-child(9n + 9):not(:focus) {
-  background-color: var(--highlight-bg-color);
+.btn-border {
+  height: 8px !important;
+  &::before,
+  &::after {
+    --size: 8px !important;
+  }
 }

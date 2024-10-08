@@ -18,6 +18,7 @@ export default function Sudoku() {
 
   const onHandleChange = (value: string, clearValue?: string) => {
     const isValueValid = (/^\d+$/.test(value) && value !== '0') || clearValue
+    console.log(isValueValid)
 
     setPuzzleObj((prevItems) =>
       prevItems.map((item) =>
@@ -36,7 +37,7 @@ export default function Sudoku() {
       <MainSudoku
         puzzle={puzzleObj}
         onSelectInput={(value: number) => setSelectedInput(value)}
-        onHandleChange={(e: any) => onHandleChange(e.target.value)}
+        onHandleChange={(value: any) => onHandleChange(value)}
       />
     </div>
   )

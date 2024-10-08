@@ -4,13 +4,15 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 interface IMainSudoku {
   puzzle: Array<ISPuzzleItem>
   onSelectInput: (value: number) => void
-  onHandleChange: (e: any) => void
+  onHandleChange: (value: any) => void
 }
 export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudoku) => {
   const [selectedRow, setSelectedRow] = useState(0)
   const [selectedCol, setSelectedCol] = useState(0)
   const ref = useRef(null)
   const [width, setWidth] = useState(0)
+  const [showSelect, setShowSelect] = useState(false)
+  const [activeItem, setActiveItem] = useState(null)
 
   const onHandleFocus = (isPreFilled: boolean, index: number) => {
     if (!isPreFilled) {
@@ -38,7 +40,17 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     return list
   }, [puzzle])
 
-  const handleClick = () => {}
+  const handleClick = (index: number, isPreFilled: boolean) => {
+    if (isPreFilled) return
+    setShowSelect(true)
+    setActiveItem(index)
+    onSelectInput(index)
+  }
+
+  const handleSelectNumber = (numb: number) => {
+    setShowSelect(false)
+    onHandleChange(numb)
+  }
 
   useEffect(() => {
     setWidth(ref?.current?.offsetWidth)
@@ -55,9 +67,9 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
       <div
         className={`btn-primary game-wrapper select-row-${selectedRow} select-col-${selectedCol}`}
       >
-        {listRow.map((item: any, index: number) => (
-          <div className={`game-row game-row-${index + 1}`} key={index}>
-            {item.map(({ value, isPreFilled }, index: number) => {
+        {listRow.map((item: any, indexRow: number) => (
+          <div className={`game-row game-row-${indexRow + 1}`} key={indexRow}>
+            {item.map(({ value, isPreFilled }: any, index: number) => {
               return (
                 // <input
                 //   key={index}
@@ -79,11 +91,13 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                 //   }}
                 // />
                 <div
-                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''}`}
-                  key={index}
+                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'success' : ''}`}
+                  key={indexRow * 9 + index}
                   ref={ref}
                   style={{ height: `${width}px` }}
-                  // onClick={() => onHandleFocus(isPreFilled, index)}
+                  onClick={() => {
+                    handleClick(indexRow * 9 + index, isPreFilled)
+                  }}
                 >
                   <p>{value}</p>
                 </div>
@@ -91,17 +105,25 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
             })}
           </div>
         ))}
-        <div className="absolute top-0 left-0 right-0 w-full h-full bg-black/80 flex items-center justify-center backdrop-blur-[4px] pointer-events-none opacity-0">
-          <div className="grid grid-cols-3 text-title size-[50%]">
-            <p className="flex items-center justify-center bg-white/30">1</p>
-            <p className="flex items-center justify-center bg-white/30">2</p>
-            <p className="flex items-center justify-center bg-white/30">3</p>
-            <p className="flex items-center justify-center bg-white/30">4</p>
-            <p className="flex items-center justify-center bg-white/30">5</p>
-            <p className="flex items-center justify-center bg-white/30">6</p>
-            <p className="flex items-center justify-center bg-white/30">7</p>
-            <p className="flex items-center justify-center bg-white/30">8</p>
-            <p className="flex items-center justify-center bg-white/30">9</p>
+        <div
+          className={`absolute top-0 left-0 right-0 w-full h-full  flex items-center justify-center backdrop-blur-[4px] transition-all ${showSelect ? '' : 'pointer-events-none opacity-0'}`}
+        >
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-black/80 backdrop-blur-[4px]"
+            onClick={() => setShowSelect(false)}
+          ></div>
+          <div className="relative grid grid-cols-3 text-title size-[50%] shadow-[0_0_5px_5px_rgba(0,0,0,0.1)]">
+            {Array(9)
+              .fill(1)
+              .map((_, index: number) => (
+                <p
+                  key={index}
+                  className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/10 border-b ${index !== 2 && index !== 5 && index !== 8 ? 'border-r' : ''}`}
+                  onClick={() => handleSelectNumber(index + 1)}
+                >
+                  {index + 1}
+                </p>
+              ))}
           </div>
         </div>
       </div>
