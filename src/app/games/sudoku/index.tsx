@@ -1,7 +1,7 @@
 import { ISPuzzleItem } from '@/interfaces/i.games'
 import { useState } from 'react'
 import { MainSudoku } from './components/main'
-import './styles/index.scss'
+import './styles/_index.scss'
 export default function Sudoku() {
   const [selectedInput, setSelectedInput] = useState<number | null>(null)
   const puzzle = '5...8..49...5...3..673....115..........2.8..........187....415..3...2...49..5...3'

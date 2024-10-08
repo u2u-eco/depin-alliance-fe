@@ -12,9 +12,10 @@ export default function Game() {
           "after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:w-full after:h-full after:bg-gradient-green after:z-[-2]"
       }}
     >
-      <CustomHeader title="games" />
-
-      <Sudoku />
+      <div className="space-y-8">
+        <CustomHeader title="games" />
+        <Sudoku />
+      </div>
     </CustomPage>
   )
 }
