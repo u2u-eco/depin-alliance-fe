@@ -75,7 +75,9 @@ const CustomModal = ({
           classNames?.base,
           'jsModal'
         ),
-        backdrop: full ? 'bg-transparent ' : 'bg-black/30 backdrop-blur-[4px]'
+        backdrop: full
+          ? 'bg-transparent '
+          : `bg-black/30 backdrop-blur-[4px] ${placement === 'top' ? 'bg-black' : ''}`
       }}
     >
       <ModalContent>

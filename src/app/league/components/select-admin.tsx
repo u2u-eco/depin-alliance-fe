@@ -50,13 +50,16 @@ const SelectAdminModal = ({ item, onClose, handleLeave }: ModalProps) => {
           </div> */}
         </div>
         {/* <CustomInputSearch placeholder="Search member..." onValueChange={handleUpdateText} /> */}
+
         <AllMember
           hideUpdateTime
           type="leave-admin"
           setTotalMember={setTotalMember}
           activeTab={FUNDING_TYPE}
           handleClick={handleSelectItem}
+          maxHeight="35vh"
         />
+
         {/* <div className="max-h-[400px] no-scrollbar overflow-y-auto">
           <div className="flex flex-col space-y-3 xs:space-y-4">
             <div className="relative after:absolute after:content-[''] after:right-0 after:bottom-0 after:size-4 after:border-8 after:border-transparent after:border-b-green-900 after:border-r-green-900 after:border-b-green-500 after:border-r-green-500">
