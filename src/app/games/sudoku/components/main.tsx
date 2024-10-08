@@ -1,3 +1,4 @@
+import { IconClose } from '@/app/components/icons'
 import { ShapeIcon } from '@/app/components/icons/sharp-sudoku'
 import { ISPuzzleItem } from '@/interfaces/i.games'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -12,7 +13,8 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const ref = useRef(null)
   const [width, setWidth] = useState(0)
   const [showSelect, setShowSelect] = useState(false)
-  const [activeItem, setActiveItem] = useState(null)
+  const [checkNumber, setCheckNumber] = useState(false)
+  const [activeItem, setActiveItem] = useState<number>()
 
   const onHandleFocus = (isPreFilled: boolean, index: number) => {
     if (!isPreFilled) {
@@ -45,6 +47,10 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     setShowSelect(true)
     setActiveItem(index)
     onSelectInput(index)
+  }
+
+  const handleCheck = () => {
+    setCheckNumber(!checkNumber)
   }
 
   const handleSelectNumber = (numb: number) => {
@@ -91,7 +97,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                 //   }}
                 // />
                 <div
-                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'success' : ''}`}
+                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'selected' : ''}`}
                   key={indexRow * 9 + index}
                   ref={ref}
                   style={{ height: `${width}px` }}
@@ -112,18 +118,30 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
             className="absolute top-0 left-0 w-full h-full bg-black/80 backdrop-blur-[4px]"
             onClick={() => setShowSelect(false)}
           ></div>
-          <div className="relative grid grid-cols-3 text-title size-[50%] shadow-[0_0_5px_5px_rgba(0,0,0,0.1)]">
+          <div className="relative grid grid-cols-3 text-title size-[55%] shadow-[0_0_5px_5px_rgba(0,0,0,0.1)]">
             {Array(9)
               .fill(1)
               .map((_, index: number) => (
-                <p
+                <div
                   key={index}
-                  className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/10 border-b ${index !== 2 && index !== 5 && index !== 8 ? 'border-r' : ''}`}
+                  className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/15 border-b ${index !== 2 && index !== 5 && index !== 8 ? 'border-r' : ''}`}
                   onClick={() => handleSelectNumber(index + 1)}
                 >
                   {index + 1}
-                </p>
+                </div>
               ))}
+            <div
+              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/15 border-r col-span-2`}
+              onClick={() => setShowSelect(false)}
+            >
+              <IconClose className="size-5 xs:size-6 2xs:size-7" />
+            </div>
+            <div
+              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl ${checkNumber ? 'shadow-inner-primary' : ''}`}
+              onClick={handleCheck}
+            >
+              ?
+            </div>
           </div>
         </div>
       </div>

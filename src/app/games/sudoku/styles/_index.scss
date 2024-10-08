@@ -2,9 +2,9 @@
   --bg-line: rgba(255, 255, 255, 0.3);
   --bg-border: rgba(255, 255, 255, 0.1);
   --bg-main: rgba(255, 255, 255, 0.05);
-  --bg-selected: rgba(54, 134, 253, 0.3);
+  --bg-same: rgba(54, 134, 253, 0.3);
   --bg-error: rgba(229, 57, 53, 0.3);
-  --bg-success: rgba(0, 255, 144, 0.3);
+  --bg-selected: rgba(0, 255, 144, 0.3);
   --bg-filled: rgba(255, 255, 255, 0.15);
 }
 
@@ -50,12 +50,11 @@ input[type='number'] {
 }
 
 .game-input {
-  --size: 50px;
   font-family: theme('fontFamily.geist');
   text-align: center;
   width: 100%;
   font-weight: 500 !important;
-  font-size: 24px;
+  font-size: 20px;
   box-shadow: 0px 0px 0px 1px var(--bg-border);
   background: var(--bg-main);
   display: flex;
@@ -63,7 +62,7 @@ input[type='number'] {
   justify-content: center;
   color: theme('colors.title');
   @media screen and (max-width: 424px) {
-    font-size: 20px;
+    font-size: 18px;
   }
   @media screen and (max-width: 374px) {
     font-size: 16px;
@@ -82,9 +81,10 @@ input[type='number'] {
   }
   &.selected {
     background: var(--bg-selected);
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
   }
-  &.success {
-    background: var(--bg-success);
+  &.same {
+    background: var(--bg-same);
   }
 }
 
