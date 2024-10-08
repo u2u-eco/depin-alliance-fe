@@ -17,9 +17,17 @@ interface IMember {
   activeTab: string
   hideUpdateTime?: boolean
   type?: string
+  maxHeight?: string
   handleClick?: (item: any) => void
 }
-const AllMember = ({ setTotalMember, activeTab, hideUpdateTime, type, handleClick }: IMember) => {
+const AllMember = ({
+  setTotalMember,
+  activeTab,
+  hideUpdateTime,
+  type,
+  maxHeight,
+  handleClick
+}: IMember) => {
   const { currentLeague } = useCommonStore()
   const maxPage = useRef<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -117,36 +125,51 @@ const AllMember = ({ setTotalMember, activeTab, hideUpdateTime, type, handleClic
         {listItem.length === 0 && !isLoading ? (
           <NoItem title="Not a member yet" action={handleInvite} textLink="INVITE NOW" />
         ) : (
-          <motion.div
-            initial={{ y: 25, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -25, opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            key="all"
-            className="!will-change-auto"
-          >
-            <CustomRank
-              data={{
-                currentRank: listMemberData?.data.currentRank,
-                ranking: listItem
+          <div className={maxHeight ? 'relative' : ''}>
+            <motion.div
+              initial={{ y: 25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -25, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              key="all"
+              style={{
+                maxHeight: maxHeight ? maxHeight : 'unset'
               }}
-              admin={listMemberData?.data?.admin}
-              type={type || 'member'}
-              maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
-              suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
-              onClick={handleClick}
-            />
-            <div ref={scrollTrigger} className="text-[transparent]"></div>
-          </motion.div>
+              className={`!will-change-auto ${maxHeight ? ` overflow-y-auto no-scrollbar` : ''}`}
+            >
+              <CustomRank
+                data={{
+                  currentRank: listMemberData?.data.currentRank,
+                  ranking: listItem
+                }}
+                admin={listMemberData?.data?.admin}
+                type={type || 'member'}
+                maxPrecision={activeTab === FUNDING_TYPE ? 0 : 2}
+                suffix={activeTab === FUNDING_TYPE ? '' : '/h'}
+                onClick={handleClick}
+              />
+              <div ref={scrollTrigger} className="text-[transparent]">
+                {maxHeight ? 'loading' : ''}
+              </div>
+            </motion.div>
+            {isLoading && maxHeight ? (
+              <Loader
+                classNames={{
+                  wrapper: 'z-[1] left-[0] absolute bg-black/30  top-0',
+                  icon: 'w-[45px] h-[45px] text-white'
+                }}
+              />
+            ) : null}
+          </div>
         )}
-        {isLoading && (
+        {isLoading && !maxHeight ? (
           <Loader
             classNames={{
               wrapper: 'z-[1] left-[0] absolute bg-black/30  top-0',
               icon: 'w-[45px] h-[45px] text-white'
             }}
           />
-        )}
+        ) : null}
       </div>
     </div>
   )
