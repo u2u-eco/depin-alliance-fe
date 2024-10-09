@@ -2,6 +2,7 @@ import { ISPuzzleItem } from '@/interfaces/i.games'
 import { useState } from 'react'
 import { MainSudoku } from './components/main'
 import './styles/_index.scss'
+import Time from './components/time'
 export default function Sudoku() {
   const [selectedInput, setSelectedInput] = useState<number | null>(null)
   const puzzle = '5...8..49...5...3..673....115..........2.8..........187....415..3...2...49..5...3'
@@ -16,9 +17,8 @@ export default function Sudoku() {
     })
   )
 
-  const onHandleChange = (value: string, clearValue?: string) => {
+  const onHandleChange = (value: string, clearValue?: boolean) => {
     const isValueValid = (/^\d+$/.test(value) && value !== '0') || clearValue
-    console.log(isValueValid)
 
     setPuzzleObj((prevItems) =>
       prevItems.map((item) =>
@@ -37,8 +37,9 @@ export default function Sudoku() {
       <MainSudoku
         puzzle={puzzleObj}
         onSelectInput={(value: number) => setSelectedInput(value)}
-        onHandleChange={(value: any) => onHandleChange(value)}
+        onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
       />
+      <Time />
     </div>
   )
 }

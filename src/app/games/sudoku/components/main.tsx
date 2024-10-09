@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 interface IMainSudoku {
   puzzle: Array<ISPuzzleItem>
   onSelectInput: (value: number) => void
-  onHandleChange: (value: any) => void
+  onHandleChange: (value: any, clearValue?: boolean) => void
 }
 export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudoku) => {
   const [selectedRow, setSelectedRow] = useState(0)
@@ -58,6 +58,11 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     onHandleChange(numb)
   }
 
+  const handleResetNumber = () => {
+    setShowSelect(false)
+    onHandleChange('', true)
+  }
+
   useEffect(() => {
     setWidth(ref?.current?.offsetWidth)
     const getwidth = () => {
@@ -97,7 +102,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                 //   }}
                 // />
                 <div
-                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'selected' : ''}`}
+                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'selected' : ''} ${checkNumber ? 'checked' : ''}`}
                   key={indexRow * 9 + index}
                   ref={ref}
                   style={{ height: `${width}px` }}
@@ -105,7 +110,16 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                     handleClick(indexRow * 9 + index, isPreFilled)
                   }}
                 >
-                  <p>{value}</p>
+                  {checkNumber && !isPreFilled ? (
+                    <>
+                      <p>{value}</p>
+                      <p>2</p>
+                      <p>2</p>
+                      <p>2</p>
+                    </>
+                  ) : (
+                    <p>{value}</p>
+                  )}
                 </div>
               )
             })}
@@ -132,7 +146,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
               ))}
             <div
               className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/15 border-r col-span-2`}
-              onClick={() => setShowSelect(false)}
+              onClick={handleResetNumber}
             >
               <IconClose className="size-5 xs:size-6 2xs:size-7" />
             </div>
