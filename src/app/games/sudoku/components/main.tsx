@@ -18,9 +18,10 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const [listDraftById, setListDraftById] = useState<{ [key: number]: Array<number> }>({})
   const [activeItem, setActiveItem] = useState<number>()
   const [selectedId, setSelectedId] = useState<number>(-1)
-  const [currentRowCol, setCurrentRowCol] = useState<{ row: number; col: number }>({
+  const [currentRowCol, setCurrentRowCol] = useState<{ row: number; col: number; group: string }>({
     row: -1,
-    col: -1
+    col: -1,
+    group: '-1-1'
   })
 
   const [isError, setIsError] = useState<{ [key: number]: boolean }>({})
@@ -34,16 +35,28 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   }
 
   const listRow = useMemo(() => {
-    return chunk(puzzle, 9)
+    let listRow = chunk(puzzle, 9)
+    forEach(listRow, (row: any, indexRow: number) => {
+      forEach(row, (item: any, indexCol: number) => {
+        item['group'] = `${Math.floor(indexRow / 3)}${Math.floor(indexCol / 3)}`
+      })
+    })
+    return listRow
   }, [puzzle])
 
-  const handleClick = (index: number, isPreFilled: boolean, row: number, col: number) => {
+  const handleClick = (
+    index: number,
+    isPreFilled: boolean,
+    row: number,
+    col: number,
+    group: string
+  ) => {
     if (isPreFilled) return
     setShowSelect(true)
     setSelectedId(index)
     setActiveItem(index)
     onSelectInput(index)
-    setCurrentRowCol({ row, col })
+    setCurrentRowCol({ row, col, group })
   }
 
   const handleDraft = () => {
@@ -58,8 +71,12 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const checkInput = (numb: number) => {
     let _isError = false
     forEach(listRow, (items: any, indexRow: number) => {
-      forEach(items, ({ value }: any, indexCol: number) => {
-        if (indexRow === currentRowCol.row || indexCol === currentRowCol.col) {
+      forEach(items, ({ value, group }: any, indexCol: number) => {
+        if (
+          indexRow === currentRowCol.row ||
+          indexCol === currentRowCol.col ||
+          group === currentRowCol.group
+        ) {
           if (numb === Number(value)) {
             _isError = true
           }
@@ -130,34 +147,15 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
       >
         {listRow.map((item: any, indexRow: number) => (
           <div className={`game-row game-row-${indexRow + 1}`} key={indexRow}>
-            {item.map(({ value, id, isPreFilled }: any, index: number) => {
+            {item.map(({ value, id, isPreFilled, group }: any, index: number) => {
               return (
-                // <input
-                //   key={index}
-                //   value={value}
-                //   readOnly={isPreFilled}
-                //   tabIndex={isPreFilled ? -1 : 0}
-                //   className={`game-input ${isPreFilled ? 'prefilled-text' : ''}`}
-                //   type="text"
-                //   // maxLength="1"
-                //   name={`game-input-${index}`}
-                //   onChange={(e) => onHandleChange(e)}
-                //   onFocus={() => {
-                //     onHandleFocus(isPreFilled, index)
-                //     onSelectInput(index)
-                //   }}
-                //   onBlur={() => {
-                //     setSelectedRow(0)
-                //     setSelectedCol(0)
-                //   }}
-                // />
                 <div
-                  className={`game-input ${indexRow === currentRowCol.row || index === currentRowCol.col ? 'same' : ''} ${isPreFilled ? 'prefilled-text' : ''} ${isError[id] ? 'error' : ''} ${activeItem === id ? 'selected' : ''} ${draftId[id] ? 'checked' : ''}`}
+                  className={`game-input ${indexRow === currentRowCol.row || index === currentRowCol.col || group === currentRowCol.group ? 'same' : ''} ${isPreFilled ? 'prefilled-text' : ''} ${isError[id] ? 'error' : ''} ${activeItem === id ? 'selected' : ''} ${draftId[id] ? 'checked' : ''}`}
                   key={id}
                   ref={ref}
                   style={{ height: `${width}px` }}
                   onClick={() => {
-                    handleClick(id, isPreFilled, indexRow, index)
+                    handleClick(id, isPreFilled, indexRow, index, group)
                   }}
                 >
                   {draftId[id] && !isPreFilled && listDraftById[id] ? (
