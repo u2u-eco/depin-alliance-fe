@@ -10,11 +10,12 @@ interface IMainSudoku {
 export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudoku) => {
   const [selectedRow, setSelectedRow] = useState(0)
   const [selectedCol, setSelectedCol] = useState(0)
-  const ref = useRef(null)
+  const ref = useRef<any>(null)
   const [width, setWidth] = useState(0)
   const [showSelect, setShowSelect] = useState(false)
-  const [checkNumber, setCheckNumber] = useState(false)
+  const [draftId, setDraftId] = useState<{ [key: number]: boolean }>({})
   const [activeItem, setActiveItem] = useState<number>()
+  const [selectedId, setSelectedId] = useState<number>(-1)
 
   const onHandleFocus = (isPreFilled: boolean, index: number) => {
     if (!isPreFilled) {
@@ -45,12 +46,18 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const handleClick = (index: number, isPreFilled: boolean) => {
     if (isPreFilled) return
     setShowSelect(true)
+    setSelectedId(index)
     setActiveItem(index)
     onSelectInput(index)
   }
 
   const handleCheck = () => {
-    setCheckNumber(!checkNumber)
+    if (selectedId) {
+      setDraftId({
+        ...draftId,
+        [selectedId]: true
+      })
+    }
   }
 
   const handleSelectNumber = (numb: number) => {
@@ -71,7 +78,6 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     window.addEventListener('resize', getwidth)
     return () => window.removeEventListener('resize', getwidth)
   }, [])
-
   return (
     <div className="game-container btn">
       <div className="btn-border"></div>
@@ -81,6 +87,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
         {listRow.map((item: any, indexRow: number) => (
           <div className={`game-row game-row-${indexRow + 1}`} key={indexRow}>
             {item.map(({ value, isPreFilled }: any, index: number) => {
+              const _id = indexRow * 9 + index
               return (
                 // <input
                 //   key={index}
@@ -102,20 +109,20 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                 //   }}
                 // />
                 <div
-                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === indexRow * 9 + index ? 'selected' : ''} ${checkNumber ? 'checked' : ''}`}
-                  key={indexRow * 9 + index}
+                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === _id ? 'selected' : ''} ${draftId[_id] ? 'checked' : ''}`}
+                  key={_id}
                   ref={ref}
                   style={{ height: `${width}px` }}
                   onClick={() => {
-                    handleClick(indexRow * 9 + index, isPreFilled)
+                    handleClick(_id, isPreFilled)
                   }}
                 >
-                  {checkNumber && !isPreFilled ? (
+                  {draftId[_id] && !isPreFilled ? (
                     <>
                       <p>{value}</p>
+                      {/* <p>2</p>
                       <p>2</p>
-                      <p>2</p>
-                      <p>2</p>
+                      <p>2</p> */}
                     </>
                   ) : (
                     <p>{value}</p>
@@ -151,7 +158,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
               <IconClose className="size-5 xs:size-6 2xs:size-7" />
             </div>
             <div
-              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl ${checkNumber ? 'shadow-inner-primary' : ''}`}
+              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl ${draftId[selectedId] ? 'shadow-inner-primary' : ''}`}
               onClick={handleCheck}
             >
               ?
