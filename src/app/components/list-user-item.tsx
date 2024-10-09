@@ -8,6 +8,15 @@ interface IListUserItem {
   handleClick: (item: any, index: number) => void
 }
 export default function ListUserItem({ listData, handleClick, activeItem }: IListUserItem) {
+  const getName = (item: any) => {
+    if (item.code === 'CYBER_BOX') {
+      return '???'
+    }
+    if (item.code === 'FLASHBACK') {
+      return 'Ticket'
+    }
+    return `$${item.name.split('$')[1] || ''}`
+  }
   return (
     <>
       {listData?.map((item: any, index: number) => (
@@ -43,9 +52,7 @@ export default function ListUserItem({ listData, handleClick, activeItem }: ILis
                 </p>
               </div>
             ) : (
-              <p className="text-green-500 mt-auto leading-[18px]">
-                {item.code === 'CYBER_BOX' ? '???' : `$${item.name.split('$')[1] || ''}`}
-              </p>
+              <p className="text-green-500 mt-auto leading-[18px]">{getName(item)}</p>
             )}
           </div>
         </div>
