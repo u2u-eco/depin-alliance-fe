@@ -5,7 +5,7 @@ import './styles/_index.scss'
 import Time from './components/time'
 export default function Sudoku() {
   const [selectedInput, setSelectedInput] = useState<number | null>(null)
-  const puzzle = '5...8..49...5...3..673....115..........2.8..........187....415..3...2...49..5...3'
+  const puzzle = '326....89..489736..983.6...21.7.86....926.57.637.19.2..7.63..4...3.....75.24..9..'
   const puzzleArr = puzzle.split('')
   const [puzzleObj, setPuzzleObj] = useState<Array<ISPuzzleItem>>(
     puzzleArr.map((item, id) => {
