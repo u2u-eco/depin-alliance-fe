@@ -18,6 +18,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const [listDraftById, setListDraftById] = useState<{ [key: number]: Array<number> }>({})
   const [activeItem, setActiveItem] = useState<number>()
   const [selectedId, setSelectedId] = useState<number>(-1)
+  const [numberSelected, setNumberSelected] = useState<number>(-1)
   const [currentRowCol, setCurrentRowCol] = useState<{ row: number; col: number; group: string }>({
     row: -1,
     col: -1,
@@ -49,9 +50,13 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     isPreFilled: boolean,
     row: number,
     col: number,
-    group: string
+    group: string,
+    value: any
   ) => {
-    if (isPreFilled) return
+    if (isPreFilled) {
+      setNumberSelected(Number(value))
+      return
+    }
     setShowSelect(true)
     setSelectedId(index)
     setActiveItem(index)
@@ -118,6 +123,10 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
         [selectedId]: []
       })
     }
+    setIsError({
+      ...isError,
+      [selectedId]: false
+    })
   }
 
   const renderDraft = (id: number) => {
@@ -155,7 +164,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                   ref={ref}
                   style={{ height: `${width}px` }}
                   onClick={() => {
-                    handleClick(id, isPreFilled, indexRow, index, group)
+                    handleClick(id, isPreFilled, indexRow, index, group, value)
                   }}
                 >
                   {draftId[id] && !isPreFilled && listDraftById[id] ? (
