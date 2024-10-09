@@ -1,6 +1,7 @@
 import { IconClose } from '@/app/components/icons'
 import { ShapeIcon } from '@/app/components/icons/sharp-sudoku'
 import { ISPuzzleItem } from '@/interfaces/i.games'
+import { chunk, forEach } from 'lodash'
 import { useEffect, useMemo, useRef, useState } from 'react'
 interface IMainSudoku {
   puzzle: Array<ISPuzzleItem>
@@ -14,8 +15,15 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const [width, setWidth] = useState(0)
   const [showSelect, setShowSelect] = useState(false)
   const [draftId, setDraftId] = useState<{ [key: number]: boolean }>({})
+  const [listDraftById, setListDraftById] = useState<{ [key: number]: Array<number> }>({})
   const [activeItem, setActiveItem] = useState<number>()
   const [selectedId, setSelectedId] = useState<number>(-1)
+  const [currentRowCol, setCurrentRowCol] = useState<{ row: number; col: number }>({
+    row: -1,
+    col: -1
+  })
+
+  const [isError, setIsError] = useState<{ [key: number]: boolean }>({})
 
   const onHandleFocus = (isPreFilled: boolean, index: number) => {
     if (!isPreFilled) {
@@ -26,32 +34,19 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   }
 
   const listRow = useMemo(() => {
-    const list: any = []
-    let count = 0
-    let row: any = []
-    puzzle.forEach((item: any, index: number) => {
-      if (count < 9) {
-        ++count
-        row.push(item)
-        if (count === 9) {
-          list.push(row)
-          row = []
-          count = 0
-        }
-      }
-    })
-    return list
+    return chunk(puzzle, 9)
   }, [puzzle])
 
-  const handleClick = (index: number, isPreFilled: boolean) => {
+  const handleClick = (index: number, isPreFilled: boolean, row: number, col: number) => {
     if (isPreFilled) return
     setShowSelect(true)
     setSelectedId(index)
     setActiveItem(index)
     onSelectInput(index)
+    setCurrentRowCol({ row, col })
   }
 
-  const handleCheck = () => {
+  const handleDraft = () => {
     if (selectedId) {
       setDraftId({
         ...draftId,
@@ -60,14 +55,63 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     }
   }
 
+  const checkInput = (numb: number) => {
+    let _isError = false
+    forEach(listRow, (items: any, indexRow: number) => {
+      forEach(items, ({ value }: any, indexCol: number) => {
+        if (indexRow === currentRowCol.row || indexCol === currentRowCol.col) {
+          if (numb === Number(value)) {
+            _isError = true
+          }
+        }
+      })
+    })
+    setIsError({
+      ...isError,
+      [selectedId]: _isError
+    })
+  }
+
   const handleSelectNumber = (numb: number) => {
+    if (draftId[selectedId]) {
+      const _listDraft = listDraftById[selectedId] ? listDraftById[selectedId] : []
+      if (_listDraft.length > 3) return
+      setListDraftById({
+        ...listDraftById,
+        [selectedId]: [..._listDraft, numb]
+      })
+      setShowSelect(false)
+      return
+    }
     setShowSelect(false)
     onHandleChange(numb)
+    checkInput(numb)
   }
 
   const handleResetNumber = () => {
     setShowSelect(false)
     onHandleChange('', true)
+    if (draftId[selectedId]) {
+      setDraftId({
+        ...draftId,
+        [selectedId]: false
+      })
+      setListDraftById({
+        ...listDraftById,
+        [selectedId]: []
+      })
+    }
+  }
+
+  const renderDraft = (id: number) => {
+    const list = [...listDraftById[id], ...Array(4 - listDraftById[id].length).fill(-1)]
+    return list?.map((draftValue: number, indexDraft: number) => {
+      return draftValue === -1 ? (
+        <p key={indexDraft}>&nbsp;</p>
+      ) : (
+        <p key={indexDraft}>{draftValue}</p>
+      )
+    })
   }
 
   useEffect(() => {
@@ -86,8 +130,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
       >
         {listRow.map((item: any, indexRow: number) => (
           <div className={`game-row game-row-${indexRow + 1}`} key={indexRow}>
-            {item.map(({ value, isPreFilled }: any, index: number) => {
-              const _id = indexRow * 9 + index
+            {item.map(({ value, id, isPreFilled }: any, index: number) => {
               return (
                 // <input
                 //   key={index}
@@ -109,21 +152,16 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                 //   }}
                 // />
                 <div
-                  className={`game-input ${isPreFilled ? 'prefilled-text' : ''} ${activeItem === _id ? 'selected' : ''} ${draftId[_id] ? 'checked' : ''}`}
-                  key={_id}
+                  className={`game-input ${indexRow === currentRowCol.row || index === currentRowCol.col ? 'same' : ''} ${isPreFilled ? 'prefilled-text' : ''} ${isError[id] ? 'error' : ''} ${activeItem === id ? 'selected' : ''} ${draftId[id] ? 'checked' : ''}`}
+                  key={id}
                   ref={ref}
                   style={{ height: `${width}px` }}
                   onClick={() => {
-                    handleClick(_id, isPreFilled)
+                    handleClick(id, isPreFilled, indexRow, index)
                   }}
                 >
-                  {draftId[_id] && !isPreFilled ? (
-                    <>
-                      <p>{value}</p>
-                      {/* <p>2</p>
-                      <p>2</p>
-                      <p>2</p> */}
-                    </>
+                  {draftId[id] && !isPreFilled && listDraftById[id] ? (
+                    <>{renderDraft(id)}</>
                   ) : (
                     <p>{value}</p>
                   )}
@@ -159,7 +197,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
             </div>
             <div
               className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl ${draftId[selectedId] ? 'shadow-inner-primary' : ''}`}
-              onClick={handleCheck}
+              onClick={handleDraft}
             >
               ?
             </div>
