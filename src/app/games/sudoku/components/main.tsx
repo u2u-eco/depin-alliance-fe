@@ -175,26 +175,26 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
             className="absolute top-0 left-0 w-full h-full bg-black/80 backdrop-blur-[4px]"
             onClick={() => setShowSelect(false)}
           ></div>
-          <div className="relative grid grid-cols-3 text-title size-[55%] shadow-[0_0_5px_5px_rgba(0,0,0,0.1)]">
+          <div className="relative grid grid-cols-3 text-title size-[55%] shadow-inner-primary">
             {Array(9)
               .fill(1)
               .map((_, index: number) => (
                 <div
                   key={index}
-                  className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/15 border-b ${index !== 2 && index !== 5 && index !== 8 ? 'border-r' : ''}`}
+                  className={`flex items-center justify-center bg-black/20 hover:shadow-inner-primary hover:text-green-500 transition-all font-medium text-base xs:text-xl 2xs:text-2xl border-white/20 border-b ${index !== 2 && index !== 5 && index !== 8 ? 'border-r' : ''}`}
                   onClick={() => handleSelectNumber(index + 1)}
                 >
                   {index + 1}
                 </div>
               ))}
             <div
-              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl border-white/15 border-r col-span-2`}
+              className={`flex items-center justify-center bg-black/20 hover:shadow-inner-primary hover:text-green-500 transition-all font-medium text-base xs:text-xl 2xs:text-2xl border-white/20 border-r col-span-2`}
               onClick={handleResetNumber}
             >
               <IconClose className="size-5 xs:size-6 2xs:size-7" />
             </div>
             <div
-              className={`flex items-center justify-center bg-white/10 hover:shadow-inner-primary hover:text-green-500 transition-all backdrop-blur-[8px] font-medium text-base xs:text-xl 2xs:text-2xl ${draftId[selectedId] ? 'shadow-inner-primary' : ''}`}
+              className={`flex items-center justify-center bg-black/20 hover:shadow-inner-primary hover:text-green-500 transition-all font-medium text-base xs:text-xl 2xs:text-2xl ${draftId[selectedId] ? 'shadow-inner-primary' : ''}`}
               onClick={handleDraft}
             >
               ?
