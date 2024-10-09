@@ -28,6 +28,7 @@ interface ItemProps {
   cb?: () => void
   children: ReactNode
 }
+const PARTNERS_BG_SPECIAL = ['flashback', 'openmesh', 'timpi']
 
 const CustomItem = ({
   type,
@@ -75,8 +76,7 @@ const CustomItem = ({
   }
 
   const isSpecialBg =
-    (type === LIST_TYPE.PARTNERS &&
-      (item.name?.toLowerCase() === 'openmesh' || item.name?.toLowerCase() === 'timpi')) ||
+    (type === LIST_TYPE.PARTNERS && PARTNERS_BG_SPECIAL.indexOf(item.name?.toLowerCase()) !== -1) ||
     (type === LIST_TYPE.LEAGUE && activeId && activeId === item.code)
 
   const getBg = () => {
