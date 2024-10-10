@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { formatNumber } from '../../helper/common'
 import Mining from './components/minning'
 import CustomPage from '../components/custom-page'
@@ -10,15 +10,13 @@ import Link from 'next/link'
 import { IconPoint } from '../components/icons'
 import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
-import { SoundsContextValue } from '@/contexts/sounds.context'
 import { useRouter } from 'next/navigation'
-import { useDisclosure } from '@nextui-org/react'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 export default function HomePage() {
   const router = useRouter()
   const { userInfo } = useCommonStore()
-  const { main } = useContext(SoundsContextValue)
+
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
 
@@ -27,12 +25,12 @@ export default function HomePage() {
     router.push('/avatar')
   }
 
-  useEffect(() => {
-    main?.play()
-    return () => {
-      main?.stop()
-    }
-  }, [])
+  // useEffect(() => {
+  //   main?.play()
+  //   return () => {
+  //     main?.stop()
+  //   }
+  // }, [])
 
   useEffect(() => {
     setTimeout(() => {
