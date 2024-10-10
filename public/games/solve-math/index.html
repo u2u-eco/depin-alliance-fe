@@ -1,0 +1,103 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Solve Math</title>
+
+    <!-- <meta name="Title" content="Solve Math" />
+        <meta name="description" content="Solve Math is a HTML5 game where you have to solve the equals answer by given random numbers and mathematic symbols.">
+		<meta name="keywords" content="drag, drop, rearrange, arrange, solve, formula, plus, minus, multiply, divide, numbers, math, game">
+        
+        <meta property="og:title" content="Solve Math"/>
+        <meta property="og:site_name" content="Solve Math"/>
+        <meta property="og:image" content="http://demonisblack.com/code/2015/solvemath/game/share.jpg" />
+        <meta property="og:url" content="http://demonisblack.com/code/2015/solvemath/game/" />
+        <meta property="og:description" content="Solve Math is a HTML5 game where you have to solve the equals answer by given random numbers and mathematic symbols.">
+        
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Solve Math" />
+        <meta name="twitter:description" content="Solve Math is a HTML5 game where you have to solve the equals answer by given random numbers and mathematic symbols." />
+        <meta name="twitter:image" content="http://demonisblack.com/code/2015/solvemath/game/share.jpg" /> -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <script>
+      if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+        var msViewportStyle = document.createElement('style')
+        msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:device-width}'))
+        document.getElementsByTagName('head')[0].appendChild(msViewportStyle)
+      }
+    </script>
+
+    <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="solve-math/css/normalize.css" />
+    <link rel="stylesheet" href="solve-math/css/main.css" />
+    <script src="solve-math/js/vendor/modernizr-2.6.2.min.js"></script>
+  </head>
+  <body>
+    <!-- PERCENT LOADER START-->
+    <div id="mainLoader">0</div>
+    <!-- PERCENT LOADER END-->
+
+    <!-- CONTENT START-->
+    <div id="mainHolder">
+      <!-- BROWSER NOT SUPPORT START-->
+      <div id="notSupportHolder">
+        <div class="notSupport">
+          YOUR BROWSER ISN'T SUPPORTED.<br />PLEASE UPDATE YOUR BROWSER IN ORDER TO RUN THE GAME
+        </div>
+      </div>
+      <!-- BROWSER NOT SUPPORT END-->
+
+      <!-- ROTATE INSTRUCTION START-->
+      <div id="rotateHolder">
+        <div class="mobileRotate">
+          <div class="rotateImg"><img src="solve-math/assets/rotate.png" /></div>
+          <div class="rotateDesc">ROTE YOUR DEVICE <br />TO LANDSCAPE</div>
+        </div>
+      </div>
+      <!-- ROTATE INSTRUCTION END-->
+
+      <!-- CANVAS START-->
+      <div id="canvasHolder">
+        <canvas id="gameCanvas" width="1024" height="768"></canvas>
+      </div>
+      <!-- CANVAS END-->
+    </div>
+    <!-- CONTENT END-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      window.jQuery || document.write('<script src="solve-math/js/vendor/jquery.min.js"><\/script>')
+    </script>
+
+    <script src="solve-math/js/vendor/detectmobilebrowser.js"></script>
+    <script src="solve-math/js/vendor/createjs.min.js"></script>
+
+    <script src="solve-math/js/plugins.js"></script>
+    <script src="solve-math/js/sound.js"></script>
+    <script src="solve-math/js/canvas.js"></script>
+    <script src="solve-math/js/game.js"></script>
+    <script src="solve-math/js/mobile.js"></script>
+    <script src="solve-math/js/main.js"></script>
+    <script src="solve-math/js/loader.js"></script>
+    <script src="solve-math/js/init.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-86567323-39"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'UA-424386-31')
+    </script> -->
+  </body>
+</html>
