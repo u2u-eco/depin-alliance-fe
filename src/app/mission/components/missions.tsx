@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 import ListMission from './list-mission'
 import Loader from '@/app/components/ui/loader'
 import { IItemMissionPartner } from '@/interfaces/i.missions'
+import { twitterInfo } from '@/services/twitter'
 interface IMission {
   updateListReward: (count: number) => void
   showTabPartner: (status: boolean) => void
