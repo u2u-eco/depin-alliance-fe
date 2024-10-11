@@ -20,6 +20,7 @@ function initMain() {
     if (!$.browser.mobile || !isTablet) {
       $('#canvasHolder').show()
     }
+    alert(1)
 
     initGameCanvas(stageW, stageH)
     buildGameCanvas()
