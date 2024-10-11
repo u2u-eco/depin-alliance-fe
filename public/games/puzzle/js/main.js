@@ -20,7 +20,6 @@ function initMain() {
     if (!$.browser.mobile || !isTablet) {
       $('#canvasHolder').show()
     }
-    alert(1)
 
     initGameCanvas(stageW, stageH)
     buildGameCanvas()
@@ -39,7 +38,7 @@ function initMain() {
     checkMobileOrientation()
     resizeCanvas()
   } catch (ex) {
-    alert(ex)
+    console.log(ex)
   }
 }
 
