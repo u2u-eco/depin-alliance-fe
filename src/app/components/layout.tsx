@@ -11,6 +11,32 @@ import { Toaster } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import { TonConnectUIProvider } from '@tonconnect/ui-react'
 
+import { createAppKit } from '@reown/appkit/react'
+import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
+import { mainnet, arbitrum, bsc } from '@reown/appkit/networks'
+
+// 1. Get projectId at https://cloud.reown.com
+const projectId = '0d36ced6950fe00fd756282cc1b234e8'
+
+// 2. Create a metadata object
+const metadata = {
+  name: 'Depin',
+  description: 'AppKit Example',
+  url: 'https://reown.com/appkit', // origin must match your domain & subdomain
+  icons: ['https://assets.reown.com/reown-profile-pic.png']
+}
+
+// 3. Create the AppKit instance
+createAppKit({
+  adapters: [new Ethers5Adapter()],
+  metadata,
+  networks: [mainnet, arbitrum, bsc],
+  projectId,
+  features: {
+    analytics: true // Optional - defaults to your Cloud configuration
+  }
+})
+
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()

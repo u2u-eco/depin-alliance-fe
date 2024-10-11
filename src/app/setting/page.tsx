@@ -19,9 +19,11 @@ import {
   THEME
 } from '@tonconnect/ui-react'
 import { formatAddress } from '@/helper/common'
+import ConnectButton from '@/lib/web3-modal'
 
 const SETTING_TYPE = {
   WALLET: 'wallet',
+  WC: 'wallet-connect',
   LANGUAGE: 'language',
   MUSIC: 'music',
   SOUND: 'sound',
@@ -66,6 +68,14 @@ export default function SettingPage() {
         <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
       )
     },
+    {
+      id: 2,
+      type: SETTING_TYPE.WC,
+      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: 'Connect EVM Wallet',
+      text: 'Wallet Connect',
+      icon: <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
+    },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
       id: 3,
@@ -95,6 +105,15 @@ export default function SettingPage() {
       case SETTING_TYPE.WALLET:
         if (wallet) {
           setType(SETTING_TYPE.WALLET)
+          onOpen()
+        } else {
+          console.log('connect wallet')
+        }
+
+        break
+      case SETTING_TYPE.WC:
+        if (wallet) {
+          setType(SETTING_TYPE.WC)
           onOpen()
         } else {
           console.log('connect wallet')
@@ -166,6 +185,8 @@ export default function SettingPage() {
                         </div>
                       ) : (
                         <>
+                          {item.type === SETTING_TYPE.WC && <ConnectButton />}
+
                           {item.type === SETTING_TYPE.WALLET && (
                             <TonConnectButton className="absolute top-0 left-0 !size-full opacity-0" />
                           )}
