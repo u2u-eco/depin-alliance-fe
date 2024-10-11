@@ -15,9 +15,9 @@ function initGameCanvas(w, h) {
     var gameCanvas = document.getElementById('gameCanvas')
     gameCanvas.width = w
     gameCanvas.height = h
-
     canvasW = w
     canvasH = h
+    alert(canvasH)
     stage = new createjs.Stage('gameCanvas')
 
     createjs.Touch.enable(stage)
