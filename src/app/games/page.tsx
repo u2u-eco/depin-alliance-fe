@@ -32,7 +32,7 @@ export default function Game() {
           }}
         />
         <CustomButton
-          title="Monster"
+          title="Solve Math"
           onAction={() => {
             handleOpenGame('games/solve-math')
           }}
