@@ -1072,6 +1072,10 @@ button {
   -webkit-text-fill-color: transparent;
 }
 
+.text-shadow-white {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
 .__floater__arrow {
   display: none;
 }
