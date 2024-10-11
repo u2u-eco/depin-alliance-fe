@@ -39,6 +39,11 @@ export interface IUserSetting {
   enableSoundEffect: boolean
 }
 
+export interface IUserTwitter {
+  twitterName: string | null
+  twitterUsername: string | null
+}
+
 export interface IJoinRequest {
   miningPower: number
   userId: number

@@ -13,9 +13,10 @@ import useMissionStore from '@/stores/missionsStore'
 import { useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import SpecialBoxModal from './special-box'
+import { loginTwitter, twitterInfo } from '@/services/twitter'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -26,17 +27,22 @@ interface IListMission {
   }[]
   refetch?: () => void
 }
+const TYPES_LOGIN_X = ['CONNECT_X']
+const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
+  const [isVerifying, setVerifying] = useState<boolean>(false)
   const [isCheckMission, setCheckMission] = useState<boolean>(false)
+  const [isConnectTwitter, setIsConnectTwitter] = useState<boolean>(false)
   const router = useRouter()
   const refTimeoutCheck = useRef<any>()
   const { webApp } = useTelegram()
   const refSpecialItem = useRef<any>()
-  const { getUserInfo, userInfo } = useCommonStore()
+  const { getUserInfo, userInfo, userTwitter, setUserTwitter } = useCommonStore()
   const { setCurrentMissionQuiz } = useMissionStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [loadingButton, setLoadingButton] = useState(false)
+  const [twitterLoginUrl, setTwitterLoginUrl] = useState<string>('')
   const {
     isOpen: isOpenSpecial,
     onOpen: onOpenSpecial,
@@ -44,7 +50,19 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     onClose: onCloseSpecial
   } = useDisclosure()
   const currentItem = useRef<any>()
-  const handleClick = (item: any) => {
+  const getUrlTwitterLogin = async () => {
+    setLoadingButton(true)
+    const res = await loginTwitter()
+    if (res.status && res.data) {
+      if (res.data?.twitterUsername || res.data?.twitterName) {
+        setUserTwitter(res.data)
+      } else {
+        setTwitterLoginUrl(res.data)
+      }
+    }
+    setLoadingButton(false)
+  }
+  const handleClick = async (item: any) => {
     if (item.status === 'CLAIMED') return
     if (item.status === 'VERIFIED') {
       setVerified(true)
@@ -53,7 +71,22 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       setVerified(false)
     }
     currentItem.current = item
-    onOpen()
+    setVerifying(false)
+    if (currentItem.current.status === 'VERIFYING') {
+      setVerifying(true)
+    }
+    if (
+      (TYPES_LOGIN_X.indexOf(currentItem.current.type) !== -1 ||
+        NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1) &&
+      (!userTwitter || !userTwitter?.twitterUsername)
+    ) {
+      setIsConnectTwitter(true)
+      getUrlTwitterLogin()
+      onOpen()
+    } else {
+      setIsConnectTwitter(false)
+      onOpen()
+    }
   }
 
   const handleVerifyMission = async (id: number, disableMessage?: boolean) => {
@@ -61,8 +94,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     setLoadingButton(true)
 
     const res = await verifyMission(id)
-    if (res.status && res.data) {
-      setVerified(true)
+    if (res.status && res.data !== 'false') {
+      if (res.data === 'true') {
+        setVerified(true)
+      }
+      if (res.data === 'verifying') {
+        setVerifying(true)
+      }
       refetch && refetch()
     } else {
       if (!disableMessage) {
@@ -137,7 +175,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleMission = () => {
-    if (loadingButton) return
+    if (loadingButton || isVerifying) return
     if (isVerified) {
       handleClaim()
       return
@@ -155,8 +193,31 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           timeOut = 2000
           router.push('/mission/quiz')
           setCurrentMissionQuiz(currentItem.current)
+          break
+        case 'CONNECT_X':
+          if (!userTwitter?.twitterUsername && twitterLoginUrl) {
+            window.open(twitterLoginUrl, '_blank')
+            setCheckMission(false)
+            setLoadingButton(false)
+            onClose()
+          } else {
+            setVerified(true)
+            setLoadingButton(false)
+          }
+          break
         default:
           if (currentItem.current.url) {
+            if (
+              NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1 &&
+              !userTwitter?.twitterUsername &&
+              twitterLoginUrl
+            ) {
+              window.open(twitterLoginUrl, '_blank')
+              setCheckMission(false)
+              setLoadingButton(false)
+              onClose()
+              return
+            }
             if (webApp?.platform === 'android') {
               checkMission(currentItem.current.id)
             } else {
@@ -167,11 +228,61 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       }
       clearTimeout(refTimeoutCheck.current)
       refTimeoutCheck.current = setTimeout(() => {
-        setCheckMission(true)
+        if (!isVerified) {
+          setCheckMission(true)
+        }
         setLoadingButton(false)
       }, timeOut)
     }
   }
+
+  const checkTwitterLogin = async () => {
+    if (!userTwitter?.twitterUsername) {
+      const res = await twitterInfo()
+      if (res.status && res.data) {
+        setUserTwitter(res.data)
+      }
+    }
+  }
+
+  useEffect(() => {
+    checkTwitterLogin()
+  }, [])
+
+  const handleVisible = async () => {
+    if (!document.hidden) {
+      if (
+        !userTwitter?.twitterUsername &&
+        (TYPES_LOGIN_X.indexOf(currentItem.current?.type) !== -1 ||
+          NAMES_LOGIN_X.indexOf(currentItem.current?.name.toLowerCase()) !== -1)
+      ) {
+        checkTwitterLogin()
+      }
+    }
+  }
+
+  const getTitleBtn = () => {
+    if (isVerifying) {
+      return 'VERIFYING'
+    }
+    if (isVerified) {
+      return 'Claim Now'
+    }
+    if (isCheckMission) {
+      return 'CHECK MISSION'
+    }
+    if (isConnectTwitter) {
+      return 'Connect your twitter'
+    }
+    return 'START MISSION'
+  }
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisible)
+    }
+  }, [])
 
   return (
     <>
@@ -256,7 +367,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           </div>
           <CustomButton
             isLoading={loadingButton}
-            title={isVerified ? 'Claim Now' : isCheckMission ? 'CHECK MISSION' : 'START MISSION'}
+            disable={isVerifying}
+            title={getTitleBtn()}
             onAction={handleMission}
           />
         </div>
