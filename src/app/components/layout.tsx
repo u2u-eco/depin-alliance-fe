@@ -35,7 +35,7 @@ export default function Layout({ children }: any) {
   }
 
   return (
-    <div className="container">
+    <>
       <Toaster
         position="top-center"
         theme="dark"
@@ -50,7 +50,6 @@ export default function Layout({ children }: any) {
           }
         }}
       />
-
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <NextUIProvider>
@@ -68,6 +67,6 @@ export default function Layout({ children }: any) {
           </NextUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
-    </div>
+    </>
   )
 }

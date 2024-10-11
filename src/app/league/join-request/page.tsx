@@ -121,7 +121,11 @@ export default function JoinRequestPage() {
       <CustomPage
         classNames={{
           wrapper:
-            "before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-205px] before:size-[355px] before:rounded-[50%] before:bg-yellow-500 before:blur-[75px] before:opacity-30 before:z-[-1]"
+            "before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-205px] before:size-[355px] before:rounded-[50%] before:bg-yellow-500 before:blur-[75px] before:opacity-30 before:z-[-1]",
+          container: 'h-full',
+          animate:
+            '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]',
+          base: 'h-full'
         }}
       >
         <div className="space-y-6 xs:space-y-8">
@@ -147,7 +151,7 @@ export default function JoinRequestPage() {
                 exit={{ y: -25, opacity: 0 }}
                 transition={{ duration: 0.35 }}
               >
-                <div className="flex flex-col space-y-3 2xs:space-y-4">
+                <div className="flex flex-col space-y-3 2xs:space-y-4 pb-11 xs:pb-12">
                   {listItem.map((item: any, index: number) => (
                     <MemberItem
                       key={index}
@@ -163,6 +167,18 @@ export default function JoinRequestPage() {
                 </div>
               </motion.div>
             )}
+          </div>
+          <div className="fixed bottom-3 3xs:bottom-4 left-3 3xs:left-4 right-3 3xs:right-4 max-w-[480px] mx-auto flex items-center space-x-2 xs:space-x-3 2xs:space-x-4">
+            <div className="btn error">
+              <div className="btn-border"></div>
+              <div className="btn-error !px-3">Decline All</div>
+              <div className="btn-border"></div>
+            </div>
+            <div className="btn">
+              <div className="btn-border"></div>
+              <div className="btn-primary !px-3">Accept All</div>
+              <div className="btn-border"></div>
+            </div>
           </div>
         </div>
       </CustomPage>

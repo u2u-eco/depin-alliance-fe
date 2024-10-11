@@ -11,6 +11,9 @@ interface Pageprops {
   children: ReactNode
   classNames?: {
     wrapper?: ClassValue
+    container?: ClassValue
+    animate?: ClassValue
+    base?: ClassValue
   }
   disableOverscroll?: boolean
   wrapHidden?: boolean
@@ -73,23 +76,27 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
           className={` ${disableOverscroll ? 'overscroll-y-none' : ''} ${wrapHidden ? '' : 'overflow-y-auto'} flex flex-col no-scrollbar`}
         >
           <div className=" absolute"></div>
-          <div className={`container-custom ${full ? 'h-full' : ''}`}>
+          <div className={cn(`container-custom ${full ? 'h-full' : ''}`, classNames?.container)}>
             <motion.div
               initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -25, opacity: 0 }}
               // transition={{ duration: 0.35 }}
               key="custom-page"
-              className={
+              className={cn(
                 full
                   ? '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]'
-                  : '!will-change-auto'
-              }
+                  : '!will-change-auto',
+                classNames?.animate
+              )}
             >
               {isShowInfo && <Info />}
               <div
                 id="jsWrapContainer"
-                className={`${isShowInfo ? 'my-8 xs:my-10' : full ? 'my-5 xs:my-6 2xs:my-7 h-full' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`}
+                className={cn(
+                  `${isShowInfo ? 'my-8 xs:my-10' : full ? 'my-5 xs:my-6 2xs:my-7 h-full' : 'my-5 xs:my-6 2xs:my-7'} max-w-[480px] mx-auto`,
+                  classNames?.base
+                )}
               >
                 {children}
               </div>
