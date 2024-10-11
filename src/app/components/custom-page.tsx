@@ -41,7 +41,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail' &&
-    pathName !== '/map'
+    pathName !== '/map' &&
+    pathName !== '/map/detail'
   let isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -59,7 +60,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/innovate' &&
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail' &&
-    pathName !== '/map'
+    pathName !== '/map' &&
+    pathName !== '/map/detail'
 
   if (
     tourState.tourActive &&
