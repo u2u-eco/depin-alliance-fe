@@ -116,7 +116,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     window.open(currentItem.current.url, '_blank')
 
     setTimeout(() => {
-      if (res.status && res.data) {
+      if (res.status && res.data === 'true') {
         setVerified(true)
         refetch && refetch()
       }
