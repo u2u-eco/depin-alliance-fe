@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { CURRENT_STATUS as I_CURRENT_STATUS, IDeviceItem, IUserInfo } from '@/interfaces/i.user'
 import { getUserConfig, getUserInfo, getUserSetting } from '@/services/user'
-import { IUserConfig, IUserLeague, IUserSetting } from '@/interfaces/i.league'
+import { IUserConfig, IUserLeague, IUserSetting, IUserTwitter } from '@/interfaces/i.league'
 import Cookies from 'js-cookie'
 import { CURRENT_STATUS } from '@/constants'
 interface CommonState {
@@ -15,10 +15,12 @@ interface CommonState {
   safeAreaBottom: number
   userConfig: IUserConfig | null
   userSetting: IUserSetting | null
+  userTwitter: IUserTwitter | null
   setSafeAreaBottom: (height: number) => void
   setHeightNav: (height: number) => void
   setToken: ({ token }: { token: string }) => void
   setUserInfo: ({ info }: { info: IUserInfo }) => void
+  setUserTwitter: (info: IUserTwitter) => void
   setUserConfig: ({ config }: { config: IUserConfig }) => void
   setDevice: ({ info }: { info: Array<IDeviceItem> }) => void
   setCurrentStatus: ({ status }: { status: I_CURRENT_STATUS }) => void
@@ -36,6 +38,7 @@ const useCommonStore = create<CommonState>((set) => ({
   currentLeague: null,
   userConfig: null,
   userSetting: null,
+  userTwitter: null,
   heightNav: 70,
   safeAreaBottom: 0,
   currentStatus: I_CURRENT_STATUS.STARTED,
@@ -45,6 +48,7 @@ const useCommonStore = create<CommonState>((set) => ({
   setToken: ({ token }) => set({ token }),
   setUserInfo: ({ info }) => set({ userInfo: info }),
   setUserConfig: ({ config }) => set({ userConfig: config }),
+  setUserTwitter: (info: IUserTwitter) => set({ userTwitter: info }),
   setDevice: ({ info }) => set({ deviceInfo: info }),
   setCurrentStatus: ({ status }) => set({ currentStatus: status }),
   getUserInfo: async () => {

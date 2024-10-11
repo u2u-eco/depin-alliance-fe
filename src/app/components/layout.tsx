@@ -1,10 +1,8 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
-// import CustomNavbar from './custom-navbar'
-// import { usePathname } from 'next/navigation'
 import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
@@ -18,6 +16,7 @@ import { TourGuideProvider } from '@/contexts/tour.guide.context'
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
   const queryClient = new QueryClient()
+  const { userSetting } = useCommonStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -33,6 +32,20 @@ export default function Layout({ children }: any) {
   const handleBack = () => {
     router.back()
   }
+
+  useEffect(() => {
+    // main?.stop()
+    const mainSound = new Howl({
+      src: ['/assets/sounds/theme/main-theme.mp3'],
+      loop: true,
+      mute: !userSetting?.enableMusicTheme,
+      html5: false
+    })
+    mainSound?.play()
+    return () => {
+      mainSound?.stop()
+    }
+  }, [userSetting?.enableMusicTheme])
 
   return (
     <div className="container">
