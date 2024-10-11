@@ -22,19 +22,19 @@ export default function Game() {
         <CustomButton
           title="Puzzle"
           onAction={() => {
-            handleOpenGame('games/puzzle')
+            handleOpenGame('games/play?type=puzzle')
           }}
         />
         <CustomButton
           title="Monster"
           onAction={() => {
-            handleOpenGame('games/monster')
+            handleOpenGame('games/play?type=monster')
           }}
         />
         <CustomButton
           title="Solve Math"
           onAction={() => {
-            handleOpenGame('games/solve-math')
+            handleOpenGame('games/play?type=solve-math')
           }}
         />
       </div>

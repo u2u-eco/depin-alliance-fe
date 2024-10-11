@@ -17,7 +17,6 @@ function initGameCanvas(w, h) {
     gameCanvas.height = h
     canvasW = w
     canvasH = h
-    alert(canvasH)
     stage = new createjs.Stage('gameCanvas')
 
     createjs.Touch.enable(stage)
@@ -27,7 +26,7 @@ function initGameCanvas(w, h) {
     createjs.Ticker.framerate = 60
     createjs.Ticker.addEventListener('tick', tick)
   } catch (ex) {
-    alert(ex)
+    console.log(ex)
   }
 }
 
