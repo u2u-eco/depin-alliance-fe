@@ -79,10 +79,28 @@ export default function HomePage() {
           </div>
         </motion.div>
         {/* Button */}
+
         <div className="my-first-step">
           <Mining />
         </div>
-
+        <div className="mt-3 flex justify-center">
+          <Link
+            onClick={() => {
+              tabSound.play()
+            }}
+            href="/games"
+            className="flex items-center space-x-1"
+          >
+            <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
+              GAME
+            </div>
+            <img
+              src="/assets/images/icons/icon-open-link-gradient.svg"
+              alt=""
+              className="size-5 xs:size-6"
+            />
+          </Link>
+        </div>
         {/* Info */}
         <div className="mt-6">
           {/* <Card /> */}
@@ -98,6 +116,7 @@ export default function HomePage() {
                   alt=""
                 />
               </div>
+
               <div className="space-y-2 xs:space-y-4 2xs:space-y-6">
                 <div className="space-y-2 2xs:space-y-3">
                   <div className="text-white font-airnt font-medium text-[15px] xs:text-base tracking-[1px]">
@@ -133,6 +152,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+
                 <Link
                   onClick={() => {
                     tabSound.play()
