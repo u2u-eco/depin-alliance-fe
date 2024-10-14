@@ -292,6 +292,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               currentItem.current.id = mission
               if (mission.status === 'VERIFIED') {
                 setVerified(true)
+                setVerifying(false)
               }
             }
           })
