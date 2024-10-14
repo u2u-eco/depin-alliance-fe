@@ -23,6 +23,7 @@ export default function ButtonVerifying({ reload }: IButtonVerifying) {
     if (reload) {
       reload()
     }
+    setTime(30)
     setDisable(true)
     handleCountDown()
   }
