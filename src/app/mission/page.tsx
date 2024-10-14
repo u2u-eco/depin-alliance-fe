@@ -34,9 +34,6 @@ export default function MissionPage() {
   const showTabPartner = (status: boolean) => {
     if (status) {
       setIsShowTab(true)
-      if (!tab) {
-        setActiveTab(MISSION_TAB.PARTNERS)
-      }
     } else {
       if (!tab) {
         setActiveTab(MISSION_TAB.REWARDS)
@@ -111,7 +108,7 @@ export default function MissionPage() {
           )}
           <div className=" absolute"></div>
           <div className={`${activeTab === MISSION_TAB.PARTNERS ? '' : 'hidden'}`}>
-            <ListPartner updateListPartner={updateListPartner} showTabPartner={showTabPartner} />
+            <ListPartner updateListPartner={updateListPartner} />
           </div>
           <div className={`${activeTab === MISSION_TAB.PARTNERS ? 'hidden' : ''}`}>
             <>
@@ -119,7 +116,7 @@ export default function MissionPage() {
                 <DailyCheckIn />
               </div>
               <div>
-                <Missions updateListReward={updateListReward} />
+                <Missions updateListReward={updateListReward} showTabPartner={showTabPartner} />
               </div>
             </>
           </div>
