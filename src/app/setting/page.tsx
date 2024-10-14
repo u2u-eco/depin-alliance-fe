@@ -6,7 +6,7 @@ import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
-import { IconMusic, IconNotification, IconSound } from '../components/icons'
+import { IconGift, IconMusic, IconNotification, IconOpenLink, IconSound } from '../components/icons'
 import { motion } from 'framer-motion'
 import useCommonStore from '@/stores/commonStore'
 import { SETTING_TYPE } from '@/constants'
@@ -15,6 +15,9 @@ import { getUserSetting, updateSetting } from '@/services/user'
 import { toast } from 'sonner'
 import CustomToast from '../components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
+import CustomInput from '../components/custom-input'
+import CustomButton from '../components/button'
+import OpenBox from '../workspace/components/open-box'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -24,10 +27,18 @@ const listSocial = [
   { id: 2, icon: 'logo', link: 'https://depinalliance.xyz/ ' }
 ]
 
+const listItem = [{ type: 'RAM', name: 'RAM 2GB', point: 1245 }]
+
 export default function SettingPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenBox,
+    onOpen: onOpenBox,
+    onOpenChange: onOpenChangeBox,
+    onClose: onCloseBox
+  } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
-  const { buttonSound } = useAppSound()
+  const { buttonSound, specialSound } = useAppSound()
   const [isLoading, setLoading] = useState<boolean>(false)
 
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
@@ -77,6 +88,14 @@ export default function SettingPage() {
       active: userSetting?.enableSoundEffect,
       text: userSetting?.enableSoundEffect ? 'Turn on' : 'Turn off',
       icon: ''
+    },
+    {
+      id: 5,
+      type: SETTING_TYPE.REDEEM,
+      image: <IconGift className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: 'Redeem Code',
+      text: 'Get special reward',
+      icon: <IconOpenLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
     }
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
     // { id: 6, image: SETTING_TYPE.LOGOUT, title: 'Log Out', text: 'Quit this account', icon: 'open-link' },
@@ -116,11 +135,22 @@ export default function SettingPage() {
       case SETTING_TYPE.LOGOUT:
         console.log(111)
         break
+      case SETTING_TYPE.REDEEM:
+        setType(SETTING_TYPE.REDEEM)
+        onOpen()
+        break
     }
   }
 
   const handleClickLink = () => {
     buttonSound.play()
+  }
+
+  const handleGetReward = () => {
+    specialSound.play()
+    setTimeout(() => {
+      onOpenBox()
+    }, 300)
   }
 
   useEffect(() => {
@@ -172,11 +202,7 @@ export default function SettingPage() {
                             ></div>
                           </div>
                         ) : (
-                          <img
-                            className="size-9"
-                            src={`/assets/images/icons/icon-${item.icon}-green.svg`}
-                            alt="DePIN Alliance"
-                          />
+                          <>{item.icon}</>
                         )}
                       </motion.div>
                     </div>
@@ -264,19 +290,23 @@ export default function SettingPage() {
             ? 'Disconnect'
             : type === SETTING_TYPE.LANGUAGE
               ? 'Language'
-              : 'Log Out'
+              : type === SETTING_TYPE.REDEEM
+                ? 'gift code'
+                : 'Log Out'
         }
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
       >
-        {type !== SETTING_TYPE.LANGUAGE ? (
+        {type !== SETTING_TYPE.REDEEM ? (
           <div>
             <div className=" text-body text-base tracking-[-1px] text-center">
               {type === SETTING_TYPE.WALLET ? (
                 <p>Are you sure you want to disconnect this wallet?</p>
-              ) : (
+              ) : type === SETTING_TYPE.LOGOUT ? (
                 <p>Are you sure you want to log out this account?</p>
+              ) : (
+                <></>
               )}
             </div>
             <div className="my-8 space-x-4 flex items-center justify-center">
@@ -300,9 +330,21 @@ export default function SettingPage() {
             </div>
           </div>
         ) : (
-          <div></div>
+          <div>
+            <div className="my-6 xs:my-7 2xs:my-8">
+              <CustomInput label="Gift Code" placeholder="Enter gift code" />
+            </div>
+            <CustomButton title="Confirm" onAction={handleGetReward} />
+          </div>
         )}
       </CustomModal>
+      <OpenBox
+        isOpen={isOpenBox}
+        onOpenChange={onOpenChangeBox}
+        onOpen={onOpenBox}
+        onClose={onCloseBox}
+        listItem={listItem}
+      />
     </>
   )
 }
