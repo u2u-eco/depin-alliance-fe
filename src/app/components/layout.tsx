@@ -19,7 +19,6 @@ export default function Layout({ children }: any) {
   const queryClient = new QueryClient()
   const { userSetting } = useCommonStore()
   const router = useRouter()
-
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'

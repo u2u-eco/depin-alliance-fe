@@ -30,6 +30,7 @@ import {
   useTonConnectModal
 } from '@tonconnect/ui-react'
 import { formatAddress } from '@/helper/common'
+import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -42,6 +43,8 @@ const listSocial = [
 export default function SettingPage() {
   const userFriendlyAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
+  const { open: openEVMConnect } = useAppKit()
+  const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
   const { open } = useTonConnectModal()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
@@ -73,10 +76,22 @@ export default function SettingPage() {
     {
       id: 1,
       type: SETTING_TYPE.WALLET,
-      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
-      title: !wallet ? 'Connect Wallet' : 'Your Wallet',
+      image: <IconWallet className="size-7 xs:size-8 2xs:size-9 outline-none" gradient />,
+      title: !wallet ? 'TON Wallet' : 'Your Wallet',
       text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
       icon: !wallet ? (
+        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+      ) : (
+        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+      )
+    },
+    {
+      id: 6,
+      type: SETTING_TYPE.WALLET_CONNECT,
+      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
+      title: !isConnectedEVM ? 'EVM Wallet' : 'Your Wallet',
+      text: !isConnectedEVM ? 'EVM Connect' : addressEVM && formatAddress(addressEVM),
+      icon: !isConnectedEVM ? (
         <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
       ) : (
         <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
@@ -127,7 +142,14 @@ export default function SettingPage() {
         } else {
           open()
         }
-
+        break
+      case SETTING_TYPE.WALLET_CONNECT:
+        if (wallet) {
+          setType(SETTING_TYPE.WALLET)
+          onOpen()
+        } else {
+          openEVMConnect()
+        }
         break
       case SETTING_TYPE.LANGUAGE:
         console.log(111)
