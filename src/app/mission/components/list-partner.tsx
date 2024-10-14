@@ -22,9 +22,8 @@ import { useAppSound } from '@/hooks/useAppSound'
 
 interface IListPartner {
   updateListPartner: (count: number) => void
-  showTabPartner: (status: boolean) => void
 }
-export default function ListPartner({ updateListPartner, showTabPartner }: IListPartner) {
+export default function ListPartner({ updateListPartner }: IListPartner) {
   const { data: listPartners, isLoading } = useQuery({
     queryKey: ['fetchListMissionByPartner'],
     queryFn: getListMissionByPartner,
@@ -112,10 +111,7 @@ export default function ListPartner({ updateListPartner, showTabPartner }: IList
   useEffect(() => {
     if (isLoading) return
     if (listPartners?.data) {
-      showTabPartner(true)
       countTaskDone(listPartners.data)
-    } else {
-      showTabPartner(false)
     }
   }, [listPartners, isLoading])
 
