@@ -236,11 +236,14 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     }
   }
 
-  const checkTwitterLogin = async () => {
+  const checkTwitterLogin = async (isFetchList?: boolean) => {
     if (!userTwitter?.twitterUsername) {
       const res = await twitterInfo()
       if (res.status && res.data) {
         setUserTwitter(res.data)
+        if (isFetchList) {
+          refetch && refetch()
+        }
       }
     }
   }
@@ -256,7 +259,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         (TYPES_LOGIN_X.indexOf(currentItem.current?.type) !== -1 ||
           NAMES_LOGIN_X.indexOf(currentItem.current?.name.toLowerCase()) !== -1)
       ) {
-        checkTwitterLogin()
+        checkTwitterLogin(true)
       }
     }
   }
