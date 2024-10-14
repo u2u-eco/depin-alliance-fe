@@ -290,6 +290,9 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           item.missions.forEach((mission: any) => {
             if (mission.id === currentItem.current.id) {
               currentItem.current.id = mission
+              if (mission.status === 'VERIFIED') {
+                setVerified(true)
+              }
             }
           })
         })
