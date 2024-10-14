@@ -9,6 +9,7 @@ import { useAppSound } from '@/hooks/useAppSound'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 const DETAIL_TYPE = {
   AGENCY: 'agency',
@@ -27,9 +28,18 @@ const listDetail = [
   { id: 3, haveItem: false, image: '', title: 'tool', text: '' }
 ]
 
+const listItem = [
+  { id: 1, image: '', name: 'Ethan Nimbus' },
+  { id: 2, image: '', name: 'Ethan Nimbus' },
+  { id: 3, image: '', name: 'Ethan Nimbus' },
+  { id: 4, image: '', name: 'Ethan Nimbus' },
+  { id: 5, image: '', name: 'Ethan Nimbus' }
+]
+
 export default function DetailPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeType, setActiveType] = useState(DETAIL_TYPE.AGENCY)
+  const [activeItem, setActiveItem] = useState<any>()
   const { buttonSound } = useAppSound()
 
   const handleClick = (type: string) => {
@@ -41,6 +51,10 @@ export default function DetailPage() {
         onOpen()
         break
     }
+  }
+
+  const handleSelectItem = (index: number) => {
+    setActiveItem(index)
   }
 
   return (
@@ -64,7 +78,7 @@ export default function DetailPage() {
             className="absolute top-0 left-0 right-0 w-full h-full z-[-1]"
           >
             <img
-              className="mx-auto object-cover h-full"
+              className="mx-auto object-cover h-full w-full"
               src="/assets/images/map/map-background@2x.png"
               alt="DePIN Alliance"
             />
@@ -128,11 +142,49 @@ export default function DetailPage() {
         onClose={onClose}
         onOpenChange={onOpenChange}
       >
-        <div className="space-y-10">
+        <div className="space-y-6 xs:space-y-8 2xs:space-y-10">
           <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
             <p>
               Select 01 <span className="text-gradient capitalize">“{activeType}”</span>
             </p>
+          </div>
+          <div className="overflow-y-auto no-scrollbar max-h-[50vh]">
+            <div className="flex flex-col space-y-3.5">
+              {listItem.map((item: any, index: number) => (
+                <div
+                  className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === index ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'}`}
+                  key={index}
+                  onClick={() => handleSelectItem(index)}
+                >
+                  <div
+                    className={`relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:size-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:transition-background p-2 flex items-center justify-between ${activeItem === index ? 'bg-green-500 before:bg-item-green' : 'before:bg-item-default before:opacity-20'}`}
+                  >
+                    <div className="flex items-center space-x-3 xs:space-x-4">
+                      <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
+                        <Image
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          style={{ width: '100%' }}
+                          src={
+                            item?.avatar?.replace(/-/g, '-main-') ||
+                            '/assets/images/avatar/avatar-main-01@2x.png'
+                          }
+                          alt="DePIN Alliance"
+                        />
+                      </div>
+                      <div className="space-y-2 xs:space-y-3">
+                        <div className="flex items-center space-x-1 cursor-pointer">
+                          <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px] [word-break:_break-word;]">
+                            {item.name}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <CustomButton title="Confirm" />
         </div>

@@ -12,6 +12,7 @@ import {
   IconMapOceania
 } from '../components/icons'
 import { useRouter } from 'next/navigation'
+import { useAppSound } from '@/hooks/useAppSound'
 
 const listMap = [
   {
@@ -21,12 +22,16 @@ const listMap = [
       {
         id: 1,
         image: <IconMapEurope className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'europe'
+        title: 'europe',
+        class:
+          'before:[clip-path:_polygon(calc(50%_+_var(--line)*2)_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_calc(var(--shape)_+_var(--line)));]'
       },
       {
         id: 2,
         image: <IconMapAsia className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Asia'
+        title: 'Asia',
+        class:
+          'before:[clip-path:_polygon(calc(50%_-_var(--line)*2)_0,100%_calc(var(--shape)_+_var(--line)),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
     ]
   },
@@ -37,13 +42,22 @@ const listMap = [
       {
         id: 3,
         image: <IconMapAfrica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Africa'
+        title: 'Africa',
+        class:
+          'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,var(--line)_calc(100%_-_(var(--shape)_-_var(--line)/2)),var(--line)_calc(var(--shape)_-_var(--line)/2));]'
       },
-      { id: 4, image: '', title: '', class: '![background:_transparent] pointer-events-none' },
+      {
+        id: 4,
+        image: '',
+        title: '',
+        class: '![background:_transparent] pointer-events-none opacity-0 invisible'
+      },
       {
         id: 5,
         image: <IconMapOceania className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Oceania'
+        title: 'Oceania',
+        class:
+          'before:[clip-path:_polygon(50%_0,calc(100%_-_var(--line))_calc(var(--shape)_-_var(--line)/2),calc(100%_-_var(--line))_calc(100%_-_(var(--shape)_-_var(--line)/2)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
     ]
   },
@@ -54,12 +68,16 @@ const listMap = [
       {
         id: 6,
         image: <IconMapAntarctica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Antarctica'
+        title: 'Antarctica',
+        class:
+          'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),calc(50%_+_var(--line)*2)_100%,0_calc(100%_-_var(--shape)_-_var(--line)),0_var(--shape));]'
       },
       {
         id: 7,
         image: <IconMapAmerica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'America'
+        title: 'America',
+        class:
+          'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)_-_var(--line)),calc(50%_-_var(--line)*2)_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
     ]
   }
@@ -69,6 +87,8 @@ export default function MapPage() {
   const [activeItem, setActiveItem] = useState(0)
   const router = useRouter()
   const ref = useRef<any>(null)
+  const { buttonSound } = useAppSound()
+
   const [width, setWidth] = useState(
     window.innerWidth > 480
       ? 424 / 3
@@ -76,10 +96,12 @@ export default function MapPage() {
   )
 
   const handleClickItem = (id: number) => {
+    buttonSound.play()
     setActiveItem(id)
   }
 
   const handleContinue = () => {
+    buttonSound.play()
     router.push('/map/detail')
   }
 
@@ -112,14 +134,14 @@ export default function MapPage() {
                 <div
                   key={el.id}
                   ref={ref}
-                  className={`[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] flex items-center justify-center cursor-pointer transition-background ${el.class} ${activeItem === el.id ? 'bg-gradient text-green-900' : 'bg-[rgba(255,255,255,0.08)] text-green-100'}`}
+                  className={`relative overflow-hidden [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer transition-background before:[--line:_4px] xs:before:[--line:_8px] 2xs:before:[--line:_12px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_0px)] before:drop-shadow-green ${el.class} ${activeItem === el.id ? 'before:bg-gradient text-green-900' : 'before:bg-[#222222] text-green-100'}`}
                   style={{
                     height: `${width + (window.innerWidth > 425 ? 20 : window.innerWidth > 375 ? 16 : 12)}px`,
                     width: `${width}px`
                   }}
                   onClick={() => handleClickItem(el.id)}
                 >
-                  <div className="space-y-1.5 xs:space-y-2">
+                  <div className="relative space-y-1.5 xs:space-y-2">
                     {el.image}
                     <p
                       className={`font-airnt font-medium text-[10px] xs:text-[11px] 2xs:text-xs !leading-[14px] xs:!leading-[16px] tracking-[1px] ${activeItem === el.id ? 'text-green-900' : 'text-title text-shadow-white'}`}
