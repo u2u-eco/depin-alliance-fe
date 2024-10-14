@@ -38,6 +38,7 @@ const TelegramProvider = ({ children }: { children: React.ReactNode }) => {
         }
       : {}
   }, [webApp])
+
   const disableDevice = IS_ONLY_SUPPORT_MOBILE ? ['desktop', 'web', 'macos'] : []
   // const disableDevice: any = []
   if (disableDevice.some((key: any) => webApp?.platform.toLowerCase().includes(key))) {

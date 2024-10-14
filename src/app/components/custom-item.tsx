@@ -14,6 +14,7 @@ import {
   IconUserAdd
 } from './icons'
 import CountdownTime from './countdown-time'
+import useCommonStore from '@/stores/commonStore'
 
 interface ItemProps {
   type: string
@@ -42,6 +43,8 @@ const CustomItem = ({
   cb,
   children
 }: ItemProps) => {
+  const { userTwitter } = useCommonStore()
+
   const getClassBySkill = (index: number) => {
     switch (index) {
       case 1:
@@ -151,10 +154,21 @@ const CustomItem = ({
             />
           )}
         </div>
-        <div className="space-y-1.5 xs:space-y-2 2xs:space-y-2.5">
+        <div
+          className={
+            item.type === 'CONNECT_X' && userTwitter?.twitterUsername
+              ? 'space-y-1'
+              : `space-y-1.5 xs:space-y-2 2xs:space-y-2.5`
+          }
+        >
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[18px] min-[355px]:!leading-[20px] 2xs:!leading-[22px] [word-break:_break-word;] line-clamp-2">
             {title}
           </div>
+          {item.type === 'CONNECT_X' && userTwitter?.twitterUsername && (
+            <div className="font-mona font-semibold leading-[18px]">
+              {userTwitter?.twitterUsername}
+            </div>
+          )}
           {children}
         </div>
       </div>

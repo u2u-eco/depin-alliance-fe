@@ -7,11 +7,19 @@ import { useShallow } from 'zustand/react/shallow'
 import ListMission from './list-mission'
 import Loader from '@/app/components/ui/loader'
 import { IItemMissionPartner } from '@/interfaces/i.missions'
-import { twitterInfo } from '@/services/twitter'
 interface IMission {
   updateListReward: (count: number) => void
+  showTabPartner: (status: boolean) => void
 }
-export default function Missions({ updateListReward }: IMission) {
+
+const LIST_MISSION_REQUIRED = [
+  'connect your twitter',
+  'follow u2u network x',
+  'join u2u network telegram',
+  'join u2u discord',
+  'subscribe u2u youtube'
+]
+export default function Missions({ updateListReward, showTabPartner }: IMission) {
   const { token } = useCommonStore(useShallow((state) => state))
   const {
     data: listMission,
@@ -24,17 +32,32 @@ export default function Missions({ updateListReward }: IMission) {
     ...QUERY_CONFIG
   })
 
+  const checkShowPartner = () => {}
+
   const countMission = () => {
     let count = 0
+    let countTaskRequired = 0
     listMission?.data.forEach((item: any) => {
       if (item.missions) {
         item.missions.forEach((mission: IItemMissionPartner) => {
           if (mission.status !== MISSION_STATUS.CLAIMED) {
             count += 1
           }
+          if (
+            LIST_MISSION_REQUIRED.indexOf(mission.name.toLowerCase()) !== -1 &&
+            (mission.status === MISSION_STATUS.VERIFIED ||
+              mission.status === MISSION_STATUS.CLAIMED)
+          ) {
+            countTaskRequired++
+          }
         })
       }
     })
+    if (countTaskRequired === LIST_MISSION_REQUIRED.length) {
+      showTabPartner(true)
+    } else {
+      showTabPartner(false)
+    }
     updateListReward(count)
   }
 
