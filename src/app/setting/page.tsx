@@ -32,7 +32,7 @@ import {
   useIsConnectionRestored
 } from '@tonconnect/ui-react'
 import { formatAddress } from '@/helper/common'
-import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
+import { useAppKit, useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
 import { useDisconnect } from 'wagmi'
 
 const listSocial = [
@@ -49,6 +49,7 @@ export default function SettingPage() {
   const connectionRestored = useIsConnectionRestored()
   const { open: openEVMConnect } = useAppKit()
   const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
+  const { walletInfo: walletEVMInfo } = useWalletInfo()
   const { open } = useTonConnectModal()
   const { disconnect } = useDisconnect()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -56,7 +57,7 @@ export default function SettingPage() {
   const { buttonSound } = useAppSound()
   const [isLoading, setLoading] = useState<boolean>(false)
   const [type, setType] = useState(SETTING_TYPE.WALLET_TON)
-  const wallet = useTonWallet()
+  const wallet: any = useTonWallet()
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     if (isLoading) return
     setLoading(true)
@@ -82,7 +83,7 @@ export default function SettingPage() {
       id: 1,
       type: SETTING_TYPE.WALLET_TON,
       image: <IconWallet className="size-7 xs:size-8 2xs:size-9 outline-none" gradient />,
-      title: !wallet ? 'TON Wallet' : 'Your Wallet',
+      title: !wallet ? 'TON Wallet' : wallet?.name || 'Your Wallet',
       text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
       icon: connectionRestored ? (
         !wallet ? (
@@ -98,7 +99,7 @@ export default function SettingPage() {
       id: 6,
       type: SETTING_TYPE.WALLET_CONNECT,
       image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
-      title: !isConnectedEVM ? 'EVM Wallet' : 'Your Wallet',
+      title: !isConnectedEVM ? 'EVM Wallet' : walletEVMInfo?.name || 'Your wallet',
       text: !isConnectedEVM ? 'EVM Connect' : addressEVM && formatAddress(addressEVM),
       icon: !isConnectedEVM ? (
         <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
@@ -353,9 +354,9 @@ export default function SettingPage() {
             </div>
             <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
               <div
-                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type === SETTING_TYPE.WALLET_TON ? 'bg-white/10' : 'bg-white'}`}
+                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type !== SETTING_TYPE.LANGUAGE ? 'bg-white/10' : 'bg-white'}`}
               >
-                <IconWallet className="size-9 xs:size-10 2xs:size-11" gradient />
+                <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />
               </div>
               <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
                 <p className="text-title leading-[18px] tracking-[-1px]">YOUR WALLET:</p>
