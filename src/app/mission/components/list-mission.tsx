@@ -17,6 +17,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import SpecialBoxModal from './special-box'
 import { loginTwitter, twitterInfo } from '@/services/twitter'
+import ButtonVerifying from './button-verifying'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -185,6 +186,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       handleVerifyMission(currentItem.current.id)
     } else {
       setLoadingButton(true)
+      clearTimeout(refTimeoutCheck.current)
+      refTimeoutCheck.current = setTimeout(() => {
+        if (!isVerified) {
+          setCheckMission(true)
+        }
+        setLoadingButton(false)
+      }, timeOut)
       switch (currentItem.current.type) {
         case 'SHARE_STORY':
           handleShare()
@@ -215,6 +223,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               window.open(twitterLoginUrl, '_blank')
               setCheckMission(false)
               setLoadingButton(false)
+              clearTimeout(refTimeoutCheck.current)
               onClose()
               return
             }
@@ -226,13 +235,6 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           }
           break
       }
-      clearTimeout(refTimeoutCheck.current)
-      refTimeoutCheck.current = setTimeout(() => {
-        if (!isVerified) {
-          setCheckMission(true)
-        }
-        setLoadingButton(false)
-      }, timeOut)
     }
   }
 
@@ -278,6 +280,21 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       return 'Connect your twitter'
     }
     return 'START MISSION'
+  }
+
+  const handleRefetch = async () => {
+    if (refetch) {
+      const res: any = await refetch()
+      if (res.status === 'success' && res.data?.data) {
+        res.data?.data.forEach((item: any) => {
+          item.missions.forEach((mission: any) => {
+            if (mission.id === currentItem.current.id) {
+              currentItem.current.id = mission
+            }
+          })
+        })
+      }
+    }
   }
 
   useEffect(() => {
@@ -368,12 +385,16 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               </div>
             </div>
           </div>
-          <CustomButton
-            isLoading={loadingButton}
-            disable={isVerifying}
-            title={getTitleBtn()}
-            onAction={handleMission}
-          />
+          {isVerifying ? (
+            <ButtonVerifying reload={handleRefetch} />
+          ) : (
+            <CustomButton
+              isLoading={loadingButton}
+              disable={isVerifying}
+              title={getTitleBtn()}
+              onAction={handleMission}
+            />
+          )}
         </div>
       </CustomModal>
       <SpecialBoxModal

@@ -9,8 +9,6 @@ import ListPartner from './components/list-partner'
 import { useSearchParams } from 'next/navigation'
 import Loader from '../components/ui/loader'
 import { useAppSound } from '@/hooks/useAppSound'
-import { twitterInfo } from '@/services/twitter'
-import useCommonStore from '@/stores/commonStore'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
