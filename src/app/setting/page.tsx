@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
 import {
   IconLink,
+  IconLoader,
   IconMusic,
   IconNotification,
   IconSound,
@@ -27,10 +28,12 @@ import {
   useTonWallet,
   useTonAddress,
   useTonConnectUI,
-  useTonConnectModal
+  useTonConnectModal,
+  useIsConnectionRestored
 } from '@tonconnect/ui-react'
 import { formatAddress } from '@/helper/common'
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
+import { useDisconnect } from 'wagmi'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -43,14 +46,16 @@ const listSocial = [
 export default function SettingPage() {
   const userFriendlyAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
+  const connectionRestored = useIsConnectionRestored()
   const { open: openEVMConnect } = useAppKit()
   const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
   const { open } = useTonConnectModal()
+  const { disconnect } = useDisconnect()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userSetting, getUserSetting } = useCommonStore()
   const { buttonSound } = useAppSound()
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [type, setType] = useState(SETTING_TYPE.WALLET)
+  const [type, setType] = useState(SETTING_TYPE.WALLET_TON)
   const wallet = useTonWallet()
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     if (isLoading) return
@@ -75,14 +80,18 @@ export default function SettingPage() {
   const listSetting = [
     {
       id: 1,
-      type: SETTING_TYPE.WALLET,
+      type: SETTING_TYPE.WALLET_TON,
       image: <IconWallet className="size-7 xs:size-8 2xs:size-9 outline-none" gradient />,
       title: !wallet ? 'TON Wallet' : 'Your Wallet',
       text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
-      icon: !wallet ? (
-        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+      icon: connectionRestored ? (
+        !wallet ? (
+          <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+        ) : (
+          <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+        )
       ) : (
-        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+        <IconLoader className="size-7 xs:size-8 2xs:size-9 text-gray animate-spin outline-none" />
       )
     },
     {
@@ -129,23 +138,27 @@ export default function SettingPage() {
     // { id: 6, image: SETTING_TYPE.LOGOUT, title: 'Log Out', text: 'Quit this account', icon: 'open-link' },
   ]
   const handleWalletClick = () => {
-    tonConnectUI.disconnect()
+    if (type === SETTING_TYPE.WALLET_TON) {
+      tonConnectUI.disconnect()
+    } else {
+      disconnect()
+    }
     onClose()
   }
   const handleClick = (type: string) => {
     buttonSound.play()
     switch (type) {
-      case SETTING_TYPE.WALLET:
+      case SETTING_TYPE.WALLET_TON:
         if (wallet) {
-          setType(SETTING_TYPE.WALLET)
+          setType(type)
           onOpen()
         } else {
           open()
         }
         break
       case SETTING_TYPE.WALLET_CONNECT:
-        if (wallet) {
-          setType(SETTING_TYPE.WALLET)
+        if (isConnectedEVM) {
+          setType(type)
           onOpen()
         } else {
           openEVMConnect()
@@ -319,7 +332,7 @@ export default function SettingPage() {
       </CustomPage>
       <CustomModal
         title={
-          type === SETTING_TYPE.WALLET
+          type === SETTING_TYPE.WALLET_TON
             ? 'Disconnect'
             : type === SETTING_TYPE.LANGUAGE
               ? 'Language'
@@ -332,7 +345,7 @@ export default function SettingPage() {
         {type !== SETTING_TYPE.LANGUAGE ? (
           <div>
             <div className=" text-body text-base tracking-[-1px] text-center">
-              {type === SETTING_TYPE.WALLET ? (
+              {type === SETTING_TYPE.WALLET_TON || type === SETTING_TYPE.WALLET_CONNECT ? (
                 <p>Are you sure you want to disconnect this wallet?</p>
               ) : (
                 <p>Are you sure you want to log out this account?</p>
@@ -340,14 +353,16 @@ export default function SettingPage() {
             </div>
             <div className="my-6 xs:my-7 2xs:my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
               <div
-                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type === SETTING_TYPE.WALLET ? 'bg-white/10' : 'bg-white'}`}
+                className={`p-[1px] size-[80px] xs:size-[85px] 2xs:size-[90px] [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] flex items-center justify-center ${type === SETTING_TYPE.WALLET_TON ? 'bg-white/10' : 'bg-white'}`}
               >
                 <IconWallet className="size-9 xs:size-10 2xs:size-11" gradient />
               </div>
               <div className="space-y-1 xs:space-y-1.5 2xs:space-y-2">
                 <p className="text-title leading-[18px] tracking-[-1px]">YOUR WALLET:</p>
                 <p className="text-green-500 text-[15px] xs:text-base 2xs:text-lg xs:!leading-[20px] 2xs:!leading-[22px] font-semibold">
-                  {formatAddress(userFriendlyAddress)}
+                  {type === SETTING_TYPE.WALLET_TON
+                    ? formatAddress(userFriendlyAddress)
+                    : addressEVM && formatAddress(addressEVM)}
                 </p>
               </div>
             </div>
@@ -355,7 +370,7 @@ export default function SettingPage() {
               <div className="btn error">
                 <div className="btn-border"></div>
                 <div className="btn-error" onClick={handleWalletClick}>
-                  {type === SETTING_TYPE.WALLET ? 'Disconnect' : 'Log Out'}
+                  {type !== SETTING_TYPE.LANGUAGE ? 'Disconnect' : 'Log Out'}
                 </div>
                 <div className="btn-border"></div>
               </div>

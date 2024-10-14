@@ -19,13 +19,16 @@ const metadata = {
 }
 
 // Create the modal
-const modal = createAppKit({
+createAppKit({
   adapters: [wagmiAdapter],
   projectId,
   networks: [mainnet, arbitrum],
   defaultNetwork: mainnet,
   metadata: metadata,
   features: {
+    email: false, // default to true
+    socials: [],
+    emailShowWallets: true, // default to true
     analytics: true // Optional - defaults to your Cloud configuration
   }
 })
