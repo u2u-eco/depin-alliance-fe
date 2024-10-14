@@ -15,3 +15,10 @@ export const kFormatter = (num: number, minPrecision = 2, maxPrecision = 2) => {
     ? `${formatNumber(Math.sign(num) * absNumToFixed || 0, 0, 0)}k`
     : formatNumber(num, minPrecision, maxPrecision)
 }
+
+export const formatAddress = (str: string) => {
+  if (str?.length > 20) {
+    return str.substr(0, 5) + '...' + str.substr(str.length - 4, str.length)
+  }
+  return str || ''
+}
