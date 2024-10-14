@@ -6,7 +6,7 @@ COPY package.json ./
 RUN apk add --no-cache git \
     && yarn --frozen-lockfile \
     && yarn cache clean \
-    && npm i
+    && npm i -f
 
 # Build Image
 FROM node:18-alpine AS BUILD
