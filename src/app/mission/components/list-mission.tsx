@@ -29,7 +29,7 @@ interface IListMission {
   refetch?: () => void
 }
 const TYPES_LOGIN_X = ['CONNECT_X']
-const NAMES_LOGIN_X = ['follow u2u network x']
+const NAMES_LOGIN_X = ['follow u2u network x', 'like twitter', 'retweet', 'comment']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isVerifying, setVerifying] = useState<boolean>(false)
