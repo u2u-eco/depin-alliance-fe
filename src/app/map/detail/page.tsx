@@ -3,30 +3,31 @@
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
-import { IconMapAsia, IconPlus, IconReload } from '@/app/components/icons'
+import {
+  IconMapAfrica,
+  IconMapAmerica,
+  IconMapAntarctica,
+  IconMapAsia,
+  IconMapEurope,
+  IconMapOceania,
+  IconPlus,
+  IconReload,
+  IconUpDown
+} from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useDisclosure } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { Component, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { toCapitalizeCase } from '@/helper/common'
+import { MAP_TYPE } from '@/constants'
 
 const DETAIL_TYPE = {
   AGENCY: 'agency',
   TOOL: 'tool'
 }
-
-const listDetail = [
-  {
-    id: 1,
-    haveItem: true,
-    image: <IconMapAsia className="size-8" />,
-    title: 'ASIA',
-    text: 'LV. 12'
-  },
-  { id: 2, haveItem: false, image: '', title: 'agency', text: '' },
-  { id: 3, haveItem: false, image: '', title: 'tool', text: '' }
-]
 
 const listItem = [
   { id: 1, image: '', name: 'Ethan Nimbus' },
@@ -37,10 +38,37 @@ const listItem = [
 ]
 
 export default function DetailPage() {
+  const searchParams = useSearchParams()
+  const typeParams = searchParams.get('type')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [activeType, setActiveType] = useState(DETAIL_TYPE.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
   const { buttonSound } = useAppSound()
+
+  const listDetail = [
+    {
+      id: 1,
+      haveItem: true,
+      image:
+        typeParams === MAP_TYPE.AFRICA ? (
+          <IconMapAfrica className="size-8" />
+        ) : typeParams === MAP_TYPE.AMERICA ? (
+          <IconMapAmerica className="size-8" />
+        ) : typeParams === MAP_TYPE.ANTARCTICA ? (
+          <IconMapAntarctica className="size-8" />
+        ) : typeParams === MAP_TYPE.ASIA ? (
+          <IconMapAsia className="size-8" />
+        ) : typeParams === MAP_TYPE.EUROPE ? (
+          <IconMapEurope className="size-8" />
+        ) : (
+          <IconMapOceania className="size-8" />
+        ),
+      title: typeParams,
+      text: 'LV. 12'
+    },
+    { id: 2, haveItem: false, image: '', title: 'agency', text: '' },
+    { id: 3, haveItem: false, image: '', title: 'tool', text: '' }
+  ]
 
   const handleClick = (type: string) => {
     buttonSound.play()
@@ -90,13 +118,13 @@ export default function DetailPage() {
                 <div className="btn cursor-default" key={item.id}>
                   <div className="btn-border"></div>
                   <div className="btn-primary ![background:_transparent] !shadow-none relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-[linear-gradient(to_bottom,rgba(0,51,29,0.1),rgba(0,51,29,1))] before:opacity-20 before:z-[-1] !px-2 xs:!px-3 text-center flex flex-col space-y-2 xs:space-y-2.5 2xs:space-y-3">
-                    <div className="relative mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-2.5 after:border-[5px] after:border-transparent after:border-r-green-500 after:border-b-green-500">
+                    <div className="relative mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-0.5 xs:mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-2.5 after:border-[5px] after:border-transparent after:border-r-green-500 after:border-b-green-500">
                       <div className="[--shape:_15px] size-14 xs:size-16 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] p-[1px] bg-gradient">
                         <div
                           className={`[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] flex items-center justify-center size-full text-green-500 ${item.haveItem ? 'bg-green-900' : 'bg-[linear-gradient(to_bottom,#000,#00331d)]'}`}
                         >
                           {item.haveItem ? (
-                            <IconMapAsia className="size-8" />
+                            <>{item.image}</>
                           ) : (
                             <img
                               className="size-10"
@@ -107,13 +135,13 @@ export default function DetailPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-0.5 xs:space-y-1">
                       <p
-                        className={`text-[13px] xs:text-sm !leading-[18px] font-semibold uppercase ${item.haveItem ? 'text-title' : 'text-inactive'}`}
+                        className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase ${item.haveItem ? 'text-title' : 'text-inactive'}`}
                       >
                         {item.title}
                       </p>
-                      <p className="text-yellow-500 text-xs !leading-[16px] tracking-[-1px] font-geist font-normal min-h-4">
+                      <p className="text-yellow-500 text-[11px] xs:text-xs !leading-[16px] tracking-[-1px] font-geist font-normal min-h-4">
                         {item.text}
                       </p>
                     </div>
@@ -149,7 +177,7 @@ export default function DetailPage() {
             </p>
           </div>
           <div className="overflow-y-auto no-scrollbar max-h-[50vh]">
-            <div className="flex flex-col space-y-3.5">
+            <div className="flex flex-col space-y-2.5 xs:space-y-3 2xs:space-y-3.5">
               {listItem.map((item: any, index: number) => (
                 <div
                   className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === index ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'}`}
@@ -173,12 +201,18 @@ export default function DetailPage() {
                           alt="DePIN Alliance"
                         />
                       </div>
-                      <div className="space-y-2 xs:space-y-3">
-                        <div className="flex items-center space-x-1 cursor-pointer">
-                          <div className="text-white font-mona text-base xs:text-lg font-semibold leading-[20px] xs:leading-[22px] [word-break:_break-word;]">
-                            {item.name}
-                          </div>
+                      <div className="space-y-1">
+                        <div className="text-white font-mona text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[20px] xs:!leading-[22px] [word-break:_break-word;]">
+                          {item.name}
                         </div>
+                        {/* <div className="text-yellow-600 uppercase text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
+                          LV. 12
+                        </div>
+                        <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
+                          <IconUpDown className="size-3.5 xs:size-4 text-green-500" />
+                          <p className="text-title">Increase base reward</p>
+                          <p className="text-green-300 font-semibold">2%</p>
+                        </div> */}
                       </div>
                     </div>
                   </div>
