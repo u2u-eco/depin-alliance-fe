@@ -13,6 +13,7 @@ import {
 } from '../components/icons'
 import { useRouter } from 'next/navigation'
 import { useAppSound } from '@/hooks/useAppSound'
+import { MAP_TYPE } from '@/constants'
 
 const listMap = [
   {
@@ -22,14 +23,14 @@ const listMap = [
       {
         id: 1,
         image: <IconMapEurope className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'europe',
+        title: MAP_TYPE.EUROPE,
         class:
           'before:[clip-path:_polygon(calc(50%_+_var(--line)*2)_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_calc(var(--shape)_+_var(--line)));]'
       },
       {
         id: 2,
         image: <IconMapAsia className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Asia',
+        title: MAP_TYPE.ASIA,
         class:
           'before:[clip-path:_polygon(calc(50%_-_var(--line)*2)_0,100%_calc(var(--shape)_+_var(--line)),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
@@ -42,7 +43,7 @@ const listMap = [
       {
         id: 3,
         image: <IconMapAfrica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Africa',
+        title: MAP_TYPE.AFRICA,
         class:
           'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,var(--line)_calc(100%_-_(var(--shape)_-_var(--line)/2)),var(--line)_calc(var(--shape)_-_var(--line)/2));]'
       },
@@ -55,7 +56,7 @@ const listMap = [
       {
         id: 5,
         image: <IconMapOceania className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Oceania',
+        title: MAP_TYPE.OCEANIA,
         class:
           'before:[clip-path:_polygon(50%_0,calc(100%_-_var(--line))_calc(var(--shape)_-_var(--line)/2),calc(100%_-_var(--line))_calc(100%_-_(var(--shape)_-_var(--line)/2)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
@@ -68,14 +69,14 @@ const listMap = [
       {
         id: 6,
         image: <IconMapAntarctica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'Antarctica',
+        title: MAP_TYPE.ANTARCTICA,
         class:
           'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),calc(50%_+_var(--line)*2)_100%,0_calc(100%_-_var(--shape)_-_var(--line)),0_var(--shape));]'
       },
       {
         id: 7,
         image: <IconMapAmerica className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
-        title: 'America',
+        title: MAP_TYPE.AMERICA,
         class:
           'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)_-_var(--line)),calc(50%_-_var(--line)*2)_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
       }
@@ -84,7 +85,7 @@ const listMap = [
 ]
 
 export default function MapPage() {
-  const [activeItem, setActiveItem] = useState(0)
+  const [activeItem, setActiveItem] = useState('')
   const router = useRouter()
   const ref = useRef<any>(null)
   const { buttonSound } = useAppSound()
@@ -95,14 +96,14 @@ export default function MapPage() {
       : (window.innerWidth - (window.innerWidth > 425 ? 48 : window.innerWidth > 375 ? 40 : 32)) / 3
   )
 
-  const handleClickItem = (id: number) => {
+  const handleClickItem = (name: string) => {
     buttonSound.play()
-    setActiveItem(id)
+    setActiveItem(name)
   }
 
   const handleContinue = () => {
     buttonSound.play()
-    router.push('/map/detail')
+    router.push(`/map/detail?type=${activeItem}`)
   }
 
   useEffect(() => {
@@ -134,17 +135,17 @@ export default function MapPage() {
                 <div
                   key={el.id}
                   ref={ref}
-                  className={`relative overflow-hidden [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer transition-background before:[--line:_4px] xs:before:[--line:_8px] 2xs:before:[--line:_12px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_0px)] before:drop-shadow-green ${el.class} ${activeItem === el.id ? 'before:bg-gradient text-green-900' : 'before:bg-[#222222] text-green-100'}`}
+                  className={`relative overflow-hidden [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer transition-background before:[--line:_4px] xs:before:[--line:_8px] 2xs:before:[--line:_12px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-[calc(100%_-_0px)] before:drop-shadow-green ${el.class} ${activeItem === el.title ? 'before:bg-gradient text-green-900' : 'before:bg-[#222222] text-green-100'}`}
                   style={{
                     height: `${width + (window.innerWidth > 425 ? 20 : window.innerWidth > 375 ? 16 : 12)}px`,
                     width: `${width}px`
                   }}
-                  onClick={() => handleClickItem(el.id)}
+                  onClick={() => handleClickItem(el.title)}
                 >
                   <div className="relative space-y-1.5 xs:space-y-2">
                     {el.image}
                     <p
-                      className={`font-airnt font-medium text-[10px] xs:text-[11px] 2xs:text-xs !leading-[14px] xs:!leading-[16px] tracking-[1px] ${activeItem === el.id ? 'text-green-900' : 'text-title text-shadow-white'}`}
+                      className={`font-airnt font-medium text-[10px] xs:text-[11px] 2xs:text-xs !leading-[14px] xs:!leading-[16px] tracking-[1px] uppercase ${activeItem === el.title ? 'text-green-900' : 'text-title text-shadow-white'}`}
                     >
                       {el.title}
                     </p>
