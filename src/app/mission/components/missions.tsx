@@ -47,7 +47,6 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
     ...QUERY_CONFIG
   })
 
-  console.log(listMission)
   const countMission = () => {
     let count = 0
     let countTaskRequired = 0
