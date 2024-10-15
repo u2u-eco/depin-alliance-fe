@@ -94,7 +94,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     if (isVerified) return
     setLoadingButton(true)
 
-    const res = await verifyMission(id)
+    const res = await verifyMission(id, currentItem?.current?.isDaily)
     if (res.status && res.data !== 'false') {
       if (res.data === 'true') {
         setVerified(true)
@@ -113,7 +113,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const checkMission = async (id: number) => {
-    const res = await verifyMission(id)
+    const res = await verifyMission(id, currentItem?.current?.isDaily)
     window.open(currentItem.current.url, '_blank')
 
     setTimeout(() => {
@@ -154,7 +154,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
 
   const handleClaim = async () => {
     setLoadingButton(true)
-    const res = await claimTask(currentItem.current.id)
+    const res = await claimTask(currentItem.current.id, currentItem?.current?.isDaily)
     if (res.status) {
       if (res.data?.amount > 0) {
         refSpecialItem.current = res.data

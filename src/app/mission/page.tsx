@@ -10,6 +10,9 @@ import { useSearchParams } from 'next/navigation'
 import Loader from '../components/ui/loader'
 import { useAppSound } from '@/hooks/useAppSound'
 import { IconLock } from '../components/icons'
+import { toast } from 'sonner'
+import CustomToast from '../components/ui/custom-toast'
+import { MESSAGES } from '@/constants/messages'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
@@ -32,19 +35,26 @@ export default function MissionPage() {
     tabSound.play()
   }
 
-  const showTabPartner = (status: boolean) => {
-    if (status) {
-      // setIsShowTab(true)
-    } else {
-      if (!tab) {
-        setActiveTab(MISSION_TAB.REWARDS)
-      }
-      // setIsShowTab(false)
+  const handleClickPartner = () => {
+    if (disablePartner) {
+      toast.dismiss()
+      toast.error(<CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="error" />)
     }
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
   }
+
+  // const showTabPartner = (status: boolean) => {
+  //   if (status) {
+  //     // setIsShowTab(true)
+  //   } else {
+  //     if (!tab) {
+  //       setActiveTab(MISSION_TAB.REWARDS)
+  //     }
+  //     // setIsShowTab(false)
+  //   }
+  //   setTimeout(() => {
+  //     setIsLoading(false)
+  //   }, 300)
+  // }
 
   const updateListPartner = (count: number) => {
     setPartnerCount(count)
@@ -105,9 +115,8 @@ export default function MissionPage() {
             >
               <Tab
                 key={MISSION_TAB.PARTNERS}
-                disabled={disablePartner}
                 title={
-                  <div className="flex items-center al">
+                  <div onClick={handleClickPartner} className="flex items-center al">
                     {`${MISSION_TAB.PARTNERS} ${partnerCount && !disablePartner ? `(${partnerCount})` : ''}`}{' '}
                     {disablePartner ? <IconLock className="size-4 ml-1 mb-[2px]" /> : null}
                   </div>

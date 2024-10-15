@@ -1,5 +1,5 @@
 import { MISSION_STATUS, QUERY_CONFIG } from '@/constants'
-import { getListMission } from '@/services/missions'
+import { getListMission, getListMissionDally } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
@@ -27,11 +27,27 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
     refetch
   } = useQuery({
     queryKey: ['fetchListMission'],
-    queryFn: getListMission,
+    queryFn: async () => {
+      const res = await Promise.all([getListMission(), getListMissionDally()])
+      let _listMission = res[0].data
+      if (res[1].status && res[1].data?.length > 0) {
+        _listMission = [
+          {
+            group: 'Daily',
+            missions: res[1].data.map((item: any) => {
+              return { ...item, isDaily: true }
+            })
+          },
+          ..._listMission
+        ]
+      }
+      return _listMission || []
+    },
     enabled: Boolean(token),
     ...QUERY_CONFIG
   })
 
+  console.log(listMission)
   const countMission = () => {
     let count = 0
     let countTaskRequired = 0
@@ -67,11 +83,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <ListMission listMission={listMission?.data || []} refetch={refetch} />
-      )}
+      {isLoading ? <Loader /> : <ListMission listMission={listMission || []} refetch={refetch} />}
     </>
   )
 }
