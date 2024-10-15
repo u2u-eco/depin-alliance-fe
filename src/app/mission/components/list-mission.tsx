@@ -293,8 +293,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const handleRefetch = async () => {
     if (refetch) {
       const res: any = await refetch()
-      if (res.status === 'success' && res.data?.data) {
-        res.data?.data.forEach((item: any) => {
+      if (res.status === 'success' && res.data) {
+        res.data?.forEach((item: any) => {
           item.missions.forEach((mission: any) => {
             if (mission.id === currentItem.current.id) {
               currentItem.current = mission
