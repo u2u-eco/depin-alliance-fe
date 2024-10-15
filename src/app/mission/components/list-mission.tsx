@@ -204,7 +204,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           break
         case 'CONNECT_X':
           if (!userTwitter?.twitterUsername && twitterLoginUrl) {
-            window.open(twitterLoginUrl, webApp?.platform === 'android' ? '_self' : '_blank')
+            window.open(twitterLoginUrl, '_blank')
             setCheckMission(false)
             setLoadingButton(false)
             onClose()
@@ -220,7 +220,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               !userTwitter?.twitterUsername &&
               twitterLoginUrl
             ) {
-              window.open(twitterLoginUrl, webApp?.platform === 'android' ? '_self' : '_blank')
+              window.open(twitterLoginUrl, '_blank')
               setCheckMission(false)
               setLoadingButton(false)
               clearTimeout(refTimeoutCheck.current)
