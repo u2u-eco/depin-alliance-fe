@@ -294,15 +294,14 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     if (refetch) {
       const res: any = await refetch()
       if (res.status === 'success' && res.data) {
+        const _currentId = currentItem?.current.idCheck || currentItem.current.id
         res.data?.forEach((item: any) => {
           item.missions.forEach((mission: any) => {
-            if (mission.id === currentItem.current.id) {
-              let _mission = mission
-              if (currentItem.current.isDaily && mission.isDaily) {
-                _mission = mission
-              }
-              currentItem.current = _mission
-
+            if (
+              (currentItem?.current.idCheck && mission.idCheck === _currentId) ||
+              (!currentItem?.current.idCheck && mission.id === _currentId)
+            ) {
+              currentItem.current = mission
               if (mission.status === 'VERIFIED') {
                 setVerified(true)
                 setVerifying(false)

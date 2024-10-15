@@ -35,7 +35,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
           {
             group: 'Daily',
             missions: res[1].data.map((item: any) => {
-              return { ...item, isDaily: true }
+              return { ...item, isDaily: true, idCheck: `h-${item.id}` }
             })
           },
           ..._listMission
