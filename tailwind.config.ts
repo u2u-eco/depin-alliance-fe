@@ -67,6 +67,8 @@ const config = {
         'white-50': '#ffffff80',
         success: '#00FF90',
         error: '#E53935',
+        info: '#3598db',
+        warning: '#f39c11',
         'error-blur': '#E44A47',
         inactive: '#666666',
         body: '#9D9FAF',

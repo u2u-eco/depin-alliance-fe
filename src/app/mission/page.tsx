@@ -38,7 +38,9 @@ export default function MissionPage() {
   const handleClickPartner = () => {
     if (disablePartner) {
       toast.dismiss()
-      toast.info(<CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="error" />)
+      toast.warning(
+        <CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="warning" />
+      )
     }
   }
 
@@ -118,7 +120,7 @@ export default function MissionPage() {
               <Tab
                 key={MISSION_TAB.PARTNERS}
                 title={
-                  <div onClick={handleClickPartner} className="flex items-center al">
+                  <div onClick={handleClickPartner} className="flex items-center">
                     {`${MISSION_TAB.PARTNERS} ${partnerCount && !disablePartner ? `(${partnerCount})` : ''}`}{' '}
                     {disablePartner ? <IconLock className="size-4 ml-1 mb-[2px]" /> : null}
                   </div>
