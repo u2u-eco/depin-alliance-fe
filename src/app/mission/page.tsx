@@ -56,6 +56,13 @@ export default function MissionPage() {
   //   }, 300)
   // }
 
+  const handleDisablePartner = (status: boolean) => {
+    setDisablePartner(status)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 300)
+  }
+
   const updateListPartner = (count: number) => {
     setPartnerCount(count)
   }
@@ -64,11 +71,6 @@ export default function MissionPage() {
     setRewardCount(count)
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
-  }, [])
   return (
     <>
       {isLoading && (
@@ -140,7 +142,7 @@ export default function MissionPage() {
               <div>
                 <Missions
                   updateListReward={updateListReward}
-                  setDisablePartner={setDisablePartner}
+                  setDisablePartner={handleDisablePartner}
                 />
               </div>
             </>
