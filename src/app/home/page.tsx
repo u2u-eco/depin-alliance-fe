@@ -16,7 +16,6 @@ import { useTourGuideContext } from '@/contexts/tour.guide.context'
 export default function HomePage() {
   const router = useRouter()
   const { userInfo } = useCommonStore()
-
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
 
