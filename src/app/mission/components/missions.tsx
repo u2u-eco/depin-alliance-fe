@@ -9,7 +9,7 @@ import Loader from '@/app/components/ui/loader'
 import { IItemMissionPartner } from '@/interfaces/i.missions'
 interface IMission {
   updateListReward: (count: number) => void
-  showTabPartner: (status: boolean) => void
+  setDisablePartner: (status: boolean) => void
 }
 
 const LIST_MISSION_REQUIRED = [
@@ -19,7 +19,7 @@ const LIST_MISSION_REQUIRED = [
   'join u2u discord',
   'subscribe u2u youtube'
 ]
-export default function Missions({ updateListReward, showTabPartner }: IMission) {
+export default function Missions({ updateListReward, setDisablePartner }: IMission) {
   const { token } = useCommonStore(useShallow((state) => state))
   const {
     data: listMission,
@@ -31,8 +31,6 @@ export default function Missions({ updateListReward, showTabPartner }: IMission)
     enabled: Boolean(token),
     ...QUERY_CONFIG
   })
-
-  const checkShowPartner = () => {}
 
   const countMission = () => {
     let count = 0
@@ -54,9 +52,9 @@ export default function Missions({ updateListReward, showTabPartner }: IMission)
       }
     })
     if (countTaskRequired === LIST_MISSION_REQUIRED.length) {
-      showTabPartner(true)
+      setDisablePartner(false)
     } else {
-      showTabPartner(false)
+      setDisablePartner(true)
     }
     updateListReward(count)
   }

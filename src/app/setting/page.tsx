@@ -333,7 +333,7 @@ export default function SettingPage() {
       </CustomPage>
       <CustomModal
         title={
-          type === SETTING_TYPE.WALLET_TON
+          type === SETTING_TYPE.WALLET_TON || type === SETTING_TYPE.WALLET_CONNECT
             ? 'Disconnect'
             : type === SETTING_TYPE.LANGUAGE
               ? 'Language'
