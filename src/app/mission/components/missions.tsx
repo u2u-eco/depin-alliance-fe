@@ -50,7 +50,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
   const countMission = () => {
     let count = 0
     let countTaskRequired = 0
-    listMission?.data.forEach((item: any) => {
+    listMission?.forEach((item: any) => {
       if (item.missions) {
         item.missions.forEach((mission: IItemMissionPartner) => {
           if (mission.status !== MISSION_STATUS.CLAIMED) {
@@ -66,6 +66,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
         })
       }
     })
+
     if (countTaskRequired === LIST_MISSION_REQUIRED.length) {
       setDisablePartner(false)
     } else {
@@ -75,7 +76,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
   }
 
   useEffect(() => {
-    if (listMission?.data?.length > 0) {
+    if (listMission?.length > 0) {
       countMission()
     }
   }, [listMission])

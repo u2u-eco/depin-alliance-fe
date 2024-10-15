@@ -38,7 +38,7 @@ export default function MissionPage() {
   const handleClickPartner = () => {
     if (disablePartner) {
       toast.dismiss()
-      toast.error(<CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="error" />)
+      toast.info(<CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="error" />)
     }
   }
 
