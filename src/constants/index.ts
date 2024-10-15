@@ -62,6 +62,15 @@ export const FILTER_TYPE = {
   SORT: 'SORT'
 }
 
+export const MAP_TYPE = {
+  EUROPE: 'europe',
+  ASIA: 'asia',
+  AFRICA: 'africa',
+  OCEANIA: 'oceania',
+  ANTARCTICA: 'antarctica',
+  AMERICA: 'america'
+}
+
 export const FUNDING_TYPE = 'funding'
 
 export const TYPE_MISSION = {

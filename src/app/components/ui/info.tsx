@@ -264,7 +264,7 @@ const Info = ({ profile, rank }: InfoProps) => {
               onClick={handleMap}
             >
               <div className="[--shape:_12px] size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-yellow-600">
-                <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-green-900/80">
+                <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green">
                   <video
                     autoPlay
                     loop
