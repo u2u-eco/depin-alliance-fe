@@ -314,7 +314,7 @@ export default function DetailPage() {
         >
           {activeType === DETAIL_TYPE.MAP ? (
             <div className="flex flex-1 flex-col items-center justify-center">
-              <SelectMap handleUpdateParam={handleUpdateParam} activeArea={activeArea} />
+              <SelectMap activeArea={activeArea} />
             </div>
           ) : (
             <>
