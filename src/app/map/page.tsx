@@ -1,28 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import CustomPage from '../components/custom-page'
 import { CustomHeader } from '../components/ui/custom-header'
-import { useRouter } from 'next/navigation'
-import { useAppSound } from '@/hooks/useAppSound'
-import SelectMap from './components/select-map'
-import CustomButton from '../components/button'
+
+import WorldMapProvider from './context/worldmap-context'
+import WorldMapContainer from './container'
 
 export default function MapPage() {
-  const [activeItem, setActiveItem] = useState('')
-  const router = useRouter()
-  const { buttonSound } = useAppSound()
-
-  const handleUpdateParam = (name: string) => {
-    setActiveItem(name)
-  }
-
-  const handleContinue = () => {
-    if (!activeItem) return
-    buttonSound.play()
-    router.push(`/map/detail?type=${activeItem}`)
-  }
-
   return (
     <CustomPage
       classNames={{
@@ -36,8 +21,9 @@ export default function MapPage() {
     >
       <div className="flex flex-col justify-between space-y-6 h-full">
         <CustomHeader title="WORLD MAP" />
-        <SelectMap handleUpdateParam={handleUpdateParam} />
-        <CustomButton title="CONTINUE" onAction={handleContinue} disable={!activeItem} />
+        <WorldMapProvider>
+          <WorldMapContainer />
+        </WorldMapProvider>
       </div>
     </CustomPage>
   )
