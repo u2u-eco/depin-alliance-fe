@@ -13,18 +13,22 @@ export const getListMission = () => {
   return https.get('/missions')
 }
 
+export const getListMissionDally = () => {
+  return https.get('/missions/daily')
+}
+
 export const getListMissionByPartner = () => {
   return https.get('/missions/partner')
 }
 
-export const verifyMission = (id: number) => {
-  return https.get(`/missions/verify-task/${id}`)
+export const verifyMission = (id: number, isDaily?: boolean) => {
+  return https.get(`/missions/${isDaily ? 'verify-task-daily' : 'verify-task'}/${id}`)
 }
 
-export const claimTask = (id: number) => {
-  return https.get(`/missions/claim-task/${id}`)
+export const claimTask = (id: number, isDaily?: boolean) => {
+  return https.get(`/missions/${isDaily ? 'claim-task-daily' : 'claim-task'}/${id}`)
 }
 
-export const verifyMissionQuiz = (id: number, data: IQuizItem[]) => {
-  return https.post(`/missions/verify-task/${id}`, data)
+export const verifyMissionQuiz = (id: number, data: IQuizItem[], isDaily?: boolean) => {
+  return https.post(`/missions/${isDaily ? 'verify-task-daily' : 'verify-task'}/${id}`, data)
 }

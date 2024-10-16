@@ -58,6 +58,7 @@ export default function SettingPage() {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [type, setType] = useState(SETTING_TYPE.WALLET_TON)
   const wallet: any = useTonWallet()
+  const iconWallet = <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     if (isLoading) return
     setLoading(true)
@@ -82,7 +83,7 @@ export default function SettingPage() {
     {
       id: 1,
       type: SETTING_TYPE.WALLET_TON,
-      image: <IconWallet className="size-7 xs:size-8 2xs:size-9 outline-none" gradient />,
+      image: iconWallet,
       title: !wallet ? 'TON Wallet' : wallet?.name || 'Your Wallet',
       text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
       icon: connectionRestored ? (
@@ -98,7 +99,7 @@ export default function SettingPage() {
     {
       id: 6,
       type: SETTING_TYPE.WALLET_CONNECT,
-      image: <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />,
+      image: iconWallet,
       title: !isConnectedEVM ? 'EVM Wallet' : walletEVMInfo?.name || 'Your wallet',
       text: !isConnectedEVM ? 'EVM Connect' : addressEVM && formatAddress(addressEVM),
       icon: !isConnectedEVM ? (
@@ -333,7 +334,7 @@ export default function SettingPage() {
       </CustomPage>
       <CustomModal
         title={
-          type === SETTING_TYPE.WALLET_TON
+          type === SETTING_TYPE.WALLET_TON || type === SETTING_TYPE.WALLET_CONNECT
             ? 'Disconnect'
             : type === SETTING_TYPE.LANGUAGE
               ? 'Language'
