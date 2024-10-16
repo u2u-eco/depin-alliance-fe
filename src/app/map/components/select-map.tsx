@@ -8,10 +8,10 @@ import {
 } from '@/app/components/icons'
 import { MAP_TYPE } from '@/constants'
 import { useAppSound } from '@/hooks/useAppSound'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { WorldMapContext } from '../context/worldmap-context'
 
 interface MapProps {
-  handleUpdateParam: (name: string) => void
   activeArea?: string
 }
 
@@ -24,6 +24,7 @@ const listMap = [
         id: 1,
         image: <IconMapEurope className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
         title: MAP_TYPE.EUROPE,
+
         class:
           'before:[clip-path:_polygon(calc(50%_+_var(--line)*2)_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_calc(var(--shape)_+_var(--line)));]'
       },
@@ -84,11 +85,11 @@ const listMap = [
   }
 ]
 
-const SelectMap = ({ handleUpdateParam, activeArea }: MapProps) => {
+const SelectMap = ({ activeArea }: MapProps) => {
   const [activeItem, setActiveItem] = useState('')
   const ref = useRef<any>(null)
   const { buttonSound } = useAppSound()
-
+  const { setContinent } = useContext(WorldMapContext)
   const [width, setWidth] = useState(
     window.innerWidth > 480
       ? 424 / 3
@@ -98,7 +99,7 @@ const SelectMap = ({ handleUpdateParam, activeArea }: MapProps) => {
   const handleClickItem = (name: string) => {
     buttonSound.play()
     setActiveItem(name)
-    handleUpdateParam(name)
+    setContinent(name)
   }
 
   useEffect(() => {
