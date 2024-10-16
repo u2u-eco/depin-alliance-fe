@@ -1,5 +1,5 @@
 import { MISSION_STATUS, QUERY_CONFIG } from '@/constants'
-import { getListMission } from '@/services/missions'
+import { getListMission, getListMissionDally } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
@@ -9,7 +9,7 @@ import Loader from '@/app/components/ui/loader'
 import { IItemMissionPartner } from '@/interfaces/i.missions'
 interface IMission {
   updateListReward: (count: number) => void
-  showTabPartner: (status: boolean) => void
+  setDisablePartner: (status: boolean) => void
 }
 
 const LIST_MISSION_REQUIRED = [
@@ -19,7 +19,7 @@ const LIST_MISSION_REQUIRED = [
   'join u2u discord',
   'subscribe u2u youtube'
 ]
-export default function Missions({ updateListReward, showTabPartner }: IMission) {
+export default function Missions({ updateListReward, setDisablePartner }: IMission) {
   const { token } = useCommonStore(useShallow((state) => state))
   const {
     data: listMission,
@@ -27,17 +27,30 @@ export default function Missions({ updateListReward, showTabPartner }: IMission)
     refetch
   } = useQuery({
     queryKey: ['fetchListMission'],
-    queryFn: getListMission,
+    queryFn: async () => {
+      const res = await Promise.all([getListMission(), getListMissionDally()])
+      let _listMission = res[0].data
+      if (res[1].status && res[1].data?.length > 0) {
+        _listMission = [
+          {
+            group: 'Daily Missions',
+            missions: res[1].data.map((item: any) => {
+              return { ...item, isDaily: true, idCheck: `h-${item.id}` }
+            })
+          },
+          ..._listMission
+        ]
+      }
+      return _listMission || []
+    },
     enabled: Boolean(token),
     ...QUERY_CONFIG
   })
 
-  const checkShowPartner = () => {}
-
   const countMission = () => {
     let count = 0
     let countTaskRequired = 0
-    listMission?.data.forEach((item: any) => {
+    listMission?.forEach((item: any) => {
       if (item.missions) {
         item.missions.forEach((mission: IItemMissionPartner) => {
           if (mission.status !== MISSION_STATUS.CLAIMED) {
@@ -53,27 +66,24 @@ export default function Missions({ updateListReward, showTabPartner }: IMission)
         })
       }
     })
+
     if (countTaskRequired === LIST_MISSION_REQUIRED.length) {
-      showTabPartner(true)
+      setDisablePartner(false)
     } else {
-      showTabPartner(false)
+      setDisablePartner(true)
     }
     updateListReward(count)
   }
 
   useEffect(() => {
-    if (listMission?.data?.length > 0) {
+    if (listMission?.length > 0) {
       countMission()
     }
   }, [listMission])
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <ListMission listMission={listMission?.data || []} refetch={refetch} />
-      )}
+      {isLoading ? <Loader /> : <ListMission listMission={listMission || []} refetch={refetch} />}
     </>
   )
 }
