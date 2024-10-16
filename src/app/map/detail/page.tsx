@@ -23,6 +23,7 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { toCapitalizeCase } from '@/helper/common'
 import { MAP_TYPE } from '@/constants'
+import MapBackground from '../components/map-background'
 
 const DETAIL_TYPE = {
   AGENCY: 'agency',
@@ -103,15 +104,11 @@ export default function DetailPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
-            className="absolute top-0 left-0 right-0 w-full h-full z-[-1]"
+            className="absolute top-0 left-0 right-0 w-full h-full"
           >
-            <img
-              className="mx-auto object-cover h-full w-full"
-              src="/assets/images/map/map-background@2x.png"
-              alt="DePIN Alliance"
-            />
+            <MapBackground></MapBackground>
           </motion.div>
-          <div className="relative flex flex-col justify-between space-y-6 h-full">
+          <div className=" flex flex-col justify-between space-y-6 h-full">
             <CustomHeader title="World Map" />
             <div className="flex space-x-2">
               {listDetail.map((item: any) => (
