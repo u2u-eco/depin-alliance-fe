@@ -260,19 +260,16 @@ const Info = ({ profile, rank }: InfoProps) => {
         {pathName === '/home' && (
           <div className="absolute -bottom-14 right-0">
             <div
-              className="relative cursor-pointer before:content-[''] before:absolute before:top-[3px] before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 hover:drop-shadow-yellow transition-all"
+              className="relative cursor-pointer before:content-[''] before:absolute before:top-[3px] before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
               onClick={handleMap}
             >
               <div className="[--shape:_12px] size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-yellow-600">
                 <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green">
-                  <video
-                    autoPlay
-                    loop
-                    muted
+                  <img
                     className="[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] size-full object-cover opacity-65"
-                  >
-                    <source src="/assets/images/video-world.mp4" type="video/mp4" />
-                  </video>
+                    src="/assets/images/video-world.gif"
+                    alt="DePIN Alliance"
+                  />
                   {/* <div className="absolute left-[50%] bottom-2 translate-x-[-50%] text-xs leading-[16px] tracking-[-1px] text-yellow-200 w-full text-center uppercase">
                     World Map
                   </div> */}
