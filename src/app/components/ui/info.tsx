@@ -267,7 +267,7 @@ const Info = ({ profile, rank }: InfoProps) => {
                 <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green">
                   <img
                     className="[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] size-full object-cover opacity-65"
-                    src="/assets/images/video-world.gif"
+                    src="/assets/images/map/world-map@2x.png"
                     alt="DePIN Alliance"
                   />
                   {/* <div className="absolute left-[50%] bottom-2 translate-x-[-50%] text-xs leading-[16px] tracking-[-1px] text-yellow-200 w-full text-center uppercase">
