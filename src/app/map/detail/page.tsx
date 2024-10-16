@@ -4,6 +4,8 @@ import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
 import CustomPage from '@/app/components/custom-page'
 import {
+  IconClose,
+  IconContribute,
   IconMapAfrica,
   IconMapAmerica,
   IconMapAntarctica,
@@ -16,7 +18,7 @@ import {
 } from '@/app/components/icons'
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import { useAppSound } from '@/hooks/useAppSound'
-import { useDisclosure } from '@nextui-org/react'
+import { Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@nextui-org/react'
 import React, { Component, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -25,6 +27,7 @@ import { toCapitalizeCase } from '@/helper/common'
 import { MAP_TYPE } from '@/constants'
 import MapBackground from '../components/map-background'
 import SelectMap from '../components/select-map'
+import ListItem from '../components/list-item'
 
 const DETAIL_TYPE = {
   AGENCY: 'agency',
@@ -40,14 +43,24 @@ const listItem = [
   { id: 5, image: '', name: 'Ethan Nimbus' }
 ]
 
+const listTool = [
+  { id: 1, image: '/assets/images/map/tool-01@2x.png', name: 'Cloudcell' },
+  { id: 2, image: '/assets/images/map/tool-02@2x.png', name: 'Pinpoint' },
+  { id: 3, image: '/assets/images/map/tool-03@2x.png', name: 'LAI' },
+  { id: 4, image: '/assets/images/map/tool-04@2x.png', name: 'SkyEyes' },
+  { id: 5, image: '/assets/images/map/tool-05@2x.png', name: 'NoRadar' }
+]
+
 export default function DetailPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const typeParams = searchParams.get('type')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [isOpenPop, setIsOpenPop] = useState(false)
   const [activeType, setActiveType] = useState(DETAIL_TYPE.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
   const [activeArea, setActiveArea] = useState<any>()
+  const [activePoint, setActivePoint] = useState<any>()
   const { buttonSound } = useAppSound()
 
   const listDetail = [
@@ -109,6 +122,10 @@ export default function DetailPage() {
     setActiveItem(index)
   }
 
+  const handleActivePoint = () => {
+    setActivePoint(true)
+  }
+
   useEffect(() => {
     setActiveArea(typeParams)
   }, [])
@@ -118,7 +135,7 @@ export default function DetailPage() {
       <CustomPage
         classNames={{
           wrapper:
-            "before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-205px] before:size-[355px] before:rounded-[50%] before:bg-green-500 before:blur-[75px] before:opacity-30 before:z-[-1]",
+            "before:content-[''] before:absolute before:left-[50%] before:translate-x-[-50%] before:top-[-205px] before:size-[355px] before:rounded-[50%] before:bg-green-500 before:blur-[75px] before:opacity-30 before:z-[1] before:pointer-events-none",
           container: 'h-full',
           animate:
             '[--space:_40px] xs:[--space:_48px] 2xs:[--space:_56px] h-[calc(100%_-_var(--space))]',
@@ -137,12 +154,99 @@ export default function DetailPage() {
           </motion.div>
           <div className=" flex flex-col justify-between space-y-6 h-full">
             <CustomHeader title="World Map" />
+            <div className="flex items-center justify-around relative mb-auto pointer-events-none">
+              <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
+                <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
+                  Mission
+                </p>
+                <p className="w-fit mx-auto text-point font-airnt font-medium text-base xs:text-lg 2xs:text-xl !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px] tracking-[1px]">
+                  4
+                </p>
+              </div>
+              <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
+                <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
+                  Completed
+                </p>
+                <p className="w-fit mx-auto text-point font-airnt font-medium text-base xs:text-lg 2xs:text-xl !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px] tracking-[1px]">
+                  0/4
+                </p>
+              </div>
+              <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
+                <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
+                  Streak
+                </p>
+                <p className="w-fit mx-auto text-point font-airnt font-medium text-base xs:text-lg 2xs:text-xl !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px] tracking-[1px]">
+                  2
+                </p>
+              </div>
+            </div>
+            <div className="relative flex-1">
+              <Popover
+                classNames={{
+                  trigger: 'aria-expanded:scale-[1] aria-expanded:opacity-100',
+                  content: 'p-0 rounded-none bg-transparent shadow-none'
+                }}
+                isOpen={isOpenPop}
+                onOpenChange={(open) => setIsOpenPop(open)}
+                placement="right-start"
+              >
+                <PopoverTrigger>
+                  <div
+                    className="space-y-2 xs:space-y-3 2xs:space-y-4 cursor-pointer text-center w-fit"
+                    onClick={handleActivePoint}
+                  >
+                    <div
+                      className={`relative mx-auto size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${activePoint ? 'bg-white/10' : ''}`}
+                    >
+                      <div
+                        className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${activePoint ? 'opacity-100' : ''}`}
+                      ></div>
+                    </div>
+                    <p className="font-airnt font-medium text-[10px] xs:text-[11px] 2xs:text-xs !leading-[16px] tracking-[1px] uppercase">
+                      MISSION 01
+                    </p>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="relative max-w-[245px] border-[0.5px] border-yellow-300/25 px-4 py-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:bg-[linear-gradient(to_top,#000,#626516)] before:opacity-[0.86]">
+                    <div className="[--size:_5px] pointer-events-none absolute top-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:top-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-t before:border-t-yellow-500 after:content-[''] after:absolute after:top-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-t after:border-t-yellow-500"></div>
+                    <div className="space-y-3 xs:space-y-4 relative">
+                      <div className="flex justify-between">
+                        <IconContribute className="size-6 xs:size-7 2xs:size-8 text-white" />
+                        <div
+                          className="cursor-pointer text-body hover:text-title transition-colors"
+                          onClick={() => setIsOpenPop(false)}
+                        >
+                          <IconClose className="size-4" />
+                        </div>
+                      </div>
+                      <div className="space-y-4 xs:space-y-5 2xs:space-y-6">
+                        <div className="space-y-2 xs:space-y-2.5 2xs:space-y-3">
+                          <p className="font-airnt text-title text-shadow-white font-medium text-base !leading-[22px] tracking-[1px] uppercase">
+                            shanghai
+                          </p>
+                          <p className="text-sm !leading-[18px] tracking-[-1px] text-body">
+                            Contribute your wasted items to League to increase League’s profit.
+                            Contribute your wasted items to League to increase League’s.
+                          </p>
+                        </div>
+                        <CustomButton title="START MISSION" />
+                      </div>
+                    </div>
+                    <div className="[--size:_5px] pointer-events-none absolute bottom-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:bottom-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-b before:border-b-yellow-500 after:content-[''] after:absolute after:bottom-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-b after:border-b-yellow-500"></div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
             <div className="flex space-x-2">
               {listDetail.map((item: any) => (
                 <div className="btn cursor-default" key={item.id}>
                   <div className="btn-border"></div>
                   <div className="btn-primary ![background:_#0f0f0fcc] !shadow-none relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-[linear-gradient(to_top,rgba(0,51,29,0.1),rgba(0,51,29,1))] before:pointer-events-none before:opacity-30 !px-1 xs:!px-2 2xs:!px-3 text-center flex flex-col space-y-2 xs:space-y-2.5 2xs:space-y-3">
-                    <div className="relative mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-0.5 xs:mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-2.5 after:border-[5px] after:border-transparent after:border-r-green-500 after:border-b-green-500">
+                    <div
+                      className="relative mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-0.5 xs:mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-2.5 after:border-[5px] after:border-transparent after:border-r-green-500 after:border-b-green-500"
+                      onClick={() => handleClick(item.type)}
+                    >
                       <div className="[--shape:_15px] size-14 xs:size-16 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] p-[1px] bg-gradient">
                         <div
                           className={`[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] flex items-center justify-center size-full text-green-500 ${item.haveItem ? 'bg-green-900' : 'bg-[linear-gradient(to_bottom,#000,#00331d)]'}`}
@@ -219,50 +323,11 @@ export default function DetailPage() {
                   Select 01 <span className="text-gradient capitalize">“{activeType}”</span>
                 </p>
               </div>
-              <div className="overflow-y-auto no-scrollbar max-h-[50vh]">
-                <div className="flex flex-col space-y-2.5 xs:space-y-3 2xs:space-y-3.5">
-                  {listItem.map((item: any, index: number) => (
-                    <div
-                      className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === index ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'}`}
-                      key={index}
-                      onClick={() => handleSelectItem(index)}
-                    >
-                      <div
-                        className={`relative [clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:content-[''] before:size-[calc(100%_-_2px)] before:[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_24px),calc(100%_-_24px)_100%,0_100%,0_20px)] before:z-[-1] before:transition-background p-2 flex items-center justify-between ${activeItem === index ? 'bg-green-500 before:bg-item-green' : 'before:bg-item-default before:opacity-20'}`}
-                      >
-                        <div className="flex items-center space-x-3 xs:space-x-4">
-                          <div className="flex items-center justify-center min-w-16 xs:min-w-[72px] size-16 xs:size-[72px] [clip-path:_polygon(16px_0%,100%_0,100%_calc(100%_-_16px),calc(100%_-_16px)_100%,0_100%,0_16px)] bg-white/10">
-                            <Image
-                              width={0}
-                              height={0}
-                              sizes="100vw"
-                              style={{ width: '100%' }}
-                              src={
-                                item?.avatar?.replace(/-/g, '-main-') ||
-                                '/assets/images/avatar/avatar-main-01@2x.png'
-                              }
-                              alt="DePIN Alliance"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <div className="text-white font-mona text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[20px] xs:!leading-[22px] [word-break:_break-word;]">
-                              {item.name}
-                            </div>
-                            {/* <div className="text-yellow-600 uppercase text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
-                          LV. 12
-                        </div>
-                        <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
-                          <IconUpDown className="size-3.5 xs:size-4 text-green-500" />
-                          <p className="text-title">Increase base reward</p>
-                          <p className="text-green-300 font-semibold">2%</p>
-                        </div> */}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ListItem
+                listItem={activeType === DETAIL_TYPE.AGENCY ? listItem : listTool}
+                handleSelectItem={handleSelectItem}
+                activeItem={activeItem}
+              />
             </>
           )}
           <div className="my-4 xs:my-6 2xs:my-8">
