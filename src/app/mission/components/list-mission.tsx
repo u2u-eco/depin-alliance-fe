@@ -311,6 +311,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
                 setVerified(true)
                 setVerifying(false)
               }
+              if (!mission.status) {
+                setCheckMission(false)
+                setVerified(false)
+                setVerifying(false)
+              }
             }
           })
         })

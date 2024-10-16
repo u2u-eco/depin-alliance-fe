@@ -30,7 +30,7 @@ export default function ButtonVerifying({ reload }: IButtonVerifying) {
   useEffect(() => {}, [])
   return (
     <CustomButton
-      title={`${disable ? 'VERIFYING' : 'VERIFY'}  ${disable ? `(${time}s)` : ''}`}
+      title={`${disable ? 'VERIFYING' : 'VERIFY NOW'}  ${disable ? `(${time}s)` : ''}`}
       buttonClass={'normal-case'}
       disable={disable}
       onAction={handleClick}
