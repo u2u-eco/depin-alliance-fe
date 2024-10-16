@@ -88,6 +88,22 @@ export default function HomePage() {
         <div className="my-first-step">
           <Mining />
         </div>
+        <Link
+          onClick={() => {
+            tabSound.play()
+          }}
+          href="/game"
+          className="flex items-center space-x-1"
+        >
+          <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
+            GAME
+          </div>
+          <img
+            src="/assets/images/icons/icon-open-link-gradient.svg"
+            alt=""
+            className="size-5 xs:size-6"
+          />
+        </Link>
 
         {/* Info */}
         <div className="mt-6">
