@@ -15,12 +15,12 @@ const SoundsProvider = ({ children }: { children: React.ReactNode }) => {
   const { userSetting } = useCommonStore()
   const [sounds, setSounds] = useState<any>({})
   useEffect(() => {
-    const mainSound = new Howl({
-      src: ['/assets/sounds/theme/main-theme.mp3'],
-      loop: true,
-      mute: !userSetting?.enableMusicTheme,
-      html5: false
-    })
+    // const mainSound = new Howl({
+    //   src: ['/assets/sounds/theme/main-theme.mp3'],
+    //   loop: true,
+    //   mute: !userSetting?.enableMusicTheme,
+    //   html5: false
+    // })
     const _tabSound = new Howl({
       src: ['/assets/sounds/interaction/tab-click.mp3'],
       html5: false,
@@ -49,7 +49,6 @@ const SoundsProvider = ({ children }: { children: React.ReactNode }) => {
     })
 
     setSounds({
-      main: mainSound,
       tabSound: _tabSound,
       buttonSound: _buttonSound,
       specialSound: _specialSound,

@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -19,6 +19,7 @@ export default function Layout({ children }: any) {
   const queryClient = new QueryClient()
   const { userSetting } = useCommonStore()
   const router = useRouter()
+  const mainSound = useRef<any>()
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -35,15 +36,22 @@ export default function Layout({ children }: any) {
 
   useEffect(() => {
     // main?.stop()
-    const mainSound = new Howl({
-      src: ['/assets/sounds/theme/main-theme.mp3'],
-      loop: true,
-      mute: !userSetting?.enableMusicTheme,
-      html5: false
-    })
-    mainSound?.play()
+    if (!mainSound.current && userSetting?.enableMusicTheme) {
+      mainSound.current = new Howl({
+        src: ['/assets/sounds/theme/main-theme.mp3'],
+        loop: true,
+        mute: !userSetting?.enableMusicTheme,
+        html5: false
+      })
+    }
+    if (userSetting?.enableMusicTheme) {
+      mainSound.current?.play()
+    } else {
+      mainSound.current?.stop()
+    }
+
     return () => {
-      mainSound?.stop()
+      mainSound.current?.stop()
     }
   }, [userSetting?.enableMusicTheme])
   const url = process.env.NEXT_PUBLIC_TONCONNECT_MAINIFEST
