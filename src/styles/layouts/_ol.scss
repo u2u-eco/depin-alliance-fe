@@ -1,0 +1,10 @@
+/* Start OL */
+.ol-zoom {
+  top: 100px !important;
+  left: auto !important;
+  right: 12px;
+  @include breakpoint(374) {
+    top: 90px !important;
+  }
+}
+/* End OL */
