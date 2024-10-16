@@ -114,7 +114,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
 
   const checkMission = async (id: number) => {
     const res = await verifyMission(id, currentItem?.current?.isDaily)
-    window.open(currentItem.current.url, '_blank')
+    if (NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1 && webApp?.openLink) {
+      webApp.openLink(currentItem.current.url)
+    } else {
+      window.open(currentItem.current.url, '_blank')
+    }
 
     setTimeout(() => {
       if (res.status && res.data !== 'false') {

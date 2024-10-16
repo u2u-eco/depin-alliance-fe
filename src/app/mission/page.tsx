@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import DailyCheckIn from './components/daily-check-in'
 import Missions from './components/missions'
@@ -23,6 +23,7 @@ export default function MissionPage() {
   const query = useSearchParams()
   const tab = query.get('tab')
   const { tabSound } = useAppSound()
+  const initPage = useRef<boolean>(false)
   const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.REWARDS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
@@ -60,8 +61,10 @@ export default function MissionPage() {
 
   const handleDisablePartner = (status: boolean) => {
     setDisablePartner(status)
+
     setTimeout(() => {
       setIsLoading(false)
+      initPage.current = true
     }, 300)
   }
 
@@ -73,6 +76,11 @@ export default function MissionPage() {
     setRewardCount(count)
   }
 
+  useEffect(() => {
+    if (!disablePartner && !initPage.current) {
+      setActiveTab(MISSION_TAB.PARTNERS)
+    }
+  }, [disablePartner])
   return (
     <>
       {isLoading && (
@@ -115,6 +123,7 @@ export default function MissionPage() {
               }}
               disabledKeys={disablePartner ? [MISSION_TAB.PARTNERS] : []}
               defaultSelectedKey={activeTab}
+              selectedKey={activeTab}
               onSelectionChange={handleChangeTab}
             >
               <Tab
