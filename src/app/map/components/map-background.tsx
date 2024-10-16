@@ -1,6 +1,5 @@
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
-import OSM from 'ol/source/OSM'
 import 'ol/ol.css'
 import { useEffect } from 'react'
 import { XYZ } from 'ol/source'
@@ -23,5 +22,5 @@ export default function MapBackground() {
     })
     return () => map.setTarget(undefined)
   }, [])
-  return <div id="map" style={{ width: '100%', height: 'calc(100vh - 110px)' }}></div>
+  return <div id="map" style={{ width: '100%', height: '100%' }}></div>
 }
