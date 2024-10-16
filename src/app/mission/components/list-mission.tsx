@@ -28,8 +28,8 @@ interface IListMission {
   }[]
   refetch?: () => void
 }
-const TYPES_LOGIN_X = ['CONNECT_X']
-const NAMES_LOGIN_X = ['follow u2u network x', 'like twitter', 'retweet', 'comment']
+const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES']
+const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
   const [isVerifying, setVerifying] = useState<boolean>(false)
@@ -114,7 +114,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
 
   const checkMission = async (id: number) => {
     const res = await verifyMission(id, currentItem?.current?.isDaily)
-    if (NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1 && webApp?.openLink) {
+    if (
+      (TYPES_LOGIN_X.indexOf(currentItem.current.type) !== -1 ||
+        NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1) &&
+      webApp?.openLink
+    ) {
       webApp.openLink(currentItem.current.url)
     } else {
       window.open(currentItem.current.url, '_blank')
@@ -229,7 +233,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         default:
           if (currentItem.current.url) {
             if (
-              NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1 &&
+              (TYPES_LOGIN_X.indexOf(currentItem.current.type) !== -1 ||
+                NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1) &&
               !userTwitter?.twitterUsername &&
               twitterLoginUrl
             ) {
