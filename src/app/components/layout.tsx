@@ -10,8 +10,8 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
-import TourGuide from './tour-guide'
-import { TourGuideProvider } from '@/contexts/tour.guide.context'
+// import TourGuide from './tour-guide'
+// import { TourGuideProvider } from '@/contexts/tour.guide.context'
 import { TonConnectUIProvider } from '@tonconnect/ui-react'
 
 export default function Layout({ children }: any) {
@@ -84,15 +84,15 @@ export default function Layout({ children }: any) {
           >
             <NextUIProvider>
               <SoundsProvider>
-                <TourGuideProvider>
-                  <Swipeable onSwipeRight={handleBack}>
-                    <AnimatePresence key="custom-page">
-                      {children}
-                      {/* {pathName !== '/' && <CustomNavbar />} */}
-                    </AnimatePresence>
-                  </Swipeable>
-                  <TourGuide />
-                </TourGuideProvider>
+                {/* <TourGuideProvider> */}
+                <Swipeable onSwipeRight={handleBack}>
+                  <AnimatePresence key="custom-page">
+                    {children}
+                    {/* {pathName !== '/' && <CustomNavbar />} */}
+                  </AnimatePresence>
+                </Swipeable>
+                {/* <TourGuide /> */}
+                {/* </TourGuideProvider> */}
               </SoundsProvider>
             </NextUIProvider>
           </TonConnectUIProvider>
