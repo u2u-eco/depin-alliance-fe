@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -10,8 +10,8 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
-import TourGuide from './tour-guide'
-import { TourGuideProvider } from '@/contexts/tour.guide.context'
+// import TourGuide from './tour-guide'
+// import { TourGuideProvider } from '@/contexts/tour.guide.context'
 import { TonConnectUIProvider } from '@tonconnect/ui-react'
 
 export default function Layout({ children }: any) {
@@ -19,6 +19,7 @@ export default function Layout({ children }: any) {
   const queryClient = new QueryClient()
   const { userSetting } = useCommonStore()
   const router = useRouter()
+  const mainSound = useRef<any>()
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -35,15 +36,22 @@ export default function Layout({ children }: any) {
 
   useEffect(() => {
     // main?.stop()
-    const mainSound = new Howl({
-      src: ['/assets/sounds/theme/main-theme.mp3'],
-      loop: true,
-      mute: !userSetting?.enableMusicTheme,
-      html5: false
-    })
-    mainSound?.play()
+    if (!mainSound.current && userSetting?.enableMusicTheme) {
+      mainSound.current = new Howl({
+        src: ['/assets/sounds/theme/main-theme.mp3'],
+        loop: true,
+        mute: !userSetting?.enableMusicTheme,
+        html5: false
+      })
+    }
+    if (userSetting?.enableMusicTheme) {
+      mainSound.current?.play()
+    } else {
+      mainSound.current?.stop()
+    }
+
     return () => {
-      mainSound?.stop()
+      mainSound.current?.stop()
     }
   }, [userSetting?.enableMusicTheme])
   const url = process.env.NEXT_PUBLIC_TONCONNECT_MAINIFEST
@@ -76,15 +84,15 @@ export default function Layout({ children }: any) {
           >
             <NextUIProvider>
               <SoundsProvider>
-                <TourGuideProvider>
-                  <Swipeable onSwipeRight={handleBack}>
-                    <AnimatePresence key="custom-page">
-                      {children}
-                      {/* {pathName !== '/' && <CustomNavbar />} */}
-                    </AnimatePresence>
-                  </Swipeable>
-                  <TourGuide />
-                </TourGuideProvider>
+                {/* <TourGuideProvider> */}
+                <Swipeable onSwipeRight={handleBack}>
+                  <AnimatePresence key="custom-page">
+                    {children}
+                    {/* {pathName !== '/' && <CustomNavbar />} */}
+                  </AnimatePresence>
+                </Swipeable>
+                {/* <TourGuide /> */}
+                {/* </TourGuideProvider> */}
               </SoundsProvider>
             </NextUIProvider>
           </TonConnectUIProvider>
