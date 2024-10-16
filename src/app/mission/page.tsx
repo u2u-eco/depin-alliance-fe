@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import DailyCheckIn from './components/daily-check-in'
 import Missions from './components/missions'
@@ -9,6 +9,10 @@ import ListPartner from './components/list-partner'
 import { useSearchParams } from 'next/navigation'
 import Loader from '../components/ui/loader'
 import { useAppSound } from '@/hooks/useAppSound'
+import { IconLock } from '../components/icons'
+import { toast } from 'sonner'
+import CustomToast from '../components/ui/custom-toast'
+import { MESSAGES } from '@/constants/messages'
 
 const MISSION_TAB = {
   PARTNERS: 'partners',
@@ -19,27 +23,48 @@ export default function MissionPage() {
   const query = useSearchParams()
   const tab = query.get('tab')
   const { tabSound } = useAppSound()
+  const initPage = useRef<boolean>(false)
   const [activeTab, setActiveTab] = useState(tab || MISSION_TAB.REWARDS)
   const [partnerCount, setPartnerCount] = useState<number>(0)
   const [rewardCount, setRewardCount] = useState<number>(0)
-  const [isShowTab, setIsShowTab] = useState<boolean>(false)
+  const [disablePartner, setDisablePartner] = useState<boolean>(true)
+  const [isShowTab, setIsShowTab] = useState<boolean>(true)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const handleChangeTab = (tab: any) => {
+    if (disablePartner && tab === MISSION_TAB.PARTNERS) return
     setActiveTab(tab)
     tabSound.play()
   }
 
-  const showTabPartner = (status: boolean) => {
-    if (status) {
-      setIsShowTab(true)
-    } else {
-      if (!tab) {
-        setActiveTab(MISSION_TAB.REWARDS)
-      }
-      setIsShowTab(false)
+  const handleClickPartner = () => {
+    if (disablePartner) {
+      toast.dismiss()
+      toast.warning(
+        <CustomToast title={MESSAGES['MSG_YOU_COMPLETE_SUMMON_TASKS']} type="warning" />
+      )
     }
+  }
+
+  // const showTabPartner = (status: boolean) => {
+  //   if (status) {
+  //     // setIsShowTab(true)
+  //   } else {
+  //     if (!tab) {
+  //       setActiveTab(MISSION_TAB.REWARDS)
+  //     }
+  //     // setIsShowTab(false)
+  //   }
+  //   setTimeout(() => {
+  //     setIsLoading(false)
+  //   }, 300)
+  // }
+
+  const handleDisablePartner = (status: boolean) => {
+    setDisablePartner(status)
+
     setTimeout(() => {
       setIsLoading(false)
+      initPage.current = true
     }, 300)
   }
 
@@ -51,6 +76,11 @@ export default function MissionPage() {
     setRewardCount(count)
   }
 
+  useEffect(() => {
+    if (!disablePartner && !initPage.current) {
+      setActiveTab(MISSION_TAB.PARTNERS)
+    }
+  }, [disablePartner])
   return (
     <>
       {isLoading && (
@@ -87,16 +117,23 @@ export default function MissionPage() {
                 base: 'w-full',
                 tabList: 'gap-2 w-full relative rounded-none p-0 border-b border-divider',
                 cursor: 'w-full bg-gradient rounded',
-                tab: 'h-[30px] px-2 font-mona',
+                tab: 'h-[30px] px-2 font-mona data-[disabled=true]:opacity-100',
                 tabContent:
                   'group-data-[selected=true]:bg-gradient group-data-[selected=true]:[-webkit-background-clip:_text] group-data-[selected=true]:[-webkit-text-fill-color:_transparent] text-white/25 font-mona font-semibold text-[15px] xs:text-base uppercase'
               }}
+              disabledKeys={disablePartner ? [MISSION_TAB.PARTNERS] : []}
               defaultSelectedKey={activeTab}
+              selectedKey={activeTab}
               onSelectionChange={handleChangeTab}
             >
               <Tab
                 key={MISSION_TAB.PARTNERS}
-                title={`${MISSION_TAB.PARTNERS} ${partnerCount ? `(${partnerCount})` : ''}`}
+                title={
+                  <div onClick={handleClickPartner} className="flex items-center">
+                    {`${MISSION_TAB.PARTNERS} ${partnerCount && !disablePartner ? `(${partnerCount})` : ''}`}{' '}
+                    {disablePartner ? <IconLock className="size-4 ml-1 mb-[2px]" /> : null}
+                  </div>
+                }
               ></Tab>
               <Tab
                 key={MISSION_TAB.REWARDS}
@@ -114,7 +151,10 @@ export default function MissionPage() {
                 <DailyCheckIn />
               </div>
               <div>
-                <Missions updateListReward={updateListReward} showTabPartner={showTabPartner} />
+                <Missions
+                  updateListReward={updateListReward}
+                  setDisablePartner={handleDisablePartner}
+                />
               </div>
             </>
           </div>

@@ -50,4 +50,5 @@ export interface IMissionQuiz {
   type: string
   url: string
   xp: number
+  isDaily?: boolean
 }

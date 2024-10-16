@@ -28,7 +28,7 @@ interface IListMission {
   }[]
   refetch?: () => void
 }
-const TYPES_LOGIN_X = ['CONNECT_X']
+const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES']
 const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
@@ -94,7 +94,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     if (isVerified) return
     setLoadingButton(true)
 
-    const res = await verifyMission(id)
+    const res = await verifyMission(id, currentItem?.current?.isDaily)
     if (res.status && res.data !== 'false') {
       if (res.data === 'true') {
         setVerified(true)
@@ -113,12 +113,25 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const checkMission = async (id: number) => {
-    const res = await verifyMission(id)
-    window.open(currentItem.current.url, '_blank')
+    const res = await verifyMission(id, currentItem?.current?.isDaily)
+    if (
+      (TYPES_LOGIN_X.indexOf(currentItem.current.type) !== -1 ||
+        NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1) &&
+      webApp?.openLink
+    ) {
+      webApp.openLink(currentItem.current.url)
+    } else {
+      window.open(currentItem.current.url, '_blank')
+    }
 
     setTimeout(() => {
-      if (res.status && res.data === 'true') {
-        setVerified(true)
+      if (res.status && res.data !== 'false') {
+        if (res.data === 'true') {
+          setVerified(true)
+        }
+        if (res.data === 'verifying') {
+          setVerifying(true)
+        }
         refetch && refetch()
       }
     })
@@ -154,7 +167,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
 
   const handleClaim = async () => {
     setLoadingButton(true)
-    const res = await claimTask(currentItem.current.id)
+    const res = await claimTask(currentItem.current.id, currentItem?.current?.isDaily)
     if (res.status) {
       if (res.data?.amount > 0) {
         refSpecialItem.current = res.data
@@ -220,7 +233,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         default:
           if (currentItem.current.url) {
             if (
-              NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1 &&
+              (TYPES_LOGIN_X.indexOf(currentItem.current.type) !== -1 ||
+                NAMES_LOGIN_X.indexOf(currentItem.current.name.toLowerCase()) !== -1) &&
               !userTwitter?.twitterUsername &&
               twitterLoginUrl
             ) {
@@ -293,14 +307,22 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const handleRefetch = async () => {
     if (refetch) {
       const res: any = await refetch()
-      if (res.status === 'success' && res.data?.data) {
-        res.data?.data.forEach((item: any) => {
+      if (res.status === 'success' && res.data) {
+        const _currentId = currentItem?.current.idCheck || currentItem.current.id
+        res.data?.forEach((item: any) => {
           item.missions.forEach((mission: any) => {
-            if (mission.id === currentItem.current.id) {
+            if (
+              (currentItem?.current.idCheck && mission.idCheck === _currentId) ||
+              (!currentItem?.current.idCheck && mission.id === _currentId)
+            ) {
               currentItem.current = mission
-
               if (mission.status === 'VERIFIED') {
                 setVerified(true)
+                setVerifying(false)
+              }
+              if (!mission.status) {
+                setCheckMission(false)
+                setVerified(false)
                 setVerifying(false)
               }
             }

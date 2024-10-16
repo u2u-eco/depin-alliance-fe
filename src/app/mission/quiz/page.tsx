@@ -3,7 +3,6 @@
 
 import CustomPage from '@/app/components/custom-page'
 import { IconPoint, IconQuiz } from '@/app/components/icons'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -76,7 +75,11 @@ export default function QuizPage() {
   const sendQuiz = async () => {
     if (currentMissionQuiz?.id) {
       try {
-        const res = await verifyMissionQuiz(currentMissionQuiz.id, currentMissionQuiz.quizArrays)
+        const res = await verifyMissionQuiz(
+          currentMissionQuiz.id,
+          currentMissionQuiz.quizArrays,
+          currentMissionQuiz.isDaily
+        )
         if (res.status) {
           setIsVerified(true)
         }
@@ -97,7 +100,7 @@ export default function QuizPage() {
     if (currentMissionQuiz?.id) {
       setIsLoading(true)
       try {
-        const res = await claimTask(currentMissionQuiz.id)
+        const res = await claimTask(currentMissionQuiz.id, currentMissionQuiz.isDaily)
         if (res.status) {
           if (res.data?.amount > 0) {
             refSpecialItem.current = res.data
