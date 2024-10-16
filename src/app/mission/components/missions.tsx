@@ -33,7 +33,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
       if (res[1].status && res[1].data?.length > 0) {
         _listMission = [
           {
-            group: 'Daily',
+            group: 'Daily Missions',
             missions: res[1].data.map((item: any) => {
               return { ...item, isDaily: true, idCheck: `h-${item.id}` }
             })
