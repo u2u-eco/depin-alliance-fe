@@ -270,9 +270,6 @@ const Info = ({ profile, rank }: InfoProps) => {
                     src="/assets/images/map/world-map@2x.png"
                     alt="DePIN Alliance"
                   />
-                  {/* <div className="absolute left-[50%] bottom-2 translate-x-[-50%] text-xs leading-[16px] tracking-[-1px] text-yellow-200 w-full text-center uppercase">
-                    World Map
-                  </div> */}
                 </div>
               </div>
             </div>
