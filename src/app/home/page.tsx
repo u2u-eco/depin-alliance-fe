@@ -24,13 +24,6 @@ export default function HomePage() {
     router.push('/avatar')
   }
 
-  // useEffect(() => {
-  //   main?.play()
-  //   return () => {
-  //     main?.stop()
-  //   }
-  // }, [])
-
   useEffect(() => {
     setTimeout(() => {
       if (tourState.tourActive && !tourState.run) {
@@ -48,6 +41,7 @@ export default function HomePage() {
     <>
       <CustomPage>
         {/* Point */}
+
         <motion.div
           className="relative"
           initial={{ y: 25, opacity: 0 }}
