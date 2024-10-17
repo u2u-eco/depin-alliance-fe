@@ -180,64 +180,7 @@ export default function DetailPage() {
                 </p>
               </div>
             </div>
-            <div className="relative flex-1">
-              <Popover
-                classNames={{
-                  trigger: 'aria-expanded:scale-[1] aria-expanded:opacity-100',
-                  content: 'p-0 rounded-none bg-transparent shadow-none'
-                }}
-                isOpen={isOpenPop}
-                onOpenChange={(open) => setIsOpenPop(open)}
-                placement="right-start"
-              >
-                <PopoverTrigger>
-                  <div
-                    className="space-y-2 xs:space-y-3 2xs:space-y-4 cursor-pointer text-center w-fit"
-                    onClick={handleActivePoint}
-                  >
-                    <div
-                      className={`relative mx-auto size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${activePoint ? 'bg-white/10' : ''}`}
-                    >
-                      <div
-                        className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${activePoint ? 'opacity-100' : ''}`}
-                      ></div>
-                    </div>
-                    <p className="font-airnt font-medium text-[10px] xs:text-[11px] 2xs:text-xs !leading-[16px] tracking-[1px] uppercase">
-                      MISSION 01
-                    </p>
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="relative max-w-[245px] border-[0.5px] border-yellow-300/25 px-4 py-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:bg-[linear-gradient(to_top,#000,#626516)] before:opacity-[0.86]">
-                    <div className="[--size:_5px] pointer-events-none absolute top-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:top-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-t before:border-t-yellow-500 after:content-[''] after:absolute after:top-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-t after:border-t-yellow-500"></div>
-                    <div className="space-y-3 xs:space-y-4 relative">
-                      <div className="flex justify-between">
-                        <IconContribute className="size-6 xs:size-7 2xs:size-8 text-white" />
-                        <div
-                          className="cursor-pointer text-body hover:text-title transition-colors"
-                          onClick={() => setIsOpenPop(false)}
-                        >
-                          <IconClose className="size-4" />
-                        </div>
-                      </div>
-                      <div className="space-y-4 xs:space-y-5 2xs:space-y-6">
-                        <div className="space-y-2 xs:space-y-2.5 2xs:space-y-3">
-                          <p className="font-airnt text-title text-shadow-white font-medium text-base !leading-[22px] tracking-[1px] uppercase">
-                            shanghai
-                          </p>
-                          <p className="text-sm !leading-[18px] tracking-[-1px] text-body">
-                            Contribute your wasted items to League to increase League’s profit.
-                            Contribute your wasted items to League to increase League’s.
-                          </p>
-                        </div>
-                        <CustomButton title="START MISSION" />
-                      </div>
-                    </div>
-                    <div className="[--size:_5px] pointer-events-none absolute bottom-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:bottom-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-b before:border-b-yellow-500 after:content-[''] after:absolute after:bottom-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-b after:border-b-yellow-500"></div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
+
             <div className="flex space-x-2">
               {listDetail.map((item: any) => (
                 <div className="btn cursor-default" key={item.id}>
