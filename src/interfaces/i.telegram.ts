@@ -48,4 +48,5 @@ export interface IWebApp {
   shareToStory: (url: string, data: any) => void
   disableVerticalSwipes: () => void
   openLink: (url: string) => void
+  openTelegramLink: (url: string) => void
 }
