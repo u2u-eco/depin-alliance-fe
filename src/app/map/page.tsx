@@ -3,7 +3,6 @@
 import React from 'react'
 import CustomPage from '../components/custom-page'
 import { CustomHeader } from '../components/ui/custom-header'
-
 import WorldMapProvider from './context/worldmap-context'
 import WorldMapContainer from './container'
 

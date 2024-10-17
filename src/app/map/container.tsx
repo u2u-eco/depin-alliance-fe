@@ -6,6 +6,9 @@ import { useAppSound } from '@/hooks/useAppSound'
 import SelectMap from './components/select-map'
 import CustomButton from '../components/button'
 import { WorldMapContext } from './context/worldmap-context'
+import { useQuery } from '@tanstack/react-query'
+import { getItemWorldMap } from '@/services/world-map'
+import { WORLD_MAP_ITEM } from '@/interfaces/i.world-map'
 
 export default function WorldMapContainer() {
   const router = useRouter()
