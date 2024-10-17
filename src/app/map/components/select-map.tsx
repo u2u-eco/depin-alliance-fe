@@ -87,8 +87,8 @@ const listMapConfig = [
 
 const SelectMap = ({ activeArea }: MapProps) => {
   const [activeItem, setActiveItem] = useState('')
-
   const ref = useRef<any>(null)
+  const firstInit = useRef<boolean>(false)
   const { buttonSound } = useAppSound()
   const { setContinent } = useContext(WorldMapContext)
   const [width, setWidth] = useState(
@@ -113,7 +113,10 @@ const SelectMap = ({ activeArea }: MapProps) => {
   }, [])
 
   useEffect(() => {
-    if (activeArea) setActiveItem(activeArea)
+    if (activeArea && !firstInit.current) {
+      firstInit.current = true
+      setActiveItem(activeArea)
+    }
   }, [activeItem])
 
   return (
