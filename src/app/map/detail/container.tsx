@@ -2,30 +2,11 @@
 
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
-import CustomPage from '@/app/components/custom-page'
-import {
-  IconClose,
-  IconContribute,
-  IconMapAfrica,
-  IconMapAmerica,
-  IconMapAntarctica,
-  IconMapAsia,
-  IconMapEurope,
-  IconMapOceania,
-  IconPlus,
-  IconReload,
-  IconUpDown
-} from '@/app/components/icons'
-import { CustomHeader } from '@/app/components/ui/custom-header'
+import { IconPlus, IconReload } from '@/app/components/icons'
 import { useAppSound } from '@/hooks/useAppSound'
-import { Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@nextui-org/react'
-import React, { Component, useContext, useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
+import { useDisclosure } from '@nextui-org/react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { toCapitalizeCase } from '@/helper/common'
-import { MAP_TYPE } from '@/constants'
-import MapBackground from '../components/map-background'
 import SelectMap from '../components/select-map'
 import ListItem from '../components/list-item'
 import { MAP_CONTINENT_IMAGE, WorldMapContext } from '../context/worldmap-context'
@@ -54,14 +35,17 @@ import CustomToast from '@/app/components/ui/custom-toast'
 export default function DetailContainer() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const continent = searchParams.get('id')
+  const continent: any = searchParams.get('id')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { setListWorldMap, listWorldMapByContinent, setCurrentMap, currentMap } =
-    useContext(WorldMapContext)
-  const [isOpenPop, setIsOpenPop] = useState(false)
+  const {
+    setListWorldMap,
+    listWorldMapByContinent,
+    setCurrentMap,
+    currentMap,
+    continent: continentStore
+  } = useContext(WorldMapContext)
   const [activeType, setActiveType] = useState(WORLD_MAP_ITEM.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
-  const [activeArea, setActiveArea] = useState<any>()
   const { buttonSound } = useAppSound()
   const [isLoadingModal, setIsLoadingModal] = useState<boolean>(false)
   const [listDataByType, setListDataByType] = useState<{ [key: string]: Array<any> }>({})
@@ -73,7 +57,7 @@ export default function DetailContainer() {
       haveItem: true,
       image: continent ? MAP_CONTINENT_IMAGE[continent] : null,
       title: continent ? listWorldMapByContinent[continent]?.name : '',
-      type: 'map',
+      type: WORLD_MAP_ITEM.CONTINENT,
       text: 'LV. 12'
     },
     { id: 2, haveItem: false, image: '', title: 'agency', type: WORLD_MAP_ITEM.AGENCY, text: '' },
@@ -104,10 +88,6 @@ export default function DetailContainer() {
     onOpen()
   }
 
-  const handleUpdateParam = (name: string) => {
-    setActiveArea(name)
-  }
-
   const handleClickModal = () => {
     switch (activeType) {
       case WORLD_MAP_ITEM.AGENCY:
@@ -119,7 +99,7 @@ export default function DetailContainer() {
         onClose()
         break
       case WORLD_MAP_ITEM.CONTINENT:
-        router.push(`/map/detail?type=${activeArea}`)
+        router.replace(`/map/detail?id=${continentStore}`)
         onClose()
         break
     }
@@ -144,10 +124,10 @@ export default function DetailContainer() {
   const _getWorldMap = async () => {
     const res = await getWorldMap()
     if (res.status) {
-      if (res.data.agency) {
+      if (res.data?.agency) {
         worldMapItemSelected[WORLD_MAP_ITEM.AGENCY] = res.data.agency
       }
-      if (res.data.tool) {
+      if (res.data?.tool) {
         worldMapItemSelected[WORLD_MAP_ITEM.TOOL] = res.data.tool
       }
       setCurrentMap(res.data)
@@ -175,10 +155,6 @@ export default function DetailContainer() {
   }
 
   useEffect(() => {
-    setActiveArea(continent)
-  }, [])
-
-  useEffect(() => {
     getListMap()
     _getWorldMap()
   }, [])
@@ -192,6 +168,7 @@ export default function DetailContainer() {
       updateWorldMap()
     }
   }, [worldMapItemSelected, continent])
+
   return (
     <>
       <div className=" flex flex-col justify-between space-y-6 h-full">
@@ -222,7 +199,9 @@ export default function DetailContainer() {
               </p>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div></div>
+        )}
 
         <div className="flex space-x-2">
           {listDetail.map((item: any) => (
@@ -298,7 +277,7 @@ export default function DetailContainer() {
         >
           {activeType === WORLD_MAP_ITEM.CONTINENT ? (
             <div className="flex flex-1 flex-col items-center justify-center">
-              <SelectMap activeArea={activeArea} />
+              <SelectMap activeArea={continent && continent} />
             </div>
           ) : (
             <>
