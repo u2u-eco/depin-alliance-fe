@@ -36,17 +36,17 @@ const DETAIL_TYPE = {
 }
 
 const listItem = [
-  { id: 1, image: '', name: 'Ethan Nimbus' },
-  { id: 2, image: '', name: 'Ethan Nimbus' },
-  { id: 3, image: '', name: 'Ethan Nimbus' },
-  { id: 4, image: '', name: 'Ethan Nimbus' },
-  { id: 5, image: '', name: 'Ethan Nimbus' }
+  { id: 1, image: '', name: 'Oka Shigeo' },
+  { id: 2, image: '', name: 'Gudmund Oddmund' },
+  { id: 3, image: '', name: 'Mari Mane' },
+  { id: 4, image: '', name: 'Aleksandra Lidiya' },
+  { id: 5, image: '', name: 'Kadiatou Chinwe' }
 ]
 
 const listTool = [
   { id: 1, image: '/assets/images/map/tool-01@2x.png', name: 'Cloudcell' },
   { id: 2, image: '/assets/images/map/tool-02@2x.png', name: 'Pinpoint' },
-  { id: 3, image: '/assets/images/map/tool-03@2x.png', name: 'LAI' },
+  { id: 3, image: '/assets/images/map/tool-03@2x.png', name: 'LustAI' },
   { id: 4, image: '/assets/images/map/tool-04@2x.png', name: 'SkyEyes' },
   { id: 5, image: '/assets/images/map/tool-05@2x.png', name: 'NoRadar' }
 ]
