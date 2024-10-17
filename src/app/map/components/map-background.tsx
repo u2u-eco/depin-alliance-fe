@@ -8,11 +8,13 @@ import { RFeature, RLayerTile, RLayerVector, RMap, ROverlay } from 'rlayers'
 import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
 import { IconClose, IconContribute } from '@/app/components/icons'
 import CustomButton from '@/app/components/button'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { WorldMapContext } from '../context/worldmap-context'
 import { IWorldMapResult } from '@/interfaces/i.world-map'
 
 export default function MapBackground() {
+  const router = useRouter()
+  const [init, setInit] = useState<boolean>(false)
   const [isOpenPop, setIsOpenPop] = useState<{ [key: number]: boolean }>({})
   const isOpenPopoverById = useRef<any>({})
   const searchParams = useSearchParams()
@@ -31,18 +33,26 @@ export default function MapBackground() {
     setIsOpenPop({ ...isOpenPopoverById.current })
   }
 
+  const handleStartMission = () => {
+    router.push('/games/play?type=puzzle')
+  }
+
   useEffect(() => {
     if (listWorldMapByContinent[continent]) {
+      setInit(false)
       const _centers = getLatLon(listWorldMapByContinent[continent]?.description)
       if (_centers) {
-        setCenters(_centers)
+        setTimeout(() => {
+          setCenters(_centers)
+          setInit(true)
+        }, 500)
       }
     }
-  }, [listWorldMapByContinent])
+  }, [listWorldMapByContinent, continent])
 
   return (
     <>
-      {centers?.length > 0 ? (
+      {centers?.length > 0 && init ? (
         <RMap width={'100%'} height={'100vh'} initial={{ center: fromLonLat(centers), zoom: 2 }}>
           <RLayerTile
             properties={{ label: 'Transport' }}
@@ -53,6 +63,7 @@ export default function MapBackground() {
               const point = getLatLon(item?.location)
               return (
                 <RFeature<Point>
+                  key={item.id}
                   style={
                     new Style({
                       fill: new Fill({ color: 'transparent' })
@@ -109,7 +120,7 @@ export default function MapBackground() {
                                     League’s.
                                   </p>
                                 </div>
-                                <CustomButton title="START MISSION" />
+                                <CustomButton onAction={handleStartMission} title="START MISSION" />
                               </div>
                             </div>
                             <div className="[--size:_5px] pointer-events-none absolute bottom-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:bottom-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-b before:border-b-yellow-500 after:content-[''] after:absolute after:bottom-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-b after:border-b-yellow-500"></div>

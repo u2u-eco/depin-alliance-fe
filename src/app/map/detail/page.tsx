@@ -3,16 +3,12 @@
 import CustomPage from '@/app/components/custom-page'
 
 import { CustomHeader } from '@/app/components/ui/custom-header'
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 
 import MapBackground from '../components/map-background'
-import SelectMap from '../components/select-map'
-import ListItem from '../components/list-item'
 
 import WorldMapProvider, { WorldMapContext } from '../context/worldmap-context'
-import { getItemWorldMap } from '@/services/world-map'
-import { WORLD_MAP_ITEM } from '@/interfaces/i.world-map'
 import DetailContainer from './container'
 
 export default function DetailPage() {
