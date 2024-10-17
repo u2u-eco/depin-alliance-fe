@@ -41,7 +41,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail' &&
     pathName !== '/map' &&
-    pathName !== '/map/detail'
+    pathName !== '/map/detail' &&
+    pathName !== '/games'
   let isShowSidebar =
     pathName !== '/inventory' &&
     pathName !== '/ranking' &&
@@ -59,7 +60,8 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     pathName !== '/league/all-league' &&
     pathName !== '/league/all-league/detail' &&
     pathName !== '/map' &&
-    pathName !== '/map/detail'
+    pathName !== '/map/detail' &&
+    pathName !== '/games'
 
   if (
     tourState.tourActive &&
@@ -68,7 +70,7 @@ const CustomPage = ({ children, classNames, disableOverscroll, wrapHidden }: Pag
     isShowSidebar = false
   }
 
-  const full = pathName === '/setting'
+  const full = pathName === '/setting' || pathName === '/games'
   return (
     <>
       <div className={cn('section', classNames?.wrapper)}>

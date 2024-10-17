@@ -18,6 +18,8 @@ import { toast } from 'sonner'
 import SpecialBoxModal from './special-box'
 import { loginTwitter, twitterInfo } from '@/services/twitter'
 import ButtonVerifying from './button-verifying'
+import Link from 'next/link'
+import { IconLink, IconOpenLink } from '@/app/components/icons'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -28,6 +30,7 @@ interface IListMission {
   }[]
   refetch?: () => void
 }
+const DISABLE_OPEN_TELE_LINK = ['web', 'weba', 'unknown']
 const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES']
 const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
@@ -121,7 +124,15 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     ) {
       webApp.openLink(currentItem.current.url)
     } else {
-      window.open(currentItem.current.url, '_blank')
+      if (
+        currentItem.current.type === 'TELEGRAM' &&
+        webApp?.openTelegramLink &&
+        DISABLE_OPEN_TELE_LINK.indexOf(webApp?.platform) === -1
+      ) {
+        webApp.openTelegramLink(currentItem.current.url)
+      } else {
+        window.open(currentItem.current.url, '_blank')
+      }
     }
 
     setTimeout(() => {
@@ -252,7 +263,15 @@ export default function ListMission({ listMission, refetch }: IListMission) {
             if (webApp?.platform === 'android') {
               checkMission(currentItem.current.id)
             } else {
-              window.open(currentItem.current.url, '_blank')
+              if (
+                currentItem.current.type === 'TELEGRAM' &&
+                webApp?.openTelegramLink &&
+                DISABLE_OPEN_TELE_LINK.indexOf(webApp?.platform) === -1
+              ) {
+                webApp.openTelegramLink(currentItem.current.url)
+              } else {
+                window.open(currentItem.current.url, '_blank')
+              }
             }
           }
           break
@@ -331,6 +350,10 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       }
     }
   }
+  const isShowLink =
+    (currentItem?.current?.type !== 'CONNECT_X' &&
+      [...TYPES_LOGIN_X, 'TWITTER'].indexOf(currentItem?.current?.type) !== -1) ||
+    NAMES_LOGIN_X.indexOf(currentItem?.current?.name.toLowerCase()) !== -1
 
   useEffect(() => {
     document.addEventListener('visibilitychange', handleVisible)
@@ -359,7 +382,18 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>Complete the following task:</p>
-            <p className="text-gradient">“{currentItem.current?.name}”</p>
+            {isShowLink && currentItem?.current?.url ? (
+              <Link
+                className="text-gradient flex items-center justify-center"
+                href={currentItem?.current?.url}
+                target="_blank"
+              >
+                “{currentItem.current?.name}”
+                <IconOpenLink className="ml-[2px] text-yellow-500 size-5" />
+              </Link>
+            ) : (
+              <p className="text-gradient">“{currentItem.current?.name}”</p>
+            )}
           </div>
           <div className="my-8 space-x-3 xs:space-x-4 flex items-center justify-center">
             <div className="[clip-path:_polygon(20px_0%,100%_0,100%_calc(100%_-_20px),calc(100%_-_20px)_100%,0_100%,0_20px)] bg-white/10 size-[80px] xs:size-[85px] 2xs:size-[90px] min-w-[80px] xs:min-w-[85px] 2xs:min-w-[90px] flex items-center justify-center">
