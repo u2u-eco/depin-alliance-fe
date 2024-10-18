@@ -81,7 +81,7 @@ export default function MapBackground() {
   return (
     <>
       {centers?.length > 0 && init ? (
-        <RMap width={'100%'} height={'100vh'} initial={{ center: fromLonLat(centers), zoom: 2 }}>
+        <RMap width={'100%'} height={'100vh'} initial={{ center: fromLonLat(centers), zoom: 2.5 }}>
           <RLayerTile
             properties={{ label: 'Transport' }}
             url="https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoicGVydGVydHJhbiIsImEiOiJjbHk0YW5lMDMwMGtnMmxyMGQ1dGhmamFpIn0.Etde0_5OVh8EfEGzuZgWfw"

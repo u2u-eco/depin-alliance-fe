@@ -94,6 +94,9 @@ export default function DetailContainer() {
     switch (type) {
       case WORLD_MAP_ITEM.AGENCY:
       case WORLD_MAP_ITEM.TOOL:
+        if (worldMapItemSelected[type]) {
+          handleSelectItem(worldMapItemSelected[type])
+        }
         getData(type)
         break
     }
@@ -101,6 +104,7 @@ export default function DetailContainer() {
   }
 
   const handleClickModal = () => {
+    if (disableAction) return
     switch (activeType) {
       case WORLD_MAP_ITEM.AGENCY:
       case WORLD_MAP_ITEM.TOOL:
@@ -111,7 +115,9 @@ export default function DetailContainer() {
         onClose()
         break
       case WORLD_MAP_ITEM.CONTINENT:
-        router.replace(`/map/detail?id=${continentStore}`)
+        if (continentStore) {
+          router.replace(`/map/detail?id=${continentStore}`)
+        }
         onClose()
         break
     }
@@ -175,6 +181,11 @@ export default function DetailContainer() {
     onOpenReward()
     _getWorldMap()
   }
+
+  const disableAction =
+    (activeType === WORLD_MAP_ITEM.AGENCY || activeType === WORLD_MAP_ITEM.TOOL) && !activeItem
+      ? true
+      : false
 
   useEffect(() => {
     getListMap()
@@ -341,7 +352,7 @@ export default function DetailContainer() {
             </>
           )}
           <div className="my-4 xs:my-6 2xs:my-8">
-            <CustomButton title="Confirm" onAction={handleClickModal} />
+            <CustomButton disable={disableAction} title="Confirm" onAction={handleClickModal} />
           </div>
         </div>
       </CustomModal>
