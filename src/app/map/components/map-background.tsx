@@ -34,21 +34,49 @@ export default function MapBackground() {
   }
 
   const handleStartMission = (item: IWorldMapResult) => {
-    router.push(`/games/play?type=puzzle&id=${item.id}`)
+    const link = item.isCompleted
+      ? '/games/play?type=puzzle'
+      : `/games/play?type=puzzle&id=${item.id}`
+    router.push(link)
+  }
+
+  function findCenter(markers: any) {
+    let lat = 0
+    let lng = 0
+
+    for (let i = 0; i < markers.length; ++i) {
+      const latLng = getLatLon(markers[i].location)
+      lat += latLng[1]
+      lng += latLng[0]
+    }
+
+    lat /= markers.length
+    lng /= markers.length
+    setTimeout(() => {
+      setCenters([lng, lat])
+      setInit(true)
+    }, 500)
   }
 
   useEffect(() => {
-    if (listWorldMapByContinent[continent]) {
+    if (currentMap?.results?.length > 0) {
+      setInit(false)
+      findCenter(currentMap?.results)
+    }
+  }, [currentMap?.results])
+
+  useEffect(() => {
+    if (listWorldMapByContinent[continent] && !currentMap?.results) {
       setInit(false)
       const _centers = getLatLon(listWorldMapByContinent[continent]?.description)
       if (_centers) {
         setTimeout(() => {
           setCenters(_centers)
           setInit(true)
-        }, 500)
+        }, 200)
       }
     }
-  }, [listWorldMapByContinent, continent])
+  }, [listWorldMapByContinent, continent, currentMap])
 
   return (
     <>
@@ -85,7 +113,7 @@ export default function MapBackground() {
                         <PopoverTrigger>
                           <div className="space-y-2 xs:space-y-3 2xs:space-y-4 cursor-pointer text-center w-fit">
                             <div
-                              className={`relative mx-auto size-5 xs:size-6 rotate-45 border-2 border-green-700 transition-all ${isOpenPop[item.id] || item.isCompleted ? 'bg-white/10' : ''}`}
+                              className={`relative mx-auto size-4 xs:size-5 rotate-45 border-2 border-green-700 transition-all ${isOpenPop[item.id] || item.isCompleted ? 'bg-white/10' : ''}`}
                             >
                               <div
                                 className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${isOpenPop[item.id] || item.isCompleted ? 'opacity-100' : ''}`}
@@ -124,7 +152,7 @@ export default function MapBackground() {
                                   onAction={() => {
                                     handleStartMission(item)
                                   }}
-                                  title="START MISSION"
+                                  title={item.isCompleted ? 'PLAY' : 'START MISSION'}
                                 />
                               </div>
                             </div>
