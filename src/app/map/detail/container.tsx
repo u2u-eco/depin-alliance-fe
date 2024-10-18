@@ -67,8 +67,8 @@ export default function DetailContainer() {
       haveItem: true,
       image: continent ? MAP_CONTINENT_IMAGE[continent] : null,
       title: continent ? listWorldMapByContinent[continent]?.name : '',
-      type: WORLD_MAP_ITEM.CONTINENT,
-      text: 'LV. 12'
+      type: WORLD_MAP_ITEM.CONTINENT
+      // text: 'LV. 12'
     },
     { id: 2, haveItem: false, image: '', title: 'agency', type: WORLD_MAP_ITEM.AGENCY, text: '' },
     { id: 3, haveItem: false, image: '', title: 'tool', type: WORLD_MAP_ITEM.TOOL, text: '' }
@@ -87,6 +87,7 @@ export default function DetailContainer() {
   }
 
   const handleClick = (type: string) => {
+    if (currentMap?.isCompleted) return
     buttonSound.play()
     setActiveType(type)
     switch (type) {

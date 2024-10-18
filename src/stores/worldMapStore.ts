@@ -4,12 +4,14 @@ interface IWorldMapStore {
   currentWorldMap: IWorldMap | null
   worldMapReward: IWorldMapReward | null
   setWorldMapReward: (item: IWorldMapReward | null) => void
+  setCurrentWorldMap: (item: IWorldMap | null) => void
 }
 
 const useWorldMapStore = create<IWorldMapStore>((set) => ({
   currentWorldMap: null,
   worldMapReward: null,
-  setWorldMapReward: (item) => set({ worldMapReward: item })
+  setWorldMapReward: (item) => set({ worldMapReward: item }),
+  setCurrentWorldMap: (item) => set({ currentWorldMap: item })
 }))
 
 export default useWorldMapStore
