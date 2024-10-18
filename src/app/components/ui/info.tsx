@@ -8,6 +8,7 @@ import { IconChevron, IconSettings, IconUser } from '../icons'
 import { motion } from 'framer-motion'
 import { IUserInfo } from '@/interfaces/i.user'
 import { useAppSound } from '@/hooks/useAppSound'
+import useWorldMapStore from '@/stores/worldMapStore'
 
 interface InfoProps {
   click?: () => void
@@ -18,6 +19,7 @@ interface InfoProps {
 const Info = ({ profile, rank }: InfoProps) => {
   const pathName = usePathname()
   const route = useRouter()
+  const { currentWorldMap } = useWorldMapStore()
   const { userInfo } = useCommonStore((state) => state)
 
   const { tabSound } = useAppSound()
@@ -33,7 +35,11 @@ const Info = ({ profile, rank }: InfoProps) => {
 
   const handleMap = () => {
     tabSound.play()
-    route.push('/map')
+    if (currentWorldMap) {
+      route.push(`/map/detail?id=${currentWorldMap?.continent.code}`)
+    } else {
+      route.push('/map')
+    }
   }
 
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
