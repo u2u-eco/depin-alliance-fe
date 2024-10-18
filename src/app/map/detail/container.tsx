@@ -2,7 +2,16 @@
 
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
-import { IconPlus, IconReload } from '@/app/components/icons'
+import {
+  IconMapAfrica,
+  IconMapAmerica,
+  IconMapAntarctica,
+  IconMapAsia,
+  IconMapEurope,
+  IconMapOceania,
+  IconPlus,
+  IconReload
+} from '@/app/components/icons'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useContext, useEffect, useState } from 'react'
@@ -19,6 +28,7 @@ import useWorldMapStore from '@/stores/worldMapStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
+import { MAP_TYPE } from '@/constants'
 
 // const listItem = [
 //   { id: 1, image: '', name: 'Oka Shigeo' },
@@ -35,6 +45,51 @@ import Image from 'next/image'
 //   { id: 4, image: '/assets/images/map/tool-04@2x.png', name: 'SkyEyes' },
 //   { id: 5, image: '/assets/images/map/tool-05@2x.png', name: 'NoRadar' }
 // ]
+
+const listMapConfig = [
+  {
+    id: 'continent_6',
+    image: <IconMapEurope className="size-65xs:size-762xs:size-87mx-auto" />,
+    title: MAP_TYPE.EUROPE,
+    class:
+      'before:[clip-path:_polygon(calc(50%_+_var(--line)*2)_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_calc(var(--shape)_+_var(--line)));]'
+  },
+  {
+    id: 'continent_1',
+    image: <IconMapAsia className="size-5 xs:size-6 2xs:size-7 mx-auto" />,
+    title: MAP_TYPE.ASIA,
+    class:
+      'before:[clip-path:_polygon(calc(50%_-_var(--line)*2)_0,100%_calc(var(--shape)_+_var(--line)),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
+  },
+  {
+    id: 'continent_5',
+    image: <IconMapAfrica className="size-5 xs:size-6 2xs:size-7 mx-auto" />,
+    title: MAP_TYPE.AFRICA,
+    class:
+      'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,var(--line)_calc(100%_-_(var(--shape)_-_var(--line)/2)),var(--line)_calc(var(--shape)_-_var(--line)/2));]'
+  },
+  {
+    id: 'continent_2',
+    image: <IconMapOceania className="size-5 xs:size-6 2xs:size-7 mx-auto" />,
+    title: MAP_TYPE.OCEANIA,
+    class:
+      'before:[clip-path:_polygon(50%_0,calc(100%_-_var(--line))_calc(var(--shape)_-_var(--line)/2),calc(100%_-_var(--line))_calc(100%_-_(var(--shape)_-_var(--line)/2)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
+  },
+  {
+    id: 'continent_4',
+    image: <IconMapAntarctica className="size-5 xs:size-6 2xs:size-7 mx-auto" />,
+    title: MAP_TYPE.ANTARCTICA,
+    class:
+      'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),calc(50%_+_var(--line)*2)_100%,0_calc(100%_-_var(--shape)_-_var(--line)),0_var(--shape));]'
+  },
+  {
+    id: 'continent_3',
+    image: <IconMapAmerica className="size-5 xs:size-6 2xs:size-7 mx-auto" />,
+    title: MAP_TYPE.AMERICA,
+    class:
+      'before:[clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)_-_var(--line)),calc(50%_-_var(--line)*2)_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]'
+  }
+]
 
 export default function DetailContainer() {
   const router = useRouter()
@@ -61,6 +116,8 @@ export default function DetailContainer() {
   const [isLoadingModal, setIsLoadingModal] = useState<boolean>(false)
   const [listDataByType, setListDataByType] = useState<{ [key: string]: Array<any> }>({})
   const [worldMapItemSelected, setWorldMapSelectedItem] = useState<any>({})
+  const [isDailyCombo, setIsDailyCombo] = useState(false)
+  const [isDoneMission, setIsDoneMission] = useState(false)
 
   const listDetail = [
     {
@@ -244,16 +301,21 @@ export default function DetailContainer() {
 
         <div className="flex space-x-2">
           {listDetail.map((item: any) => (
-            <div className="btn cursor-default" key={item.id}>
+            <div
+              className={`btn cursor-default ${isDoneMission ? 'inactive pointer-events-none' : ''}`}
+              key={item.id}
+            >
               <div className="btn-border"></div>
-              <div className="btn-primary ![background:_#0f0f0fcc] !shadow-none relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-[linear-gradient(to_top,rgba(0,51,29,0.1),rgba(0,51,29,1))] before:pointer-events-none before:opacity-30 !px-1 xs:!px-2 2xs:!px-3 text-center flex flex-col space-y-2 xs:space-y-2.5 2xs:space-y-3">
+              <div
+                className={`btn-primary ![background:_#0f0f0fcc] !shadow-none relative before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:size-full before:bg-[linear-gradient(to_top,rgba(0,51,29,0.1),rgba(0,51,29,1))] before:pointer-events-none before:opacity-30 !px-1 xs:!px-2 2xs:!px-3 text-center flex flex-col space-y-2 xs:space-y-2.5 2xs:space-y-3 ${isDoneMission ? 'before:!bg-white/10 before:[background-image:_unset]' : ''}`}
+              >
                 <div
-                  className="relative mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-0.5 xs:mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-2.5 after:border-[5px] after:border-transparent after:border-r-green-500 after:border-b-green-500"
+                  className={`relative cursor-pointer mx-auto drop-shadow-[0_0_10px_rgba(0,153,86,0.5)] mt-0.5 xs:mt-1 before:content-[''] before:absolute before:top-[5px] before:left-[5px] before:size-1.5 before:border-[3px] before:border-transparent before:border-l-green-500 before:border-t-green-500 ${isDoneMission ? 'opacity-30' : ''}`}
                   onClick={() => handleClick(item.type)}
                 >
-                  <div className="[--shape:_15px] size-14 xs:size-16 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] p-[1px] bg-gradient">
+                  <div className="[--shape:_15px] size-14 xs:size-16 [clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),100%_100%,0_100%,0_var(--shape));] p-[1px] bg-gradient">
                     <div
-                      className={`[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),calc(100%_-_var(--shape))_100%,0_100%,0_var(--shape));] flex items-center justify-center size-full text-green-500 ${item.haveItem ? 'bg-green-900' : 'bg-[linear-gradient(to_bottom,#000,#00331d)]'}`}
+                      className={`[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),100%_100%,0_100%,0_var(--shape));] flex items-center justify-center size-full text-green-500 ${item.haveItem ? 'bg-green-900' : 'bg-[linear-gradient(to_bottom,#000,#00331d)]'}`}
                     >
                       {item.haveItem ? (
                         <>{<item.image className="size-6 xs:size-7 2xs:size-8" />}</>
@@ -276,18 +338,23 @@ export default function DetailContainer() {
                       )}
                     </div>
                   </div>
+                  <div className="absolute bottom-0 right-0 size-6 xs:size-7 border-transparent border-[12px] xs:border-[14px] border-r-yellow-500 border-b-yellow-500">
+                    <IconReload className="text-yellow-900 size-2.5" />
+                  </div>
                 </div>
                 <div className="relative space-y-0.5 xs:space-y-1">
                   <p
-                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase line-clamp-1 ${worldMapItemSelected[item.type]?.name || item.type === WORLD_MAP_ITEM.CONTINENT ? 'text-title' : 'text-inactive'}`}
+                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase line-clamp-1 ${(worldMapItemSelected[item.type]?.name || item.type === WORLD_MAP_ITEM.CONTINENT) && !isDoneMission ? 'text-title' : 'text-inactive'}`}
                   >
                     {worldMapItemSelected[item.type]?.name || item.title}
                   </p>
-                  <p className="text-yellow-500 text-[11px] xs:text-xs !leading-[16px] tracking-[-1px] font-geist font-normal min-h-4">
+                  <p
+                    className={`text-[11px] xs:text-xs !leading-[16px] min-h-4 tracking-[-1px] font-geist font-normal line-clamp-1 ${isDoneMission ? 'text-inactive' : 'text-yellow-500'}`}
+                  >
                     {item.text}
                   </p>
                 </div>
-                <div
+                {/* <div
                   className="relative cursor-pointer mx-auto px-2"
                   onClick={() => handleClick(item.type)}
                 >
@@ -296,7 +363,7 @@ export default function DetailContainer() {
                   ) : (
                     <IconPlus className="size-5 xs:size-6" gradient />
                   )}
-                </div>
+                </div> */}
               </div>
               <div className="btn-border"></div>
             </div>
@@ -361,15 +428,68 @@ export default function DetailContainer() {
         onOpen={onOpenReward}
         onOpenChange={onOpenChangeReward}
         onCloseModal={handleCloseReward}
-        title="mission complete"
+        title={isDailyCombo ? 'daily combo' : 'mission complete'}
         point={formatNumber(worldMapReward?.reward || 0, 0, 0)}
         text={
-          <>
-            <p>You’ve completed mission.</p>
-            <p>This is your reward. Keep going!</p>
-          </>
+          isDailyCombo ? (
+            <>
+              <p>
+                Congratulations. You’ve completed daily combo. This is your reward for hard working.
+              </p>
+            </>
+          ) : (
+            <>
+              <p>You’ve completed mission.</p>
+              <p>This is your reward. Keep going!</p>
+            </>
+          )
         }
-      />
+        classNames={{
+          wrapper: 'bg-black/80 backdrop-blur-[4px]',
+          base: 'bg-transparent backdrop-blur-[unset]'
+        }}
+      >
+        {isDailyCombo && (
+          <div className="flex items-center justify-center space-x-3 min-[355px]:space-x-4 xs:space-x-5 2xs:space-x-6">
+            <div className="relative drop-shadow-green">
+              <div
+                className={`[--shape:_28px] w-[86px] min-[355px]:w-[100px] h-[100px] min-[355px]:h-[114px] text-green-100 [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer before:[--line:_8px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:drop-shadow-green before:bg-[#222] map-continent_1`}
+              >
+                <div className="relative space-y-2 xs:space-y-2.5">
+                  <IconMapAntarctica className="size-6 xs:size-7 mx-auto" />
+                  <p className="text-title font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
+                    Antarctica
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative drop-shadow-green">
+              <div
+                className={`[--shape:_24px] min-[355px]:[--shape:_28px] w-[86px] min-[355px]:w-[100px] h-[100px] min-[355px]:h-[114px] text-green-100 [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer before:[--line:_8px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:drop-shadow-green before:bg-[#222] before:[clip-path:_polygon(calc(50%_-_var(--line)*2)_0,100%_calc(var(--shape)_+_var(--line)),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]`}
+              >
+                <div className="relative space-y-2 xs:space-y-2.5">
+                  <IconMapAntarctica className="size-6 xs:size-7 mx-auto" />
+                  <p className="text-title font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
+                    Antarctica
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative drop-shadow-green">
+              <div
+                className={`[--shape:_24px] min-[355px]:[--shape:_28px] w-[86px] min-[355px]:w-[100px] h-[100px] min-[355px]:h-[114px] text-green-100 [clip-path:_polygon(50%_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));] bg-green-500 flex items-center justify-center cursor-pointer before:[--line:_8px] before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:drop-shadow-green before:bg-[#222] before:[clip-path:_polygon(calc(50%_-_var(--line)*2)_0,100%_calc(var(--shape)_+_var(--line)),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_var(--shape));]`}
+              >
+                <div className="relative space-y-2 xs:space-y-2.5">
+                  <IconMapAntarctica className="size-6 xs:size-7 mx-auto" />
+                  <p className="text-title font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
+                    Antarctica
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </ModalReward>
     </>
   )
 }

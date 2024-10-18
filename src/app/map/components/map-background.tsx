@@ -113,7 +113,7 @@ export default function MapBackground() {
                         <PopoverTrigger>
                           <div className="space-y-2 xs:space-y-3 2xs:space-y-4 cursor-pointer text-center w-fit">
                             <div
-                              className={`relative mx-auto size-4 xs:size-5 rotate-45 border-2 border-green-700 transition-all ${isOpenPop[item.id] || item.isCompleted ? 'bg-white/10' : ''}`}
+                              className={`relative mx-auto size-4 xs:size-5 2xs:size-6 rotate-45 border-2 border-green-700 transition-all ${isOpenPop[item.id] || item.isCompleted ? 'bg-white/10' : ''}`}
                             >
                               <div
                                 className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] size-2.5 xs:size-3 bg-gradient transition-all opacity-0 ${isOpenPop[item.id] || item.isCompleted ? 'opacity-100' : ''}`}
