@@ -33,8 +33,8 @@ export default function MapBackground() {
     setIsOpenPop({ ...isOpenPopoverById.current })
   }
 
-  const handleStartMission = () => {
-    router.push('/games/play?type=puzzle')
+  const handleStartMission = (item: IWorldMapResult) => {
+    router.push(`/games/play?type=puzzle&id=${item.id}`)
   }
 
   useEffect(() => {
@@ -120,7 +120,12 @@ export default function MapBackground() {
                                     League’s.
                                   </p>
                                 </div>
-                                <CustomButton onAction={handleStartMission} title="START MISSION" />
+                                <CustomButton
+                                  onAction={() => {
+                                    handleStartMission(item)
+                                  }}
+                                  title="START MISSION"
+                                />
                               </div>
                             </div>
                             <div className="[--size:_5px] pointer-events-none absolute bottom-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:bottom-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-b before:border-b-yellow-500 after:content-[''] after:absolute after:bottom-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-b after:border-b-yellow-500"></div>
