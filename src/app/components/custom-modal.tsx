@@ -19,6 +19,7 @@ interface ModalProps {
   full?: boolean
   maxHeight?: number
   classNames?: {
+    wrapper?: ClassValue
     base?: ClassValue
   }
 }
@@ -72,7 +73,10 @@ const CustomModal = ({
       scrollBehavior={placement === 'top' ? 'outside' : 'normal'}
       hideCloseButton
       classNames={{
-        wrapper: `${placement === 'top' && maxHeight && webApp?.platform === 'ios' ? `max-h-[60vh] overflow-y-auto no-scrollbar` : ''}`,
+        wrapper: cn(
+          classNames?.wrapper,
+          `${placement === 'top' && maxHeight && webApp?.platform === 'ios' ? `max-h-[60vh] overflow-y-auto no-scrollbar` : ''}`
+        ),
         base: cn(
           full
             ? `max-w-full m-0 rounded-none w-full h-full p-0 bg-black/80 backdrop-blur-[4px]`

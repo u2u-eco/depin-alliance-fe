@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { IconPoint } from '../icons'
 import CustomModal from '../custom-modal'
 import CustomButton from '../button'
+import type { ClassValue } from 'clsx'
 
 interface ModalProps {
   isOpen: any
@@ -12,6 +13,10 @@ interface ModalProps {
   text?: ReactNode
   children?: ReactNode
   point: string
+  classNames?: {
+    wrapper?: ClassValue
+    base?: ClassValue
+  }
 }
 
 const ModalReward = ({
@@ -22,10 +27,17 @@ const ModalReward = ({
   title,
   text,
   children,
-  point
+  point,
+  classNames
 }: ModalProps) => {
   return (
-    <CustomModal isOpen={isOpen} onClose={onCloseModal} onOpenChange={onOpenChange} full>
+    <CustomModal
+      isOpen={isOpen}
+      onClose={onCloseModal}
+      onOpenChange={onOpenChange}
+      classNames={classNames}
+      full
+    >
       <div className="h-full flex flex-col justify-between p-4">
         <div className="flex flex-1 flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
           <div className="relative">
@@ -39,7 +51,7 @@ const ModalReward = ({
               <IconPoint className="size-8 xs:size-9 2xs:size-10" />
             </div>
           </div>
-          <div className="text-centerspace-y-3">
+          <div className="text-center space-y-3">
             <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
@@ -52,11 +64,6 @@ const ModalReward = ({
             </div>
           </div>
           {children}
-          {/* <div className="flex items-center justify-center">
-            <div className="relative drop-shadow-green">
-
-            </div>
-          </div> */}
         </div>
         <div className="my-4 xs:my-6 2xs:my-8">
           <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
