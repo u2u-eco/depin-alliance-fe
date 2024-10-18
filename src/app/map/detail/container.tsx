@@ -15,6 +15,9 @@ import { IWorldMapItem, WORLD_MAP_ITEM } from '@/interfaces/i.world-map'
 import Loader from '@/app/components/ui/loader'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import useWorldMapStore from '@/stores/worldMapStore'
+import ModalReward from '@/app/components/ui/modal-reward'
+import { formatNumber } from '@/helper/common'
 
 // const listItem = [
 //   { id: 1, image: '', name: 'Oka Shigeo' },
@@ -38,12 +41,19 @@ export default function DetailContainer() {
   const continent: any = searchParams.get('id')
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
+    isOpen: isOpenReward,
+    onOpen: onOpenReward,
+    onOpenChange: onOpenChangeReward,
+    onClose: onCloseReward
+  } = useDisclosure()
+  const {
     setListWorldMap,
     listWorldMapByContinent,
     setCurrentMap,
     currentMap,
     continent: continentStore
   } = useContext(WorldMapContext)
+  const { worldMapReward, setWorldMapReward } = useWorldMapStore()
   const [activeType, setActiveType] = useState(WORLD_MAP_ITEM.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
   const { buttonSound } = useAppSound()
@@ -134,6 +144,11 @@ export default function DetailContainer() {
     }
   }
 
+  const handleCloseReward = () => {
+    onCloseReward()
+    setWorldMapReward(null)
+  }
+
   const updateWorldMap = async () => {
     let res: any
     const data = {
@@ -154,10 +169,21 @@ export default function DetailContainer() {
     }
   }
 
+  const showReward = () => {
+    onOpenReward()
+    _getWorldMap()
+  }
+
   useEffect(() => {
     getListMap()
     _getWorldMap()
   }, [])
+
+  useEffect(() => {
+    if (worldMapReward) {
+      showReward()
+    }
+  }, [worldMapReward])
 
   useEffect(() => {
     if (
@@ -190,14 +216,14 @@ export default function DetailContainer() {
                 {currentMap?.numberMissionCompleted}/{currentMap?.results?.length || 0}
               </p>
             </div>
-            <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
+            {/* <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
               <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
                 Streak
               </p>
               <p className="w-fit mx-auto text-point font-airnt font-medium text-base xs:text-lg 2xs:text-xl !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px] tracking-[1px]">
                 2
               </p>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div></div>
@@ -307,6 +333,20 @@ export default function DetailContainer() {
           </div>
         </div>
       </CustomModal>
+      <ModalReward
+        isOpen={isOpenReward}
+        onOpen={onOpenReward}
+        onOpenChange={onOpenChangeReward}
+        onCloseModal={handleCloseReward}
+        title="mission complete"
+        point={formatNumber(worldMapReward?.reward || 0, 0, 0)}
+        text={
+          <>
+            <p>You’ve completed mission.</p>
+            <p>This is your reward. Keep going!</p>
+          </>
+        }
+      />
     </>
   )
 }

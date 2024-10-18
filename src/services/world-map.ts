@@ -16,3 +16,11 @@ export const createMap = (data: IUpdateWorldMap) => {
 export const updateMap = (data: IUpdateWorldMap) => {
   return https.put(`/world-map`, data)
 }
+
+export const startWorldMap = (id: any) => {
+  return https.get(`world-map/start/${id}`)
+}
+
+export const endWorldMap = (id: any) => {
+  return https.post(`world-map/end/${id}`, {})
+}
