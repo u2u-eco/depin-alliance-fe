@@ -251,7 +251,11 @@ export default function DetailContainer() {
                           width={0}
                           height={0}
                           sizes="100vw"
-                          className="size-8 xs:size-9 2xs:size-10"
+                          className={
+                            worldMapItemSelected[item.type]?.image
+                              ? 'size-full'
+                              : 'size-8 xs:size-9 2xs:size-10'
+                          }
                           src={
                             worldMapItemSelected[item.type]?.image ||
                             '/assets/images/onboarding/device-unknown@2x.png'
@@ -264,7 +268,7 @@ export default function DetailContainer() {
                 </div>
                 <div className="relative space-y-0.5 xs:space-y-1">
                   <p
-                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase ${item.haveItem || worldMapItemSelected[item.type]?.name ? 'text-title' : 'text-inactive'}`}
+                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase line-clamp-1 ${worldMapItemSelected[item.type]?.name || item.type === WORLD_MAP_ITEM.CONTINENT ? 'text-title' : 'text-inactive'}`}
                   >
                     {worldMapItemSelected[item.type]?.name || item.title}
                   </p>
