@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 
 import MapBackground from '../components/map-background'
 
-import WorldMapProvider, { WorldMapContext } from '../context/worldmap-context'
+import WorldMapProvider from '../context/worldmap-context'
 import DetailContainer from './container'
 
 export default function DetailPage() {
