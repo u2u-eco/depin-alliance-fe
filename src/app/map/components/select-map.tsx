@@ -24,7 +24,6 @@ const listMapConfig = [
         id: 'continent_6',
         image: <IconMapEurope className="size-6 xs:size-7 2xs:size-8 mx-auto" />,
         title: MAP_TYPE.EUROPE,
-
         class:
           'before:[clip-path:_polygon(calc(50%_+_var(--line)*2)_0,100%_var(--shape),100%_calc(100%_-_var(--shape)),50%_100%,0_calc(100%_-_var(--shape)),0_calc(var(--shape)_+_var(--line)));]'
       },
