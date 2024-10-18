@@ -10,6 +10,7 @@ interface ModalProps {
   onCloseModal?: any
   title?: string
   text?: ReactNode
+  children?: ReactNode
   point: string
 }
 
@@ -20,6 +21,7 @@ const ModalReward = ({
   onCloseModal,
   title,
   text,
+  children,
   point
 }: ModalProps) => {
   return (
@@ -37,7 +39,7 @@ const ModalReward = ({
               <IconPoint className="size-8 xs:size-9 2xs:size-10" />
             </div>
           </div>
-          <div className="text-center mb-6 space-y-3">
+          <div className="text-centerspace-y-3">
             <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
@@ -49,8 +51,14 @@ const ModalReward = ({
               {text}
             </div>
           </div>
+          {children}
+          {/* <div className="flex items-center justify-center">
+            <div className="relative drop-shadow-green">
+
+            </div>
+          </div> */}
         </div>
-        <div className="m-4 xs:m-6 2xs:m-8">
+        <div className="my-4 xs:my-6 2xs:my-8">
           <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
         </div>
       </div>
