@@ -382,4 +382,79 @@ button {
 //   }
 // }
 
+.map {
+  &-continent_1 {
+    &::before {
+      clip-path: polygon(
+        calc(50% - var(--line) * 2) 0,
+        100% calc(var(--shape) + var(--line)),
+        100% calc(100% - var(--shape)),
+        50% 100%,
+        0 calc(100% - var(--shape)),
+        0 var(--shape)
+      );
+    }
+  }
+  &-continent_2 {
+    &::before {
+      clip-path: polygon(
+        50% 0,
+        calc(100% - var(--line)) calc(var(--shape) - var(--line) / 2),
+        calc(100% - var(--line)) calc(100% - (var(--shape) - var(--line) / 2)),
+        50% 100%,
+        0 calc(100% - var(--shape)),
+        0 var(--shape)
+      );
+    }
+  }
+  &-continent_3 {
+    &::before {
+      clip-path: polygon(
+        50% 0,
+        100% var(--shape),
+        100% calc(100% - var(--shape) - var(--line)),
+        calc(50% - var(--line) * 2) 100%,
+        0 calc(100% - var(--shape)),
+        0 var(--shape)
+      );
+    }
+  }
+  &-continent_4 {
+    &::before {
+      clip-path: polygon(
+        50% 0,
+        100% var(--shape),
+        100% calc(100% - var(--shape)),
+        calc(50% + var(--line) * 2) 100%,
+        0 calc(100% - var(--shape) - var(--line)),
+        0 var(--shape)
+      );
+    }
+  }
+  &-continent_5 {
+    &::before {
+      clip-path: polygon(
+        50% 0,
+        100% var(--shape),
+        100% calc(100% - var(--shape)),
+        50% 100%,
+        var(--line) calc(100% - (var(--shape) - var(--line) / 2)),
+        var(--line) calc(var(--shape) - var(--line) / 2)
+      );
+    }
+  }
+  &-continent_6 {
+    &::before {
+      clip-path: polygon(
+        calc(50% + var(--line) * 2) 0,
+        100% var(--shape),
+        100% calc(100% - var(--shape)),
+        50% 100%,
+        0 calc(100% - var(--shape)),
+        0 calc(var(--shape) + var(--line))
+      );
+    }
+  }
+}
+
 /* End Reset CSS */
