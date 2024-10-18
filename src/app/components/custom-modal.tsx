@@ -23,7 +23,7 @@ interface ModalProps {
   }
   isDismissable?: boolean
 }
-
+const PLACEMENT_BOTTOM_WITH_PLATFORM = ['web', 'weba', 'unknown']
 const CustomModal = ({
   title,
   children,
@@ -45,7 +45,12 @@ const CustomModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      setPlacement(window && window.innerWidth >= 375 && !isKeyboardOpen ? 'bottom' : 'top')
+      setPlacement(
+        (window && window.innerWidth >= 375 && !isKeyboardOpen) ||
+          (webApp?.platform && PLACEMENT_BOTTOM_WITH_PLATFORM.indexOf(webApp?.platform) !== -1)
+          ? 'bottom'
+          : 'top'
+      )
     } else {
       setOpen(false)
     }
