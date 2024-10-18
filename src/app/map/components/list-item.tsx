@@ -45,11 +45,11 @@ const ListItem = ({ listItem, handleSelectItem, activeItem }: ListItemProps) => 
                   {/* <div className="text-yellow-600 uppercase text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
                     LV. 12
                   </div> */}
-                  <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]">
-                    {/* <IconUpDown className="size-3.5 xs:size-4 text-green-500" /> */}
-                    <p className="text-title">{item.description}</p>
-                    {/* <p className="text-green-300 font-semibold">2%</p> */}
-                  </div>
+                  {/* <div className="flex items-center space-x-1 xs:space-x-1.5 2xs:space-x-2 text-xs xs:text-[13px] 2xs:text-sm !leading-[14px] xs:!leading-[16px]"> */}
+                  {/* <IconUpDown className="size-3.5 xs:size-4 text-green-500" /> */}
+                  {/* <p className="text-title">{item.description}</p> */}
+                  {/* <p className="text-green-300 font-semibold">2%</p> */}
+                  {/* </div> */}
                 </div>
               </div>
             </div>
