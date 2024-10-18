@@ -16,13 +16,29 @@ type WorldMapContextType = {
   setListWorldMap: (data: Array<IWorldMapItem>) => void
 }
 
-export const MAP_CONTINENT_IMAGE: any = {
-  continent_6: IconMapEurope,
-  continent_1: IconMapAsia,
-  continent_5: IconMapAfrica,
-  continent_2: IconMapOceania,
-  continent_4: IconMapAntarctica,
-  continent_3: IconMapAmerica
+export const MAP_CONTINENT_IMAGE = (code: string, className: string) => {
+  switch (code) {
+    case 'continent_6':
+      return <IconMapEurope className={className} />
+    case 'continent_1':
+      return <IconMapAsia className={className} />
+    case 'continent_5':
+      return <IconMapAfrica className={className} />
+    case 'continent_2':
+      return <IconMapOceania className={className} />
+    case 'continent_4':
+      return <IconMapAntarctica className={className} />
+    case 'continent_3':
+      return <IconMapAmerica className={className} />
+    default:
+      return null
+  }
+  // continent_6: IconMapEurope,
+  // continent_1: IconMapAsia,
+  // continent_5: IconMapAfrica,
+  // continent_2: IconMapOceania,
+  // continent_4: IconMapAntarctica,
+  // continent_3: IconMapAmerica
 }
 
 export const WorldMapContext = createContext<WorldMapContextType | any>({})
