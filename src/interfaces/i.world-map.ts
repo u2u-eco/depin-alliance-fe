@@ -38,3 +38,8 @@ export interface IWorldMap {
   time: number
   tool: IWorldMapItem
 }
+
+export interface IWorldMapReward {
+  dailyCombo: number
+  reward: number
+}
