@@ -12,9 +12,12 @@ import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useRouter } from 'next/navigation'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
+import useWorldMapStore from '@/stores/worldMapStore'
+import { getWorldMap } from '@/services/world-map'
 
 export default function HomePage() {
   const router = useRouter()
+  const { currentWorldMap, setCurrentWorldMap } = useWorldMapStore()
   const { userInfo } = useCommonStore()
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
@@ -35,7 +38,20 @@ export default function HomePage() {
     }, 500)
   }, [tourState, setState])
 
+  const getCurrentWorldMap = async () => {
+    const res = await getWorldMap()
+    if (res.status && res.data) {
+      setCurrentWorldMap(res.data)
+    }
+  }
+
   useUserInfo()
+
+  useEffect(() => {
+    if (!currentWorldMap) {
+      getCurrentWorldMap()
+    }
+  }, [currentWorldMap])
 
   return (
     <>
