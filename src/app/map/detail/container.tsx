@@ -18,6 +18,7 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import useWorldMapStore from '@/stores/worldMapStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { formatNumber } from '@/helper/common'
+import Image from 'next/image'
 
 // const listItem = [
 //   { id: 1, image: '', name: 'Oka Shigeo' },
@@ -246,9 +247,15 @@ export default function DetailContainer() {
                       {item.haveItem ? (
                         <>{<item.image className="size-6 xs:size-7 2xs:size-8" />}</>
                       ) : (
-                        <img
+                        <Image
+                          width={0}
+                          height={0}
+                          sizes="100vw"
                           className="size-8 xs:size-9 2xs:size-10"
-                          src="/assets/images/onboarding/device-unknown@2x.png"
+                          src={
+                            worldMapItemSelected[item.type]?.image ||
+                            '/assets/images/onboarding/device-unknown@2x.png'
+                          }
                           alt="DePIN Alliance"
                         />
                       )}
@@ -257,7 +264,7 @@ export default function DetailContainer() {
                 </div>
                 <div className="relative space-y-0.5 xs:space-y-1">
                   <p
-                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase ${item.haveItem ? 'text-title' : 'text-inactive'}`}
+                    className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase ${item.haveItem || worldMapItemSelected[item.type]?.name ? 'text-title' : 'text-inactive'}`}
                   >
                     {worldMapItemSelected[item.type]?.name || item.title}
                   </p>
