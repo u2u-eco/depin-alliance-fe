@@ -8,6 +8,7 @@ export const CURRENT_STATUS = 'depin-alliance-user-status'
 export const TELE_URI = process.env.NEXT_PUBLIC_TELE_URI
 export const DETECT_DEVICE_URL = process.env.NEXT_PUBLIC_DEVICE_REGISTER // 'https://device.depinalliance.xyz'
 export const SHARE_URL = process.env.NEXT_PUBLIC_SHARE_URL
+export const DISABLE_CHECK_TASK_U2U = process.env.NEXT_PUBLIC_DISABLE_CHECK_TASK_U2U
 export const IS_ONLY_SUPPORT_MOBILE =
   process.env.NEXT_PUBLIC_ONLY_SUPPORT_MOBILE === 'true' ? true : false
 export const PAGE_SIZE = 10
