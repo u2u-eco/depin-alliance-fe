@@ -13,6 +13,8 @@ import SoundsProvider from '@/contexts/sounds.context'
 // import TourGuide from './tour-guide'
 // import { TourGuideProvider } from '@/contexts/tour.guide.context'
 import { TonConnectUIProvider } from '@tonconnect/ui-react'
+import { TourGuideProvider } from '@/contexts/tour.guide.context'
+import TourGuide from './tour-guide'
 
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
@@ -84,15 +86,15 @@ export default function Layout({ children }: any) {
           >
             <NextUIProvider>
               <SoundsProvider>
-                {/* <TourGuideProvider> */}
-                <Swipeable onSwipeRight={handleBack}>
-                  <AnimatePresence key="custom-page">
-                    {children}
-                    {/* {pathName !== '/' && <CustomNavbar />} */}
-                  </AnimatePresence>
-                </Swipeable>
-                {/* <TourGuide /> */}
-                {/* </TourGuideProvider> */}
+                <TourGuideProvider>
+                  <Swipeable onSwipeRight={handleBack}>
+                    <AnimatePresence key="custom-page">
+                      {children}
+                      {/* {pathName !== '/' && <CustomNavbar />} */}
+                    </AnimatePresence>
+                  </Swipeable>
+                  <TourGuide />
+                </TourGuideProvider>
               </SoundsProvider>
             </NextUIProvider>
           </TonConnectUIProvider>
