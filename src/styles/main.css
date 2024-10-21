@@ -1087,6 +1087,10 @@ button {
   padding: 0 !important;
 }
 
+.ol-overlaycontainer-stopevent {
+  z-index: 1 !important;
+}
+
 .map-continent_1::before {
   -webkit-clip-path: polygon(calc(50% - var(--line) * 2) 0, 100% calc(var(--shape) + var(--line)), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
           clip-path: polygon(calc(50% - var(--line) * 2) 0, 100% calc(var(--shape) + var(--line)), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
