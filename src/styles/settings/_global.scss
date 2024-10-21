@@ -382,7 +382,9 @@ button {
 //     mix-blend-mode: unset;
 //   }
 // }
-
+.ol-overlaycontainer-stopevent {
+  z-index: 1 !important;
+}
 .map {
   &-continent_1 {
     &::before {
