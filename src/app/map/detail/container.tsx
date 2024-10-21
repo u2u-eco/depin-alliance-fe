@@ -13,13 +13,10 @@ import { MAP_CONTINENT_IMAGE, WorldMapContext } from '../context/worldmap-contex
 import { createMap, getItemWorldMap, getWorldMap, updateMap } from '@/services/world-map'
 import { IWorldMapItem, WORLD_MAP_ITEM } from '@/interfaces/i.world-map'
 import Loader from '@/app/components/ui/loader'
-import { toast } from 'sonner'
-import CustomToast from '@/app/components/ui/custom-toast'
 import useWorldMapStore from '@/stores/worldMapStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
-import { MAP_TYPE } from '@/constants'
 
 // const listItem = [
 //   { id: 1, image: '', name: 'Oka Shigeo' },
@@ -169,16 +166,13 @@ export default function DetailContainer() {
       agency: worldMapItemSelected[WORLD_MAP_ITEM.AGENCY].code,
       tool: worldMapItemSelected[WORLD_MAP_ITEM.TOOL].code
     }
-    let message = 'Create world map successfully'
     if (currentMap) {
-      message = 'Update world map successfully'
       res = await updateMap(data)
     } else {
       res = await createMap(data)
     }
     if (res.status) {
       setCurrentMap(res.data)
-      toast.success(<CustomToast type="success" title={message} />)
     }
   }
 
