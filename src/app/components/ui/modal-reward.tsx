@@ -52,14 +52,14 @@ const ModalReward = ({
             </div>
           </div>
           <div className="text-center space-y-3">
-            <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6 max-w-[320px] mx-auto">
+            <div className="flex items-center justify-center space-x-4 xs:space-x-5 2xs:space-x-6">
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
               <div className="font-airnt font-medium text-base xs:text-lg 2xs:text-xl text-white leading-[calc(24/20)] tracking-[1px] uppercase">
                 {title}
               </div>
               <div className="size-1.5 min-w-1.5 bg-green-800"></div>
             </div>
-            <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px]">
+            <div className="xs:text-[15px] 2xs:text-base text-body font-geist leading-[20px] max-w-[320px] mx-auto">
               {text}
             </div>
           </div>
