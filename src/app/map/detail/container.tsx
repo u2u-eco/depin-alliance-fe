@@ -397,7 +397,7 @@ export default function DetailContainer() {
           base: 'bg-transparent backdrop-blur-[unset]'
         }}
       >
-        {worldMapReward?.dailyCombo && (
+        {worldMapReward?.dailyCombo ? (
           <div className="flex items-center justify-center space-x-3 min-[355px]:space-x-4 xs:space-x-5 2xs:space-x-6">
             <div className="relative drop-shadow-green">
               <div
@@ -452,7 +452,7 @@ export default function DetailContainer() {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
       </ModalReward>
     </>
   )
