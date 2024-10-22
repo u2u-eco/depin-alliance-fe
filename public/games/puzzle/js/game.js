@@ -337,7 +337,15 @@ var gameSettings = {
 var shareEnable = false //toggle share
 var shareTitle = 'Highscore on Circle Puzzle is [SCORE]' //social share score title
 var shareMessage = '[SCORE] is mine new highscore on Circle Puzzle! Try it now!' //social share score message
-
+window.addEventListener('message', function (event) {
+  switch (event.data) {
+    case 'CONTINUE':
+      if (isPassMission) {
+        nextPuzzle()
+      }
+      break
+  }
+})
 /*!
  *
  * GAME SETTING CUSTOMIZATION END
@@ -560,7 +568,7 @@ function goPage(page) {
           isPassMission = true
           resultTitleTxt.text = textDisplay.resultWonTitle
           resultDescTxt.text = textDisplay.resultWonDesc
-          window.parent.postMessage('win game', '*')
+          window.parent.postMessage('WIN', '*')
         } else {
           resultTitleTxt.text = textDisplay.resultFailTitle
           resultDescTxt.text = textDisplay.resultFailDesc
@@ -571,7 +579,7 @@ function goPage(page) {
           isPassMission = true
           resultTitleTxt.text = textDisplay.resultWonTitle
           resultDescTxt.text = textDisplay.resultWonDesc
-          window.parent.postMessage('win game', '*')
+          window.parent.postMessage('WIN', '*')
         } else {
           resultTitleTxt.text = textDisplay.resultChallengeTitle
           resultDescTxt.text = textDisplay.resultChallengeDesc.replace(
@@ -666,11 +674,15 @@ function saveGame(score) {
  *
  */
 function nextPuzzle() {
-  gameData.puzzleNum++
-  if (gameData.puzzleNum === 3 && !isPassMission) {
-    goPage('result')
+  var _nextLevel = gameData.puzzleNum + 1
+  if (_nextLevel === 3 && !isPassMission) {
+    isPassMission = true
+    window.parent.postMessage('WIN', '*')
+    // goPage('result')
     return
   }
+  gameData.puzzleNum++
+
   if (gameData.puzzleNum < gameData.puzzleArray.length) {
     if (gameData.mode == 'challenge') {
       gameData.challengePuzzle += gameSettings.challenge.increasePuzzle
