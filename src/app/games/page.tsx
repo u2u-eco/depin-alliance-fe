@@ -37,6 +37,12 @@ export default function Game() {
             handleOpenGame('games/play?type=solve-math')
           }}
         />
+        <CustomButton
+          title="Sudoku"
+          onAction={() => {
+            handleOpenGame('games/play?type=sudoku')
+          }}
+        />
       </div>
     </CustomPage>
   )
