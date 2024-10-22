@@ -36,9 +36,9 @@ const Info = ({ profile, rank }: InfoProps) => {
   const handleMap = () => {
     tabSound.play()
     if (currentWorldMap) {
-      route.push(`/map/detail?id=${currentWorldMap?.continent.code}`)
+      route.push(`/map?id=${currentWorldMap?.continent.code}`)
     } else {
-      route.push('/map')
+      route.push('/map?id=continent_1')
     }
   }
 
