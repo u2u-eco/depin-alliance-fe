@@ -28,12 +28,13 @@ function initMain() {
       buildScoreBoardCanvas()
     }
 
-    if ($.editor.enable) {
-      loadEditPage()
-      goPage('game')
-    } else {
-      goPage('main')
-    }
+    // if ($.editor.enable) {
+    //   loadEditPage()
+    //   goPage('game')
+    // } else {
+    //   goPage('main')
+    // }
+    goPage('game')
 
     checkMobileOrientation()
     resizeCanvas()
