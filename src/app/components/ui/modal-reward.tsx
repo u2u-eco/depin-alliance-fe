@@ -3,12 +3,14 @@ import { IconPoint } from '../icons'
 import CustomModal from '../custom-modal'
 import CustomButton from '../button'
 import type { ClassValue } from 'clsx'
+import { BUTTON_TYPE } from '@/constants'
 
 interface ModalProps {
   isOpen: any
   onOpen: any
   onOpenChange: any
   onCloseModal?: any
+  onContinue?: () => void
   title?: string
   text?: ReactNode
   children?: ReactNode
@@ -17,6 +19,7 @@ interface ModalProps {
     wrapper?: ClassValue
     base?: ClassValue
   }
+  isGame?: boolean
 }
 
 const ModalReward = ({
@@ -24,11 +27,13 @@ const ModalReward = ({
   onOpen,
   onOpenChange,
   onCloseModal,
+  onContinue,
   title,
   text,
   children,
   point,
-  classNames
+  classNames,
+  isGame
 }: ModalProps) => {
   return (
     <CustomModal
@@ -65,7 +70,12 @@ const ModalReward = ({
           </div>
           {children}
         </div>
-        <div className="my-4 xs:my-6 2xs:my-8">
+        <div
+          className={`my-4 xs:my-6 2xs:my-8 ${isGame ? 'flex space-x-2 xs:space-x-3 2xs:space-x-4' : ''}`}
+        >
+          {isGame && (
+            <CustomButton type={BUTTON_TYPE.DEFAULT} title="CONTINUE" onAction={onContinue} />
+          )}
           <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
         </div>
       </div>
