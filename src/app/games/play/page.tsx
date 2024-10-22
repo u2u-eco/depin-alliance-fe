@@ -36,6 +36,17 @@ export default function PlayGame() {
       handleStartMission(id)
     }
   }, [id])
+
+  const handleMessage = (event: any) => {
+    console.log('Message received from the child: ' + event.data) // Message received from child
+  }
+
+  useEffect(() => {
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
   return (
     <div>
       <CustomHeader title="PLAY" back={handleEndGame} />
