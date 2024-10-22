@@ -210,7 +210,7 @@ export default function MapContainer() {
   return (
     <>
       <div className=" flex flex-col justify-between space-y-6 h-full">
-        {currentMap ? (
+        {/* {currentMap ? (
           <div className="flex items-center justify-around relative mb-auto pointer-events-none">
             <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
               <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
@@ -228,18 +228,11 @@ export default function MapContainer() {
                 {currentMap?.numberMissionCompleted}/{currentMap?.results?.length || 0}
               </p>
             </div>
-            {/* <div className="flex-1 space-y-1 xs:space-y-1.5 2xs:space-y-2 text-center">
-              <p className="text-[13px] xs:text-sm !leading-[18px] tracking-[-1px] text-white-50">
-                Streak
-              </p>
-              <p className="w-fit mx-auto text-point font-airnt font-medium text-base xs:text-lg 2xs:text-xl !leading-[20px] xs:!leading-[22px] 2xs:!leading-[24px] tracking-[1px]">
-                2
-              </p>
-            </div> */}
           </div>
         ) : (
           <div></div>
-        )}
+        )} */}
+        <div></div>
 
         <div className="flex space-x-2">
           {listDetail.map((item: any) => (
