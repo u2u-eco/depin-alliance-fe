@@ -403,7 +403,8 @@ function buildGameButton() {
   buttonContinue.cursor = 'pointer'
   buttonContinue.addEventListener('click', function (evt) {
     playSound('soundButton')
-    goPage('main')
+    // goPage('main')
+    goPage('game')
   })
 
   buttonFacebook.cursor = 'pointer'
@@ -533,6 +534,7 @@ function goPage(page) {
   switch (page) {
     case 'main':
       targetContainer = mainContainer
+
       break
 
     case 'select':
@@ -588,6 +590,7 @@ function goPage(page) {
  */
 function startGame() {
   gameData.paused = false
+  window.parent.postMessage('start game', '*')
 
   if ($.editor.enable) {
     gameData.mode = 'category'
