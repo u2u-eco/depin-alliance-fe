@@ -14,8 +14,8 @@ import { createMap, getItemWorldMap, getWorldMap, updateMap } from '@/services/w
 import { IWorldMapItem, WORLD_MAP_ITEM } from '@/interfaces/i.world-map'
 import Loader from '@/app/components/ui/loader'
 import useWorldMapStore from '@/stores/worldMapStore'
-import ModalReward from '@/app/components/ui/modal-reward'
-import { formatNumber } from '@/helper/common'
+// import ModalReward from '@/app/components/ui/modal-reward'
+// import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
 
 // const listItem = [
@@ -365,7 +365,7 @@ export default function MapContainer() {
           </div>
         </div>
       </CustomModal>
-      <ModalReward
+      {/* <ModalReward
         isOpen={isOpenReward}
         onOpen={onOpenReward}
         onOpenChange={onOpenChangeReward}
@@ -418,7 +418,6 @@ export default function MapContainer() {
                     sizes="100vw"
                     className="size-6 xs:size-7 mx-auto"
                   />
-                  {/* {MAP_CONTINENT_IMAGE(currentMap?.continent?.code, 'size-6 xs:size-7 mx-auto')} */}
                   <p className="text-title text-center line-clamp-1 font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
                     {currentMap?.agency?.name}
                   </p>
@@ -438,7 +437,6 @@ export default function MapContainer() {
                     sizes="100vw"
                     className="size-6 xs:size-7 mx-auto"
                   />
-                  {/* <IconMapAntarctica className="size-6 xs:size-7 mx-auto" /> */}
                   <p className="text-title text-center line-clamp-1 font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
                     {currentMap?.tool?.name}
                   </p>
@@ -447,7 +445,7 @@ export default function MapContainer() {
             </div>
           </div>
         ) : null}
-      </ModalReward>
+      </ModalReward> */}
     </>
   )
 }
