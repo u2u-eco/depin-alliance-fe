@@ -4,6 +4,7 @@ import { endWorldMap, startWorldMap } from '@/services/world-map'
 import useWorldMapStore from '@/stores/worldMapStore'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
+import Sudoku from '../sudoku'
 
 export default function PlayGame() {
   const router = useRouter()
@@ -50,11 +51,15 @@ export default function PlayGame() {
   return (
     <div>
       <CustomHeader title="PLAY" back={handleEndGame} />
-      <iframe
-        src={`/games/${type || 'puzzle'}`}
-        width={'100%'}
-        style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
-      />
+      {type === 'sudoku' ? (
+        <Sudoku />
+      ) : (
+        <iframe
+          src={`/games/${type || 'puzzle'}`}
+          width={'100%'}
+          style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
+        />
+      )}
     </div>
   )
 }
