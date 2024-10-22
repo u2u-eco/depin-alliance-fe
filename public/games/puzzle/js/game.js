@@ -8,6 +8,7 @@
  *
  */
 
+var isPassMission = false
 //cateogyr array list
 var cateogyr_arr = [
   { src: 'puzzle/assets/puzzle/thumb/animal.png', name: 'ANIMAL' },
@@ -333,7 +334,7 @@ var gameSettings = {
 }
 
 //Social share, [SCORE] will replace with game score
-var shareEnable = true //toggle share
+var shareEnable = false //toggle share
 var shareTitle = 'Highscore on Circle Puzzle is [SCORE]' //social share score title
 var shareMessage = '[SCORE] is mine new highscore on Circle Puzzle! Try it now!' //social share score message
 
@@ -556,18 +557,28 @@ function goPage(page) {
 
       if (gameData.mode == 'category') {
         if (gameData.complete) {
+          isPassMission = true
           resultTitleTxt.text = textDisplay.resultWonTitle
           resultDescTxt.text = textDisplay.resultWonDesc
+          window.parent.postMessage('win game', '*')
         } else {
           resultTitleTxt.text = textDisplay.resultFailTitle
           resultDescTxt.text = textDisplay.resultFailDesc
         }
       } else {
-        resultTitleTxt.text = textDisplay.resultChallengeTitle
-        resultDescTxt.text = textDisplay.resultChallengeDesc.replace(
-          '[NUMBER]',
-          gameData.puzzleNum + 1
-        )
+        var _level = gameData.puzzleNum + 1
+        if (_level >= 3 && gameData.complete) {
+          isPassMission = true
+          resultTitleTxt.text = textDisplay.resultWonTitle
+          resultDescTxt.text = textDisplay.resultWonDesc
+          window.parent.postMessage('win game', '*')
+        } else {
+          resultTitleTxt.text = textDisplay.resultChallengeTitle
+          resultDescTxt.text = textDisplay.resultChallengeDesc.replace(
+            '[NUMBER]',
+            gameData.puzzleNum + 1
+          )
+        }
       }
 
       saveGame(gameData.puzzleNum + 1)
@@ -656,6 +667,10 @@ function saveGame(score) {
  */
 function nextPuzzle() {
   gameData.puzzleNum++
+  if (gameData.puzzleNum === 3 && !isPassMission) {
+    goPage('result')
+    return
+  }
   if (gameData.puzzleNum < gameData.puzzleArray.length) {
     if (gameData.mode == 'challenge') {
       gameData.challengePuzzle += gameSettings.challenge.increasePuzzle
