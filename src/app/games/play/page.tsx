@@ -63,7 +63,7 @@ export default function PlayGame() {
   const handleCloseReward = () => {
     onCloseReward()
     setWorldMapReward(null)
-    router.back()
+    router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
   }
 
   const handleContinue = () => {
