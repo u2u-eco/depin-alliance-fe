@@ -28,7 +28,7 @@ export default function Swipeable(props: SwipeableProps) {
   }
 
   function onTouchEnd() {
-    if (path === '/map/detail') return
+    if (path === '/map') return
     if (touchStartX && touchEndX) swipeHorizontal()
     if (touchStartY && touchEndY) swipeVertical()
   }
