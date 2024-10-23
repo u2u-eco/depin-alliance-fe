@@ -52,7 +52,7 @@ export default function MapContainer() {
     currentMap,
     continent: continentStore
   } = useContext(WorldMapContext)
-  const { worldMapReward, setWorldMapReward } = useWorldMapStore()
+  const { worldMapReward, setCurrentWorldMap } = useWorldMapStore()
   const [activeType, setActiveType] = useState(WORLD_MAP_ITEM.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
   const { buttonSound } = useAppSound()
@@ -168,7 +168,7 @@ export default function MapContainer() {
     }
     if (res.status) {
       setCurrentMap(res.data)
-      setWorldMapReward(res.data)
+      setCurrentWorldMap(res.data)
     }
   }
 
