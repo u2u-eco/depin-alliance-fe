@@ -99,7 +99,7 @@ export default function HomePage() {
         <div className="my-first-step">
           <Mining />
         </div>
-        <div className="mt-3 flex justify-center">
+        {/* <div className="mt-3 flex justify-center">
           <Link
             onClick={() => {
               tabSound.play()
@@ -116,7 +116,7 @@ export default function HomePage() {
               className="size-5 xs:size-6"
             />
           </Link>
-        </div>
+        </div> */}
         {/* Info */}
         <div className="mt-6">
           {/* <Card /> */}
