@@ -103,7 +103,7 @@ export default function MapBackground() {
                     key={item.id}
                     ref={feature[index]}
                     geometry={new Point(fromLonLat(point))}
-                    onClick={() => {
+                    onClick={(event: any) => {
                       handleClick(index)
                     }}
                   >
@@ -128,7 +128,12 @@ export default function MapBackground() {
                       }}
                     />
 
-                    <RPopup ref={popup[index]} trigger={'click'} className="example-overlay">
+                    <RPopup
+                      autoPan
+                      ref={popup[index]}
+                      trigger={'click'}
+                      className="example-overlay"
+                    >
                       <div className="relative min-w-[200px] max-w-[245px] border-[0.5px] border-yellow-300/25 px-4 py-5 before:content-[''] before:absolute before:top-[50%] before:left-[50%] before:translate-x-[-50%] before:translate-y-[-50%] before:size-full before:bg-[linear-gradient(to_top,#000,#626516)] before:opacity-[0.86]">
                         <div className="[--size:_5px] pointer-events-none absolute top-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:top-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-t before:border-t-yellow-500 after:content-[''] after:absolute after:top-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-t after:border-t-yellow-500"></div>
                         <div className="space-y-3 xs:space-y-4 relative">
