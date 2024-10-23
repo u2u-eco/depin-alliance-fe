@@ -560,7 +560,7 @@ function changeCanvasViewport() {
 function resizeCanvas() {
   if (canvasContainer != undefined) {
     buttonSettings.x = canvasW - offset.x - 50
-    buttonSettings.y = offset.y + 120
+    buttonSettings.y = offset.y + 45
 
     var distanceNum = 60
     // if (curPage != 'game') {
