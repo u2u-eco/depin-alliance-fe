@@ -83,7 +83,7 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
   }
 
   return (
-    <div className="sudoku">
+    <div className="sudoku fixed top-0 left-0 right-0 w-full h-full flex items-center justify-center flex-col p-3 3xs:p-4">
       {puzzleObj?.length > 0 ? (
         <>
           <MainSudoku
@@ -91,8 +91,10 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
             onSelectInput={(value: number) => setSelectedInput(value)}
             onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
           />
-          {!isSuccess && <CustomButton title="BACK" onAction={handleBack} />}
-          {isSuccess && <CustomButton title="Play Again" onAction={handlePlayAgain} />}
+          <div className="my-3 max-w-[480px] w-full">
+            {!isSuccess && <CustomButton title="BACK" onAction={handleBack} />}
+            {isSuccess && <CustomButton title="Play Again" onAction={handlePlayAgain} />}
+          </div>
           {/* <Time /> */}
         </>
       ) : null}
