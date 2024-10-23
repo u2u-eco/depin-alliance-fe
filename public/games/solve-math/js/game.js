@@ -932,7 +932,7 @@ function checkUserFormula() {
   if (proceedAnswer) {
     if (eval(userFormula) == eval(finalMath)) {
       //correct answer
-      if (totalSolve + 1 === 9 && !isPassMission) {
+      if (totalSolve + 1 === 5 && !isPassMission) {
         isPassMission = true
         window.parent.postMessage('WIN', '*')
         return
