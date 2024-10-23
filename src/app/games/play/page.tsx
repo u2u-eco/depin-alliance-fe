@@ -103,7 +103,7 @@ export default function PlayGame() {
   }
 
   const handleContinue = () => {
-    iframeRef.current.contentWindow.postMessage('CONTINUE', '*')
+    iframeRef.current?.contentWindow.postMessage('CONTINUE', '*')
     onCloseReward()
     router.replace(`/games/play?type=${type}`)
     setWorldMapReward(null)
@@ -119,7 +119,7 @@ export default function PlayGame() {
 
     if (!id) {
       setTimeout(() => {
-        iframeRef.current.contentWindow.postMessage('PASS_MISSION', '*')
+        iframeRef.current?.contentWindow?.postMessage('PASS_MISSION', '*')
       }, 1000)
     }
     return () => {
