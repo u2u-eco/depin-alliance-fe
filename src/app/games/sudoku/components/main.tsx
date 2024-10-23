@@ -149,7 +149,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     return () => window.removeEventListener('resize', getwidth)
   }, [])
   return (
-    <div className="game-container btn">
+    <div className="game-container btn max-w-[480px] m-auto">
       <div className="btn-border"></div>
       <div
         className={`btn-primary game-wrapper select-row-${selectedRow} select-col-${selectedCol}`}
