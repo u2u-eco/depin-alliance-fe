@@ -268,7 +268,7 @@ function buildGameCanvas() {
 function resizeCanvas() {
   if (canvasContainer != undefined) {
     buttonSettings.x = canvasW - offset.x - 60
-    buttonSettings.y = offset.y + 120
+    buttonSettings.y = offset.y + 45
 
     var distanceNum = 75
     // if (curPage != 'game') {
