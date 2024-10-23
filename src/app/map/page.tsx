@@ -9,8 +9,13 @@ import MapBackground from './components/map-background'
 
 import WorldMapProvider from './context/worldmap-context'
 import MapContainer from './container'
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
+  const router = useRouter()
+  const handleBack = () => {
+    router.push('/home')
+  }
   return (
     <>
       <CustomPage
@@ -28,7 +33,7 @@ export default function Page() {
             <MapBackground></MapBackground>
           </div>
           <div className=" flex flex-col justify-between space-y-6 h-full">
-            <CustomHeader title="World Map" />
+            <CustomHeader title="World Map" back={handleBack} />
             <MapContainer />
           </div>
         </WorldMapProvider>
