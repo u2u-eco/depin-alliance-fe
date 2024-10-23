@@ -9,6 +9,7 @@
  */
 
 //themes
+var isPassMission = false
 var theme_settings = [
   {
     strokeColor: '#ccc',
@@ -109,6 +110,19 @@ var theme_settings = [
     collection: ['monster/assets/item_piggybank.png']
   }
 ]
+
+window.addEventListener('message', function (event) {
+  switch (event.data) {
+    case 'CONTINUE':
+      if (isPassMission) {
+        showGameStage('clear')
+      }
+      break
+    case 'PASS_MISSION':
+      isPassMission = true
+      break
+  }
+})
 
 //map settings
 var mapSettings = {
@@ -220,7 +234,7 @@ var textDisplay = {
 }
 
 //Social share, [SCORE] will replace with game score
-var shareEnable = true //toggle share
+var shareEnable = false //toggle share
 var shareTitle = 'Highscore on Pac Man is [SCORE]pts' //social share score title
 var shareMessage = '[SCORE]pts is mine new highscore on Pac Man game! Try it now!' //social share score message
 
@@ -487,6 +501,7 @@ function buildGameButton() {
   buttonConfirm.addEventListener('click', function (evt) {
     playSound('soundButton')
     togglePop(false)
+    window.parent.postMessage('BACK', '*')
 
     stopAudio()
     stopGame()
@@ -2263,6 +2278,14 @@ function movePacman(player) {
         gameData.eaten += 1
 
         if (gameData.eaten === gameData.totalEaten) {
+          if (!isPassMission) {
+            isPassMission = true
+            window.parent.postMessage('WIN', '*')
+            stopGame()
+            playSound('soundLevel')
+            showGameStatus('clear')
+            return
+          }
           showGameStage('clear')
         }
 
@@ -3125,10 +3148,20 @@ function checkLoopLevel() {
     }
 
     if (nextStage) {
+      if (!isPassMission) {
+        isPassMission = true
+        window.parent.postMessage('WIN', '*')
+        return
+      }
       showGameStage('clear')
     }
   } else {
     if (playerData.score >= mapSettings.loop.levels[gameData.level].scoreTarget) {
+      if (!isPassMission) {
+        isPassMission = true
+        window.parent.postMessage('WIN', '*')
+        return
+      }
       showGameStage('clear')
     }
   }

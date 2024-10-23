@@ -1,9 +1,9 @@
 'use client'
-import { CustomHeader } from '@/app/components/ui/custom-header'
+// import { CustomHeader } from '@/app/components/ui/custom-header'
 import { endWorldMap, startWorldMap } from '@/services/world-map'
 import useWorldMapStore from '@/stores/worldMapStore'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import Sudoku from '../sudoku'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { formatNumber } from '@/helper/common'
@@ -20,20 +20,38 @@ export default function PlayGame() {
     onOpenChange: onOpenChangeReward,
     onClose: onCloseReward
   } = useDisclosure()
+  // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { setWorldMapReward, worldMapReward, currentWorldMap } = useWorldMapStore()
   const params = useSearchParams()
   const iframeRef = useRef<any>()
-  const type = params.get('type')
+  let type = params.get('type')
+  switch (type) {
+    case 'SUDOKU':
+      type = 'sudoku'
+      break
+    case 'SOLVE_MATH':
+      type = 'solve-math'
+      break
+    case 'PUZZLE':
+      type = 'puzzle'
+      break
+    case 'MONSTER':
+      type = 'monster'
+      break
+  }
+  const [gameData, setGameData] = useState<any>()
   const id = params.get('id')
   const handleEndGame = () => {
     if (id) {
       handleEndMission(id)
     }
-    router.back()
   }
 
-  const handleStartMission = (id: any) => {
-    startWorldMap(id)
+  const handleStartMission = async (id: any) => {
+    const res = await startWorldMap(id)
+    if (res.status) {
+      setGameData(res.data)
+    }
   }
 
   const handleEndMission = async (id: any) => {
@@ -45,16 +63,36 @@ export default function PlayGame() {
   }
 
   useEffect(() => {
-    if (!init.current && id) {
+    if (!init.current) {
       init.current = true
-      handleStartMission(id)
+      window.addEventListener('message', handleMessage)
+      if (id) {
+        handleStartMission(id)
+      } else {
+        iframeRef.current.contentWindow.postMessage('PASS_MISSION', '*')
+      }
+    }
+    if (!id && (type === 'SUDOKU' || type === 'sudoku')) {
+      setGameData({
+        mission:
+          '768..3..453..9...6942.6.81...46..93835..4276..8..3..5.87....1....6..4389..53.1.2.',
+        solution:
+          '768213594531498276942765813124657938359842761687139452873926145216574389495381627'
+      })
     }
   }, [id])
+
+  const handleBack = () => {
+    router.back()
+  }
 
   const handleMessage = (event: any) => {
     switch (event.data) {
       case 'WIN':
-        handleEndMission(id)
+        handleEndGame()
+        break
+      case 'BACK':
+        router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
         break
     }
     // console.log('Message received from the child: ' + event.data) // Message received from child
@@ -73,9 +111,19 @@ export default function PlayGame() {
     setWorldMapReward(null)
   }
 
+  // const testContinue = () => {
+  //   iframeRef.current.contentWindow.postMessage('CONTINUE', '*')
+  //   onClose()
+  // }
+
   useEffect(() => {
     window.addEventListener('message', handleMessage)
 
+    if (!id) {
+      setTimeout(() => {
+        iframeRef.current.contentWindow.postMessage('PASS_MISSION', '*')
+      }, 1000)
+    }
     return () => {
       window.removeEventListener('message', handleMessage)
     }
@@ -83,9 +131,9 @@ export default function PlayGame() {
 
   return (
     <div>
-      <CustomHeader title="PLAY" />
+      {/* <CustomHeader title="PLAY" /> */}
       {type === 'sudoku' ? (
-        <Sudoku />
+        <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (
         <iframe
           ref={iframeRef}
@@ -94,6 +142,9 @@ export default function PlayGame() {
           style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
         />
       )}
+      {/* <CustomModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} onOpenChange={onOpenChange}>
+        <CustomButton title="Continue" onAction={testContinue}></CustomButton>
+      </CustomModal> */}
       <ModalReward
         isOpen={isOpenReward}
         isGame={true}

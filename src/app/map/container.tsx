@@ -2,7 +2,7 @@
 
 import CustomButton from '@/app/components/button'
 import CustomModal from '@/app/components/custom-modal'
-import { IconMapAntarctica, IconReload } from '@/app/components/icons'
+import { IconReload } from '@/app/components/icons'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useDisclosure } from '@nextui-org/react'
 import React, { useContext, useEffect, useState } from 'react'
@@ -154,11 +154,6 @@ export default function MapContainer() {
     }
   }
 
-  const handleCloseReward = () => {
-    onCloseReward()
-    setWorldMapReward(null)
-  }
-
   const updateWorldMap = async () => {
     let res: any
     const data = {
@@ -173,6 +168,7 @@ export default function MapContainer() {
     }
     if (res.status) {
       setCurrentMap(res.data)
+      setWorldMapReward(res.data)
     }
   }
 

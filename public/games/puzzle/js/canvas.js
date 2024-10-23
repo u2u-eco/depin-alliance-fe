@@ -470,28 +470,28 @@ function resizeCanvas() {
     displayContainer.y = offset.y + 20
 
     var distanceNum = 58
-    if (curPage != 'game') {
-      buttonExit.visible = false
-      buttonSoundOn.x = buttonSoundOff.x = buttonSettings.x
-      buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
-      buttonSoundOn.x = buttonSoundOff.x
-      buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
+    // if (curPage != 'game') {
+    //   buttonExit.visible = false
+    //   buttonSoundOn.x = buttonSoundOff.x = buttonSettings.x
+    //   buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
+    //   buttonSoundOn.x = buttonSoundOff.x
+    //   buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
 
-      buttonFullscreen.x = buttonSettings.x
-      buttonFullscreen.y = buttonSettings.y + distanceNum * 2
-    } else {
-      buttonExit.visible = true
-      buttonSoundOn.x = buttonSoundOff.x = buttonSettings.x
-      buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
-      buttonSoundOn.x = buttonSoundOff.x
-      buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
+    //   buttonFullscreen.x = buttonSettings.x
+    //   buttonFullscreen.y = buttonSettings.y + distanceNum * 2
+    // } else {
+    buttonExit.visible = true
+    buttonSoundOn.x = buttonSoundOff.x = buttonSettings.x
+    buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
+    buttonSoundOn.x = buttonSoundOff.x
+    buttonSoundOn.y = buttonSoundOff.y = buttonSettings.y + distanceNum
 
-      buttonFullscreen.x = buttonSettings.x
-      buttonFullscreen.y = buttonSettings.y + distanceNum * 2
+    buttonFullscreen.x = buttonSettings.x
+    buttonFullscreen.y = buttonSettings.y + distanceNum * 2
 
-      buttonExit.x = buttonSettings.x
-      buttonExit.y = buttonSettings.y + distanceNum * 3
-    }
+    buttonExit.x = buttonSettings.x
+    buttonExit.y = buttonSettings.y + distanceNum * 3
+    // }
   }
 }
 
