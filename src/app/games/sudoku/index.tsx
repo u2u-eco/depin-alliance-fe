@@ -1,27 +1,54 @@
 import { ISPuzzleItem } from '@/interfaces/i.games'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MainSudoku } from './components/main'
 import './styles/_index.scss'
-import Time from './components/time'
-export default function Sudoku() {
+// import Time from './components/time'
+import CustomButton from '@/app/components/button'
+interface ISudoku {
+  data: any
+  handleSuccess: () => void
+  handleBack: () => void
+}
+export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
   const [selectedInput, setSelectedInput] = useState<number | null>(null)
-  const puzzle = '326....89..489736..983.6...21.7.86....926.57.637.19.2..7.63..4...3.....75.24..9..'
-  const puzzleArr = puzzle.split('')
-  const [puzzleObj, setPuzzleObj] = useState<Array<ISPuzzleItem>>(
-    puzzleArr.map((item, id) => {
-      return {
-        id,
-        value: item !== '.' ? item : '',
-        isPreFilled: item !== '.'
-      }
+  const puzzle = data?.mission || ''
+  const puzzleArr: any = puzzle.split('')
+  const [isSuccess, setIsSuccess] = useState<boolean>(false)
+  const [puzzleObj, setPuzzleObj] = useState<Array<ISPuzzleItem>>([])
+
+  useEffect(() => {
+    if (puzzleObj.length === 0 && puzzleArr.length > 0) {
+      setPuzzleObj(
+        puzzleArr.map((item: any, id: any) => {
+          return {
+            id,
+            value: item !== '.' ? item : '',
+            isPreFilled: item !== '.'
+          }
+        })
+      )
+    }
+  }, [puzzleArr, puzzleObj])
+
+  const checkResult = (result: any) => {
+    const listValue = result.map(function (item: any) {
+      return item.value || item.value?.length > 0 ? item.value : 0
     })
-  )
+
+    const currentResult = listValue.toString().replaceAll(',', '')
+
+    if (currentResult === data.solution) {
+      console.log('success')
+      setIsSuccess(true)
+      handleSuccess()
+    }
+  }
 
   const onHandleChange = (value: string, clearValue?: boolean) => {
     const isValueValid = (/^\d+$/.test(value) && value !== '0') || clearValue
-
-    setPuzzleObj((prevItems) =>
-      prevItems.map((item) =>
+    let countEmpty = 0
+    let _newData = puzzleObj.map((item) => {
+      const _newItem =
         isValueValid && !item.isPreFilled && item.id === selectedInput
           ? {
               id: item.id,
@@ -29,17 +56,46 @@ export default function Sudoku() {
               isPreFilled: false
             }
           : item
-      )
+
+      if (!_newItem.isPreFilled && _newItem.value?.length === 0) {
+        ++countEmpty
+      }
+      return _newItem
+    })
+
+    setPuzzleObj(_newData)
+    if (countEmpty === 0) {
+      checkResult(_newData)
+    }
+  }
+
+  const handlePlayAgain = () => {
+    setIsSuccess(false)
+    setPuzzleObj(
+      puzzleArr.map((item: any, id: any) => {
+        return {
+          id,
+          value: item !== '.' ? item : '',
+          isPreFilled: item !== '.'
+        }
+      })
     )
   }
+
   return (
     <div className="sudoku">
-      <MainSudoku
-        puzzle={puzzleObj}
-        onSelectInput={(value: number) => setSelectedInput(value)}
-        onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
-      />
-      <Time />
+      {puzzleObj?.length > 0 ? (
+        <>
+          <MainSudoku
+            puzzle={puzzleObj}
+            onSelectInput={(value: number) => setSelectedInput(value)}
+            onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
+          />
+          {!isSuccess && <CustomButton title="BACK" onAction={handleBack} />}
+          {isSuccess && <CustomButton title="Play Again" onAction={handlePlayAgain} />}
+          {/* <Time /> */}
+        </>
+      ) : null}
     </div>
   )
 }

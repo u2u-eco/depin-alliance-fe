@@ -344,6 +344,9 @@ window.addEventListener('message', function (event) {
         nextPuzzle()
       }
       break
+    case 'PASS_MISSION':
+      isPassMission = true
+      break
   }
 })
 /*!
@@ -458,12 +461,13 @@ function buildGameButton() {
 
   buttonConfirm.cursor = 'pointer'
   buttonConfirm.addEventListener('click', function (evt) {
+    window.parent.postMessage('BACK', '*')
     playSound('soundButton')
     togglePop(false)
 
     stopAudio()
     stopGame()
-    goPage('main')
+    goPage('game')
   })
 
   buttonCancel.cursor = 'pointer'

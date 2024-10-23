@@ -7,6 +7,13 @@
  * GAME SETTING CUSTOMIZATION START
  *
  */
+var isPassMission = false
+// var bgColour = '#ea2f4c' //background colour
+// var questionColour = '#EFECE2' //question mark colour
+// var wrongColour = '#D9DADE' //wrong answer colour
+// var startButtonText = 'TAP TO START' //text for start button
+// var resultText = 'SOLVED: [NUMBER]' //text for result page, [NUMBER] will replace with total solve answer
+// var buttonReplayText = 'PLAY AGAIN' //text for replay button
 
 var bgColour = '#222' //background colour
 var questionColour = '#EFECE2' //question mark colour
@@ -39,11 +46,23 @@ var playTimerSound = true //play timer sound
 var exitMessage = 'Are you sure you want\nto quit the game?' //quit game message
 
 //Social share, [SCORE] will replace with game score
-var shareEnable = true //toggle share
+var shareEnable = false //toggle share
 var shareText = 'SHARE IT NOW' //text for share instruction
 var shareTitle = 'Highscore on Solve Math is [SCORE]' //social share score title
 var shareMessage = '[SCORE] is mine new highscore on Solve Math! Try it now!' //social share score message
 
+window.addEventListener('message', function (event) {
+  switch (event.data) {
+    case 'CONTINUE':
+      if (isPassMission) {
+        checkUserFormula()
+      }
+      break
+    case 'PASS_MISSION':
+      isPassMission = true
+      break
+  }
+})
 /*!
  *
  * GAME SETTING CUSTOMIZATION END
@@ -113,6 +132,7 @@ function buildGameButton() {
   //confirm
   buttonConfirm.cursor = 'pointer'
   buttonConfirm.addEventListener('click', function (evt) {
+    window.parent.postMessage('BACK', '*')
     playSound('soundClick')
     toggleConfirm(false)
     stopGame(true)
@@ -912,7 +932,13 @@ function checkUserFormula() {
   if (proceedAnswer) {
     if (eval(userFormula) == eval(finalMath)) {
       //correct answer
+      if (totalSolve + 1 === 9 && !isPassMission) {
+        isPassMission = true
+        window.parent.postMessage('WIN', '*')
+        return
+      }
       totalSolve++
+
       touchCon = false
       toggleGameTimer(false)
 

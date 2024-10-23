@@ -10,6 +10,7 @@ import CustomButton from '@/app/components/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { WorldMapContext } from '../context/worldmap-context'
 import { IWorldMapResult } from '@/interfaces/i.world-map'
+import { useTelegram } from '@/hooks/useTelegram'
 
 export default function MapBackground() {
   const router = useRouter()
@@ -30,8 +31,8 @@ export default function MapBackground() {
 
   const handleStartMission = (item: IWorldMapResult) => {
     const link = item.isCompleted
-      ? '/games/play?type=puzzle'
-      : `/games/play?type=puzzle&id=${item.id}`
+      ? `/games/play?type=${item.type}`
+      : `/games/play?type=${item.type}&id=${item.id}`
     router.push(link)
   }
 
