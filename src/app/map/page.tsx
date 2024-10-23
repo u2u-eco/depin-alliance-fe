@@ -4,7 +4,6 @@ import CustomPage from '@/app/components/custom-page'
 
 import { CustomHeader } from '@/app/components/ui/custom-header'
 import React from 'react'
-import { motion } from 'framer-motion'
 
 import MapBackground from './components/map-background'
 
@@ -25,7 +24,7 @@ export default function Page() {
         }}
       >
         <WorldMapProvider>
-          <div className="absolute top-0 left-0 right-0 size-full">
+          <div className="absolute top-0 left-0 right-0 h-[100vh] w-[100vw]">
             <MapBackground></MapBackground>
           </div>
           <div className=" flex flex-col justify-between space-y-6 h-full">
