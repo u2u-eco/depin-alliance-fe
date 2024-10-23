@@ -151,7 +151,13 @@ export default function PlayGame() {
         onCloseModal={handleCloseReward}
         onContinue={handleContinue}
         title={worldMapReward?.dailyCombo ? 'daily combo' : 'mission complete'}
-        point={formatNumber(worldMapReward?.reward || 0, 0, 0)}
+        point={formatNumber(
+          worldMapReward?.dailyCombo && worldMapReward.reward
+            ? worldMapReward.dailyCombo + worldMapReward.reward
+            : worldMapReward?.reward || 0,
+          0,
+          0
+        )}
         text={
           worldMapReward?.dailyCombo ? (
             <>
