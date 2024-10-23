@@ -1,4 +1,4 @@
-import { MISSION_STATUS, QUERY_CONFIG } from '@/constants'
+import { DISABLE_CHECK_TASK_U2U, MISSION_STATUS, QUERY_CONFIG } from '@/constants'
 import { getListMission, getListMissionDally } from '@/services/missions'
 import useCommonStore from '@/stores/commonStore'
 import { useQuery } from '@tanstack/react-query'
@@ -67,7 +67,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
       }
     })
 
-    if (countTaskRequired === LIST_MISSION_REQUIRED.length) {
+    if (countTaskRequired === LIST_MISSION_REQUIRED.length || DISABLE_CHECK_TASK_U2U) {
       setDisablePartner(false)
     } else {
       setDisablePartner(true)
