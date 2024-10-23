@@ -68,8 +68,6 @@ export default function PlayGame() {
       window.addEventListener('message', handleMessage)
       if (id) {
         handleStartMission(id)
-      } else {
-        iframeRef.current.contentWindow.postMessage('PASS_MISSION', '*')
       }
     }
     if (!id && (type === 'SUDOKU' || type === 'sudoku')) {
