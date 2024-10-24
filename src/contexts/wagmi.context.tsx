@@ -15,7 +15,7 @@ const metadata = {
   name: 'Depin Alliance',
   description: 'Depin Alliance',
   url: 'https://app.depinalliance.xyz', // origin must match your domain & subdomain
-  icons: ['https://app.depinalliance.xyz/assets/images/logo.jpeg']
+  icons: ['https://app.depinalliance.xyz/assets/images/logo.png']
 }
 
 // Create the modal
