@@ -17,6 +17,7 @@ import useWorldMapStore from '@/stores/worldMapStore'
 // import ModalReward from '@/app/components/ui/modal-reward'
 // import { formatNumber } from '@/helper/common'
 import Image from 'next/image'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 // const listItem = [
 //   { id: 1, image: '', name: 'Oka Shigeo' },
@@ -59,6 +60,7 @@ export default function MapContainer() {
   const [isLoadingModal, setIsLoadingModal] = useState<boolean>(false)
   const [listDataByType, setListDataByType] = useState<{ [key: string]: Array<any> }>({})
   const [worldMapItemSelected, setWorldMapSelectedItem] = useState<any>({})
+  const { state: tourState, helpers } = useTourGuideContext()
   // const currentContinentImage = MAP_CONTINENT_IMAGE[currentMap?.continent?.code || continent]
   // const [isDailyCombo, setIsDailyCombo] = useState(false)
 
@@ -103,6 +105,9 @@ export default function MapContainer() {
         break
     }
     onOpen()
+    if (tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   const handleClickModal = () => {
@@ -122,6 +127,9 @@ export default function MapContainer() {
         }
         onClose()
         break
+    }
+    if (tourState.tourActive) {
+      helpers?.next()
     }
   }
 
@@ -203,6 +211,13 @@ export default function MapContainer() {
       updateWorldMap()
     }
   }, [worldMapItemSelected, continent])
+
+  useEffect(() => {
+    if (tourState.tourActive && (tourState.stepIndex === 1 || tourState.stepIndex === 12)) {
+      setActiveType(tourState.stepIndex === 1 ? WORLD_MAP_ITEM.CONTINENT : WORLD_MAP_ITEM.GUIDE)
+      onOpen()
+    }
+  }, [tourState])
 
   return (
     <>
@@ -314,11 +329,11 @@ export default function MapContainer() {
         onOpen={onOpen}
         onClose={handleCloseModal}
         onOpenChange={onOpenChange}
-        full={activeType === WORLD_MAP_ITEM.CONTINENT}
+        full={activeType === WORLD_MAP_ITEM.CONTINENT || activeType === WORLD_MAP_ITEM.GUIDE}
       >
         <div
           className={
-            activeType === WORLD_MAP_ITEM.CONTINENT
+            activeType === WORLD_MAP_ITEM.CONTINENT || activeType === WORLD_MAP_ITEM.GUIDE
               ? 'h-full flex flex-col justify-between p-4'
               : `space-y-6 xs:space-y-8 2xs:space-y-10`
           }
@@ -327,6 +342,8 @@ export default function MapContainer() {
             <div className="flex flex-1 flex-col items-center justify-center">
               <SelectMap activeArea={continent && continent} />
             </div>
+          ) : activeType === WORLD_MAP_ITEM.GUIDE ? (
+            <div></div>
           ) : (
             <>
               <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
