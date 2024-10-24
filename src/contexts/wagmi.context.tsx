@@ -14,8 +14,8 @@ if (!projectId) {
 const metadata = {
   name: 'Depin Alliance',
   description: 'Depin Alliance',
-  url: 'http://localhost:3000', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/179229932']
+  url: 'https://app.depinalliance.xyz', // origin must match your domain & subdomain
+  icons: ['https://app.depinalliance.xyz/assets/images/logo.jpeg']
 }
 
 // Create the modal
