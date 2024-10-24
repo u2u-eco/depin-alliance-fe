@@ -231,7 +231,7 @@ export default function MapContainer() {
         )} */}
         <div></div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 map-nav">
           {listDetail.map((item: any) => (
             <div
               className={`btn cursor-default ${currentMap?.isCompleted ? 'inactive pointer-events-none' : ''}`}
@@ -350,7 +350,7 @@ export default function MapContainer() {
               )}
             </>
           )}
-          <div className="my-4 xs:my-6 2xs:my-8">
+          <div className="my-4 xs:my-6 2xs:my-8 button-confirm">
             <CustomButton disable={disableAction} title="Confirm" onAction={handleClickModal} />
           </div>
         </div>
