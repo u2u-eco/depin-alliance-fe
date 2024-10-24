@@ -69,7 +69,9 @@ export const MAP_TYPE = {
   AFRICA: 'africa',
   OCEANIA: 'oceania',
   ANTARCTICA: 'antarctica',
-  AMERICA: 'america'
+  AMERICA: 'america',
+  NORTH_AMERICA: 'north america',
+  SOUTH_AMERICA: 'south america'
 }
 
 export const FUNDING_TYPE = 'funding'
