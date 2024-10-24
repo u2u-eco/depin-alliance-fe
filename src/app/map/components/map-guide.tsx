@@ -315,8 +315,6 @@ export default function MapGuide() {
         disableAnimation: true
       },
       placement: 'top',
-      spotlightClicks: true,
-      spotlightPadding: 0,
       target: '.map-nav',
       hideFooter: true,
       styles: {

@@ -12,6 +12,7 @@ import { MAP_TYPE } from '@/constants'
 import { useAppSound } from '@/hooks/useAppSound'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { WorldMapContext } from '../context/worldmap-context'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 interface MapProps {
   activeArea?: string
@@ -92,6 +93,7 @@ const SelectMap = ({ activeArea }: MapProps) => {
   const firstInit = useRef<boolean>(false)
   const { buttonSound } = useAppSound()
   const { setContinent } = useContext(WorldMapContext)
+  const { state: tourState, setState, helpers } = useTourGuideContext()
   const [width, setWidth] = useState(
     window.innerWidth > 480
       ? 424 / 3
@@ -102,6 +104,9 @@ const SelectMap = ({ activeArea }: MapProps) => {
     buttonSound.play()
     setActiveItem(name)
     setContinent(name)
+    if (tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   useEffect(() => {

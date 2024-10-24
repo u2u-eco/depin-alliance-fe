@@ -1,7 +1,8 @@
 export const WORLD_MAP_ITEM = {
   AGENCY: 'AGENCY',
   TOOL: 'TOOL',
-  CONTINENT: 'CONTINENT'
+  CONTINENT: 'CONTINENT',
+  GUIDE: 'GUIDE'
 }
 
 export interface IWorldMapItem {
