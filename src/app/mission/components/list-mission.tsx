@@ -20,6 +20,10 @@ import { loginTwitter, twitterInfo } from '@/services/twitter'
 import ButtonVerifying from './button-verifying'
 import Link from 'next/link'
 import { IconLink, IconOpenLink } from '@/app/components/icons'
+import { useAppKit, useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
+import { useDisconnect, useSignMessage } from 'wagmi'
+import { setUserConnectWallet } from '@/services/user'
+import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -30,6 +34,7 @@ interface IListMission {
   }[]
   refetch?: () => void
 }
+const MESSAGE_SIGN = 'DepinAlliance User Signature'
 const DISABLE_OPEN_TELE_LINK = ['web', 'weba', 'unknown']
 const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES']
 const NAMES_LOGIN_X = ['follow u2u network x']
@@ -54,6 +59,22 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     onClose: onCloseSpecial
   } = useDisclosure()
   const currentItem = useRef<any>()
+  const { open: openEVMConnect } = useAppKit()
+  const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
+  const { walletInfo: walletEVMInfo } = useWalletInfo()
+  const { disconnect } = useDisconnect()
+  const { signMessageAsync } = useSignMessage()
+  const signMessage = useRef<any>(null)
+  const signMessageTON = useRef<any>(null)
+  const [tonConnectUI] = useTonConnectUI()
+  const tonWallet: any = useTonWallet()
+  // const tonAddress = useTonAddress()
+
+  tonConnectUI.setConnectRequestParameters({
+    state: 'ready',
+    value: { tonProof: MESSAGE_SIGN }
+  })
+
   const getUrlTwitterLogin = async () => {
     setLoadingButton(true)
     const res = await loginTwitter()
@@ -66,6 +87,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     }
     setLoadingButton(false)
   }
+
   const handleClick = async (item: any) => {
     if (item.status === 'CLAIMED') return
     if (item.status === 'VERIFIED') {
@@ -96,8 +118,16 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const handleVerifyMission = async (id: number, disableMessage?: boolean) => {
     if (isVerified) return
     setLoadingButton(true)
+    let message = null
+    if (currentItem?.current?.type === 'CONNECT_OKX_WALLET_EVM' && signMessage.current) {
+      message = signMessage.current
+    }
 
-    const res = await verifyMission(id, currentItem?.current?.isDaily)
+    if (currentItem?.current?.type === 'CONNECT_OKX_WALLET_TON' && signMessageTON.current) {
+      message = signMessageTON.current
+    }
+
+    const res = await verifyMission(id, currentItem?.current?.isDaily, message)
     if (res.status && res.data !== 'false') {
       if (res.data === 'true') {
         setVerified(true)
@@ -217,6 +247,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         }
         setLoadingButton(false)
       }, timeOut)
+
       switch (currentItem.current.type) {
         case 'SHARE_STORY':
           handleShare()
@@ -225,6 +256,42 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           timeOut = 2000
           router.push('/mission/quiz')
           setCurrentMissionQuiz(currentItem.current)
+          break
+        case 'CONNECT_OKX_WALLET_TON':
+          if (tonWallet) {
+            if (signMessageTON.current && tonWallet.name === 'okx wallet') {
+              setCheckMission(true)
+              setLoadingButton(false)
+            } else {
+              clearTimeout(refTimeoutCheck.current)
+              tonConnectUI.disconnect()
+              setTimeout(() => {
+                tonConnectUI.openSingleWalletModal('okxTonWallet')
+              })
+            }
+          } else {
+            tonConnectUI.openSingleWalletModal('okxTonWallet')
+          }
+          break
+        case 'CONNECT_OKX_WALLET_EVM':
+          if (isConnectedEVM) {
+            if (walletEVMInfo?.name?.toLowerCase() === 'ví okx web3' && addressEVM) {
+              clearTimeout(refTimeoutCheck.current)
+              if (signMessage.current) {
+                setCheckMission(true)
+                setLoadingButton(false)
+              } else {
+                handleSign(addressEVM)
+              }
+            } else {
+              disconnect()
+              setTimeout(() => {
+                openEVMConnect()
+              })
+            }
+          } else {
+            openEVMConnect()
+          }
           break
         case 'CONNECT_X':
           if (!userTwitter?.twitterUsername && twitterLoginUrl) {
@@ -350,6 +417,33 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       }
     }
   }
+
+  const handleSign = async (account: any) => {
+    try {
+      const message = await signMessageAsync({
+        message: MESSAGE_SIGN,
+        account
+      })
+      if (message) {
+        signMessage.current = message
+        setCheckMission(true)
+        setLoadingButton(false)
+      }
+    } catch (ex: any) {
+      onClose()
+      toast.error(<CustomToast type="error" title={`${ex?.details || 'User reject'}`} />)
+    }
+  }
+
+  const handleUserConnect = (data: any) => {
+    setUserConnectWallet(data)
+  }
+
+  const handleClose = () => {
+    onClose()
+    setLoadingButton(false)
+  }
+
   const isShowLink =
     (currentItem?.current?.type !== 'CONNECT_X' &&
       [...TYPES_LOGIN_X, 'TWITTER'].indexOf(currentItem?.current?.type) !== -1) ||
@@ -361,6 +455,35 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       document.removeEventListener('visibilitychange', handleVisible)
     }
   }, [])
+
+  useEffect(() => {
+    if (addressEVM && currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM') {
+      let _account: any = addressEVM
+      handleSign(_account)
+      handleUserConnect({
+        address: _account,
+        type: 'EVM',
+        connectFrom: 'OKX'
+      })
+    }
+  }, [isConnectedEVM])
+
+  useEffect(() => {
+    if (
+      tonWallet &&
+      currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' &&
+      tonWallet.connectItems?.tonProof?.proof?.signature
+    ) {
+      signMessageTON.current = tonWallet.connectItems?.tonProof?.proof?.signature
+      setCheckMission(true)
+      setLoadingButton(false)
+      handleUserConnect({
+        address: tonWallet.account?.address,
+        type: 'TON',
+        connectFrom: 'OKX'
+      })
+    }
+  }, [tonWallet])
 
   return (
     <>
@@ -378,7 +501,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         </React.Fragment>
       ))}
 
-      <CustomModal title={'Mission'} isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
+      <CustomModal
+        title={'Mission'}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        onClose={handleClose}
+      >
         <div>
           <div className=" text-body text-base tracking-[-1px] text-center">
             <p>Complete the following task:</p>
