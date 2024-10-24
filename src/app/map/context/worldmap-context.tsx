@@ -6,7 +6,9 @@ import {
   IconMapAntarctica,
   IconMapAsia,
   IconMapEurope,
-  IconMapOceania
+  IconMapNorthAmerica,
+  IconMapOceania,
+  IconMapSouthAmerica
 } from '@/app/components/icons'
 import { keyBy } from 'lodash'
 type WorldMapContextType = {
@@ -27,9 +29,9 @@ export const MAP_CONTINENT_IMAGE = (code: string, className: string) => {
     case 'continent_2':
       return <IconMapOceania className={className} />
     case 'continent_4':
-      return <IconMapAntarctica className={className} />
+      return <IconMapNorthAmerica className={className} />
     case 'continent_3':
-      return <IconMapAmerica className={className} />
+      return <IconMapSouthAmerica className={className} />
     default:
       return null
   }
