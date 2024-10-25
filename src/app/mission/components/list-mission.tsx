@@ -293,7 +293,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
             }
           } else {
             clearTimeout(refTimeoutCheck.current)
-            disconnect()
+            // disconnect()
             setTimeout(() => {
               openEVMConnect()
             }, 2000)
@@ -437,6 +437,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       }
     } catch (ex: any) {
       // onClose()
+      setLoadingButton(false)
       toast.error(<CustomToast type="error" title={`${ex?.details || 'User reject'}`} />)
     }
   }
@@ -479,9 +480,15 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       } else {
         if (walletEVMInfo?.name?.toLowerCase() !== 'ví okx web3') {
           setLoadingButton(false)
+
+          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM') {
+            toast.warning(
+              <CustomToast title="You need to use OKX wallet to connect" type="warning" />
+            )
+          }
           setTimeout(() => {
             disconnect()
-          }, 1000)
+          }, 2000)
         }
       }
     }
