@@ -367,7 +367,13 @@ export default function MapContainer() {
               <SelectMap activeArea={continent && continent} />
             </div>
           ) : activeType === WORLD_MAP_ITEM.GUIDE ? (
-            <div></div>
+            <div className="my-8">
+              <img
+                className="mx-auto"
+                src="/assets/images/map/reward-guide-map.png"
+                alt="DePIN Alliance"
+              />
+            </div>
           ) : (
             <>
               <div className=" text-body text-[15px] xs:text-base !leading-[20px] tracking-[-1px] text-center">
