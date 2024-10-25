@@ -249,6 +249,9 @@ export default function MapContainer() {
       setActiveType(tourState.stepIndex === 1 ? WORLD_MAP_ITEM.CONTINENT : WORLD_MAP_ITEM.GUIDE)
       onOpen()
     }
+    if (!tourState.tourActive && tourState.stepIndex === 14) {
+      onClose()
+    }
   }, [tourState])
 
   useEffect(() => {
