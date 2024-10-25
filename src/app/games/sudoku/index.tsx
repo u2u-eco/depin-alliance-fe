@@ -79,7 +79,8 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
         return {
           id,
           value: item !== '.' ? item : '',
-          isPreFilled: item !== '.'
+          isPreFilled: item !== '.',
+          result: Number(puzzleSolutionArr[id])
         }
       })
     )
