@@ -15,7 +15,7 @@ const ListItem = ({ listItem, handleSelectItem, activeItem }: ListItemProps) => 
       <div className="flex flex-col space-y-2.5 xs:space-y-3 2xs:space-y-3.5">
         {listItem.map((item: any, index: number) => (
           <div
-            className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === item.code ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'}`}
+            className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === item.code ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'} ${index === 0 ? 'item-guide' : ''}`}
             key={index}
             onClick={() => handleSelectItem(item)}
           >

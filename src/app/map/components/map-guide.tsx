@@ -34,7 +34,6 @@ export default function MapGuide() {
   }
   const handleComplete = () => {
     handleClose()
-    // onOpen()
   }
 
   const _steps: Step[] = [
@@ -48,7 +47,7 @@ export default function MapGuide() {
         />
       ),
       placement: 'top',
-      target: '.map-nav',
+      target: '.map-continent',
       spotlightClicks: true,
       spotlightPadding: 0,
       hideFooter: true,
@@ -62,9 +61,6 @@ export default function MapGuide() {
         overlay: {
           background: 'rgba(0,0,0,0.95)'
         }
-        // overlayLegacy: {
-        //   mixBlendMode: 'unset'
-        // }
       }
     },
     {
@@ -109,17 +105,8 @@ export default function MapGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       styles: {
-        // overlay: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        // overlayLegacy: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
         overlay: {
-          background: 'transparent',
-          pointerEvents: 'none'
+          background: 'transparent'
         },
         spotlight: {
           background: 'transparent'
@@ -144,17 +131,8 @@ export default function MapGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       styles: {
-        // overlay: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        // overlayLegacy: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
         overlay: {
-          background: 'transparent',
-          pointerEvents: 'none'
+          background: 'transparent'
         },
         spotlight: {
           background: 'transparent'
@@ -184,7 +162,7 @@ export default function MapGuide() {
       placement: 'top',
       spotlightClicks: true,
       spotlightPadding: 0,
-      target: '.map-nav',
+      target: '.map-agency',
       hideFooter: true,
       styles: {
         overlayLegacy: {
@@ -202,6 +180,28 @@ export default function MapGuide() {
       }
     },
     {
+      content: <ItemTutorial arrow arrowClass="rotate-180" />,
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'bottom',
+      target: '.item-guide',
+      spotlightClicks: true,
+      spotlightPadding: 5,
+      styles: {
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlayLegacyCenter: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.6)'
+        }
+      },
+      hideFooter: true
+    },
+    {
       content: <ItemTutorial arrow />,
       floaterProps: {
         disableAnimation: true
@@ -211,27 +211,14 @@ export default function MapGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       styles: {
-        // overlay: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        // overlayLegacy: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        overlay: {
-          background: 'transparent',
-          pointerEvents: 'none'
-        },
-        spotlight: {
-          background: 'transparent'
-        },
-        spotlightLegacy: {
-          background: 'transparent'
-        },
         overlayLegacy: {
-          background: 'transparent',
-          mixBlendMode: 'unset'
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlayLegacyCenter: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.6)'
         }
       },
       hideFooter: true
@@ -251,7 +238,7 @@ export default function MapGuide() {
       placement: 'top',
       spotlightClicks: true,
       spotlightPadding: 0,
-      target: '.map-nav',
+      target: '.map-tool',
       hideFooter: true,
       styles: {
         overlayLegacy: {
@@ -263,10 +250,29 @@ export default function MapGuide() {
         overlay: {
           background: 'rgba(0,0,0,0.95)'
         }
-        // overlayLegacy: {
-        //   mixBlendMode: 'unset'
-        // }
       }
+    },
+    {
+      content: <ItemTutorial arrow arrowClass="rotate-180" />,
+      floaterProps: {
+        disableAnimation: true
+      },
+      placement: 'bottom',
+      target: '.item-guide',
+      spotlightClicks: true,
+      spotlightPadding: 5,
+      styles: {
+        overlayLegacy: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlayLegacyCenter: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.6)'
+        }
+      },
+      hideFooter: true
     },
     {
       content: <ItemTutorial arrow />,
@@ -278,27 +284,14 @@ export default function MapGuide() {
       spotlightClicks: true,
       spotlightPadding: 0,
       styles: {
-        // overlay: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        // overlayLegacy: {
-        //   background: 'transparent',
-        //   pointerEvents: 'none'
-        // },
-        overlay: {
-          background: 'transparent',
-          pointerEvents: 'none'
-        },
-        spotlight: {
-          background: 'transparent'
-        },
-        spotlightLegacy: {
-          background: 'transparent'
-        },
         overlayLegacy: {
-          background: 'transparent',
-          mixBlendMode: 'unset'
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlayLegacyCenter: {
+          background: 'rgba(0,0,0,0.6)'
+        },
+        overlay: {
+          background: 'rgba(0,0,0,0.6)'
         }
       },
       hideFooter: true
@@ -476,12 +469,12 @@ export default function MapGuide() {
         return
       }
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
-      // if (nextStepIndex === 8 || nextStepIndex === 12) {
-      //   setState({
-      //     run: false
-      //   })
-      //   return
-      // }
+      if (nextStepIndex === 5 || nextStepIndex === 8) {
+        setState({
+          run: false
+        })
+        return
+      }
       if (step?.data?.next) {
         setState({
           run: false
