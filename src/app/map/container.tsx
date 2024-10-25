@@ -151,6 +151,7 @@ export default function MapContainer() {
         worldMapItemSelected[WORLD_MAP_ITEM.TOOL] = res.data.tool
       }
       setCurrentMap(res.data)
+      setCurrentWorldMap(res.data)
     }
   }
 
