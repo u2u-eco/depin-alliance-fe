@@ -492,7 +492,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         }
       }
     }
-  }, [isConnectedEVM, walletEVMInfo])
+  }, [isConnectedEVM, addressEVM, walletEVMInfo])
 
   useEffect(() => {
     if (tonWallet && tonWallet?.appName) {
