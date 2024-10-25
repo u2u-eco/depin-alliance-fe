@@ -1,7 +1,7 @@
 import { IconClose } from '@/app/components/icons'
 import { ShapeIcon } from '@/app/components/icons/sharp-sudoku'
 import { ISPuzzleItem } from '@/interfaces/i.games'
-import { chunk, forEach } from 'lodash'
+import { chunk, forEach, result } from 'lodash'
 import { useEffect, useMemo, useRef, useState } from 'react'
 interface IMainSudoku {
   puzzle: Array<ISPuzzleItem>
@@ -19,10 +19,16 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
   const [activeItem, setActiveItem] = useState<number>()
   const [selectedId, setSelectedId] = useState<number>(-1)
   const [numberSelected, setNumberSelected] = useState<number>(-1)
-  const [currentRowCol, setCurrentRowCol] = useState<{ row: number; col: number; group: string }>({
+  const [currentRowCol, setCurrentRowCol] = useState<{
+    row: number
+    col: number
+    group: string
+    result: number
+  }>({
     row: -1,
     col: -1,
-    group: '-1-1'
+    group: '-1-1',
+    result: 0
   })
 
   const [isError, setIsError] = useState<{ [key: number]: boolean }>({})
@@ -51,17 +57,19 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
     row: number,
     col: number,
     group: string,
-    value: any
+    value: any,
+    result: number
   ) => {
     if (isPreFilled) {
       setNumberSelected(Number(value))
       return
     }
+
     setShowSelect(true)
     setSelectedId(index)
     setActiveItem(index)
     onSelectInput(index)
-    setCurrentRowCol({ row, col, group })
+    setCurrentRowCol({ row, col, group, result })
   }
 
   const handleDraft = () => {
@@ -106,8 +114,17 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
       return
     }
     setShowSelect(false)
+    let _isError = false
     onHandleChange(numb)
-    checkInput(numb)
+
+    if (numb !== currentRowCol.result) {
+      _isError = true
+    }
+    setIsError({
+      ...isError,
+      [selectedId]: _isError
+    })
+    // checkInput(numb)
   }
 
   const handleResetNumber = () => {
@@ -156,7 +173,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
       >
         {listRow.map((item: any, indexRow: number) => (
           <div className={`game-row game-row-${indexRow + 1}`} key={indexRow}>
-            {item.map(({ value, id, isPreFilled, group }: any, index: number) => {
+            {item.map(({ value, id, isPreFilled, group, result }: any, index: number) => {
               return (
                 <div
                   className={`game-input ${indexRow === currentRowCol.row || index === currentRowCol.col || group === currentRowCol.group ? 'same' : ''} ${isPreFilled ? 'prefilled-text' : ''} ${isError[id] ? 'error' : ''} ${activeItem === id ? 'selected' : ''} ${draftId[id] ? 'checked' : ''}`}
@@ -164,7 +181,7 @@ export const MainSudoku = ({ puzzle, onSelectInput, onHandleChange }: IMainSudok
                   ref={ref}
                   style={{ height: `${width}px` }}
                   onClick={() => {
-                    handleClick(id, isPreFilled, indexRow, index, group, value)
+                    handleClick(id, isPreFilled, indexRow, index, group, value, result)
                   }}
                 >
                   {draftId[id] && !isPreFilled && listDraftById[id] ? (
