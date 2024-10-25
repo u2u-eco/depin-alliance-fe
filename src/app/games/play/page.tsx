@@ -1,6 +1,6 @@
 'use client'
 // import { CustomHeader } from '@/app/components/ui/custom-header'
-import { endWorldMap, startWorldMap } from '@/services/world-map'
+import { endWorldMap, getWorldMap, startWorldMap } from '@/services/world-map'
 import useWorldMapStore from '@/stores/worldMapStore'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -21,7 +21,9 @@ export default function PlayGame() {
     onClose: onCloseReward
   } = useDisclosure()
   // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const { setWorldMapReward, worldMapReward, currentWorldMap } = useWorldMapStore()
+  const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
+    useWorldMapStore()
+
   const params = useSearchParams()
   const iframeRef = useRef<any>()
   let type = params.get('type')
@@ -81,7 +83,7 @@ export default function PlayGame() {
   }, [id])
 
   const handleBack = () => {
-    router.back()
+    router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
   }
 
   const handleMessage = (event: any) => {
@@ -125,6 +127,17 @@ export default function PlayGame() {
     return () => {
       window.removeEventListener('message', handleMessage)
     }
+  }, [])
+
+  const _getWorldMap = async () => {
+    const res = await getWorldMap()
+    if (res.status) {
+      setCurrentWorldMap(res.data)
+    }
+  }
+
+  useEffect(() => {
+    _getWorldMap()
   }, [])
 
   return (

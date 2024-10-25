@@ -52,7 +52,7 @@ export default function MapContainer() {
     currentMap,
     continent: continentStore
   } = useContext(WorldMapContext)
-  const { worldMapReward, setCurrentWorldMap } = useWorldMapStore()
+  const { worldMapReward, setCurrentWorldMap, currentWorldMap } = useWorldMapStore()
   const [activeType, setActiveType] = useState(WORLD_MAP_ITEM.AGENCY)
   const [activeItem, setActiveItem] = useState<any>()
   const { buttonSound } = useAppSound()
@@ -66,10 +66,8 @@ export default function MapContainer() {
     {
       id: 1,
       haveItem: true,
-      image: continent
-        ? MAP_CONTINENT_IMAGE(continent, 'className="size-6 xs:size-7 2xs:size-8"')
-        : null,
-      title: continent ? listWorldMapByContinent[continent]?.name : 'continent',
+      image: '',
+      title: 'continent',
       type: WORLD_MAP_ITEM.CONTINENT
       // text: 'LV. 12'
     },
@@ -178,6 +176,37 @@ export default function MapContainer() {
     _getWorldMap()
   }
 
+  const getNameDetail = (item: any) => {
+    if (item.type === WORLD_MAP_ITEM.CONTINENT) {
+      if (currentWorldMap?.continent.name) {
+        return currentWorldMap.continent.name
+      }
+      if (continentStore && listWorldMapByContinent[continentStore]) {
+        return listWorldMapByContinent[continentStore].name
+      }
+      if (continent && listWorldMapByContinent[continent]) {
+        return listWorldMapByContinent[continent].name
+      }
+      return 'continent'
+    } else {
+      return worldMapItemSelected[item.type]?.name || item.title
+    }
+  }
+
+  const getImage = (item: any) => {
+    if (item.type === WORLD_MAP_ITEM.AGENCY && currentWorldMap?.agency?.image) {
+      return currentWorldMap?.agency?.image
+    }
+
+    if (item.type === WORLD_MAP_ITEM.TOOL && currentWorldMap?.tool?.image) {
+      return currentWorldMap?.tool?.image
+    }
+
+    return (
+      worldMapItemSelected[item.type]?.image || '/assets/images/onboarding/device-unknown@2x.png'
+    )
+  }
+
   const disableAction =
     (activeType === WORLD_MAP_ITEM.AGENCY || activeType === WORLD_MAP_ITEM.TOOL) && !activeItem
       ? true
@@ -250,7 +279,12 @@ export default function MapContainer() {
                       className={`[clip-path:_polygon(var(--shape)_0%,100%_0,100%_calc(100%_-_var(--shape)),100%_100%,0_100%,0_var(--shape));] flex items-center justify-center size-full text-green-500 ${item.haveItem ? 'bg-green-900' : 'bg-[linear-gradient(to_bottom,#000,#00331d)]'}`}
                     >
                       {item.haveItem ? (
-                        item.image
+                        MAP_CONTINENT_IMAGE(
+                          currentWorldMap?.continent?.code
+                            ? currentWorldMap.continent?.code
+                            : 'continent_1',
+                          'className="size-6 xs:size-7 2xs:size-8"'
+                        )
                       ) : (
                         <Image
                           width={0}
@@ -261,10 +295,7 @@ export default function MapContainer() {
                               ? 'size-full'
                               : 'size-8 xs:size-9 2xs:size-10'
                           }
-                          src={
-                            worldMapItemSelected[item.type]?.image ||
-                            '/assets/images/onboarding/device-unknown@2x.png'
-                          }
+                          src={getImage(item)}
                           alt="DePIN Alliance"
                         />
                       )}
@@ -278,7 +309,7 @@ export default function MapContainer() {
                   <p
                     className={`text-xs xs:text-[13px] 2xs:text-sm !leading-[16px] xs:!leading-[18px] font-semibold uppercase line-clamp-1 ${(worldMapItemSelected[item.type]?.name || item.type === WORLD_MAP_ITEM.CONTINENT) && !currentMap?.isCompleted ? 'text-title' : 'text-inactive'}`}
                   >
-                    {worldMapItemSelected[item.type]?.name || item.title}
+                    {getNameDetail(item)}
                   </p>
                   {/* <p
                     className={`text-[11px] xs:text-xs !leading-[16px] min-h-4 tracking-[-1px] font-geist font-normal line-clamp-1 ${currentMap?.isCompleted ? 'text-inactive' : 'text-yellow-500'}`}
