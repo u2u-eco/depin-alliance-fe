@@ -12,10 +12,11 @@ interface ISudoku {
 export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
   const [selectedInput, setSelectedInput] = useState<number | null>(null)
   const puzzle = data?.mission || ''
+  const puzzleSolution = data?.solution || ''
   const puzzleArr: any = puzzle.split('')
+  const puzzleSolutionArr: any = puzzleSolution.split('')
   const [isSuccess, setIsSuccess] = useState<boolean>(false)
   const [puzzleObj, setPuzzleObj] = useState<Array<ISPuzzleItem>>([])
-
   useEffect(() => {
     if (puzzleObj.length === 0 && puzzleArr.length > 0) {
       setPuzzleObj(
@@ -23,7 +24,8 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
           return {
             id,
             value: item !== '.' ? item : '',
-            isPreFilled: item !== '.'
+            isPreFilled: item !== '.',
+            result: Number(puzzleSolutionArr[id])
           }
         })
       )
@@ -47,13 +49,14 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
   const onHandleChange = (value: string, clearValue?: boolean) => {
     const isValueValid = (/^\d+$/.test(value) && value !== '0') || clearValue
     let countEmpty = 0
-    let _newData = puzzleObj.map((item) => {
+    let _newData = puzzleObj.map((item: any) => {
       const _newItem =
         isValueValid && !item.isPreFilled && item.id === selectedInput
           ? {
               id: item.id,
               value,
-              isPreFilled: false
+              isPreFilled: false,
+              result: item.result
             }
           : item
 
