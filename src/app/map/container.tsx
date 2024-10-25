@@ -60,7 +60,7 @@ export default function MapContainer() {
   const [isLoadingModal, setIsLoadingModal] = useState<boolean>(false)
   const [listDataByType, setListDataByType] = useState<{ [key: string]: Array<any> }>({})
   const [worldMapItemSelected, setWorldMapSelectedItem] = useState<any>({})
-  const { state: tourState, helpers } = useTourGuideContext()
+  const { state: tourState, helpers, setState } = useTourGuideContext()
   // const currentContinentImage = MAP_CONTINENT_IMAGE[currentMap?.continent?.code || continent]
   // const [isDailyCombo, setIsDailyCombo] = useState(false)
 
@@ -140,6 +140,9 @@ export default function MapContainer() {
 
   const handleSelectItem = (item: IWorldMapItem) => {
     setActiveItem(item)
+    if (tourState.tourActive) {
+      helpers?.next()
+    }
   }
 
   const getListMap = async () => {
@@ -213,9 +216,27 @@ export default function MapContainer() {
   }, [worldMapItemSelected, continent])
 
   useEffect(() => {
-    if (tourState.tourActive && (tourState.stepIndex === 1 || tourState.stepIndex === 12)) {
+    if (tourState.tourActive && (tourState.stepIndex === 1 || tourState.stepIndex === 14)) {
       setActiveType(tourState.stepIndex === 1 ? WORLD_MAP_ITEM.CONTINENT : WORLD_MAP_ITEM.GUIDE)
       onOpen()
+    }
+  }, [tourState])
+
+  useEffect(() => {
+    if (tourState.tourActive) {
+      if ((tourState.stepIndex === 4 || tourState.stepIndex === 7) && !tourState.run) {
+        setActiveItem(
+          listDataByType[
+            tourState.stepIndex === 4 ? WORLD_MAP_ITEM.AGENCY : WORLD_MAP_ITEM.TOOL
+          ]?.[0]
+        )
+        setTimeout(() => {
+          setState({
+            run: true,
+            stepIndex: tourState.stepIndex + 1
+          })
+        }, 300)
+      }
     }
   }, [tourState])
 
@@ -249,7 +270,7 @@ export default function MapContainer() {
         <div className="flex space-x-2 map-nav">
           {listDetail.map((item: any) => (
             <div
-              className={`btn cursor-default ${currentMap?.isCompleted ? 'inactive pointer-events-none' : ''}`}
+              className={`btn cursor-default map-${item.id === 1 ? 'continent' : item.title} ${currentMap?.isCompleted ? 'inactive pointer-events-none' : ''}`}
               key={item.id}
             >
               <div className="btn-border"></div>
