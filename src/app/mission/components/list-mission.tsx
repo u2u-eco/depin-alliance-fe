@@ -21,9 +21,9 @@ import ButtonVerifying from './button-verifying'
 import Link from 'next/link'
 import { IconOpenLink } from '@/app/components/icons'
 import { useAppKit, useAppKitAccount, useAppKitState, useWalletInfo } from '@reown/appkit/react'
-import { useDisconnect, useSignMessage } from 'wagmi'
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi'
 import { setUserConnectWallet } from '@/services/user'
-import { useTonConnectUI, useTonWallet } from '@tonconnect/ui-react'
+import { useTonConnectModal, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -62,6 +62,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const { open: openEVMConnect } = useAppKit()
   const { open: isOpenEVM } = useAppKitState()
   const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
+  const { isConnecting: isConnectingEVM } = useAccount()
+  const [isShowMessageConnectOKX, setIsShowMessageOKX] = useState<boolean>(false)
   const { walletInfo: walletEVMInfo } = useWalletInfo()
   const { disconnect } = useDisconnect()
   const { signMessageAsync } = useSignMessage()
@@ -69,6 +71,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const signMessageTON = useRef<any>(null)
   const [tonConnectUI] = useTonConnectUI()
   const tonWallet: any = useTonWallet()
+  const { state: stateTON } = useTonConnectModal()
 
   // const tonAddress = useTonAddress()
 
@@ -270,12 +273,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
               clearTimeout(refTimeoutCheck.current)
               tonConnectUI.disconnect()
               setTimeout(() => {
-                tonConnectUI.openSingleWalletModal('okxTonWallet')
+                tonConnectUI.openModal()
               }, 2000)
             }
           } else {
             clearTimeout(refTimeoutCheck.current)
-            tonConnectUI.openSingleWalletModal('okxTonWallet')
+            tonConnectUI.openModal()
           }
           break
         case 'CONNECT_OKX_WALLET_EVM':
@@ -480,11 +483,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       } else {
         if (walletEVMInfo?.name?.toLowerCase() !== 'ví okx web3') {
           setLoadingButton(false)
-
-          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM') {
+          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM' && isShowMessageConnectOKX) {
             toast.warning(
               <CustomToast title="You need to use OKX wallet to connect" type="warning" />
             )
+            setIsShowMessageOKX(false)
           }
           setTimeout(() => {
             disconnect()
@@ -492,7 +495,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         }
       }
     }
-  }, [isConnectedEVM, walletEVMInfo])
+  }, [isConnectedEVM, walletEVMInfo, isShowMessageConnectOKX])
+
+  useEffect(() => {
+    if (isOpenEVM && isConnectedEVM) {
+      setIsShowMessageOKX(true)
+    }
+  }, [isOpenEVM, isConnectingEVM])
 
   useEffect(() => {
     if (tonWallet && tonWallet?.appName) {
@@ -511,17 +520,32 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         })
       } else {
         if (tonWallet?.appName !== 'okxTonWallet') {
-          tonConnectUI.disconnect()
+          setLoadingButton(false)
+          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' && isShowMessageConnectOKX) {
+            toast.warning(
+              <CustomToast title="You need to use OKX wallet to connect" type="warning" />
+            )
+            setIsShowMessageOKX(false)
+          }
+          setTimeout(() => {
+            tonConnectUI.disconnect()
+          }, 300)
         }
       }
     }
-  }, [tonWallet])
+  }, [tonWallet, isShowMessageConnectOKX])
 
   useEffect(() => {
     if (loadingButton && !isOpenEVM && !isConnectedEVM) {
       setLoadingButton(false)
     }
   }, [isOpenEVM, isConnectedEVM])
+
+  useEffect(() => {
+    if (stateTON.status === 'closed' && stateTON.closeReason === 'wallet-selected') {
+      setIsShowMessageOKX(true)
+    }
+  }, [stateTON])
   return (
     <>
       {listMission.map((item: any, index: number) => (
