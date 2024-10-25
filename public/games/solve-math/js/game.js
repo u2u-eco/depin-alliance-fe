@@ -932,12 +932,12 @@ function checkUserFormula() {
   if (proceedAnswer) {
     if (eval(userFormula) == eval(finalMath)) {
       //correct answer
-      if (totalSolve + 1 === 5 && !isPassMission) {
+      totalSolve++
+      if (totalSolve === 5 && !isPassMission) {
         isPassMission = true
         window.parent.postMessage('WIN', '*')
         return
       }
-      totalSolve++
 
       touchCon = false
       toggleGameTimer(false)
