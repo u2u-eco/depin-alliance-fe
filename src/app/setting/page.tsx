@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import CustomPage from '../components/custom-page'
 import { useDisclosure } from '@nextui-org/react'
 import CustomModal from '../components/custom-modal'
-
 import Link from 'next/link'
 import { CustomHeader } from '../components/ui/custom-header'
 import {
@@ -19,7 +18,7 @@ import {
 import { motion } from 'framer-motion'
 import useCommonStore from '@/stores/commonStore'
 import { SETTING_TYPE } from '@/constants'
-import { updateSetting } from '@/services/user'
+import { setUserConnectWallet, updateSetting } from '@/services/user'
 import { toast } from 'sonner'
 import CustomToast from '../components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
@@ -59,6 +58,7 @@ export default function SettingPage() {
   const [type, setType] = useState(SETTING_TYPE.WALLET_TON)
   const wallet: any = useTonWallet()
   const iconWallet = <IconWallet className="size-7 xs:size-8 2xs:size-9" gradient />
+
   const handleUpdateSetting = async (data: { setting: string; enable: boolean }) => {
     if (isLoading) return
     setLoading(true)
@@ -139,6 +139,7 @@ export default function SettingPage() {
     // { id: 5, image: SETTING_TYPE.FEEDBACK, title: 'Send Feedback', text: 'Report bugs, errors,...', icon: 'open-link' },
     // { id: 6, image: SETTING_TYPE.LOGOUT, title: 'Log Out', text: 'Quit this account', icon: 'open-link' },
   ]
+
   const handleWalletClick = () => {
     if (type === SETTING_TYPE.WALLET_TON) {
       tonConnectUI.disconnect()
@@ -147,6 +148,7 @@ export default function SettingPage() {
     }
     onClose()
   }
+
   const handleClick = (type: string) => {
     buttonSound.play()
     switch (type) {
@@ -199,6 +201,28 @@ export default function SettingPage() {
   const handleClickLink = () => {
     buttonSound.play()
   }
+
+  const handleUserConnect = (data: any) => {
+    setUserConnectWallet(data)
+  }
+
+  useEffect(() => {
+    if (wallet) {
+      handleUserConnect({
+        address: wallet?.account?.address,
+        type: 'TON',
+        connectFrom: wallet?.name
+      })
+    }
+
+    if (walletEVMInfo) {
+      handleUserConnect({
+        address: addressEVM,
+        type: 'EVM',
+        connectFrom: walletEVMInfo?.name
+      })
+    }
+  }, [wallet, walletEVMInfo])
 
   useEffect(() => {
     getUserSetting()

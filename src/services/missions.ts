@@ -21,8 +21,12 @@ export const getListMissionByPartner = () => {
   return https.get('/missions/partner')
 }
 
-export const verifyMission = (id: number, isDaily?: boolean) => {
-  return https.get(`/missions/${isDaily ? 'verify-task-daily' : 'verify-task'}/${id}`)
+export const verifyMission = (id: number, isDaily?: boolean, message?: string) => {
+  let url = `/missions/${isDaily ? 'verify-task-daily' : 'verify-task'}/${id}`
+  if (message) {
+    url += `?hash=${message}`
+  }
+  return https.get(url)
 }
 
 export const claimTask = (id: number, isDaily?: boolean) => {
