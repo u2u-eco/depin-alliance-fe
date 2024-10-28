@@ -111,6 +111,10 @@ var theme_settings = [
   }
 ]
 
+setInterval(() => {
+  window.parent.postMessage('PING', '*')
+}, 2000)
+
 window.addEventListener('message', function (event) {
   switch (event.data) {
     case 'CONTINUE':
