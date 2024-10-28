@@ -20,7 +20,10 @@ const config = {
       md: '768px',
       lg: '992px',
       xl: '1200px',
-      '2xl': '1440px'
+      '2xl': '1440px',
+      height: {
+        raw: '(max-height: 699px)'
+      }
     },
     extend: {
       colors: {
