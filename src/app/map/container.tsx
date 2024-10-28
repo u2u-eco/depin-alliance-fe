@@ -256,18 +256,11 @@ export default function MapContainer() {
 
   useEffect(() => {
     if (tourState.tourActive) {
-      if ((tourState.stepIndex === 4 || tourState.stepIndex === 7) && !tourState.run) {
-        setActiveItem(
-          listDataByType[
-            tourState.stepIndex === 4 ? WORLD_MAP_ITEM.AGENCY : WORLD_MAP_ITEM.TOOL
-          ]?.[0]
-        )
-        setTimeout(() => {
-          setState({
-            run: true,
-            stepIndex: tourState.stepIndex + 1
-          })
-        }, 300)
+      if (tourState.stepIndex === 4 && !tourState.run) {
+        handleClick(WORLD_MAP_ITEM.AGENCY)
+      }
+      if (tourState.stepIndex === 7 && !tourState.run) {
+        handleClick(WORLD_MAP_ITEM.TOOL)
       }
     }
   }, [tourState])
@@ -298,7 +291,7 @@ export default function MapContainer() {
           <div></div>
         )} */}
         <div></div>
-
+        {/* <div id="map-continent"></div> */}
         <div className="flex space-x-2 map-nav">
           {listDetail.map((item: any) => (
             <div

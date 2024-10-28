@@ -1,7 +1,7 @@
-import { IconUpDown } from '@/app/components/icons'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { IWorldMapItem } from '@/interfaces/i.world-map'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface ListItemProps {
   listItem: any
@@ -10,12 +10,28 @@ interface ListItemProps {
 }
 
 const ListItem = ({ listItem, handleSelectItem, activeItem }: ListItemProps) => {
+  const { state: tourState, helpers, setState } = useTourGuideContext()
+  useEffect(() => {
+    if (
+      listItem?.length > 0 &&
+      tourState.tourActive &&
+      !tourState.run &&
+      (tourState.stepIndex === 4 || tourState.stepIndex === 7)
+    ) {
+      setTimeout(() => {
+        setState({
+          stepIndex: tourState.stepIndex + 1,
+          run: true
+        })
+      }, 300)
+    }
+  }, [listItem, tourState])
   return (
     <div className="overflow-y-auto no-scrollbar max-h-[50vh]">
       <div className="flex flex-col space-y-2.5 xs:space-y-3 2xs:space-y-3.5">
         {listItem.map((item: any, index: number) => (
           <div
-            className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === item.code ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'} ${index === 0 ? 'item-guide' : ''}`}
+            className={`relative cursor-pointer after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-4 after:border-[8px] after:border-transparent after:transition-background ${activeItem === item.code ? 'after:border-b-green-500 after:border-r-green-500' : 'after:border-b-green-900 after:border-r-green-900'} ${index === 0 ? 'item-map-guide' : ''}`}
             key={index}
             onClick={() => handleSelectItem(item)}
           >
