@@ -505,8 +505,10 @@ export default function MapGuide() {
   }
 
   useEffect(() => {
-    setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
-    setInitToured(true)
+    if (userInfo?.code && !initToured) {
+      setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      setInitToured(true)
+    }
 
     // if (userInfo?.code) {
     //   const listGuideByIdStr: any = localStorage.getItem(DEPIN_GUIDE)
@@ -539,42 +541,44 @@ export default function MapGuide() {
 
   return (
     <div>
-      <Joyride
-        callback={handleJoyrideCallback}
-        steps={steps}
-        disableOverlayClose
-        run={run}
-        stepIndex={stepIndex}
-        continuous
-        // scrollToFirstStep
-        disableScrolling
-        getHelpers={handleGetHelpers}
-        showSkipButton={false}
-        hideBackButton={true}
-        hideCloseButton={true}
-        styles={{
-          options: {
-            zIndex: 10000,
-            backgroundColor: 'transparent',
-            // overlayColor: 'rgba(0,0,0,0.95)',
-            width: '100%'
-          },
-          overlay: {
-            background: 'rgba(0,0,0,0.8)'
-          },
-          overlayLegacy: {
-            background: 'rgba(0,0,0,0.8)',
-            mixBlendMode: 'hard-light'
-          },
+      {mounted ? (
+        <Joyride
+          callback={handleJoyrideCallback}
+          steps={steps}
+          disableOverlayClose
+          run={run}
+          stepIndex={stepIndex}
+          continuous
+          // scrollToFirstStep
+          disableScrolling
+          getHelpers={handleGetHelpers}
+          showSkipButton={false}
+          hideBackButton={true}
+          hideCloseButton={true}
+          styles={{
+            options: {
+              zIndex: 10000,
+              backgroundColor: 'transparent',
+              // overlayColor: 'rgba(0,0,0,0.95)',
+              width: '100%'
+            },
+            overlay: {
+              background: 'rgba(0,0,0,0.8)'
+            },
+            overlayLegacy: {
+              background: 'rgba(0,0,0,0.8)',
+              mixBlendMode: 'hard-light'
+            },
 
-          spotlight: {
-            borderRadius: 0
-          },
-          spotlightLegacy: {
-            background: 'gray'
-          }
-        }}
-      />
+            spotlight: {
+              borderRadius: 0
+            },
+            spotlightLegacy: {
+              background: 'gray'
+            }
+          }}
+        />
+      ) : null}
     </div>
   )
 }
