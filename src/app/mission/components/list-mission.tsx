@@ -267,7 +267,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           break
         case 'CONNECT_OKX_WALLET_TON':
           if (tonWallet) {
-            if (signMessageTON.current && tonWallet.name?.toLowerCase() === 'okx wallet') {
+            if (signMessageTON.current && tonWallet.name?.toLowerCase().includes('okx')) {
               clearTimeout(refTimeoutCheck.current)
               setCheckMission(true)
               setLoadingButton(false)
@@ -285,11 +285,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           }
           break
         case 'CONNECT_OKX_WALLET_EVM':
-          if (
-            isConnectedEVM &&
-            walletEVMInfo?.name?.toLowerCase() === 'ví okx web3' &&
-            addressEVM
-          ) {
+          if (isConnectedEVM && walletEVMInfo?.name?.toLowerCase().includes('okx') && addressEVM) {
             clearTimeout(refTimeoutCheck.current)
             if (signMessage.current) {
               setCheckMission(true)
@@ -479,7 +475,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       if (
         addressEVM &&
         currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM' &&
-        walletEVMInfo?.name?.toLowerCase() === 'ví okx web3'
+        walletEVMInfo?.name?.toLowerCase().includes('okx')
       ) {
         let _account: any = addressEVM
         handleSign(_account)
@@ -489,7 +485,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           connectFrom: 'OKX'
         })
       } else {
-        if (walletEVMInfo?.name?.toLowerCase() !== 'ví okx web3') {
+        if (!walletEVMInfo?.name?.toLowerCase().includes('okx')) {
           setLoadingButton(false)
           if (currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM' && isShowMessageConnectOKX) {
             toast.warning(
@@ -516,7 +512,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       if (
         currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' &&
         tonWallet.connectItems?.tonProof?.proof?.signature &&
-        tonWallet?.appName === 'okxTonWallet'
+        tonWallet?.name?.toLowerCase().includes('okx')
       ) {
         signMessageTON.current = tonWallet.connectItems?.tonProof?.proof?.signature
         setCheckMission(true)
@@ -527,7 +523,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           connectFrom: 'OKX'
         })
       } else {
-        if (tonWallet?.appName !== 'okxTonWallet') {
+        if (!tonWallet?.name?.toLowerCase().includes('okx')) {
           setLoadingButton(false)
           if (currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' && isShowMessageConnectOKX) {
             toast.warning(
