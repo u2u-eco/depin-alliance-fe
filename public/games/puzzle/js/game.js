@@ -333,6 +333,9 @@ var gameSettings = {
   shadowAlpha: 0.5
 }
 
+setInterval(() => {
+  window.parent.postMessage('PING', '*')
+}, 2000)
 //Social share, [SCORE] will replace with game score
 var shareEnable = false //toggle share
 var shareTitle = 'Highscore on Circle Puzzle is [SCORE]' //social share score title

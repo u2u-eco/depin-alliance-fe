@@ -1,14 +1,14 @@
 import ItemTutorial from '@/app/components/ui/item-tutorial'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Joyride, { ACTIONS, EVENTS, Events, STATUS, Step, StoreHelpers } from 'react-joyride'
 
 export default function MapGuide() {
   const [mounted, setMounted] = useState<boolean>(false)
   const initToured = useRef<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
-  const { run, stepIndex, steps, tourActive } = state
+  const { run, stepIndex, steps } = state
   const router = useRouter()
 
   const handleGetHelpers = (_helpers: StoreHelpers) => {

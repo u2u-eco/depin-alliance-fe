@@ -63,6 +63,10 @@ window.addEventListener('message', function (event) {
       break
   }
 })
+
+setInterval(() => {
+  window.parent.postMessage('PING', '*')
+}, 2000)
 /*!
  *
  * GAME SETTING CUSTOMIZATION END
