@@ -10,13 +10,14 @@ import CustomButton from '@/app/components/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { WorldMapContext } from '../context/worldmap-context'
 import { IWorldMapResult } from '@/interfaces/i.world-map'
-import { useTelegram } from '@/hooks/useTelegram'
+import { useTourGuideContext } from '@/contexts/tour.guide.context'
 
 export default function MapBackground() {
   const router = useRouter()
   const [init, setInit] = useState<boolean>(false)
   const searchParams = useSearchParams()
   const continent: any = searchParams.get('id')
+  const { state: tourState, helpers, setState } = useTourGuideContext()
   const [centers, setCenters] = useState<Array<number>>([])
   const { listWorldMapByContinent, currentMap } = useContext(WorldMapContext)
   const popup = currentMap?.results.map(() => createRef())
@@ -56,6 +57,9 @@ export default function MapBackground() {
   }
 
   const handleClick = (index: number, e: any) => {
+    if (index === 0) {
+      handleNextTour()
+    }
     if (currentPopup.current !== index && popup[currentPopup.current]) {
       popup[currentPopup.current]?.current.hide()
     }
@@ -69,6 +73,13 @@ export default function MapBackground() {
     // e.map.getView().fit(e.target.getGeometry().getExtent(), {
     //   duration: 250
     // })
+  }
+
+  const handleNextTour = () => {
+    if (tourState.tourActive) {
+      helpers?.next()
+      console.log('🚀 ~ handleNextTour ~ helpers:', helpers)
+    }
   }
 
   useEffect(() => {
@@ -113,6 +124,13 @@ export default function MapBackground() {
                       handleClick(index, event)
                     }}
                   >
+                    {index === 0 && (
+                      <ROverlay
+                      // className="no-interaction pointer-events-none "
+                      >
+                        <div className=" overlay-1 relative flex-1 top-[-10px]"></div>
+                      </ROverlay>
+                    )}
                     <RStyle.RStyle
                       render={() => {
                         return (
@@ -176,6 +194,7 @@ export default function MapBackground() {
                         <div className="[--size:_5px] pointer-events-none absolute bottom-0 left-0 right-0 w-full h-1 before:content-[''] before:absolute before:bottom-[-1px] before:left-[-1px] before:size-[var(--size)] before:border-l before:border-l-yellow-500 before:border-b before:border-b-yellow-500 after:content-[''] after:absolute after:bottom-[-1px] after:right-[-1px] after:size-[var(--size)] after:border-r after:border-r-yellow-500 after:border-b after:border-b-yellow-500"></div>
                       </div>
                     </RPopup>
+
                     {/* <ROverlay className="no-interaction pointer-events-none">
                       <div className="relative flex-1 top-[-10px] left-[-49px]">
                         <Popover
