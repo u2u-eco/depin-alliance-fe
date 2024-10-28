@@ -245,23 +245,21 @@ export default function MapContainer() {
   }, [worldMapItemSelected, continent])
 
   useEffect(() => {
-    if (tourState.tourActive && (tourState.stepIndex === 1 || tourState.stepIndex === 14)) {
-      setActiveType(tourState.stepIndex === 1 ? WORLD_MAP_ITEM.CONTINENT : WORLD_MAP_ITEM.GUIDE)
-      onOpen()
-    }
-    if (!tourState.tourActive && tourState.stepIndex === 14) {
-      onClose()
-    }
-  }, [tourState])
-
-  useEffect(() => {
     if (tourState.tourActive) {
+      if (tourState.stepIndex === 1 || tourState.stepIndex === 15) {
+        setActiveType(tourState.stepIndex === 1 ? WORLD_MAP_ITEM.CONTINENT : WORLD_MAP_ITEM.GUIDE)
+        onOpen()
+      }
+
       if (tourState.stepIndex === 4 && !tourState.run) {
         handleClick(WORLD_MAP_ITEM.AGENCY)
       }
       if (tourState.stepIndex === 7 && !tourState.run) {
         handleClick(WORLD_MAP_ITEM.TOOL)
       }
+    }
+    if (!tourState.tourActive && tourState.stepIndex === 15) {
+      onClose()
     }
   }, [tourState])
 
