@@ -142,11 +142,11 @@ export default function MapGuide() {
           hideFooter: true
         },
         {
-          content: <ItemTutorial arrow />,
+          content: <ItemTutorial arrow arrowClass="rotate-180" />,
           floaterProps: {
             disableAnimation: true
           },
-          placement: 'top',
+          placement: 'bottom',
           target: '.map-asia',
           spotlightClicks: true,
           spotlightPadding: 0,
