@@ -84,3 +84,11 @@ export const getUserSetting = () => {
 export const updateSetting = (data: { setting: string; enable: boolean }) => {
   return https.post('/users/settings', data)
 }
+
+export const setUserConnectWallet = (data: {
+  address: string
+  type: string
+  connectFrom: string
+}) => {
+  return https.post('/users/connect-wallet', data)
+}

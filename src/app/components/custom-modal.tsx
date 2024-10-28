@@ -21,6 +21,7 @@ interface ModalProps {
   classNames?: {
     base?: ClassValue
   }
+  isDismissable?: boolean
 }
 
 const CustomModal = ({
@@ -33,7 +34,8 @@ const CustomModal = ({
   full,
   classNames,
   maxHeight,
-  id
+  id,
+  isDismissable
 }: ModalProps) => {
   const { webApp } = useTelegram()
   const [placement, setPlacement] = useState<any>('bottom')
@@ -63,7 +65,7 @@ const CustomModal = ({
       onClose={handleClose}
       onOpenChange={onOpenChange}
       placement={placement}
-      isDismissable={tourState?.tourActive ? false : true}
+      isDismissable={tourState?.tourActive || isDismissable ? false : true}
       scrollBehavior={placement === 'top' ? 'outside' : 'normal'}
       hideCloseButton
       classNames={{
