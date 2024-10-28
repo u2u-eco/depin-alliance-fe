@@ -10,6 +10,7 @@ import { formatNumber } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
 import { MAP_CONTINENT_IMAGE } from '@/app/map/context/worldmap-context'
 import Image from 'next/image'
+import MessageIframe from '../components/message-iframe'
 
 export default function PlayGame() {
   const router = useRouter()
@@ -91,7 +92,8 @@ export default function PlayGame() {
     console.log('🚀 ~ handleMessage ~ event:', event.data)
     switch (event.data) {
       case 'WIN':
-        handleEndGame()
+        alert('success')
+        // handleEndGame()
         break
       case 'BACK':
         router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
@@ -145,6 +147,7 @@ export default function PlayGame() {
   return (
     <div>
       {/* <CustomHeader title="PLAY" /> */}
+      <MessageIframe />
       {type === 'sudoku' ? (
         <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (
