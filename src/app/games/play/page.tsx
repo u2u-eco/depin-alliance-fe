@@ -44,6 +44,7 @@ export default function PlayGame() {
   const [gameData, setGameData] = useState<any>()
   const id = params.get('id')
   const handleEndGame = () => {
+    const id = params.get('id')
     if (id) {
       handleEndMission(id)
     }
@@ -87,6 +88,7 @@ export default function PlayGame() {
   }
 
   const handleMessage = (event: any) => {
+    console.log('🚀 ~ handleMessage ~ event:', event.data)
     switch (event.data) {
       case 'WIN':
         handleEndGame()
