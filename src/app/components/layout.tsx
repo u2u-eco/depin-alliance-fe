@@ -1,7 +1,7 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import TelegramProvider from '../../contexts/telegram.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -10,9 +10,17 @@ import useCommonStore from '@/stores/commonStore'
 import Swipeable from './swipeable'
 import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
+import dynamic from 'next/dynamic'
+import { TonConnect } from '@tonconnect/ui-react'
 // import TourGuide from './tour-guide'
 // import { TourGuideProvider } from '@/contexts/tour.guide.context'
-import { TonConnectUIProvider } from '@tonconnect/ui-react'
+// import { TonConnectUIProvider } from '@tonconnect/ui-react'
+const TonConnectUIProvider = dynamic(
+  () => import('@tonconnect/ui-react').then((module) => module.TonConnectUIProvider),
+  {
+    ssr: false
+  }
+)
 
 export default function Layout({ children }: any) {
   const { setSafeAreaBottom } = useCommonStore()
@@ -20,6 +28,7 @@ export default function Layout({ children }: any) {
   const { userSetting } = useCommonStore()
   const router = useRouter()
   const mainSound = useRef<any>()
+  const [inited, setInited] = useState<boolean>(false)
   useEffect(() => {
     const _safeAreaBottom: string = getComputedStyle(document.documentElement).getPropertyValue(
       '--sab'
@@ -54,6 +63,10 @@ export default function Layout({ children }: any) {
       mainSound.current?.stop()
     }
   }, [userSetting?.enableMusicTheme])
+
+  useEffect(() => {
+    setInited(true)
+  }, [])
   const url = process.env.NEXT_PUBLIC_TONCONNECT_MAINIFEST
   const teleUrl: any = process.env.NEXT_PUBLIC_TELE_URI
 
@@ -77,7 +90,15 @@ export default function Layout({ children }: any) {
       <TelegramProvider>
         <QueryClientProvider client={queryClient}>
           <TonConnectUIProvider
-            manifestUrl={url}
+            manifestUrl={inited ? undefined : url}
+            connector={
+              inited
+                ? new TonConnect({
+                    manifestUrl: url,
+                    walletsListSource: window.location.origin + '/tonconnect-wallets.json'
+                  })
+                : undefined
+            }
             actionsConfiguration={{
               twaReturnUrl: teleUrl
             }}
