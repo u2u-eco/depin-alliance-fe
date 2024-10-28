@@ -91,7 +91,7 @@ export default function MapGuide() {
               content={`Start by choosing the region that best fits your preferences! Each area offers unique opportunities tailored to enhance your experience.`}
             />
           ),
-          placement: 'top',
+          placement: 'top-start',
           target: '.map-continent',
           disableBeacon: true,
           spotlightClicks: true,
@@ -149,22 +149,8 @@ export default function MapGuide() {
           placement: 'bottom',
           target: '.map-asia',
           spotlightClicks: true,
-          spotlightPadding: 0,
-          styles: {
-            overlay: {
-              background: 'transparent'
-            },
-            spotlight: {
-              background: 'transparent'
-            },
-            spotlightLegacy: {
-              background: 'transparent'
-            },
-            overlayLegacy: {
-              background: 'transparent',
-              mixBlendMode: 'unset'
-            }
-          },
+          spotlightPadding: 5,
+
           hideFooter: true
         },
         {
@@ -281,7 +267,7 @@ export default function MapGuide() {
           floaterProps: {
             disableAnimation: true
           },
-          placement: 'top',
+          placement: 'right',
           spotlightClicks: true,
           spotlightPadding: 0,
           target: '.map-tool',

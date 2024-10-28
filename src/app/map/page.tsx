@@ -40,7 +40,7 @@ export default function Page() {
               <MapContainer />
             </div>
           </WorldMapProvider>
-          {/* <MapGuide /> */}
+          <MapGuide />
         </TourGuideProvider>
       </CustomPage>
     </>
