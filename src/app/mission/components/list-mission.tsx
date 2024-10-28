@@ -45,6 +45,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const [isConnectTwitter, setIsConnectTwitter] = useState<boolean>(false)
   const router = useRouter()
   const refTimeoutCheck = useRef<any>()
+  const refTimeoutOpenWC = useRef<any>()
   const { webApp } = useTelegram()
   const refSpecialItem = useRef<any>()
   const { getUserInfo, userInfo, userTwitter, setUserTwitter } = useCommonStore()
@@ -72,6 +73,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const [tonConnectUI] = useTonConnectUI()
   const tonWallet: any = useTonWallet()
   const { state: stateTON } = useTonConnectModal()
+  const isProgressSign = useRef<boolean>(false)
 
   // const tonAddress = useTonAddress()
 
@@ -265,14 +267,15 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           break
         case 'CONNECT_OKX_WALLET_TON':
           if (tonWallet) {
-            if (signMessageTON.current && tonWallet.name === 'okx wallet') {
+            if (signMessageTON.current && tonWallet.name?.toLowerCase() === 'okx wallet') {
               clearTimeout(refTimeoutCheck.current)
               setCheckMission(true)
               setLoadingButton(false)
             } else {
               clearTimeout(refTimeoutCheck.current)
               tonConnectUI.disconnect()
-              setTimeout(() => {
+              clearTimeout(refTimeoutOpenWC.current)
+              refTimeoutOpenWC.current = setTimeout(() => {
                 tonConnectUI.openModal()
               }, 2000)
             }
@@ -297,7 +300,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           } else {
             clearTimeout(refTimeoutCheck.current)
             // disconnect()
-            setTimeout(() => {
+            clearTimeout(refTimeoutOpenWC.current)
+            refTimeoutOpenWC.current = setTimeout(() => {
               openEVMConnect()
             }, 2000)
           }
@@ -429,6 +433,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
 
   const handleSign = async (account: any) => {
     try {
+      if (isProgressSign.current) return
+      isProgressSign.current = true
       const message = await signMessageAsync({
         message: MESSAGE_SIGN,
         account
@@ -438,8 +444,10 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         setCheckMission(true)
         setLoadingButton(false)
       }
+      isProgressSign.current = false
     } catch (ex: any) {
       // onClose()
+      isProgressSign.current = false
       setLoadingButton(false)
       toast.error(<CustomToast type="error" title={`${ex?.details || 'User reject'}`} />)
     }
@@ -542,8 +550,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }, [isOpenEVM, isConnectedEVM])
 
   useEffect(() => {
-    if (stateTON.status === 'closed' && stateTON.closeReason === 'wallet-selected') {
-      setIsShowMessageOKX(true)
+    if (stateTON.status === 'closed') {
+      if (stateTON.closeReason === 'wallet-selected') {
+        setIsShowMessageOKX(true)
+      }
+      if (stateTON.closeReason === 'action-cancelled') {
+        setLoadingButton(false)
+      }
     }
   }, [stateTON])
   return (
