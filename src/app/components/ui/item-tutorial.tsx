@@ -42,7 +42,7 @@ const ItemTutorial = ({
         </div>
       ) : (
         <div
-          className={`flex flex-col ${!hideImage ? (placement === 'top-center' || placement === 'top-right' ? '' : 'pt-10 2xs:pt-16') : ''} ${pathName !== '/map' ? (tourState.stepIndex === 4 ? 'pr-5' : tourState.stepIndex === 7 ? 'pl-10 max-[354px]:pt-8' : 'pl-5') : tourState.stepIndex !== 0 ? 'pl-5' : 'pr-5'}`}
+          className={`flex flex-col ${!hideImage ? (placement === 'top-center' || placement === 'top-right' ? '' : 'pt-10 2xs:pt-16') : ''} ${pathName !== '/map' ? (tourState.stepIndex === 4 ? 'pr-5' : tourState.stepIndex === 7 ? 'pl-10 max-[354px]:pt-8' : 'pl-5') : tourState.stepIndex === 7 ? 'pr-5' : 'pl-5'}`}
         >
           <div
             className={`relative w-full max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500 ${placement === 'top-center' || placement === 'top-right' ? 'order-2' : ''}`}
