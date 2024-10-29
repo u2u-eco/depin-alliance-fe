@@ -52,7 +52,6 @@ export default function PlayGame() {
   }
   const [gameData, setGameData] = useState<any>()
   const handleEndGame = () => {
-    alert(id.current)
     if (id.current) {
       handleEndMission(id.current)
     }
