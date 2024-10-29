@@ -206,6 +206,7 @@ function handlerMethod(evt) {
  *
  */
 var curPage = ''
+var timeoutStartMath
 function goPage(page) {
   curPage = page
 
@@ -937,11 +938,6 @@ function checkUserFormula() {
     if (eval(userFormula) == eval(finalMath)) {
       //correct answer
       totalSolve++
-      if (totalSolve === 5 && !isPassMission) {
-        isPassMission = true
-        window.parent.postMessage('WIN', '*')
-        return
-      }
 
       touchCon = false
       toggleGameTimer(false)
@@ -950,7 +946,13 @@ function checkUserFormula() {
         animateCorrectMath()
       }, 500)
 
-      setTimeout(function () {
+      if (totalSolve === 5 && !isPassMission) {
+        isPassMission = true
+        window.parent.postMessage('WIN', '*')
+        clearTimeout(timeoutStartMath)
+        return
+      }
+      timeoutStartMath = setTimeout(function () {
         startMath()
       }, 2500)
     } else {

@@ -21,13 +21,19 @@ export default function PlayGame() {
     onOpenChange: onOpenChangeReward,
     onClose: onCloseReward
   } = useDisclosure()
+  const id = useRef<any>(null)
   // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
     useWorldMapStore()
 
   const params = useSearchParams()
+  const _id = params.get('id')
+
   const iframeRef = useRef<any>()
   let type = params.get('type')
+  if (_id) {
+    id.current = _id
+  }
   switch (type) {
     case 'SUDOKU':
       type = 'sudoku'
@@ -43,11 +49,10 @@ export default function PlayGame() {
       break
   }
   const [gameData, setGameData] = useState<any>()
-  const id = params.get('id')
   const handleEndGame = () => {
-    const id = params.get('id')
-    if (id) {
-      handleEndMission(id)
+    alert(id.current)
+    if (id.current) {
+      handleEndMission(id.current)
     }
   }
 
@@ -59,22 +64,38 @@ export default function PlayGame() {
   }
 
   const handleEndMission = async (id: any) => {
-    const res = await endWorldMap(id)
-    if (res.status) {
-      setWorldMapReward(res.data)
-      onOpenReward()
+    try {
+      const res = await endWorldMap(id)
+      alert(JSON.stringify(res))
+      if (res.status) {
+        setWorldMapReward(res.data)
+        onOpenReward()
+      }
+    } catch (ex) {
+      alert(JSON.stringify(ex))
     }
   }
-
+  const handleMessage = (event: any) => {
+    switch (event.data) {
+      case 'WIN':
+        alert('success')
+        handleEndGame()
+        break
+      case 'BACK':
+        router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
+        break
+    }
+    // console.log('Message received from the child: ' + event.data) // Message received from child
+  }
   useEffect(() => {
     if (!init.current) {
       init.current = true
       window.addEventListener('message', handleMessage)
-      if (id) {
-        handleStartMission(id)
+      if (id.current) {
+        handleStartMission(id.current)
       }
     }
-    if (!id && (type === 'SUDOKU' || type === 'sudoku')) {
+    if (!id.current && (type === 'SUDOKU' || type === 'sudoku')) {
       setGameData({
         mission:
           '768..3..453..9...6942.6.81...46..93835..4276..8..3..5.87....1....6..4389..53.1.2.',
@@ -82,24 +103,10 @@ export default function PlayGame() {
           '768213594531498276942765813124657938359842761687139452873926145216574389495381627'
       })
     }
-  }, [id])
+  }, [])
 
   const handleBack = () => {
     router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
-  }
-
-  const handleMessage = (event: any) => {
-    console.log('🚀 ~ handleMessage ~ event:', event.data)
-    switch (event.data) {
-      case 'WIN':
-        alert('success')
-        // handleEndGame()
-        break
-      case 'BACK':
-        router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
-        break
-    }
-    // console.log('Message received from the child: ' + event.data) // Message received from child
   }
 
   const handleCloseReward = () => {
