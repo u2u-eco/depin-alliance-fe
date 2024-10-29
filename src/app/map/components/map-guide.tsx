@@ -35,7 +35,6 @@ export default function MapGuide() {
 
   const handleJoyrideCallback = (data: any) => {
     const { status, type, action, index, step } = data
-    console.log(status, type, action, index, step)
     if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       // Need to set our running state to false, so we can restart if we click start again.
       setState({ run: false, tourActive: false })
