@@ -104,7 +104,7 @@ const SelectMap = ({ activeArea }: MapProps) => {
     buttonSound.play()
     setActiveItem(name)
     setContinent(name)
-    if (tourState.tourActive) {
+    if (tourState.tourActive && tourState.stepIndex === 2) {
       helpers?.next()
     }
   }
