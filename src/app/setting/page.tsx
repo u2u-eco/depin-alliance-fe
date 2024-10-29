@@ -33,6 +33,8 @@ import {
 import { formatAddress } from '@/helper/common'
 import { useAppKit, useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
 import { useDisconnect } from 'wagmi'
+import OkxTonConnect from './components/okx-ton-connect'
+import OkxEVMConnect from './components/okx-evm-connect'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -240,6 +242,8 @@ export default function SettingPage() {
         <div className="[--space:_48px] xs:[--space:_52px] 2xs:[--space:_56px] flex flex-col justify-between h-[calc(100%_-_var(--space))]">
           <div className="my-6 xs:my-7 2xs:my-8">
             <div className=" flex flex-col space-y-3 xs:space-y-4">
+              <OkxTonConnect />
+              <OkxEVMConnect />
               {listSetting.map((item: any) => (
                 <div
                   className="relative !bg-transparent "
