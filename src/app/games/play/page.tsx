@@ -2,7 +2,7 @@
 // import { CustomHeader } from '@/app/components/ui/custom-header'
 import { endWorldMap, getWorldMap, startWorldMap } from '@/services/world-map'
 import useWorldMapStore from '@/stores/worldMapStore'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Sudoku from '../sudoku'
 import ModalReward from '@/app/components/ui/modal-reward'
@@ -10,9 +10,12 @@ import { formatNumber } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
 import { MAP_CONTINENT_IMAGE } from '@/app/map/context/worldmap-context'
 import Image from 'next/image'
+import { toast } from 'sonner'
+import CustomToast from '@/app/components/ui/custom-toast'
 
 export default function PlayGame() {
   const router = useRouter()
+  const path = usePathname()
   const init = useRef<boolean>(false)
   const {
     isOpen: isOpenReward,
@@ -20,13 +23,19 @@ export default function PlayGame() {
     onOpenChange: onOpenChangeReward,
     onClose: onCloseReward
   } = useDisclosure()
+  const id = useRef<any>(null)
   // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
     useWorldMapStore()
 
   const params = useSearchParams()
+  const _id = params.get('id')
+
   const iframeRef = useRef<any>()
   let type = params.get('type')
+  if (_id) {
+    id.current = _id
+  }
   switch (type) {
     case 'SUDOKU':
       type = 'sudoku'
@@ -42,11 +51,10 @@ export default function PlayGame() {
       break
   }
   const [gameData, setGameData] = useState<any>()
-  const id = params.get('id')
   const handleEndGame = () => {
-    const id = params.get('id')
-    if (id) {
-      handleEndMission(id)
+    alert(id.current)
+    if (id.current) {
+      handleEndMission(id.current)
     }
   }
 
@@ -58,37 +66,17 @@ export default function PlayGame() {
   }
 
   const handleEndMission = async (id: any) => {
-    const res = await endWorldMap(id)
-    if (res.status) {
-      setWorldMapReward(res.data)
-      onOpenReward()
-    }
-  }
-
-  useEffect(() => {
-    if (!init.current) {
-      init.current = true
-      window.addEventListener('message', handleMessage)
-      if (id) {
-        handleStartMission(id)
+    try {
+      const res = await endWorldMap(id)
+      if (res.status) {
+        setWorldMapReward(res.data)
+        onOpenReward()
       }
+    } catch (ex: any) {
+      toast.message(<CustomToast type="error" title={ex?.message || 'Network Error'} />)
     }
-    if (!id && (type === 'SUDOKU' || type === 'sudoku')) {
-      setGameData({
-        mission:
-          '768..3..453..9...6942.6.81...46..93835..4276..8..3..5.87....1....6..4389..53.1.2.',
-        solution:
-          '768213594531498276942765813124657938359842761687139452873926145216574389495381627'
-      })
-    }
-  }, [id])
-
-  const handleBack = () => {
-    router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
   }
-
   const handleMessage = (event: any) => {
-    console.log('🚀 ~ handleMessage ~ event:', event.data)
     switch (event.data) {
       case 'WIN':
         handleEndGame()
@@ -98,6 +86,27 @@ export default function PlayGame() {
         break
     }
     // console.log('Message received from the child: ' + event.data) // Message received from child
+  }
+  useEffect(() => {
+    if (!init.current) {
+      init.current = true
+      window.addEventListener('message', handleMessage)
+      if (id.current) {
+        handleStartMission(id.current)
+      }
+    }
+    if (!id.current && (type === 'SUDOKU' || type === 'sudoku')) {
+      setGameData({
+        mission:
+          '768..3..453..9...6942.6.81...46..93835..4276..8..3..5.87....1....6..4389..53.1.2.',
+        solution:
+          '768213594531498276942765813124657938359842761687139452873926145216574389495381627'
+      })
+    }
+  }, [])
+
+  const handleBack = () => {
+    router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
   }
 
   const handleCloseReward = () => {
@@ -145,6 +154,10 @@ export default function PlayGame() {
   return (
     <div>
       {/* <CustomHeader title="PLAY" /> */}
+      <div className=" absolute z-[1000]">
+        {path}--
+        {params}
+      </div>
       {type === 'sudoku' ? (
         <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (
