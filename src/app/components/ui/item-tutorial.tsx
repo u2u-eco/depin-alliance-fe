@@ -42,7 +42,7 @@ const ItemTutorial = ({
         </div>
       ) : (
         <div
-          className={`flex flex-col ${!hideImage ? (placement === 'top-center' || placement === 'top-right' ? '' : 'pt-10 2xs:pt-16') : ''} ${pathName !== '/map' ? (tourState.stepIndex === 4 ? 'pr-5' : tourState.stepIndex === 7 ? 'pl-10 max-[354px]:pt-8' : 'pl-5') : tourState.stepIndex === 7 ? 'pr-5' : 'pl-5'}`}
+          className={`flex flex-col ${!hideImage ? (placement === 'top-center' || placement === 'top-right' ? '' : 'pt-10 2xs:pt-16') : ''} ${pathName !== '/map' ? (tourState.stepIndex === 4 ? 'pr-5' : tourState.stepIndex === 7 ? 'pl-10 max-[354px]:pt-8' : 'pl-5') : tourState.stepIndex === 2 || tourState.stepIndex === 3 || tourState.stepIndex === 5 || tourState.stepIndex === 6 || tourState.stepIndex === 8 || tourState.stepIndex === 9 || tourState.stepIndex === 12 ? '' : tourState.stepIndex === 7 ? 'pr-5' : 'pl-5'}`}
         >
           <div
             className={`relative w-full max-w-[480px] mx-auto mt-0 drop-shadow-yellow before:content-[''] before:absolute before:bottom-[16px] before:left-0 before:border-transparent before:size-5 before:border-[10px] before:border-l-yellow-300 before:border-b-yellow-300 before:z-[1] after:content-[''] after:absolute after:top-[5px] after:right-[5px] after:size-3 after:border-[6px] after:border-transparent after:border-r-green-500 after:border-t-green-500 ${placement === 'top-center' || placement === 'top-right' ? 'order-2' : ''}`}
@@ -97,7 +97,7 @@ const ItemTutorial = ({
           </div>
           {placement && (
             <div
-              className={`flex mt-6 xs:mt-8 2xs:mt-10 ${placement === 'bottom-center' ? 'justify-center' : placement === 'bottom-right' ? 'justify-end' : placement === 'top-center' ? 'order-1 justify-center rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : placement === 'top-right' ? 'justify-end order-1 rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : ''} ${pathName !== '/map' ? (tourState.stepIndex === 2 || tourState.stepIndex === 3 || tourState.stepIndex === 7 ? 'max-[354px]:hidden' : tourState.stepIndex === 1 ? 'opacity-0 h-0' : '') : tourState.stepIndex === 0 || tourState.stepIndex === 4 || tourState.stepIndex === 7 ? 'max-[354px]:hidden height:hidden' : tourState.stepIndex === 1 ? 'opacity-0 h-0' : ''}`}
+              className={`flex mt-6 xs:mt-8 2xs:mt-10 pointer-events-none ${placement === 'bottom-center' ? 'justify-center' : placement === 'bottom-right' ? 'justify-end' : placement === 'top-center' ? 'order-1 justify-center rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : placement === 'top-right' ? 'justify-end order-1 rotate-180 mt-0 mb-12 xs:mb-16 2xs:mb-20' : ''} ${pathName !== '/map' ? (tourState.stepIndex === 2 || tourState.stepIndex === 3 || tourState.stepIndex === 7 ? 'max-[354px]:hidden' : tourState.stepIndex === 1 ? 'opacity-0 h-0' : '') : tourState.stepIndex === 0 || tourState.stepIndex === 4 || tourState.stepIndex === 7 ? 'max-[354px]:hidden height:hidden' : tourState.stepIndex === 1 ? 'opacity-0 h-0' : ''}`}
             >
               <div className={placement !== 'top-right' ? `w-12 xs:w-14 2xs:w-16` : ''}>
                 <img

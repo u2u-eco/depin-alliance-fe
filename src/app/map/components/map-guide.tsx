@@ -398,7 +398,7 @@ export default function MapGuide() {
           placement: 'top',
           target: '.overlay-1',
           spotlightClicks: true,
-          spotlightPadding: 50,
+          spotlightPadding: 30,
           styles: {
             overlayLegacy: {
               background: 'rgba(0,0,0,0.6)'

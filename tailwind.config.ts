@@ -22,7 +22,7 @@ const config = {
       xl: '1200px',
       '2xl': '1440px',
       height: {
-        raw: '(max-height: 624px)'
+        raw: '(max-height: 649px)'
       }
     },
     extend: {

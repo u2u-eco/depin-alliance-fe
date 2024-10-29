@@ -128,7 +128,7 @@ export default function MapBackground() {
                       <ROverlay
                       // className="no-interaction pointer-events-none "
                       >
-                        <div className=" overlay-1 relative flex-1 top-[-10px]"></div>
+                        <div className="overlay-1 relative flex-1 top-[-20px]"></div>
                       </ROverlay>
                     )}
                     <RStyle.RStyle
