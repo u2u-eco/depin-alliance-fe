@@ -2,6 +2,8 @@
 'use client'
 
 import { redirect, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { claimRewardNewUser } from '../../services/user'
@@ -22,6 +24,7 @@ const ONBOARDING_TYPE = {
 
 const Onboarding = () => {
   const router = useRouter()
+  const route = useSearchParams()
   const [pointReward, setPointReward] = useState<number>(0)
   const [deviceName, setDeviceName] = useState<string>('')
   const { currentStatus, token, getUserInfo, userInfo } = useCommonStore()
@@ -125,6 +128,16 @@ const Onboarding = () => {
   //       console.error('Error:', error)
   //     })
   // }
+
+  useEffect(() => {
+    alert('******')
+    const notify = route.get('notify')
+    const time = route.get('time')
+    if (notify && time) {
+      alert(notify)
+      alert(time)
+    }
+  }, [])
 
   useEffect(() => {
     switch (currentStatus) {
