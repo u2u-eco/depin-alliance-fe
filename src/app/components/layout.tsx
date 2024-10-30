@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation'
 import SoundsProvider from '@/contexts/sounds.context'
 import dynamic from 'next/dynamic'
 import { TonConnect } from '@tonconnect/ui-react'
+import { OKXTonConnectProvider } from '@/contexts/okx.ton.connect'
+// import { OKXEvmConnectProvider } from '@/contexts/okx.evm.connect'
+// import 'redefine-custom-elements'
 // import TourGuide from './tour-guide'
 // import { TourGuideProvider } from '@/contexts/tour.guide.context'
 // import { TonConnectUIProvider } from '@tonconnect/ui-react'
@@ -103,19 +106,23 @@ export default function Layout({ children }: any) {
               twaReturnUrl: teleUrl
             }}
           >
-            <NextUIProvider>
-              <SoundsProvider>
-                {/* <TourGuideProvider> */}
-                <Swipeable onSwipeRight={handleBack}>
-                  <AnimatePresence key="custom-page">
-                    {children}
-                    {/* {pathName !== '/' && <CustomNavbar />} */}
-                  </AnimatePresence>
-                </Swipeable>
-                {/* <TourGuide /> */}
-                {/* </TourGuideProvider> */}
-              </SoundsProvider>
-            </NextUIProvider>
+            {/* <OKXEvmConnectProvider> */}
+            <OKXTonConnectProvider>
+              <NextUIProvider>
+                <SoundsProvider>
+                  {/* <TourGuideProvider> */}
+                  <Swipeable onSwipeRight={handleBack}>
+                    <AnimatePresence key="custom-page">
+                      {children}
+                      {/* {pathName !== '/' && <CustomNavbar />} */}
+                    </AnimatePresence>
+                  </Swipeable>
+                  {/* <TourGuide /> */}
+                  {/* </TourGuideProvider> */}
+                </SoundsProvider>
+              </NextUIProvider>
+            </OKXTonConnectProvider>
+            {/* </OKXEvmConnectProvider> */}
           </TonConnectUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
