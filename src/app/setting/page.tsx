@@ -11,6 +11,7 @@ import {
   IconLoader,
   IconMusic,
   IconNotification,
+  IconOpenLink,
   IconSound,
   IconUnlink,
   IconWallet
@@ -33,6 +34,7 @@ import {
 import { formatAddress } from '@/helper/common'
 import { useAppKit, useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
 import { useDisconnect } from 'wagmi'
+import { useRouter } from 'next/navigation'
 
 const listSocial = [
   // { id: 1, icon: 'facebook', link: '#' },
@@ -43,6 +45,7 @@ const listSocial = [
 ]
 
 export default function SettingPage() {
+  const router = useRouter()
   const userFriendlyAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
   const connectionRestored = useIsConnectionRestored()
@@ -82,32 +85,40 @@ export default function SettingPage() {
   const listSetting = [
     {
       id: 1,
-      type: SETTING_TYPE.WALLET_TON,
+      type: SETTING_TYPE.WALLET,
       image: iconWallet,
-      title: !wallet ? 'TON Wallet' : wallet?.name || 'Your Wallet',
-      text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
-      icon: connectionRestored ? (
-        !wallet ? (
-          <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
-        ) : (
-          <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
-        )
-      ) : (
-        <IconLoader className="size-7 xs:size-8 2xs:size-9 text-gray animate-spin outline-none" />
-      )
+      title: 'My Wallet',
+      text: 'All my wallets',
+      icon: <IconOpenLink className="size-7 xs:size-8 2xs:size-9" gradient />
     },
-    {
-      id: 6,
-      type: SETTING_TYPE.WALLET_CONNECT,
-      image: iconWallet,
-      title: !isConnectedEVM ? 'EVM Wallet' : walletEVMInfo?.name || 'Your wallet',
-      text: !isConnectedEVM ? 'EVM Connect' : addressEVM && formatAddress(addressEVM),
-      icon: !isConnectedEVM ? (
-        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
-      ) : (
-        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
-      )
-    },
+    // {
+    //   id: 1,
+    //   type: SETTING_TYPE.WALLET_TON,
+    //   image: iconWallet,
+    //   title: !wallet ? 'TON Wallet' : wallet?.name || 'Your Wallet',
+    //   text: !wallet ? 'TON Connect' : formatAddress(userFriendlyAddress),
+    //   icon: connectionRestored ? (
+    //     !wallet ? (
+    //       <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+    //     ) : (
+    //       <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+    //     )
+    //   ) : (
+    //     <IconLoader className="size-7 xs:size-8 2xs:size-9 text-gray animate-spin outline-none" />
+    //   )
+    // },
+    // {
+    //   id: 6,
+    //   type: SETTING_TYPE.WALLET_CONNECT,
+    //   image: iconWallet,
+    //   title: !isConnectedEVM ? 'EVM Wallet' : walletEVMInfo?.name || 'Your wallet',
+    //   text: !isConnectedEVM ? 'EVM Connect' : addressEVM && formatAddress(addressEVM),
+    //   icon: !isConnectedEVM ? (
+    //     <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700" />
+    //   ) : (
+    //     <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700" />
+    //   )
+    // },
     // { id: 2, image: SETTING_TYPE.LANGUAGE, title: 'Language', text: 'ENG', icon: 'open-link' },
     {
       id: 2,
@@ -152,6 +163,9 @@ export default function SettingPage() {
   const handleClick = (type: string) => {
     buttonSound.play()
     switch (type) {
+      case SETTING_TYPE.WALLET:
+        router.push('/setting/wallet')
+        break
       case SETTING_TYPE.WALLET_TON:
         if (wallet) {
           setType(type)
