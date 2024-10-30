@@ -105,6 +105,7 @@ export default function WalletPage() {
       id: 1,
       type: SETTING_TYPE.WALLET_OKX_TON,
       image: 'okx',
+      disableIcon: true,
       title: 'OKX TON Wallet',
       text: tonWalletInfoOKX?.account
         ? formatAddress(
@@ -268,16 +269,19 @@ export default function WalletPage() {
                         <div className="text-body text-sm xs:text-[15px] 2xs:text-base tracking-[-1px] !leading-[18px] xs:!leading-[20px] flex items-center space-x-1.5 xs:space-x-2">
                           {/* {item.text ? ( */}
                           <>
-                            <div className="size-5 xs:size-6 [clip-path:_polygon(6px_0%,100%_0,100%_calc(100%_-_6px),calc(100%_-_6px)_100%,0_100%,0_6px)]">
-                              <img
-                                src={
-                                  item.iconConnected
-                                    ? item.iconConnected
-                                    : `/assets/images/${item.image}@2x.png`
-                                }
-                                alt="DePIN Alliance"
-                              />
-                            </div>
+                            {item.disableIcon ? null : (
+                              <div className="size-5 xs:size-6 [clip-path:_polygon(6px_0%,100%_0,100%_calc(100%_-_6px),calc(100%_-_6px)_100%,0_100%,0_6px)]">
+                                <img
+                                  src={
+                                    item.iconConnected
+                                      ? item.iconConnected
+                                      : `/assets/images/${item.image}@2x.png`
+                                  }
+                                  alt="DePIN Alliance"
+                                />
+                              </div>
+                            )}
+
                             <p>{item.text}</p>
                           </>
                           {/* ) : null} */}
