@@ -4,6 +4,7 @@ import { MainSudoku } from './components/main'
 import './styles/_index.scss'
 // import Time from './components/time'
 import CustomButton from '@/app/components/button'
+import { BUTTON_TYPE } from '@/constants'
 interface ISudoku {
   data: any
   handleSuccess: () => void
@@ -95,8 +96,8 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
             onSelectInput={(value: number) => setSelectedInput(value)}
             onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
           />
-          <div className="my-3 max-w-[480px] w-full">
-            {!isSuccess && <CustomButton title="BACK" onAction={handleBack} />}
+          <div className="my-3 max-w-[480px] w-full flex space-x-4">
+            <CustomButton type={BUTTON_TYPE.DEFAULT} title="BACK" onAction={handleBack} />
             {isSuccess && <CustomButton title="Play Again" onAction={handlePlayAgain} />}
           </div>
           {/* <Time /> */}

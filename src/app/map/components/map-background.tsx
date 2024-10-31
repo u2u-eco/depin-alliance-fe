@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { WorldMapContext } from '../context/worldmap-context'
 import { IWorldMapResult } from '@/interfaces/i.world-map'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function MapBackground() {
   const router = useRouter()
@@ -23,6 +24,7 @@ export default function MapBackground() {
   const popup = currentMap?.results.map(() => createRef())
   const feature: any = currentMap?.results.map(() => createRef())
   const currentPopup = useRef<any>(null)
+  const { buttonSound } = useAppSound()
   const [missionActive, setMissionActive] = useState<number>(-1)
   const getLatLon = (latLon: string) => {
     const location: any = latLon.split(',')
@@ -57,6 +59,7 @@ export default function MapBackground() {
   }
 
   const handleClick = (index: number, e: any) => {
+    buttonSound.play()
     if (index === 0) {
       handleNextTour()
     }
@@ -166,6 +169,7 @@ export default function MapBackground() {
                             <div
                               className="cursor-pointer text-body hover:text-title transition-colors"
                               onClick={() => {
+                                buttonSound.play()
                                 popup[index]?.current.hide()
                                 setMissionActive(-1)
                               }}
