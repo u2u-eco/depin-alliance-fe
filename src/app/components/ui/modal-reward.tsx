@@ -72,7 +72,7 @@ const ModalReward = ({
         </div>
         <div className={`my-4 xs:my-6 2xs:my-8`}>
           {isGame ? (
-            <CustomButton type={BUTTON_TYPE.DEFAULT} title="CONTINUE" onAction={onContinue} />
+            <CustomButton title="CONTINUE" onAction={onContinue} />
           ) : (
             <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
           )}

@@ -1,5 +1,6 @@
 import ItemTutorial from '@/app/components/ui/item-tutorial'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
+import { useAppSound } from '@/hooks/useAppSound'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import Joyride, { ACTIONS, EVENTS, Events, STATUS, Step, StoreHelpers } from 'react-joyride'
@@ -8,6 +9,7 @@ export default function MapGuide() {
   const [mounted, setMounted] = useState<boolean>(false)
   const initToured = useRef<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
+  const { buttonSound } = useAppSound()
   const { run, stepIndex, steps } = state
   const router = useRouter()
 
@@ -15,10 +17,12 @@ export default function MapGuide() {
     setHelpers(_helpers)
   }
   const handleNext = () => {
+    buttonSound.play()
     helpers?.next()
   }
 
   const handleSkip = () => {
+    buttonSound.play()
     setState({ run: false, tourActive: false })
     helpers?.skip()
   }
