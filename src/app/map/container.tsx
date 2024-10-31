@@ -144,6 +144,7 @@ export default function MapContainer() {
   }
 
   const handleSelectItem = (item: IWorldMapItem) => {
+    buttonSound.play()
     setActiveItem(item)
     if (tourState.tourActive) {
       clearTimeout(refTimeoutClickTour.current)

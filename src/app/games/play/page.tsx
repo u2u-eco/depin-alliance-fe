@@ -12,6 +12,7 @@ import { MAP_CONTINENT_IMAGE } from '@/app/map/context/worldmap-context'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
+import { useAppSound } from '@/hooks/useAppSound'
 
 export default function PlayGame() {
   const router = useRouter()
@@ -25,6 +26,7 @@ export default function PlayGame() {
   } = useDisclosure()
   const id = useRef<any>(null)
   // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const { specialSound } = useAppSound()
   const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
     useWorldMapStore()
 
@@ -69,6 +71,7 @@ export default function PlayGame() {
       const res = await endWorldMap(id)
       if (res.status) {
         setWorldMapReward(res.data)
+        specialSound.play()
         onOpenReward()
       }
     } catch (ex: any) {
@@ -153,10 +156,10 @@ export default function PlayGame() {
   return (
     <div>
       {/* <CustomHeader title="PLAY" /> */}
-      <div className=" absolute z-[1000]">
+      {/* <div className=" absolute z-[1000]">
         {path}--
         {params}
-      </div>
+      </div> */}
       {type === 'sudoku' ? (
         <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (

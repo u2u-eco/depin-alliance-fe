@@ -5,6 +5,7 @@ import { IconChevron, IconDoubleArrow } from '../icons'
 import parse from 'html-react-parser'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { usePathname } from 'next/navigation'
+import CustomButton from '../button'
 
 interface ItemProps {
   placement?: string
@@ -33,7 +34,7 @@ const ItemTutorial = ({
   return (
     <>
       {arrow ? (
-        <div className={arrowClass}>
+        <div className={`pointer-events-none ${arrowClass}`}>
           <img
             className="animate-bounce max-w-8 xs:max-w-9 2xs:max-w-10 mx-auto"
             src="/assets/images/level/level-arrow-color@2x.png"
@@ -77,11 +78,11 @@ const ItemTutorial = ({
                   {content && parse(content)}
                 </div>
                 {handleComplete && (
-                  <div className="btn !mt-8" onClick={handleComplete}>
-                    <div className="btn-border"></div>
-                    <div className="btn-primary">COMPLETE TUTORIAL</div>
-                    <div className="btn-border"></div>
-                  </div>
+                  <CustomButton
+                    buttonClass="!mt-8"
+                    title="COMPLETE TUTORIAL"
+                    onAction={handleComplete}
+                  />
                 )}
                 {handleNext && (
                   <div
