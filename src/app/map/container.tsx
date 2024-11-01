@@ -61,6 +61,7 @@ export default function MapContainer() {
   const [listDataByType, setListDataByType] = useState<{ [key: string]: Array<any> }>({})
   const [worldMapItemSelected, setWorldMapSelectedItem] = useState<any>({})
   const { state: tourState, helpers, setState } = useTourGuideContext()
+  const clickTour = useRef<boolean>(false)
   // const currentContinentImage = MAP_CONTINENT_IMAGE[currentMap?.continent?.code || continent]
   // const [isDailyCombo, setIsDailyCombo] = useState(false)
 
@@ -91,7 +92,7 @@ export default function MapContainer() {
 
   const handleClick = (type: string) => {
     if (currentMap?.isCompleted) return
-    buttonSound.play()
+    buttonSound?.play()
     setActiveType(type)
     switch (type) {
       case WORLD_MAP_ITEM.AGENCY:
@@ -103,7 +104,10 @@ export default function MapContainer() {
         break
     }
     onOpen()
-    if (tourState.tourActive) {
+    if (
+      tourState.tourActive &&
+      (tourState.stepIndex === 0 || tourState.stepIndex === 4 || tourState.stepIndex === 7)
+    ) {
       helpers?.next()
     }
   }
@@ -117,10 +121,7 @@ export default function MapContainer() {
           ...prevState,
           [activeType]: activeItem
         }))
-        // setWorldMapSelectedItem({
-        //   ...worldMapItemSelected,
-        //   [activeType]: activeItem
-        // })
+
         handleCloseModal()
         break
       case WORLD_MAP_ITEM.CONTINENT:
@@ -130,10 +131,13 @@ export default function MapContainer() {
         onClose()
         break
     }
-    if (tourState.tourActive) {
+
+    if (tourState.tourActive && !clickTour.current) {
+      clickTour.current = true
       clearTimeout(refTimeoutClickTour.current)
       refTimeoutClickTour.current = setTimeout(() => {
         helpers?.next()
+        clickTour.current = false
       }, 300)
     }
   }
@@ -144,7 +148,7 @@ export default function MapContainer() {
   }
 
   const handleSelectItem = (item: IWorldMapItem) => {
-    buttonSound.play()
+    buttonSound?.play()
     setActiveItem(item)
     if (tourState.tourActive) {
       clearTimeout(refTimeoutClickTour.current)
