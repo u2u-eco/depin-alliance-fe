@@ -93,6 +93,7 @@ export default function WalletPage() {
       id: 1,
       type: SETTING_TYPE.WALLET_OKX_EVM,
       image: 'okx',
+      disableIcon: true,
       title: 'OKX EVM Wallet',
       text: !accountsEvmOKX[0] ? 'OKX Wallet' : formatAddress(accountsEvmOKX[0]),
       icon: !accountsEvmOKX[0] ? (
