@@ -13,7 +13,7 @@ import SoundsProvider from '@/contexts/sounds.context'
 import dynamic from 'next/dynamic'
 import { TonConnect } from '@tonconnect/ui-react'
 import { OKXTonConnectProvider } from '@/contexts/okx.ton.connect'
-// import { OKXEvmConnectProvider } from '@/contexts/okx.evm.connect'
+import { OKXEvmConnectProvider } from '@/contexts/okx.evm.connect'
 // import 'redefine-custom-elements'
 // import TourGuide from './tour-guide'
 // import { TourGuideProvider } from '@/contexts/tour.guide.context'
@@ -106,8 +106,8 @@ export default function Layout({ children }: any) {
               twaReturnUrl: teleUrl
             }}
           >
-            {/* <OKXEvmConnectProvider> */}
-            <OKXTonConnectProvider>
+            <OKXEvmConnectProvider>
+              {/* <OKXTonConnectProvider> */}
               <NextUIProvider>
                 <SoundsProvider>
                   {/* <TourGuideProvider> */}
@@ -121,8 +121,8 @@ export default function Layout({ children }: any) {
                   {/* </TourGuideProvider> */}
                 </SoundsProvider>
               </NextUIProvider>
-            </OKXTonConnectProvider>
-            {/* </OKXEvmConnectProvider> */}
+              {/* </OKXTonConnectProvider> */}
+            </OKXEvmConnectProvider>
           </TonConnectUIProvider>
         </QueryClientProvider>
       </TelegramProvider>

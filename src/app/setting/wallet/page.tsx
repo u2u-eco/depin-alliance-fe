@@ -89,37 +89,37 @@ export default function WalletPage() {
         <IconLoader className="size-7 xs:size-8 2xs:size-9 text-gray animate-spin outline-none" />
       )
     },
-    // {
-    //   id: 1,
-    //   type: SETTING_TYPE.WALLET_OKX_EVM,
-    //   image: 'okx',
-    //   title: 'OKX EVM Wallet',
-    //   text: !accountsEvmOKX[0] ? 'OKX Wallet' : formatAddress(accountsEvmOKX[0]),
-    //   icon: !accountsEvmOKX[0] ? (
-    //     <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
-    //   ) : (
-    //     <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
-    //   )
-    // },
     {
       id: 1,
-      type: SETTING_TYPE.WALLET_OKX_TON,
+      type: SETTING_TYPE.WALLET_OKX_EVM,
       image: 'okx',
-      disableIcon: true,
-      title: 'OKX TON Wallet',
-      text: tonWalletInfoOKX?.account
-        ? formatAddress(
-            Address.parse(tonWalletInfoOKX?.account.address).toString({
-              bounceable: false
-            })
-          )
-        : 'OKX Wallet',
-      icon: !tonWalletInfoOKX?.account ? (
+      title: 'OKX EVM Wallet',
+      text: !accountsEvmOKX[0] ? 'OKX Wallet' : formatAddress(accountsEvmOKX[0]),
+      icon: !accountsEvmOKX[0] ? (
         <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
       ) : (
         <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
       )
     }
+    // {
+    //   id: 1,
+    //   type: SETTING_TYPE.WALLET_OKX_TON,
+    //   image: 'okx',
+    //   disableIcon: true,
+    //   title: 'OKX TON Wallet',
+    //   text: tonWalletInfoOKX?.account
+    //     ? formatAddress(
+    //         Address.parse(tonWalletInfoOKX?.account.address).toString({
+    //           bounceable: false
+    //         })
+    //       )
+    //     : 'OKX Wallet',
+    //   icon: !tonWalletInfoOKX?.account ? (
+    //     <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+    //   ) : (
+    //     <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+    //   )
+    // }
     // {
     //   id: 1,
     //   type: SETTING_TYPE.WALLET_TON,

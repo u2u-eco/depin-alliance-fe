@@ -28,9 +28,11 @@ export function OKXEvmConnectProvider(props: any) {
   const okxUniversalProvider = useRef<any>()
   const okxUniversalUi = useRef<any>()
   const inited = useRef<boolean>(false)
+  const initedProvider = useRef<boolean>(false)
 
   const initProvider = async () => {
-    if (!okxUniversalProvider.current) {
+    if (!initedProvider.current) {
+      initedProvider.current = true
       okxUniversalProvider.current = await OKXUniversalProvider.init({
         dappMetaData: {
           name: 'Depin Alliance',
@@ -38,14 +40,20 @@ export function OKXEvmConnectProvider(props: any) {
         }
       })
 
-      okxUniversalProvider.current.on('display_uri', (uri: string) => {
-        console.log(uri)
-      })
-
       okxUniversalProvider.current.on('session_delete', (session: any) => {
         setState({
           accounts: []
         })
+        // disconnect()
+      })
+    }
+  }
+
+  const requestAccount = async () => {
+    const accounts = await okxUniversalUi.current.request({ method: 'eth_accounts' })
+    if (accounts) {
+      setState({
+        accounts: accounts
       })
     }
   }
@@ -69,24 +77,31 @@ export function OKXEvmConnectProvider(props: any) {
         //   theme: THEME.
         // }
       })
+      const session = okxUniversalUi.current.session
+      if (session) {
+        requestAccount()
+      }
+
       setState({
         okxUniversalUi: okxUniversalUi.current
+      })
+
+      okxUniversalUi.current.on('session_delete', (session: any) => {
+        setState({
+          accounts: []
+        })
       })
     }
   }
 
   const disconnect = async () => {
-    await okxUniversalProvider.current?.disconnect()
+    await okxUniversalUi.current?.disconnect()
     setState({
       accounts: []
     })
   }
 
   const connectWallet = async () => {
-    const ton: any = document.getElementById('tc-widget-root')
-    ton.style.display = 'none'
-    const dom: any = document.getElementById('universal-widget-root')
-    dom.style.display = 'block'
     await okxUniversalUi?.current.openModal({
       namespaces: {
         eip155: {
@@ -98,12 +113,7 @@ export function OKXEvmConnectProvider(props: any) {
         redirect: ''
       }
     })
-    const accounts = await okxUniversalProvider.current.request({ method: 'eth_accounts' })
-    if (accounts) {
-      setState({
-        accounts: accounts
-      })
-    }
+    requestAccount()
 
     // if (window?.okxwallet) {
     //   const accounts = await window.okxwallet.request({ method: 'eth_requestAccounts' })
@@ -139,8 +149,8 @@ export function OKXEvmConnectProvider(props: any) {
     // }
   }
   useEffect(() => {
-    initProvider()
     initUI()
+    // initProvider()
   }, [])
 
   // useEffect(() => {
