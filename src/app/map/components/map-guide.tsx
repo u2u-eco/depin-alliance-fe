@@ -1,6 +1,8 @@
 import ItemTutorial from '@/app/components/ui/item-tutorial'
+import { DEPIN_MAP_GUIDE } from '@/constants'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
+import useCommonStore from '@/stores/commonStore'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import Joyride, { ACTIONS, EVENTS, Events, STATUS, Step, StoreHelpers } from 'react-joyride'
@@ -10,6 +12,7 @@ export default function MapGuide() {
   const initToured = useRef<boolean>(false)
   const { setState, state, setHelpers, helpers } = useTourGuideContext()
   const { buttonSound } = useAppSound()
+  const { userInfo } = useCommonStore()
   const { run, stepIndex, steps } = state
   const router = useRouter()
 
@@ -83,7 +86,15 @@ export default function MapGuide() {
   }
 
   useEffect(() => {
-    if (!initToured.current) {
+    const listGuideByIdStr: any = localStorage.getItem(DEPIN_MAP_GUIDE)
+    let listGuideById: any = JSON.parse(listGuideByIdStr)
+    if (!listGuideById) {
+      listGuideById = {}
+    }
+    if (userInfo?.code && listGuideById[userInfo.code]) {
+      return
+    }
+    if (!initToured.current && userInfo?.code && helpers?.next) {
       const _steps: Step[] = [
         {
           content: (
@@ -514,7 +525,16 @@ export default function MapGuide() {
           }
         }
       ]
+      initToured.current = true
+
       setState({ run: true, steps: _steps, stepIndex: 0, tourActive: true })
+      localStorage.setItem(
+        DEPIN_MAP_GUIDE,
+        JSON.stringify({
+          ...listGuideById,
+          [userInfo?.code]: true
+        })
+      )
     }
 
     // if (userInfo?.code) {
@@ -540,7 +560,7 @@ export default function MapGuide() {
     //     )
     //   }
     // }
-  }, [helpers?.next])
+  }, [helpers?.next, userInfo])
 
   useEffect(() => {
     setMounted(true)
