@@ -407,7 +407,7 @@ function buildGameButton() {
         checkQuickGameMode()
       }
     } else {
-      goPage('select')
+      goPage('game')
     }
   })
 

@@ -43,7 +43,7 @@ const ModalReward = ({
       classNames={classNames}
       full
     >
-      <div className="h-full flex flex-col justify-between p-4">
+      <div className="h-full flex flex-col justify-between p-4 min-h overflow-y-auto">
         <div className="flex flex-1 flex-col items-center justify-center space-y-6 xs:space-y-7 2xs:space-y-8">
           <div className="relative">
             <div className="drop-shadow-[0_0_16px_rgba(0,153,86,0.5)]">
@@ -70,12 +70,12 @@ const ModalReward = ({
           </div>
           {children}
         </div>
-        <div className={`my-4 xs:my-6 2xs:my-8`}>
-          {isGame ? (
-            <CustomButton title="CONTINUE" onAction={onContinue} />
-          ) : (
-            <CustomButton title="CLAIM REWARD" onAction={onCloseModal} />
+        <div className={`my-4 xs:my-6 2xs:my-8 ${isGame ? 'flex gap-2' : ''}`}>
+          {isGame && (
+            <CustomButton type={BUTTON_TYPE.DEFAULT} title="CONTINUE" onAction={onContinue} />
           )}
+
+          <CustomButton title={isGame ? 'CLAIM' : `CLAIM REWARD`} onAction={onCloseModal} />
         </div>
       </div>
     </CustomModal>
