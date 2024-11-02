@@ -91,19 +91,22 @@ export default function MapContainer() {
   }
 
   const handleClick = (type: string) => {
-    if (currentMap?.isCompleted) return
+    if (currentMap?.isCompleted || isOpen) return
     buttonSound?.play()
     setActiveType(type)
+    onOpen()
     switch (type) {
       case WORLD_MAP_ITEM.AGENCY:
       case WORLD_MAP_ITEM.TOOL:
         if (worldMapItemSelected[type]) {
           handleSelectItem(worldMapItemSelected[type])
+        } else {
+          setActiveItem(null)
         }
         getData(type)
         break
     }
-    onOpen()
+
     if (
       tourState.tourActive &&
       (tourState.stepIndex === 0 || tourState.stepIndex === 4 || tourState.stepIndex === 7)
@@ -117,12 +120,11 @@ export default function MapContainer() {
     switch (activeType) {
       case WORLD_MAP_ITEM.AGENCY:
       case WORLD_MAP_ITEM.TOOL:
+        handleCloseModal()
         setWorldMapSelectedItem((prevState: any) => ({
           ...prevState,
           [activeType]: activeItem
         }))
-
-        handleCloseModal()
         break
       case WORLD_MAP_ITEM.CONTINENT:
         if (continentStore) {
@@ -174,6 +176,7 @@ export default function MapContainer() {
       if (res.data?.tool) {
         worldMapItemSelected[WORLD_MAP_ITEM.TOOL] = res.data.tool
       }
+      setWorldMapSelectedItem(worldMapItemSelected)
       setCurrentMap(res.data)
       setCurrentWorldMap(res.data)
     }
@@ -277,7 +280,6 @@ export default function MapContainer() {
       onClose()
     }
   }, [tourState])
-
   return (
     <>
       <div className=" flex flex-col justify-between space-y-6 h-full">
