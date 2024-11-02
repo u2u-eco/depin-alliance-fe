@@ -40,6 +40,7 @@ export default function MapContainer() {
   const searchParams = useSearchParams()
   const continent: any = searchParams.get('id') || 'continent_1'
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const refTimeoutClickTour = useRef<any>()
   const {
     isOpen: isOpenReward,
     onOpen: onOpenReward,
@@ -109,12 +110,19 @@ export default function MapContainer() {
 
     if (
       tourState.tourActive &&
+      tourState.run &&
+      !clickTour.current &&
       (tourState.stepIndex === 0 || tourState.stepIndex === 4 || tourState.stepIndex === 7)
     ) {
-      helpers?.next()
+      clickTour.current = true
+      clearTimeout(refTimeoutClickTour.current)
+      refTimeoutClickTour.current = setTimeout(() => {
+        helpers?.next()
+        clickTour.current = false
+      }, 300)
     }
   }
-  const refTimeoutClickTour = useRef<any>()
+
   const handleClickModal = () => {
     if (disableAction) return
     switch (activeType) {
@@ -275,11 +283,19 @@ export default function MapContainer() {
       if (tourState.stepIndex === 7 && !tourState.run) {
         handleClick(WORLD_MAP_ITEM.TOOL)
       }
+      if (!tourState.run && tourState.stepIndex === 0) {
+        setTimeout(() => {
+          setState({
+            run: true
+          })
+        }, 1000)
+      }
     }
     if (!tourState.tourActive && tourState.stepIndex === 15) {
       onClose()
     }
   }, [tourState])
+
   return (
     <>
       <div className=" flex flex-col justify-between space-y-6 h-full">

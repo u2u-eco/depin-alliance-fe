@@ -81,7 +81,6 @@ export default function MapBackground() {
   const handleNextTour = () => {
     if (tourState.tourActive) {
       helpers?.next()
-      console.log('🚀 ~ handleNextTour ~ helpers:', helpers)
     }
   }
 
