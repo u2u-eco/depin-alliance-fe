@@ -16,6 +16,7 @@ export const MAX_SIZE_PER_PAGE = 10
 export const HIDE_COMPLETED_PARTNER = 't-depin-hide-completed-task'
 export const DEPIN_CONFIG = 't-depin-alliance-config'
 export const DEPIN_GUIDE = 't-depin-show-guide-status'
+export const DEPIN_MAP_GUIDE = 't-depin-is-show-map-guide-status'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
   SUCCESS: 'SUCCESS',
@@ -65,6 +66,17 @@ export const LIST_TYPE = {
 export const FILTER_TYPE = {
   FILTER: 'FILTER',
   SORT: 'SORT'
+}
+
+export const MAP_TYPE = {
+  EUROPE: 'europe',
+  ASIA: 'asia',
+  AFRICA: 'africa',
+  OCEANIA: 'oceania',
+  ANTARCTICA: 'antarctica',
+  AMERICA: 'america',
+  NORTH_AMERICA: 'north america',
+  SOUTH_AMERICA: 'south america'
 }
 
 export const FUNDING_TYPE = 'funding'

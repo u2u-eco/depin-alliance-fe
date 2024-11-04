@@ -12,9 +12,12 @@ import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useRouter } from 'next/navigation'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
+import useWorldMapStore from '@/stores/worldMapStore'
+import { getWorldMap } from '@/services/world-map'
 
 export default function HomePage() {
   const router = useRouter()
+  const { currentWorldMap, setCurrentWorldMap } = useWorldMapStore()
   const { userInfo } = useCommonStore()
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
@@ -23,13 +26,6 @@ export default function HomePage() {
     tabSound.play()
     router.push('/avatar')
   }
-
-  // useEffect(() => {
-  //   main?.play()
-  //   return () => {
-  //     main?.stop()
-  //   }
-  // }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,12 +38,26 @@ export default function HomePage() {
     }, 500)
   }, [tourState, setState])
 
+  const getCurrentWorldMap = async () => {
+    const res = await getWorldMap()
+    if (res.status && res.data) {
+      setCurrentWorldMap(res.data)
+    }
+  }
+
   useUserInfo()
+
+  useEffect(() => {
+    if (!currentWorldMap) {
+      getCurrentWorldMap()
+    }
+  }, [currentWorldMap])
 
   return (
     <>
       <CustomPage>
         {/* Point */}
+
         <motion.div
           className="relative"
           initial={{ y: 25, opacity: 0 }}
@@ -85,10 +95,28 @@ export default function HomePage() {
           </div>
         </motion.div>
         {/* Button */}
+
         <div className="my-first-step">
           <Mining />
         </div>
-
+        {/* <div className="mt-3 flex justify-center">
+          <Link
+            onClick={() => {
+              tabSound.play()
+            }}
+            href="/games"
+            className="flex items-center space-x-1"
+          >
+            <div className="text-gradient uppercase font-mona font-semibold text-[13px] xs:text-sm">
+              GAME
+            </div>
+            <img
+              src="/assets/images/icons/icon-open-link-gradient.svg"
+              alt=""
+              className="size-5 xs:size-6"
+            />
+          </Link>
+        </div> */}
         {/* Info */}
         <div className="mt-6">
           {/* <Card /> */}
@@ -104,6 +132,7 @@ export default function HomePage() {
                   alt=""
                 />
               </div>
+
               <div className="space-y-2 xs:space-y-4 2xs:space-y-6">
                 <div className="space-y-2 2xs:space-y-3">
                   <div className="text-white font-airnt font-medium text-[15px] xs:text-base tracking-[1px]">
@@ -139,6 +168,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+
                 <Link
                   onClick={() => {
                     tabSound.play()

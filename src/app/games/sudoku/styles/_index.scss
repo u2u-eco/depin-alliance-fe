@@ -1,0 +1,104 @@
+.sudoku {
+  --bg-line: rgba(255, 255, 255, 0.3);
+  --bg-border: rgba(255, 255, 255, 0.1);
+  --bg-main: rgba(255, 255, 255, 0.05);
+  --bg-same: rgba(54, 134, 253, 0.2);
+  --bg-error: rgba(229, 57, 53, 0.3);
+  --bg-selected: rgba(0, 255, 144, 0.3);
+  --bg-filled: rgba(255, 255, 255, 0.15);
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/*Game*/
+.game-container {
+  &:hover {
+    .game-wrapper {
+      box-shadow: none !important;
+    }
+  }
+}
+
+.game-wrapper {
+  padding: 0 !important;
+  background: var(--bg-main) !important;
+  backdrop-filter: blur(8px);
+  box-shadow: none !important;
+}
+
+.game-row {
+  display: flex;
+  &-3,
+  &-6 {
+    box-shadow: inset 0px -2px 0 0 var(--bg-line);
+  }
+}
+
+.game-input {
+  font-family: theme('fontFamily.geist');
+  text-align: center;
+  width: 100%;
+  font-weight: 500 !important;
+  font-size: 20px;
+  box-shadow: 0px 0px 0px 1px var(--bg-border);
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: theme('colors.title');
+  @media screen and (max-width: 424px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 16px;
+  }
+  &:nth-child(3n):not(:nth-child(9n)) {
+    box-shadow:
+      0px 0px 0px 1px var(--bg-border),
+      inset -2px 0 0 var(--bg-line);
+  }
+  &.checked {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 12px;
+    color: theme('colors.white-50');
+  }
+  &.prefilled-text {
+    color: theme('colors.body');
+    background: var(--bg-filled);
+  }
+
+  &.same {
+    background: var(--bg-same);
+  }
+  &.selected {
+    background: var(--bg-selected);
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  }
+  &.error {
+    background: var(--bg-error);
+  }
+}
+
+.btn-border {
+  height: 8px !important;
+  &::before,
+  &::after {
+    --size: 8px !important;
+  }
+}

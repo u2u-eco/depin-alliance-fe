@@ -153,7 +153,7 @@ const CustomRank = ({
                     height={0}
                     sizes="100vw"
                     style={{ width: '100%' }}
-                    src={item.avatar || '/assets/images/league/league-01@2x.png'}
+                    src={item?.avatar || '/assets/images/league/league-01@2x.png'}
                     alt="DePIN Alliance"
                   />
                 ) : (
@@ -163,7 +163,7 @@ const CustomRank = ({
                     sizes="100vw"
                     style={{ width: '100%' }}
                     src={
-                      item.avatar.replace(/-/g, '-main-') ||
+                      item?.avatar?.replace(/-/g, '-main-') ||
                       '/assets/images/avatar/avatar-01@2x.png'
                     }
                     alt="DePIN Alliance"
