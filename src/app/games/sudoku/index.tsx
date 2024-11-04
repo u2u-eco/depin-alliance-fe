@@ -97,7 +97,11 @@ export default function Sudoku({ data, handleSuccess, handleBack }: ISudoku) {
             onHandleChange={(value: any, clearValue?: boolean) => onHandleChange(value, clearValue)}
           />
           <div className="my-3 max-w-[480px] w-full flex space-x-4">
-            <CustomButton type={BUTTON_TYPE.DEFAULT} title="BACK" onAction={handleBack} />
+            <CustomButton
+              type={isSuccess ? BUTTON_TYPE.DEFAULT : BUTTON_TYPE.SUCCESS}
+              title="BACK"
+              onAction={handleBack}
+            />
             {isSuccess && <CustomButton title="Play Again" onAction={handlePlayAgain} />}
           </div>
           {/* <Time /> */}
