@@ -1072,6 +1072,10 @@ button {
   -webkit-text-fill-color: transparent;
 }
 
+.text-shadow-white {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
 .__floater__arrow {
   display: none;
 }
@@ -1081,6 +1085,35 @@ button {
 }
 .react-joyride__tooltip > div:first-child > div {
   padding: 0 !important;
+}
+
+.ol-overlaycontainer-stopevent {
+  z-index: 1 !important;
+}
+
+.map-continent_1::before {
+  -webkit-clip-path: polygon(calc(50% - var(--line) * 2) 0, 100% calc(var(--shape) + var(--line)), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+          clip-path: polygon(calc(50% - var(--line) * 2) 0, 100% calc(var(--shape) + var(--line)), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+}
+.map-continent_2::before {
+  -webkit-clip-path: polygon(50% 0, calc(100% - var(--line)) calc(var(--shape) - var(--line) / 2), calc(100% - var(--line)) calc(100% - (var(--shape) - var(--line) / 2)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+          clip-path: polygon(50% 0, calc(100% - var(--line)) calc(var(--shape) - var(--line) / 2), calc(100% - var(--line)) calc(100% - (var(--shape) - var(--line) / 2)), 50% 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+}
+.map-continent_3::before {
+  -webkit-clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape) - var(--line)), calc(50% - var(--line) * 2) 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+          clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape) - var(--line)), calc(50% - var(--line) * 2) 100%, 0 calc(100% - var(--shape)), 0 var(--shape));
+}
+.map-continent_4::before {
+  -webkit-clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape)), calc(50% + var(--line) * 2) 100%, 0 calc(100% - var(--shape) - var(--line)), 0 var(--shape));
+          clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape)), calc(50% + var(--line) * 2) 100%, 0 calc(100% - var(--shape) - var(--line)), 0 var(--shape));
+}
+.map-continent_5::before {
+  -webkit-clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape)), 50% 100%, var(--line) calc(100% - (var(--shape) - var(--line) / 2)), var(--line) calc(var(--shape) - var(--line) / 2));
+          clip-path: polygon(50% 0, 100% var(--shape), 100% calc(100% - var(--shape)), 50% 100%, var(--line) calc(100% - (var(--shape) - var(--line) / 2)), var(--line) calc(var(--shape) - var(--line) / 2));
+}
+.map-continent_6::before {
+  -webkit-clip-path: polygon(calc(50% + var(--line) * 2) 0, 100% var(--shape), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 calc(var(--shape) + var(--line)));
+          clip-path: polygon(calc(50% + var(--line) * 2) 0, 100% var(--shape), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 calc(var(--shape) + var(--line)));
 }
 
 /* End Reset CSS */
@@ -1103,6 +1136,20 @@ button {
 }
 
 /* End Section */
+/* Start OL */
+.ol-zoom {
+  display: none;
+  top: 100px !important;
+  left: auto !important;
+  right: 12px;
+}
+@media only screen and (max-width: 374px) {
+  .ol-zoom {
+    top: 90px !important;
+  }
+}
+
+/* End OL */
 /* Start Card */
 .card {
   position: relative;

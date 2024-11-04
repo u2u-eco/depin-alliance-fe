@@ -8,6 +8,7 @@ import { IconChevron, IconSettings, IconUser } from '../icons'
 import { motion } from 'framer-motion'
 import { IUserInfo } from '@/interfaces/i.user'
 import { useAppSound } from '@/hooks/useAppSound'
+import useWorldMapStore from '@/stores/worldMapStore'
 
 interface InfoProps {
   click?: () => void
@@ -18,6 +19,7 @@ interface InfoProps {
 const Info = ({ profile, rank }: InfoProps) => {
   const pathName = usePathname()
   const route = useRouter()
+  const { currentWorldMap } = useWorldMapStore()
   const { userInfo } = useCommonStore((state) => state)
 
   const { tabSound } = useAppSound()
@@ -29,6 +31,15 @@ const Info = ({ profile, rank }: InfoProps) => {
   const handleProfile = () => {
     tabSound.play()
     route.push('/profile')
+  }
+
+  const handleMap = () => {
+    tabSound.play()
+    if (currentWorldMap) {
+      route.push(`/map?id=${currentWorldMap?.continent.code}`)
+    } else {
+      route.push('/map?id=continent_1')
+    }
   }
 
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
@@ -252,6 +263,24 @@ const Info = ({ profile, rank }: InfoProps) => {
             </div>
           </div>
         </div>
+        {pathName === '/home' && (
+          <div className="absolute -bottom-14 right-0">
+            <div
+              className="relative cursor-pointer before:content-[''] before:absolute before:top-[3px] before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
+              onClick={handleMap}
+            >
+              <div className="[--shape:_12px] size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-yellow-600">
+                <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green">
+                  <img
+                    className="[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] size-full object-cover opacity-65"
+                    src="/assets/images/map/world-map@2x.png"
+                    alt="DePIN Alliance"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </motion.div>
       {/* <CustomModal title="Avatar" isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange}>
         <div>

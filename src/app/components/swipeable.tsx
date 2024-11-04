@@ -1,9 +1,11 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import React, { useState, ReactNode } from 'react'
 
 // https://stackoverflow.com/questions/70612769/how-do-i-recognize-swipe-events-in-react
 export default function Swipeable(props: SwipeableProps) {
+  const path = usePathname()
   const [touchStartX, setTouchStartX] = useState<number>(0)
   const [touchEndX, setTouchEndX] = useState<number>(0)
 
@@ -26,6 +28,7 @@ export default function Swipeable(props: SwipeableProps) {
   }
 
   function onTouchEnd() {
+    if (path === '/map') return
     if (touchStartX && touchEndX) swipeHorizontal()
     if (touchStartY && touchEndY) swipeVertical()
   }

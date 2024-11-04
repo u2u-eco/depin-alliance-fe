@@ -22,3 +22,7 @@ export const formatAddress = (str: string) => {
   }
   return str || ''
 }
+
+export const toCapitalizeCase = (string: any) => {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
