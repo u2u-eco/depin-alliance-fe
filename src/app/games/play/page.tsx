@@ -15,11 +15,13 @@ import CustomToast from '@/app/components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
 import { DEPIN_MAP_CLAIM } from '@/constants'
 import ClaimGame from '../components/claim-game'
+import useCommonStore from '@/stores/commonStore'
 
 export default function PlayGame() {
   const router = useRouter()
   const path = usePathname()
   const init = useRef<boolean>(false)
+  const { userInfo } = useCommonStore()
   const {
     isOpen: isOpenReward,
     onOpen: onOpenReward,
@@ -30,8 +32,7 @@ export default function PlayGame() {
   const id = useRef<any>(null)
   const { specialSound } = useAppSound()
 
-  const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
-    useWorldMapStore()
+  const { setWorldMapReward, currentWorldMap, setCurrentWorldMap } = useWorldMapStore()
 
   const params = useSearchParams()
   const _id = params.get('id')
@@ -73,32 +74,37 @@ export default function PlayGame() {
   }
 
   const updateClaim = (id: any) => {
-    const time = getCurrentTime()
-    let dataClaim: any = localStorage.getItem(DEPIN_MAP_CLAIM)
-    if (!dataClaim) {
-      dataClaim = {
-        [time]: {}
-      }
-    } else {
-      dataClaim = JSON.parse(dataClaim)
-      if (dataClaim[time]) {
+    if (userInfo?.code) {
+      const time = getCurrentTime()
+      let dataClaim: any = localStorage.getItem(DEPIN_MAP_CLAIM)
+      if (!dataClaim) {
         dataClaim = {
-          [time]: { ...dataClaim[time] }
+          [time]: {
+            [userInfo.code]: {}
+          }
         }
       } else {
-        dataClaim = {
-          [time]: {}
+        dataClaim = JSON.parse(dataClaim)
+        if (dataClaim[time]?.[userInfo.code]) {
+          dataClaim = {
+            [time]: { ...dataClaim[time] }
+          }
+        } else {
+          dataClaim = {
+            [time]: {
+              [userInfo.code]: {}
+            }
+          }
         }
       }
-    }
 
-    dataClaim[time][id] = true
-    localStorage.setItem(DEPIN_MAP_CLAIM, JSON.stringify(dataClaim))
+      dataClaim[time][userInfo.code][id] = true
+      localStorage.setItem(DEPIN_MAP_CLAIM, JSON.stringify(dataClaim))
+    }
   }
 
   const handleEndMission = async (id: any) => {
     try {
-      updateClaim(id)
       const res = await endWorldMap(id)
       if (res.status) {
         setWorldMapReward(res.data)
