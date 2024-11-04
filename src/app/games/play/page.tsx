@@ -6,13 +6,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Sudoku from '../sudoku'
 import ModalReward from '@/app/components/ui/modal-reward'
-import { formatNumber } from '@/helper/common'
+import { formatNumber, getCurrentTime } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
 import { MAP_CONTINENT_IMAGE } from '@/app/map/context/worldmap-context'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
+import { DEPIN_MAP_CLAIM } from '@/constants'
+import ClaimGame from '../components/claim-game'
 
 export default function PlayGame() {
   const router = useRouter()
@@ -24,9 +26,10 @@ export default function PlayGame() {
     onOpenChange: onOpenChangeReward,
     onClose: onCloseReward
   } = useDisclosure()
+
   const id = useRef<any>(null)
-  // const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { specialSound } = useAppSound()
+
   const { setWorldMapReward, worldMapReward, currentWorldMap, setCurrentWorldMap } =
     useWorldMapStore()
 
@@ -34,6 +37,7 @@ export default function PlayGame() {
   const _id = params.get('id')
 
   const iframeRef = useRef<any>()
+
   let type = params.get('type')
   if (_id) {
     id.current = _id
@@ -52,7 +56,9 @@ export default function PlayGame() {
       type = 'monster'
       break
   }
+
   const [gameData, setGameData] = useState<any>()
+
   const handleEndGame = () => {
     if (id.current) {
       handleEndMission(id.current)
@@ -66,8 +72,33 @@ export default function PlayGame() {
     }
   }
 
+  const updateClaim = (id: any) => {
+    const time = getCurrentTime()
+    let dataClaim: any = localStorage.getItem(DEPIN_MAP_CLAIM)
+    if (!dataClaim) {
+      dataClaim = {
+        [time]: {}
+      }
+    } else {
+      dataClaim = JSON.parse(dataClaim)
+      if (dataClaim[time]) {
+        dataClaim = {
+          [time]: { ...dataClaim[time] }
+        }
+      } else {
+        dataClaim = {
+          [time]: {}
+        }
+      }
+    }
+
+    dataClaim[time][id] = true
+    localStorage.setItem(DEPIN_MAP_CLAIM, JSON.stringify(dataClaim))
+  }
+
   const handleEndMission = async (id: any) => {
     try {
+      updateClaim(id)
       const res = await endWorldMap(id)
       if (res.status) {
         setWorldMapReward(res.data)
@@ -75,9 +106,12 @@ export default function PlayGame() {
         onOpenReward()
       }
     } catch (ex: any) {
-      toast.message(<CustomToast type="error" title={ex?.message || 'Network Error'} />)
+      updateClaim(id)
+      router.push(`/map?id=${currentWorldMap?.continent?.code || 'continent_1'}`)
+      // toast.message(<CustomToast type="error" title={ex?.message || 'Network Error'} />)
     }
   }
+
   const handleMessage = (event: any) => {
     switch (event.data) {
       case 'WIN':
@@ -173,7 +207,7 @@ export default function PlayGame() {
       {/* <CustomModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} onOpenChange={onOpenChange}>
         <CustomButton title="Continue" onAction={testContinue}></CustomButton>
       </CustomModal> */}
-      <ModalReward
+      {/* <ModalReward
         isOpen={isOpenReward}
         isGame={true}
         onOpen={onOpenReward}
@@ -239,7 +273,6 @@ export default function PlayGame() {
                     sizes="100vw"
                     className="size-6 xs:size-7 mx-auto"
                   />
-                  {/* {MAP_CONTINENT_IMAGE(currentWorldMap?.continent?.code, 'size-6 xs:size-7 mx-auto')} */}
                   <p className="text-title text-center line-clamp-1 font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
                     {currentWorldMap?.agency?.name}
                   </p>
@@ -259,7 +292,6 @@ export default function PlayGame() {
                     sizes="100vw"
                     className="size-6 xs:size-7 mx-auto"
                   />
-                  {/* <IconMapAntarctica className="size-6 xs:size-7 mx-auto" /> */}
                   <p className="text-title text-center line-clamp-1 font-airnt font-medium text-[9px] min-[355px]:text-[10px] !leading-[14px] tracking-[0.8px] uppercase text-shadow-white">
                     {currentWorldMap?.tool?.name}
                   </p>
@@ -268,7 +300,14 @@ export default function PlayGame() {
             </div>
           </div>
         ) : null}
-      </ModalReward>
+      </ModalReward> */}
+      <ClaimGame
+        isOpen={isOpenReward}
+        onOpen={onOpenReward}
+        onOpenChange={onOpenChangeReward}
+        onCloseModal={handleCloseReward}
+        onContinue={handleContinue}
+      />
     </div>
   )
 }

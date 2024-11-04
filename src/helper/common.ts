@@ -1,3 +1,7 @@
+import dayjs from 'dayjs'
+const utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
+
 export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
   if (number === undefined) return ''
   const options = {
@@ -25,4 +29,8 @@ export const formatAddress = (str: string) => {
 
 export const toCapitalizeCase = (string: any) => {
   return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+export const getCurrentTime = () => {
+  return dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).millisecond(0).valueOf()
 }
