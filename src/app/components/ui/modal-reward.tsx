@@ -70,8 +70,8 @@ const ModalReward = ({
           </div>
           {children}
         </div>
-        <div className={`my-4 xs:my-6 2xs:my-8 ${isGame ? 'flex gap-2' : ''}`}>
-          {isGame && (
+        <div className={`my-4 xs:my-6 2xs:my-8 ${isGame && onContinue ? 'flex gap-2' : ''}`}>
+          {isGame && onContinue && (
             <CustomButton type={BUTTON_TYPE.DEFAULT} title="CONTINUE" onAction={onContinue} />
           )}
 
