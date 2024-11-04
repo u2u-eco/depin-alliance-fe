@@ -17,6 +17,7 @@ export const HIDE_COMPLETED_PARTNER = 't-depin-hide-completed-task'
 export const DEPIN_CONFIG = 't-depin-alliance-config'
 export const DEPIN_GUIDE = 't-depin-show-guide-status'
 export const DEPIN_MAP_GUIDE = 't-depin-is-show-map-guide-status'
+export const DEPIN_MAP_CLAIM = 't-depin-status-claim'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
   SUCCESS: 'SUCCESS',
