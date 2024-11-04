@@ -18,6 +18,7 @@ import ClaimGame from '@/app/games/components/claim-game'
 import { useDisclosure } from '@nextui-org/react'
 import { endWorldMap, getWorldMap } from '@/services/world-map'
 import useWorldMapStore from '@/stores/worldMapStore'
+import useCommonStore from '@/stores/commonStore'
 
 export default function MapBackground() {
   const router = useRouter()
@@ -27,6 +28,7 @@ export default function MapBackground() {
     onOpenChange: onOpenChangeReward,
     onClose: onCloseReward
   } = useDisclosure()
+  const { userInfo } = useCommonStore()
   const { setCurrentWorldMap, currentWorldMap, setWorldMapReward } = useWorldMapStore()
   const [init, setInit] = useState<boolean>(false)
   const searchParams = useSearchParams()
@@ -126,8 +128,8 @@ export default function MapBackground() {
     let dataClaimStr: any = localStorage.getItem(DEPIN_MAP_CLAIM)
     if (dataClaimStr) {
       let dataClaim = JSON.parse(dataClaimStr)
-      if (dataClaim[time]) {
-        setCompleteById(dataClaim[time])
+      if (userInfo?.code && dataClaim[time]?.[userInfo.code]) {
+        setCompleteById(dataClaim[time][userInfo.code])
       }
     }
   }
