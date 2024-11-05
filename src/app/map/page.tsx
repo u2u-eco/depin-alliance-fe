@@ -12,6 +12,7 @@ import MapContainer from './container'
 import { useRouter } from 'next/navigation'
 import { TourGuideProvider } from '@/contexts/tour.guide.context'
 import MapGuide from './components/map-guide'
+import MapTest from './components/map-test'
 
 export default function Page() {
   const router = useRouter()
@@ -33,7 +34,8 @@ export default function Page() {
         <TourGuideProvider>
           <WorldMapProvider>
             <div className="absolute top-0 left-0 right-0 h-[100vh] w-[100vw]">
-              <MapBackground></MapBackground>
+              {/* <MapBackground></MapBackground> */}
+              <MapTest />
             </div>
             <div className=" flex flex-col justify-between space-y-6 h-full">
               <CustomHeader title="World Map" back={handleBack} />

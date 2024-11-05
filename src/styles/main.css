@@ -1116,6 +1116,14 @@ button {
           clip-path: polygon(calc(50% + var(--line) * 2) 0, 100% var(--shape), 100% calc(100% - var(--shape)), 50% 100%, 0 calc(100% - var(--shape)), 0 calc(var(--shape) + var(--line)));
 }
 
+.pigeon-attribution {
+  display: none;
+}
+
+.map-pigeon > div {
+  background: rgb(32, 32, 32) !important;
+}
+
 /* End Reset CSS */
 /* Start Header */
 /* End Header */
