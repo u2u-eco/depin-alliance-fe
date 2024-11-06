@@ -1,10 +1,8 @@
 var isPassMission = false
-console.log('🚀 ~ isPassMission:', isPassMission)
 window.addEventListener('message', function (event) {
   switch (event.data) {
     case 'PASS_MISSION':
       isPassMission = true
-      console.log('🚀 ~ isPassMission:', isPassMission)
       break
   }
 })
