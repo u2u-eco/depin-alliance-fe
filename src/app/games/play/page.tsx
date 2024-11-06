@@ -5,13 +5,8 @@ import useWorldMapStore from '@/stores/worldMapStore'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Sudoku from '../sudoku'
-import ModalReward from '@/app/components/ui/modal-reward'
-import { formatNumber, getCurrentTime } from '@/helper/common'
+import { getCurrentTime } from '@/helper/common'
 import { useDisclosure } from '@nextui-org/react'
-import { MAP_CONTINENT_IMAGE } from '@/app/map/context/worldmap-context'
-import Image from 'next/image'
-import { toast } from 'sonner'
-import CustomToast from '@/app/components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
 import { DEPIN_MAP_CLAIM } from '@/constants'
 import ClaimGame from '../components/claim-game'
@@ -172,7 +167,7 @@ export default function PlayGame() {
   useEffect(() => {
     window.addEventListener('message', handleMessage)
 
-    if (!id) {
+    if (!id.current) {
       setTimeout(() => {
         iframeRef.current?.contentWindow?.postMessage('PASS_MISSION', '*')
       }, 1000)
