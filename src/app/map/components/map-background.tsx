@@ -134,6 +134,17 @@ export default function MapBackground() {
     }
   }
 
+  const getDesc = (type: string) => {
+    switch (type) {
+      case 'PUZZLE':
+        return 'Quickly solve the puzzles and pass 3 levels to complete the mission.'
+      case 'SOLVE_MATH':
+        return 'The challenge consists of mathematical calculations; pass 5 calculations to complete it.'
+      case 'SUDOKU':
+        return 'Fill the 9x9 grid in the Sudoku game to complete the mission and earn a reward.'
+    }
+  }
+
   useEffect(() => {
     if (currentWorldMap && currentWorldMap.results?.length > 0) {
       setInit(false)
@@ -230,8 +241,7 @@ export default function MapBackground() {
                               {item.locationName}
                             </p>
                             <p className="text-sm !leading-[18px] tracking-[-1px] text-body">
-                              Contribute your wasted items to League to increase League’s profit.
-                              Contribute your wasted items to League to increase League’s.
+                              {getDesc(item.type)}
                             </p>
                           </div>
                           <CustomButton
