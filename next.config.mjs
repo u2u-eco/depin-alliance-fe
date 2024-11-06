@@ -21,6 +21,10 @@ const nextConfig = {
       {
         source: '/games/solve-math',
         destination: '/games/solve-math/index.html'
+      },
+      {
+        source: '/games/tap-rat/p',
+        destination: '/games/tap-rat/index.html'
       }
     ]
   },

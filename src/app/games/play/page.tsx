@@ -43,14 +43,19 @@ export default function PlayGame() {
       type = 'sudoku'
       break
     case 'SOLVE_MATH':
-      type = 'solve-math'
+      type = '/games/solve-math'
       break
     case 'PUZZLE':
-      type = 'puzzle'
+      type = '/games/puzzle'
       break
     case 'MONSTER':
-      type = 'monster'
+      type = '/games/monster'
       break
+    case 'TAP_RAT':
+      type = '/games/tap-rat/p'
+      break
+    default:
+      type = '/games/puzzle'
   }
 
   const [gameData, setGameData] = useState<any>()
@@ -166,7 +171,6 @@ export default function PlayGame() {
 
   useEffect(() => {
     window.addEventListener('message', handleMessage)
-
     if (!id.current) {
       setTimeout(() => {
         iframeRef.current?.contentWindow?.postMessage('PASS_MISSION', '*')
@@ -200,7 +204,7 @@ export default function PlayGame() {
       ) : (
         <iframe
           ref={iframeRef}
-          src={`/games/${type || 'puzzle'}`}
+          src={`${type}`}
           width={'100%'}
           style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
         />
