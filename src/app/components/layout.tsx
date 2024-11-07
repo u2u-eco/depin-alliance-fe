@@ -106,23 +106,23 @@ export default function Layout({ children }: any) {
               twaReturnUrl: teleUrl
             }}
           >
-            <OKXEvmConnectProvider>
-              {/* <OKXTonConnectProvider> */}
-              <NextUIProvider>
-                <SoundsProvider>
-                  {/* <TourGuideProvider> */}
-                  <Swipeable onSwipeRight={handleBack}>
-                    <AnimatePresence key="custom-page">
-                      {children}
-                      {/* {pathName !== '/' && <CustomNavbar />} */}
-                    </AnimatePresence>
-                  </Swipeable>
-                  {/* <TourGuide /> */}
-                  {/* </TourGuideProvider> */}
-                </SoundsProvider>
-              </NextUIProvider>
-              {/* </OKXTonConnectProvider> */}
-            </OKXEvmConnectProvider>
+            <OKXTonConnectProvider>
+              <OKXEvmConnectProvider>
+                <NextUIProvider>
+                  <SoundsProvider>
+                    {/* <TourGuideProvider> */}
+                    <Swipeable onSwipeRight={handleBack}>
+                      <AnimatePresence key="custom-page">
+                        {children}
+                        {/* {pathName !== '/' && <CustomNavbar />} */}
+                      </AnimatePresence>
+                    </Swipeable>
+                    {/* <TourGuide /> */}
+                    {/* </TourGuideProvider> */}
+                  </SoundsProvider>
+                </NextUIProvider>
+              </OKXEvmConnectProvider>
+            </OKXTonConnectProvider>
           </TonConnectUIProvider>
         </QueryClientProvider>
       </TelegramProvider>
