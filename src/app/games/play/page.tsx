@@ -42,7 +42,6 @@ export default function PlayGame() {
     case 'SUDOKU':
       type = 'sudoku'
       break
-
     case 'PUZZLE':
       type = '/games/puzzle'
       break
@@ -50,8 +49,8 @@ export default function PlayGame() {
       type = '/games/monster'
       break
     case 'SOLVE_MATH':
-    // type = '/games/solve-math'
-    // break
+      type = '/games/solve-math'
+      break
     case 'TAP_RAT':
       type = '/games/tap-rat/p'
       break

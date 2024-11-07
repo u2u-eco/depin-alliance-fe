@@ -1,4 +1,5 @@
 var isPassMission = false
+var isShowResult = false
 window.addEventListener('message', function (event) {
   switch (event.data) {
     case 'PASS_MISSION':
@@ -11,8 +12,11 @@ function ctlArcadeSaveScore(iScore) {
   if (parent.__ctlArcadeSaveScore) {
     parent.__ctlArcadeSaveScore({ score: iScore })
   }
+  isShowResult = true
   if (isPassMission) return
-  window.parent.postMessage('WIN', '*')
+  if (Number(iScore) >= 1000) {
+    window.parent.postMessage('WIN', '*')
+  }
 }
 
 function ctlArcadeStartSession() {
@@ -22,7 +26,11 @@ function ctlArcadeStartSession() {
 }
 
 function ctlArcadeEndSession() {
-  window.parent.postMessage('BACK', '*')
+  if (isShowResult) {
+    isShowResult = false
+  } else {
+    window.parent.postMessage('BACK', '*')
+  }
   if (parent.__ctlArcadeEndSession) {
     parent.__ctlArcadeEndSession()
   }

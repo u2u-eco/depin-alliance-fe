@@ -142,6 +142,8 @@ export default function MapBackground() {
         return 'The challenge consists of mathematical calculations; pass 5 calculations to complete it.'
       case 'SUDOKU':
         return 'Fill the 9x9 grid in the Sudoku game to complete the mission and earn a reward.'
+      case 'TAP_RAT':
+        return 'In 60 seconds, eliminate the mice and reach 1,000 points to complete the challenge.'
     }
   }
 
