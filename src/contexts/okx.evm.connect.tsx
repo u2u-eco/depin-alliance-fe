@@ -61,36 +61,43 @@ export function OKXEvmConnectProvider(props: any) {
   const initUI = async () => {
     if (!inited.current) {
       inited.current = true
-      okxUniversalUi.current = await OKXUniversalConnectUI.init({
-        dappMetaData: {
-          name: 'Depin Alliance',
-          icon: 'https://app.depinalliance.xyz/assets/images/logo.png'
-        },
+      try {
+        okxUniversalUi.current = await OKXUniversalConnectUI.init({
+          dappMetaData: {
+            name: 'Depin Alliance',
+            icon: 'https://app.depinalliance.xyz/assets/images/logo.png'
+          },
 
-        actionsConfiguration: {
-          // returnStrategy: 'tg://resolve',
-          modals: 'all',
-          tmaReturnUrl: 'back'
-        },
-        language: 'en_US'
-        // uiPreferences: {
-        //   theme: THEME.
-        // }
-      })
-      const session = okxUniversalUi.current.session
-      if (session) {
-        requestAccount()
-      }
-
-      setState({
-        okxUniversalUi: okxUniversalUi.current
-      })
-
-      okxUniversalUi.current.on('session_delete', (session: any) => {
-        setState({
-          accounts: []
+          actionsConfiguration: {
+            // returnStrategy: 'tg://resolve',
+            modals: 'all',
+            tmaReturnUrl: 'back'
+          },
+          language: 'en_US'
+          // uiPreferences: {
+          //   theme: THEME.
+          // }
         })
-      })
+        const session = okxUniversalUi.current.session
+        if (session) {
+          requestAccount()
+        }
+
+        setState({
+          okxUniversalUi: okxUniversalUi.current
+        })
+
+        okxUniversalUi.current.on('session_delete', (session: any) => {
+          setState({
+            accounts: []
+          })
+        })
+      } catch (ex: any) {
+        if (ex?.code === 0) {
+          inited.current = false
+          initUI()
+        }
+      }
     }
   }
 
