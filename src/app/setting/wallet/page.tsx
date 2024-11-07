@@ -73,7 +73,7 @@ export default function WalletPage() {
       )
     },
     {
-      id: 1,
+      id: 2,
       type: SETTING_TYPE.WALLET_TON,
       image: 'ton',
       title: 'TON Connect',
@@ -90,7 +90,7 @@ export default function WalletPage() {
       )
     },
     {
-      id: 1,
+      id: 3,
       type: SETTING_TYPE.WALLET_OKX_EVM,
       image: 'okx',
       disableIcon: true,
@@ -101,26 +101,26 @@ export default function WalletPage() {
       ) : (
         <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
       )
+    },
+    {
+      id: 4,
+      type: SETTING_TYPE.WALLET_OKX_TON,
+      image: 'okx',
+      disableIcon: true,
+      title: 'OKX TON Wallet',
+      text: tonWalletInfoOKX?.account
+        ? formatAddress(
+            Address.parse(tonWalletInfoOKX?.account.address).toString({
+              bounceable: false
+            })
+          )
+        : 'OKX Wallet',
+      icon: !tonWalletInfoOKX?.account ? (
+        <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
+      ) : (
+        <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
+      )
     }
-    // {
-    //   id: 1,
-    //   type: SETTING_TYPE.WALLET_OKX_TON,
-    //   image: 'okx',
-    //   disableIcon: true,
-    //   title: 'OKX TON Wallet',
-    //   text: tonWalletInfoOKX?.account
-    //     ? formatAddress(
-    //         Address.parse(tonWalletInfoOKX?.account.address).toString({
-    //           bounceable: false
-    //         })
-    //       )
-    //     : 'OKX Wallet',
-    //   icon: !tonWalletInfoOKX?.account ? (
-    //     <IconLink className="size-7 xs:size-8 2xs:size-9 text-green-700 outline-none" />
-    //   ) : (
-    //     <IconUnlink className="size-7 xs:size-8 2xs:size-9 text-yellow-700 outline-none" />
-    //   )
-    // }
     // {
     //   id: 1,
     //   type: SETTING_TYPE.WALLET_TON,

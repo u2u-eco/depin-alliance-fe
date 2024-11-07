@@ -22,8 +22,7 @@ export function OKXTonConnectProvider(props: any) {
   const [state, setState] = useSetState(okxTonConnectState)
   const okxTonConnectUIRef = useRef<any>()
   const inited = useRef<boolean>(false)
-
-  useEffect(() => {
+  const initProvider = () => {
     if (!inited.current) {
       inited.current = true
       okxTonConnectUIRef.current = new OKXTonConnectUI({
@@ -41,6 +40,10 @@ export function OKXTonConnectProvider(props: any) {
         okxTonConnectUI: okxTonConnectUIRef.current
       })
     }
+  }
+  useEffect(() => {
+    initProvider()
+
     const unsubscribe = okxTonConnectUIRef.current.onStatusChange(
       (walletInfo: any) => {
         setState({
@@ -51,10 +54,12 @@ export function OKXTonConnectProvider(props: any) {
         console.log('Connection status:', err)
       }
     )
+
     return () => {
       unsubscribe()
     }
   }, [])
+
   const value = useMemo(
     () => ({
       state
