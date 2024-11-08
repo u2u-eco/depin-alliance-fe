@@ -33,6 +33,7 @@ export default function PlayGame() {
   const _id = params.get('id')
 
   const iframeRef = useRef<any>()
+  const linkUrl = useRef<any>()
 
   let type = params.get('type')
   if (_id) {
@@ -40,17 +41,22 @@ export default function PlayGame() {
   }
   switch (type) {
     case 'SUDOKU':
-      type = 'sudoku'
-      break
-    case 'SOLVE_MATH':
-      type = 'solve-math'
+      linkUrl.current = 'sudoku'
       break
     case 'PUZZLE':
-      type = 'puzzle'
+      linkUrl.current = '/games/puzzle'
       break
     case 'MONSTER':
-      type = 'monster'
+      linkUrl.current = '/games/monster'
       break
+    case 'SOLVE_MATH':
+      linkUrl.current = '/games/solve-math'
+      break
+    case 'TAP_RAT':
+      linkUrl.current = '/games/tap-rat/p'
+      break
+    default:
+      linkUrl.current = '/games/puzzle'
   }
 
   const [gameData, setGameData] = useState<any>()
@@ -166,7 +172,6 @@ export default function PlayGame() {
 
   useEffect(() => {
     window.addEventListener('message', handleMessage)
-
     if (!id.current) {
       setTimeout(() => {
         iframeRef.current?.contentWindow?.postMessage('PASS_MISSION', '*')
@@ -195,12 +200,12 @@ export default function PlayGame() {
         {path}--
         {params}
       </div> */}
-      {type === 'sudoku' ? (
+      {type === 'SUDOKU' ? (
         <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (
         <iframe
           ref={iframeRef}
-          src={`/games/${type || 'puzzle'}`}
+          src={linkUrl.current}
           width={'100%'}
           style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
         />
