@@ -33,6 +33,7 @@ export default function PlayGame() {
   const _id = params.get('id')
 
   const iframeRef = useRef<any>()
+  const linkUrl = useRef<any>()
 
   let type = params.get('type')
   if (_id) {
@@ -40,22 +41,22 @@ export default function PlayGame() {
   }
   switch (type) {
     case 'SUDOKU':
-      type = 'sudoku'
+      linkUrl.current = 'sudoku'
       break
     case 'PUZZLE':
-      type = '/games/puzzle'
+      linkUrl.current = '/games/puzzle'
       break
     case 'MONSTER':
-      type = '/games/monster'
+      linkUrl.current = '/games/monster'
       break
     case 'SOLVE_MATH':
-      type = '/games/solve-math'
+      linkUrl.current = '/games/solve-math'
       break
     case 'TAP_RAT':
-      type = '/games/tap-rat/p'
+      linkUrl.current = '/games/tap-rat/p'
       break
     default:
-      type = '/games/puzzle'
+      linkUrl.current = '/games/puzzle'
   }
 
   const [gameData, setGameData] = useState<any>()
@@ -199,12 +200,12 @@ export default function PlayGame() {
         {path}--
         {params}
       </div> */}
-      {type === 'sudoku' ? (
+      {type === 'SUDOKU' ? (
         <Sudoku data={gameData} handleSuccess={handleEndGame} handleBack={handleBack} />
       ) : (
         <iframe
           ref={iframeRef}
-          src={`${type}`}
+          src={linkUrl.current}
           width={'100%'}
           style={{ position: 'absolute', height: '100%', left: 0, top: 0 }}
         />
