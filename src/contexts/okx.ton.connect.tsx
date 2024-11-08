@@ -31,7 +31,7 @@ export function OKXTonConnectProvider(props: any) {
           icon: 'https://app.depinalliance.xyz/assets/images/logo.png'
         },
         actionsConfiguration: {
-          returnStrategy: 'none'
+          returnStrategy: 'tg://resolve'
         },
         language: 'en_US',
         restoreConnection: true
