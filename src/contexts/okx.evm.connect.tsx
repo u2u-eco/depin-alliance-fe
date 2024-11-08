@@ -69,7 +69,7 @@ export function OKXEvmConnectProvider(props: any) {
           },
 
           actionsConfiguration: {
-            // returnStrategy: 'tg://resolve',
+            returnStrategy: 'tg://resolve',
             modals: 'all',
             tmaReturnUrl: 'back'
           },
