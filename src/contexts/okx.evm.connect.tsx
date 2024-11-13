@@ -56,6 +56,7 @@ export function OKXEvmConnectProvider(props: any) {
         accounts: accounts
       })
     }
+    return accounts
   }
 
   const initUI = async () => {
@@ -120,7 +121,7 @@ export function OKXEvmConnectProvider(props: any) {
         redirect: ''
       }
     })
-    requestAccount()
+    return await requestAccount()
 
     // if (window?.okxwallet) {
     //   const accounts = await window.okxwallet.request({ method: 'eth_requestAccounts' })
@@ -179,7 +180,7 @@ export function OKXEvmConnectProvider(props: any) {
 
 export function useOKXEvmConnectContext(): {
   accounts: string[]
-  okxUniversalUi: OKXUniversalConnectUI | null
+  okxUniversalUi: OKXUniversalConnectUI | any
   connectWallet: () => void
   disconnect: () => void
 } {

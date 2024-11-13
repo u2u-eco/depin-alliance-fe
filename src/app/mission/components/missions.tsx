@@ -12,13 +12,14 @@ interface IMission {
   setDisablePartner: (status: boolean) => void
 }
 
-const LIST_MISSION_REQUIRED = [
-  'connect your twitter',
-  'follow u2u network x',
-  'join u2u network telegram',
-  'join u2u discord',
-  'subscribe u2u youtube'
-]
+// const LIST_MISSION_REQUIRED = [
+//   'connect your twitter',
+//   'follow u2u network x',
+//   'join u2u network telegram',
+//   'join u2u discord',
+//   'subscribe u2u youtube'
+// ]
+const GROUP_MISSION_REQUIRED = 'u2u rebellion'
 export default function Missions({ updateListReward, setDisablePartner }: IMission) {
   const { token } = useCommonStore(useShallow((state) => state))
   const {
@@ -50,14 +51,19 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
   const countMission = () => {
     let count = 0
     let countTaskRequired = 0
+    let totalTaskRequired = 0
+
     listMission?.forEach((item: any) => {
       if (item.missions) {
         item.missions.forEach((mission: IItemMissionPartner) => {
           if (mission.status !== MISSION_STATUS.CLAIMED) {
             count += 1
           }
+          if (item.group?.toLowerCase() === GROUP_MISSION_REQUIRED) {
+            totalTaskRequired = item.missions?.length
+          }
           if (
-            LIST_MISSION_REQUIRED.indexOf(mission.name.toLowerCase()) !== -1 &&
+            item.group?.toLowerCase() === GROUP_MISSION_REQUIRED &&
             (mission.status === MISSION_STATUS.VERIFIED ||
               mission.status === MISSION_STATUS.CLAIMED)
           ) {
@@ -67,7 +73,7 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
       }
     })
 
-    if (countTaskRequired === LIST_MISSION_REQUIRED.length || DISABLE_CHECK_TASK_U2U) {
+    if (countTaskRequired === totalTaskRequired || DISABLE_CHECK_TASK_U2U) {
       setDisablePartner(false)
     } else {
       setDisablePartner(true)
