@@ -21,5 +21,6 @@ export const MESSAGES: { [key: string]: string } = {
   MSG_UPDATE_ROLE_SUCCESS: 'Update role successfully',
   MSG_LEAGUE_ROLE_INVALID: 'Invalid permission',
   MSG_LEAGUE_ITEM_CONTRIBUTE_NOT_ENOUGH: 'Not enough item contribute',
-  MSG_YOU_COMPLETE_SUMMON_TASKS: 'You must complete U2U Rebellion'
+  MSG_YOU_COMPLETE_SUMMON_TASKS: 'You must complete U2U Rebellion',
+  MSG_USER_MUST_LINK_TWITTER: 'User must link twitter'
 }

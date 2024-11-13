@@ -4,7 +4,7 @@ import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
-import { formatNumber } from '@/helper/common'
+import { formatAddress, formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem } from '@/interfaces/i.missions'
 import { claimTask, verifyMission } from '@/services/missions'
@@ -20,10 +20,10 @@ import { loginTwitter, twitterInfo } from '@/services/twitter'
 import ButtonVerifying from './button-verifying'
 import Link from 'next/link'
 import { IconOpenLink } from '@/app/components/icons'
-import { useAppKit, useAppKitAccount, useAppKitState, useWalletInfo } from '@reown/appkit/react'
-import { useAccount, useDisconnect, useSignMessage } from 'wagmi'
 import { setUserConnectWallet } from '@/services/user'
-import { useTonConnectModal, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react'
+import { useOKXTonConnectContext } from '@/contexts/okx.ton.connect'
+import { Address } from '@ton/core'
+import { useOKXEvmConnectContext } from '@/contexts/okx.evm.connect'
 interface IListMission {
   title?: string
   missions?: IMissionItem[] | IItemMissionPartner[]
@@ -36,7 +36,7 @@ interface IListMission {
 }
 const MESSAGE_SIGN = 'DepinAlliance User Signature'
 const DISABLE_OPEN_TELE_LINK = ['web', 'weba', 'unknown']
-const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES']
+const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES', 'FOLLOW_TWITTER']
 const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
@@ -60,24 +60,38 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     onClose: onCloseSpecial
   } = useDisclosure()
   const currentItem = useRef<any>()
-  const { open: openEVMConnect } = useAppKit()
-  const { open: isOpenEVM } = useAppKitState()
-  const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
-  const { isConnecting: isConnectingEVM } = useAccount()
-  const [isShowMessageConnectOKX, setIsShowMessageOKX] = useState<boolean>(false)
-  const { walletInfo: walletEVMInfo } = useWalletInfo()
-  const { disconnect } = useDisconnect()
-  const { signMessageAsync } = useSignMessage()
+  // const { open: openEVMConnect } = useAppKit()
+  // const { open: isOpenEVM } = useAppKitState()
+  // const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
+  // const { isConnecting: isConnectingEVM } = useAccount()
+  // const [isShowMessageConnectOKX, setIsShowMessageOKX] = useState<boolean>(false)
+  // const { walletInfo: walletEVMInfo } = useWalletInfo()
+  // const { disconnect } = useDisconnect()
+  // const { signMessageAsync } = useSignMessage()
   const signMessage = useRef<any>(null)
   const signMessageTON = useRef<any>(null)
-  const [tonConnectUI] = useTonConnectUI()
-  const tonWallet: any = useTonWallet()
-  const { state: stateTON } = useTonConnectModal()
+  // const [tonConnectUI] = useTonConnectUI()
+  // const tonWallet: any = useTonWallet()
+  // const { state: stateTON } = useTonConnectModal()
   const isProgressSign = useRef<boolean>(false)
+  // OKX TON
+  const {
+    state: { walletInfo: tonWalletInfoOKX, okxTonConnectUI }
+  } = useOKXTonConnectContext()
+
+  //OKX EVM
+
+  const {
+    accounts: accountsEvmOKX,
+    connectWallet: connectEVMWalletOKX,
+    disconnect: disconnectEvmOKX,
+    okxUniversalUi
+  } = useOKXEvmConnectContext()
+  ///
 
   // const tonAddress = useTonAddress()
 
-  tonConnectUI.setConnectRequestParameters({
+  okxTonConnectUI?.setConnectRequestParameters({
     state: 'ready',
     value: { tonProof: MESSAGE_SIGN }
   })
@@ -237,6 +251,22 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     setLoadingButton(false)
   }
 
+  const handleConnectEVMOKX = async () => {
+    clearTimeout(refTimeoutCheck.current)
+    clearTimeout(refTimeoutOpenWC.current)
+    refTimeoutOpenWC.current = setTimeout(async () => {
+      const res: any = await connectEVMWalletOKX()
+      if (res[0]) {
+        handleSign(res[0])
+        handleUserConnect({
+          address: res[0],
+          type: 'EVM',
+          connectFrom: 'OKX'
+        })
+      }
+    }, 2000)
+  }
+
   const handleMission = () => {
     if (loadingButton || isVerifying) return
     if (isVerified) {
@@ -266,40 +296,37 @@ export default function ListMission({ listMission, refetch }: IListMission) {
           setCurrentMissionQuiz(currentItem.current)
           break
         case 'CONNECT_OKX_WALLET_TON':
-          if (tonWallet) {
-            if (signMessageTON.current && tonWallet.name?.toLowerCase().includes('okx')) {
+          if (tonWalletInfoOKX) {
+            if (signMessageTON.current && tonWalletInfoOKX.account) {
               clearTimeout(refTimeoutCheck.current)
               setCheckMission(true)
               setLoadingButton(false)
             } else {
               clearTimeout(refTimeoutCheck.current)
-              tonConnectUI.disconnect()
+              okxTonConnectUI?.disconnect()
               clearTimeout(refTimeoutOpenWC.current)
               refTimeoutOpenWC.current = setTimeout(() => {
-                tonConnectUI.openModal()
+                okxTonConnectUI?.openModal()
               }, 2000)
             }
           } else {
             clearTimeout(refTimeoutCheck.current)
-            tonConnectUI.openModal()
+            okxTonConnectUI?.openModal()
           }
           break
         case 'CONNECT_OKX_WALLET_EVM':
-          if (isConnectedEVM && walletEVMInfo?.name?.toLowerCase().includes('okx') && addressEVM) {
-            clearTimeout(refTimeoutCheck.current)
-            if (signMessage.current) {
-              setCheckMission(true)
-              setLoadingButton(false)
-            } else {
-              handleSign(addressEVM)
-            }
+          if (accountsEvmOKX[0]) {
+            disconnectEvmOKX()
+            handleConnectEVMOKX()
+            // clearTimeout(refTimeoutCheck.current)
+            // if (signMessage.current) {
+            //   setCheckMission(true)
+            //   setLoadingButton(false)
+            // } else {
+            //   handleSign(accountsEvmOKX[0])
+            // }
           } else {
-            clearTimeout(refTimeoutCheck.current)
-            // disconnect()
-            clearTimeout(refTimeoutOpenWC.current)
-            refTimeoutOpenWC.current = setTimeout(() => {
-              openEVMConnect()
-            }, 2000)
+            handleConnectEVMOKX()
           }
           break
         case 'CONNECT_X':
@@ -431,10 +458,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     try {
       if (isProgressSign.current) return
       isProgressSign.current = true
-      const message = await signMessageAsync({
-        message: MESSAGE_SIGN,
-        account
-      })
+      const message_hex = `0x${Buffer.from(MESSAGE_SIGN, 'utf8').toString('hex')}`
+      const data = {
+        method: 'personal_sign',
+        params: [message_hex, account]
+      }
+      var message = await okxUniversalUi?.request(data, 'eip155:1')
+
       if (message) {
         signMessage.current = message
         setCheckMission(true)
@@ -470,91 +500,55 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     }
   }, [])
 
-  useEffect(() => {
-    if (walletEVMInfo?.name && isConnectedEVM) {
-      if (
-        addressEVM &&
-        currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM' &&
-        walletEVMInfo?.name?.toLowerCase().includes('okx')
-      ) {
-        let _account: any = addressEVM
-        handleSign(_account)
-        handleUserConnect({
-          address: _account,
-          type: 'EVM',
-          connectFrom: 'OKX'
-        })
-      } else {
-        if (!walletEVMInfo?.name?.toLowerCase().includes('okx')) {
-          setLoadingButton(false)
-          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM' && isShowMessageConnectOKX) {
-            toast.warning(
-              <CustomToast title="You need to use OKX wallet to connect" type="warning" />
-            )
-            setIsShowMessageOKX(false)
-          }
-          setTimeout(() => {
-            disconnect()
-          }, 2000)
-        }
-      }
-    }
-  }, [isConnectedEVM, walletEVMInfo, isShowMessageConnectOKX])
+  // useEffect(() => {
+  //   if (accountsEvmOKX?.[0] && currentItem.current?.type === 'CONNECT_OKX_WALLET_EVM') {
+  //     let _account: any = accountsEvmOKX[0]
+  //     handleSign(_account)
+  //     handleUserConnect({
+  //       address: _account,
+  //       type: 'EVM',
+  //       connectFrom: 'OKX'
+  //     })
+  //   }
+  // }, [accountsEvmOKX])
 
   useEffect(() => {
-    if (isOpenEVM && isConnectedEVM) {
-      setIsShowMessageOKX(true)
-    }
-  }, [isOpenEVM, isConnectingEVM])
-
-  useEffect(() => {
-    if (tonWallet && tonWallet?.appName) {
-      if (
-        currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' &&
-        tonWallet.connectItems?.tonProof?.proof?.signature &&
-        tonWallet?.name?.toLowerCase().includes('okx')
-      ) {
-        signMessageTON.current = tonWallet.connectItems?.tonProof?.proof?.signature
+    if (
+      tonWalletInfoOKX &&
+      tonWalletInfoOKX?.account?.address &&
+      currentItem.current?.type === 'CONNECT_OKX_WALLET_TON'
+    ) {
+      const _tonWalletInfoOKX: any = tonWalletInfoOKX
+      if (_tonWalletInfoOKX.connectItems?.tonProof?.proof?.signature) {
+        signMessageTON.current = _tonWalletInfoOKX.connectItems?.tonProof?.proof?.signature
         setCheckMission(true)
         setLoadingButton(false)
         handleUserConnect({
-          address: tonWallet.account?.address,
+          address: formatAddress(
+            Address.parse(tonWalletInfoOKX?.account.address).toString({
+              bounceable: false
+            })
+          ),
           type: 'TON',
           connectFrom: 'OKX'
         })
-      } else {
-        if (!tonWallet?.name?.toLowerCase().includes('okx')) {
-          setLoadingButton(false)
-          if (currentItem.current?.type === 'CONNECT_OKX_WALLET_TON' && isShowMessageConnectOKX) {
-            toast.warning(
-              <CustomToast title="You need to use OKX wallet to connect" type="warning" />
-            )
-            setIsShowMessageOKX(false)
-          }
-          setTimeout(() => {
-            tonConnectUI.disconnect()
-          }, 300)
-        }
       }
-    }
-  }, [tonWallet, isShowMessageConnectOKX])
-
-  useEffect(() => {
-    if (loadingButton && !isOpenEVM && !isConnectedEVM) {
+    } else {
+      setCheckMission(false)
       setLoadingButton(false)
     }
-  }, [isOpenEVM, isConnectedEVM])
+  }, [tonWalletInfoOKX])
 
   useEffect(() => {
-    if (stateTON.status === 'closed') {
-      if (stateTON.closeReason === 'wallet-selected') {
-        setIsShowMessageOKX(true)
+    okxTonConnectUI?.onModalStateChange((stateTON: any) => {
+      if (stateTON.status === 'closed') {
+        if (stateTON.closeReason === 'action-cancelled') {
+          setLoadingButton(false)
+        }
       }
-      if (stateTON.closeReason === 'action-cancelled') {
-        setLoadingButton(false)
-      }
-    }
-  }, [stateTON])
+    })
+  }, [okxTonConnectUI])
+
   return (
     <>
       {listMission.map((item: any, index: number) => (
