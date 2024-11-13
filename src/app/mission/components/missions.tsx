@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 import ListMission from './list-mission'
 import Loader from '@/app/components/ui/loader'
 import { IItemMissionPartner } from '@/interfaces/i.missions'
+import { forEach } from 'lodash'
 interface IMission {
   updateListReward: (count: number) => void
   setDisablePartner: (status: boolean) => void
@@ -31,16 +32,24 @@ export default function Missions({ updateListReward, setDisablePartner }: IMissi
     queryFn: async () => {
       const res = await Promise.all([getListMission(), getListMissionDally()])
       let _listMission = res[0].data
+      let isTaskOKX = false
+      forEach(_listMission, (item) => {
+        if (item.group.toLowerCase() === 'okx wallet') {
+          isTaskOKX = true
+        }
+      })
       if (res[1].status && res[1].data?.length > 0) {
-        _listMission = [
-          {
-            group: 'Daily Missions',
-            missions: res[1].data.map((item: any) => {
-              return { ...item, isDaily: true, idCheck: `h-${item.id}` }
-            })
-          },
-          ..._listMission
-        ]
+        const daily = {
+          group: 'Daily Missions',
+          missions: res[1].data.map((item: any) => {
+            return { ...item, isDaily: true, idCheck: `h-${item.id}` }
+          })
+        }
+        if (isTaskOKX) {
+          _listMission.splice(1, 0, daily)
+        } else {
+          _listMission = [daily, ..._listMission]
+        }
       }
       return _listMission || []
     },
