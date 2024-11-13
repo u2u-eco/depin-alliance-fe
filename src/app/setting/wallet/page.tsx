@@ -47,8 +47,8 @@ export default function WalletPage() {
   const {
     accounts: accountsEvmOKX,
     connectWallet: connectEVMWalletOKX,
-    disconnect: disconnectEvmOKX,
-    okxUniversalUi
+    disconnect: disconnectEvmOKX
+    // okxUniversalUi
   } = useOKXEvmConnectContext()
   ///
 
