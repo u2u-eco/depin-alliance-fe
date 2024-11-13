@@ -257,7 +257,8 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     refTimeoutOpenWC.current = setTimeout(async () => {
       const res: any = await connectEVMWalletOKX()
       if (res[0]) {
-        handleSign(res[0])
+        setCheckMission(true)
+        setLoadingButton(false)
         handleUserConnect({
           address: res[0],
           type: 'EVM',
