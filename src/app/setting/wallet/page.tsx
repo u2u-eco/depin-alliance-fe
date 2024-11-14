@@ -13,7 +13,7 @@ import {
 } from '@tonconnect/ui-react'
 import { OKXUniversalConnectUI } from '@okxconnect/ui'
 import { Address } from '@ton/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useAppKit, useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
@@ -23,6 +23,7 @@ import { useDisclosure } from '@nextui-org/react'
 import { useDisconnect } from 'wagmi'
 import { useOKXEvmConnectContext } from '@/contexts/okx.evm.connect'
 import { useOKXTonConnectContext } from '@/contexts/okx.ton.connect'
+import { setUserConnectWallet } from '@/services/user'
 
 export default function WalletPage() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -239,6 +240,44 @@ export default function WalletPage() {
         return ''
     }
   }
+
+  useEffect(() => {
+    if (tonWalletInfoOKX?.account?.address) {
+      setUserConnectWallet({
+        address: Address.parse(tonWalletInfoOKX?.account.address).toString({
+          bounceable: false
+        }),
+        type: 'TON',
+        connectFrom: 'OKX Wallet'
+      })
+    }
+
+    if (accountsEvmOKX[0]) {
+      setUserConnectWallet({
+        address: accountsEvmOKX[0] || '',
+        type: 'EVM',
+        connectFrom: 'OKX Wallet'
+      })
+    }
+  }, [tonWalletInfoOKX, accountsEvmOKX])
+
+  useEffect(() => {
+    if (tonAddress) {
+      setUserConnectWallet({
+        address: tonAddress,
+        type: 'TON',
+        connectFrom: tonWallet?.name
+      })
+    }
+
+    if (addressWC) {
+      setUserConnectWallet({
+        address: addressWC || '',
+        type: 'EVM',
+        connectFrom: walletConnectInfo?.name || ''
+      })
+    }
+  }, [tonAddress, addressWC])
 
   return (
     <>

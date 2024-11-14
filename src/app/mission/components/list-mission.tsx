@@ -262,7 +262,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         handleUserConnect({
           address: res[0],
           type: 'EVM',
-          connectFrom: 'OKX'
+          connectFrom: 'OKX Wallet'
         })
       }
     }, 2000)
@@ -525,13 +525,11 @@ export default function ListMission({ listMission, refetch }: IListMission) {
         setCheckMission(true)
         setLoadingButton(false)
         handleUserConnect({
-          address: formatAddress(
-            Address.parse(tonWalletInfoOKX?.account.address).toString({
-              bounceable: false
-            })
-          ),
+          address: Address.parse(tonWalletInfoOKX?.account.address).toString({
+            bounceable: false
+          }),
           type: 'TON',
-          connectFrom: 'OKX'
+          connectFrom: 'OKX Wallet'
         })
       }
     } else {
