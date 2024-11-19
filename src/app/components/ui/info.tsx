@@ -19,7 +19,7 @@ interface InfoProps {
 const Info = ({ profile, rank }: InfoProps) => {
   const pathName = usePathname()
   const route = useRouter()
-  const { currentWorldMap } = useWorldMapStore()
+  // const { currentWorldMap } = useWorldMapStore()
   const { userInfo } = useCommonStore((state) => state)
 
   const { tabSound } = useAppSound()
@@ -33,14 +33,14 @@ const Info = ({ profile, rank }: InfoProps) => {
     route.push('/profile')
   }
 
-  const handleMap = () => {
-    tabSound.play()
-    if (currentWorldMap) {
-      route.push(`/map?id=${currentWorldMap?.continent.code}`)
-    } else {
-      route.push('/map?id=continent_1')
-    }
-  }
+  // const handleMap = () => {
+  //   tabSound.play()
+  //   if (currentWorldMap) {
+  //     route.push(`/map?id=${currentWorldMap?.continent.code}`)
+  //   } else {
+  //     route.push('/map?id=continent_1')
+  //   }
+  // }
 
   const getCurrentPercentXp = (userInfo: IUserInfo | null) => {
     if (userInfo) {
@@ -264,21 +264,21 @@ const Info = ({ profile, rank }: InfoProps) => {
           </div>
         </div>
         {pathName === '/home' && (
-          <div className="absolute -bottom-14 right-0">
-            <div
-              className="relative cursor-pointer before:content-[''] before:absolute before:top-[3px] before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
-              onClick={handleMap}
+          <div className="absolute -bottom-12 xs:-bottom-14 right-0">
+            <Link
+              href="/invite"
+              className="relative cursor-pointer before:content-[''] before:absolute before:top-[1.5px] xs:before:top-[3px] before:left-[1.5px] xs:before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
             >
-              <div className="[--shape:_12px] size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-yellow-600">
-                <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green">
+              <div className="[--shape:_8px] xs:[--shape:_12px] size-10 xs:size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-gradient">
+                <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green flex items-center justify-center">
                   <img
-                    className="[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] size-full object-cover opacity-65"
-                    src="/assets/images/map/world-map@2x.png"
+                    className="[clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] size-5 xs:size-7 opacity-80"
+                    src="/assets/images/icons/icon-invite-gradient.svg"
                     alt="DePIN Alliance"
                   />
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         )}
       </motion.div>
