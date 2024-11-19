@@ -4,6 +4,7 @@
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
 import { useAppSound } from '@/hooks/useAppSound'
 import useCommonStore from '@/stores/commonStore'
+import useWorldMapStore from '@/stores/worldMapStore'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -15,11 +16,17 @@ const CustomNavbar = () => {
   const { currentLeague, setHeightNav } = useCommonStore()
   const { tabSound } = useAppSound()
   const { state: tourState, setState } = useTourGuideContext()
+  const { currentWorldMap } = useWorldMapStore()
+
   const listMenu = [
     { id: 1, link: '/workspace', title: 'workspace' },
     { id: 2, link: '/mission', title: 'mission' },
     { id: 3, link: '/home', title: 'contribute' },
-    { id: 4, link: '/invite', title: 'invite' },
+    {
+      id: 4,
+      link: currentWorldMap ? `/map?id=${currentWorldMap?.continent.code}` : '/map?id=continent_1',
+      title: 'map'
+    },
     {
       id: 5,
       link:
@@ -61,7 +68,7 @@ const CustomNavbar = () => {
           />
         </div>
         <div
-          className={`relative flex items-end justify-between before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-navbar p-2 xs:p-3 space-x-4 xs:space-x-6 2xs:space-x-8 ${pathName === '/shop' ? 'bg-[var(--black)] before:blur-[20px] before:opacity-50' : 'before:opacity-20'}`}
+          className={`relative flex items-end justify-between before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:w-full before:h-full before:bg-navbar p-2 xs:p-3 space-x-2 min-[355px]:space-x-4 xs:space-x-6 2xs:space-x-8 ${pathName === '/shop' ? 'bg-[var(--black)] before:blur-[20px] before:opacity-50' : 'before:opacity-20'}`}
         >
           {listMenu.map((item) => (
             <Link
@@ -92,9 +99,9 @@ const CustomNavbar = () => {
                 />
               )}
               <p
-                className={`text-xs font-geist uppercase tracking-[-1px] ${pathName.split('/')[1] === item.title || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
+                className={`text-xs font-geist uppercase whitespace-nowrap tracking-[-1px] ${pathName.split('/')[1] === item.title || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
               >
-                {item.title}
+                {item.title === 'map' ? 'World Map' : item.title}
               </p>
             </Link>
           ))}
