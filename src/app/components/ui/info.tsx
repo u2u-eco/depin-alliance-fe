@@ -267,7 +267,7 @@ const Info = ({ profile, rank }: InfoProps) => {
           <div className="absolute -bottom-12 xs:-bottom-14 right-0">
             <Link
               href="/invite"
-              className="relative cursor-pointer before:content-[''] before:absolute before:top-[1.5px] xs:before:top-[3px] before:left-[1.5px] xs:before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
+              className="block relative cursor-pointer before:content-[''] before:absolute before:top-[1.5px] xs:before:top-[3px] before:left-[1.5px] xs:before:left-[3px] before:size-2 before:border-[4px] before:border-transparent before:border-t-yellow-600 before:border-l-yellow-600 after:content-[''] after:absolute after:bottom-0 after:right-0 after:size-3 after:border-[6px] after:border-transparent after:border-b-yellow-600 after:border-r-yellow-600 transition-all"
             >
               <div className="[--shape:_8px] xs:[--shape:_12px] size-10 xs:size-12 [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-[1px] bg-gradient">
                 <div className="size-full [clip-path:_polygon(var(--shape)_0,100%_0,100%_100%,0_100%,0_var(--shape))] p-1 bg-item-green flex items-center justify-center">
