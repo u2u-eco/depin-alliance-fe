@@ -3,7 +3,7 @@ import CustomButton from '@/app/components/button'
 import CustomList from '@/app/components/custom-list'
 import CustomModal from '@/app/components/custom-modal'
 import CustomToast from '@/app/components/ui/custom-toast'
-import { LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
+import { DISABLE_OPEN_TELE_LINK, LIST_TYPE, SHARE_URL, TELE_URI } from '@/constants'
 import { formatAddress, formatNumber } from '@/helper/common'
 import { useTelegram } from '@/hooks/useTelegram'
 import { IItemMissionPartner, IMissionItem } from '@/interfaces/i.missions'
@@ -35,7 +35,6 @@ interface IListMission {
   refetch?: () => void
 }
 const MESSAGE_SIGN = 'DepinAlliance User Signature'
-const DISABLE_OPEN_TELE_LINK = ['web', 'weba', 'unknown']
 const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES', 'FOLLOW_TWITTER']
 const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {

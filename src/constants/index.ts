@@ -18,6 +18,7 @@ export const DEPIN_CONFIG = 't-depin-alliance-config'
 export const DEPIN_GUIDE = 't-depin-show-guide-status'
 export const DEPIN_MAP_GUIDE = 't-depin-is-show-map-guide-status'
 export const DEPIN_MAP_CLAIM = 't-depin-status-claim'
+export const DEPIN_LINK_TO_CHANNEL = 't-depin-status-link-to-channel'
 export const BUTTON_TYPE = {
   CANCEL: 'CANCEL',
   SUCCESS: 'SUCCESS',
@@ -54,6 +55,8 @@ export const SETTING_TYPE = {
   FEEDBACK: 'FEEDBACK',
   LOGOUT: 'LOGOUT'
 }
+
+export const DISABLE_OPEN_TELE_LINK = ['web', 'weba', 'unknown']
 
 export const LIST_TYPE = {
   MISSION: 'mission',
