@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { LIST_STATUS_MISSION, LIST_TYPE } from '@/constants'
 import Image from 'next/image'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
   IconCheck,
@@ -11,10 +11,13 @@ import {
   IconLock,
   IconOpenLink,
   IconPlus,
+  IconReload,
   IconUserAdd
 } from './icons'
 import CountdownTime from './countdown-time'
 import useCommonStore from '@/stores/commonStore'
+import { twitterChangeAccount, twitterChangeAccountUrl, twitterInfo } from '@/services/twitter'
+import { useTelegram } from '@/hooks/useTelegram'
 
 interface ItemProps {
   type: string
@@ -44,6 +47,8 @@ const CustomItem = ({
   children
 }: ItemProps) => {
   const { userTwitter } = useCommonStore()
+  const { webApp } = useTelegram()
+  const linkChangeAccTw = useRef<string | null>(null)
 
   const getClassBySkill = (index: number) => {
     switch (index) {
@@ -77,6 +82,33 @@ const CustomItem = ({
       }
     }
   }
+
+  const changeAccount = async () => {
+    if (item.status === 'CLAIMED') {
+      twitterChangeAccount()
+
+      if (linkChangeAccTw.current) {
+        if (webApp?.platform === 'android' && webApp?.openLink) {
+          webApp.openLink(linkChangeAccTw.current)
+        } else {
+          window.open(linkChangeAccTw.current, '_blank')
+        }
+      }
+    }
+  }
+
+  const getUrlChangeAccountTw = async () => {
+    const res = await twitterChangeAccountUrl()
+    if (res.status && res.data) {
+      linkChangeAccTw.current = res.data
+    }
+  }
+
+  useEffect(() => {
+    if (item.type === 'CONNECT_X' && item.status === 'CLAIMED' && !linkChangeAccTw.current) {
+      getUrlChangeAccountTw()
+    }
+  }, [item])
 
   const isSpecialBg =
     (type === LIST_TYPE.PARTNERS && PARTNERS_BG_SPECIAL.indexOf(item.name?.toLowerCase()) !== -1) ||
@@ -164,11 +196,21 @@ const CustomItem = ({
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[18px] min-[355px]:!leading-[20px] 2xs:!leading-[22px] [word-break:_break-word;] line-clamp-2">
             {title}
           </div>
-          {item.type === 'CONNECT_X' && userTwitter?.twitterUsername && (
-            <div className="font-mona font-semibold leading-[18px]">
-              {userTwitter?.twitterUsername}
+          {item.type === 'CONNECT_X' ? (
+            <div
+              className="font-mona font-semibold leading-[18px] flex items-center"
+              onClick={changeAccount}
+            >
+              {userTwitter?.twitterUsername ? (
+                <>
+                  {userTwitter?.twitterUsername}
+                  {item.status === 'CLAIMED' && <IconReload className="h-[14px]" />}
+                </>
+              ) : (
+                <>{item.status === 'CLAIMED' ? 'Change X Account' : null}</>
+              )}
             </div>
-          )}
+          ) : null}
           {children}
         </div>
       </div>

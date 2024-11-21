@@ -59,6 +59,7 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     onClose: onCloseSpecial
   } = useDisclosure()
   const currentItem = useRef<any>()
+  const changeAccountTw = useRef<any>()
   // const { open: openEVMConnect } = useAppKit()
   // const { open: isOpenEVM } = useAppKitState()
   // const { address: addressEVM, isConnected: isConnectedEVM } = useAppKitAccount()
@@ -109,7 +110,12 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   }
 
   const handleClick = async (item: any) => {
-    if (item.status === 'CLAIMED') return
+    if (item.status === 'CLAIMED') {
+      if (item.type === 'CONNECT_X') {
+        changeAccountTw.current = item
+      }
+      return
+    }
     if (item.status === 'VERIFIED') {
       setVerified(true)
     } else {
@@ -387,6 +393,9 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       const res = await twitterInfo()
       if (res.status && res.data) {
         setUserTwitter(res.data)
+        if (changeAccountTw.current) {
+          changeAccountTw.current = null
+        }
         if (isFetchList) {
           refetch && refetch()
         }
@@ -403,9 +412,10 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       if (
         !userTwitter?.twitterUsername &&
         (TYPES_LOGIN_X.indexOf(currentItem.current?.type) !== -1 ||
+          changeAccountTw.current?.type === 'CONNECT_X' ||
           NAMES_LOGIN_X.indexOf(currentItem.current?.name.toLowerCase()) !== -1)
       ) {
-        checkTwitterLogin(true)
+        checkTwitterLogin(changeAccountTw.current?.type === 'CONNECT_X' ? false : true)
       }
     }
   }
