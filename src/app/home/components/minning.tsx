@@ -1,6 +1,6 @@
 import { claim, getUserInfo, mining, startContributing } from '@/services/user'
 import React, { useEffect, useRef, useState } from 'react'
-import { formatNumber } from '@/helper/common'
+import { formatNumber, getCurrentTime } from '@/helper/common'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '@/app/components/ui/modal-reward'
 import { useDisclosure } from '@nextui-org/react'
@@ -9,6 +9,9 @@ import { toast } from 'sonner'
 import CustomToast from '@/app/components/ui/custom-toast'
 import { useAppSound } from '@/hooks/useAppSound'
 import { useTourGuideContext } from '@/contexts/tour.guide.context'
+import { DEPIN_LINK_TO_CHANNEL, DISABLE_OPEN_TELE_LINK } from '@/constants'
+import { useTelegram } from '@/hooks/useTelegram'
+import dayjs from 'dayjs'
 
 const HOME_TYPE = {
   START: 'start',
@@ -16,23 +19,24 @@ const HOME_TYPE = {
   CLAIM: 'claim'
 }
 export default function Mining() {
+  const { webApp } = useTelegram()
   const [type, setType] = useState(HOME_TYPE.START)
   const [bonusReward, setBonusReward] = useState<number>(0)
-  const { helpers, state: tourState, setState } = useTourGuideContext()
+  const { helpers, state: tourState } = useTourGuideContext()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { userInfo, setUserInfo } = useCommonStore()
-
+  const currentTime = getCurrentTime()
   const { buttonSound, specialSound } = useAppSound()
 
   const [timeCountdown, setTimeCountdown] = useState<Array<any>>([])
   const [miningCount, setMiningCount] = useState<number>(0)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isShowLinkChannel, showLinkChannel] = useState<boolean>(false)
   const refButton = useRef<any>(null)
   const workerRef = useRef<Worker>()
 
   const calculatorMining = () => {
     if (userInfo) {
-      // clearInterval(refInterval.current)
       workerRef.current?.postMessage(JSON.stringify({ type: 'CLEAR' }))
       const miningPowerPerSecond = userInfo.miningPower / 3600
       const remainingTimeBySecond = userInfo.pointUnClaimed
@@ -131,6 +135,33 @@ export default function Mining() {
         }
         break
       case HOME_TYPE.CLAIM:
+        if (isShowLinkChannel && userInfo?.code) {
+          if (webApp && DISABLE_OPEN_TELE_LINK.indexOf(webApp?.platform) === -1) {
+            webApp?.openTelegramLink('https://t.me/DePIN_App')
+          } else {
+            window.open('https://t.me/DePIN_App', '_blank')
+          }
+          const userLinkedStr = localStorage.getItem(DEPIN_LINK_TO_CHANNEL)
+          const userLinked = userLinkedStr ? JSON.parse(userLinkedStr) : {}
+          localStorage.setItem(
+            DEPIN_LINK_TO_CHANNEL,
+            JSON.stringify({
+              ...userLinked,
+              [userInfo.code]: {
+                day: currentTime,
+                timeClick: dayjs().utc().valueOf(),
+                count:
+                  userLinked[userInfo.code]?.count && userLinked[userInfo.code]?.day === currentTime
+                    ? userLinked[userInfo.code].count + 1
+                    : 1
+              }
+            })
+          )
+          setTimeout(() => {
+            showLinkChannel(false)
+          }, 1000)
+          return
+        }
         if (isLoading) return
         handleClaim()
         break
@@ -195,6 +226,23 @@ export default function Mining() {
     } else {
       setType(HOME_TYPE.START)
     }
+    if (userInfo) {
+      const statusLinkToChannel = localStorage.getItem(DEPIN_LINK_TO_CHANNEL)
+      if (statusLinkToChannel) {
+        const userLinked = JSON.parse(statusLinkToChannel)
+        const _now = dayjs.utc().valueOf()
+        if (
+          currentTime !== userLinked[userInfo?.code]?.day ||
+          (currentTime === userLinked[userInfo?.code]?.day &&
+            userLinked[userInfo?.code]?.count === 1 &&
+            _now - userLinked[userInfo?.code].timeClick > 21600000)
+        ) {
+          showLinkChannel(true)
+        }
+      } else {
+        showLinkChannel(true)
+      }
+    }
   }, [userInfo])
 
   useEffect(() => {
@@ -244,7 +292,11 @@ export default function Mining() {
           <div
             className={`${isLoading ? 'btn-default' : 'btn-primary'}  flex justify-center items-center`}
           >
-            {type === HOME_TYPE.START ? 'START CONTRIBUTING' : 'CLAIM NOW'}
+            {type === HOME_TYPE.START
+              ? 'START CONTRIBUTING'
+              : isShowLinkChannel
+                ? 'Check news'
+                : 'CLAIM NOW'}
             {isLoading && (
               <Loader
                 classNames={{
