@@ -214,18 +214,20 @@ const CustomItem = ({
             >
               {userTwitter?.twitterUsername ? (
                 <>
-                  {userTwitter?.twitterUsername}
-                  {item.status === 'CLAIMED' && <IconReload className="h-[14px]" />}
+                  @{userTwitter?.twitterUsername}
+                  {item.status === 'CLAIMED' && (
+                    <div className="flex items-center ml-2">
+                      <p className="text-gradient">Relink</p>
+                      <IconOpenLink className="size-5 text-yellow-500" />
+                    </div>
+                  )}
                 </>
               ) : (
                 <>
                   {item.status === 'CLAIMED' ? (
-                    <div className="btn w-fit">
-                      <div className="btn-border"></div>
-                      <div className="btn-primary text-xs !px-1 !py-0 !m-0.5 leading-[16px] capitalize">
-                        Change X Account
-                      </div>
-                      <div className="btn-border"></div>
+                    <div className="flex items-center ml-2">
+                      <p className="text-gradient">Relink</p>
+                      <IconOpenLink className="size-5 text-yellow-500" />
                     </div>
                   ) : null}
                 </>
