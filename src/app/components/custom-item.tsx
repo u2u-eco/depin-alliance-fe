@@ -46,7 +46,7 @@ const CustomItem = ({
   cb,
   children
 }: ItemProps) => {
-  const { userTwitter } = useCommonStore()
+  const { userTwitter, setUserTwitter } = useCommonStore()
   const { webApp } = useTelegram()
   const linkChangeAccTw = useRef<string | null>(null)
 
@@ -83,10 +83,19 @@ const CustomItem = ({
     }
   }
 
+  const fetchAccTw = async () => {
+    const res = await twitterInfo()
+    if (res.status && res.data) {
+      setUserTwitter(res.data)
+    }
+  }
+
   const changeAccount = async () => {
     if (item.status === 'CLAIMED') {
       twitterChangeAccount()
-
+      setTimeout(() => {
+        fetchAccTw()
+      }, 10000)
       if (linkChangeAccTw.current) {
         if (webApp?.platform === 'android' && webApp?.openLink) {
           webApp.openLink(linkChangeAccTw.current)

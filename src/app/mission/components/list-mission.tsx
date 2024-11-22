@@ -393,12 +393,13 @@ export default function ListMission({ listMission, refetch }: IListMission) {
       const res = await twitterInfo()
       if (res.status && res.data) {
         setUserTwitter(res.data)
-        if (changeAccountTw.current) {
-          changeAccountTw.current = null
-        }
+
         if (isFetchList) {
           refetch && refetch()
         }
+      }
+      if (changeAccountTw.current) {
+        changeAccountTw.current = null
       }
     }
   }
@@ -410,10 +411,10 @@ export default function ListMission({ listMission, refetch }: IListMission) {
   const handleVisible = async () => {
     if (!document.hidden) {
       if (
-        !userTwitter?.twitterUsername &&
-        (TYPES_LOGIN_X.indexOf(currentItem.current?.type) !== -1 ||
-          changeAccountTw.current?.type === 'CONNECT_X' ||
-          NAMES_LOGIN_X.indexOf(currentItem.current?.name.toLowerCase()) !== -1)
+        (!userTwitter?.twitterUsername &&
+          (TYPES_LOGIN_X.indexOf(currentItem.current?.type) !== -1 ||
+            NAMES_LOGIN_X.indexOf(currentItem.current?.name.toLowerCase()) !== -1)) ||
+        changeAccountTw.current?.type === 'CONNECT_X'
       ) {
         checkTwitterLogin(changeAccountTw.current?.type === 'CONNECT_X' ? false : true)
       }
