@@ -188,15 +188,17 @@ const CustomItem = ({
         </div>
         <div
           className={
-            item.type === 'CONNECT_X' && userTwitter?.twitterUsername
-              ? 'space-y-1'
+            item.type === 'CONNECT_X'
+              ? userTwitter?.twitterUsername
+                ? 'space-y-1'
+                : 'space-y-1 xs:space-y-1.5'
               : `space-y-1.5 xs:space-y-2 2xs:space-y-2.5`
           }
         >
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[18px] min-[355px]:!leading-[20px] 2xs:!leading-[22px] [word-break:_break-word;] line-clamp-2">
             {title}
           </div>
-          {item.type === 'CONNECT_X' ? (
+          {item.type === 'CONNECT_X' && item.status ? (
             <div
               className="font-mona font-semibold leading-[18px] flex items-center"
               onClick={changeAccount}
@@ -207,7 +209,17 @@ const CustomItem = ({
                   {item.status === 'CLAIMED' && <IconReload className="h-[14px]" />}
                 </>
               ) : (
-                <>{item.status === 'CLAIMED' ? 'Change X Account' : null}</>
+                <>
+                  {item.status === 'CLAIMED' ? (
+                    <div className="btn w-fit">
+                      <div className="btn-border"></div>
+                      <div className="btn-primary text-xs !px-1 !py-0 !m-0.5 leading-[16px] capitalize">
+                        Change X Account
+                      </div>
+                      <div className="btn-border"></div>
+                    </div>
+                  ) : null}
+                </>
               )}
             </div>
           ) : null}
