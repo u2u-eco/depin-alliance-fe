@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { LIST_STATUS_MISSION, LIST_TYPE } from '@/constants'
 import Image from 'next/image'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
   IconCheck,
@@ -11,10 +11,13 @@ import {
   IconLock,
   IconOpenLink,
   IconPlus,
+  IconReload,
   IconUserAdd
 } from './icons'
 import CountdownTime from './countdown-time'
 import useCommonStore from '@/stores/commonStore'
+import { twitterChangeAccount, twitterChangeAccountUrl, twitterInfo } from '@/services/twitter'
+import { useTelegram } from '@/hooks/useTelegram'
 
 interface ItemProps {
   type: string
@@ -43,7 +46,9 @@ const CustomItem = ({
   cb,
   children
 }: ItemProps) => {
-  const { userTwitter } = useCommonStore()
+  const { userTwitter, setUserTwitter } = useCommonStore()
+  const { webApp } = useTelegram()
+  const linkChangeAccTw = useRef<string | null>(null)
 
   const getClassBySkill = (index: number) => {
     switch (index) {
@@ -77,6 +82,42 @@ const CustomItem = ({
       }
     }
   }
+
+  const fetchAccTw = async () => {
+    const res = await twitterInfo()
+    if (res.status && res.data) {
+      setUserTwitter(res.data)
+    }
+  }
+
+  const changeAccount = async () => {
+    if (item.status === 'CLAIMED') {
+      twitterChangeAccount()
+      setTimeout(() => {
+        fetchAccTw()
+      }, 10000)
+      if (linkChangeAccTw.current) {
+        if (webApp?.platform === 'android' && webApp?.openLink) {
+          webApp.openLink(linkChangeAccTw.current)
+        } else {
+          window.open(linkChangeAccTw.current, '_blank')
+        }
+      }
+    }
+  }
+
+  const getUrlChangeAccountTw = async () => {
+    const res = await twitterChangeAccountUrl()
+    if (res.status && res.data) {
+      linkChangeAccTw.current = res.data
+    }
+  }
+
+  useEffect(() => {
+    if (item.type === 'CONNECT_X' && item.status === 'CLAIMED' && !linkChangeAccTw.current) {
+      getUrlChangeAccountTw()
+    }
+  }, [item])
 
   const isSpecialBg =
     (type === LIST_TYPE.PARTNERS && PARTNERS_BG_SPECIAL.indexOf(item.name?.toLowerCase()) !== -1) ||
@@ -156,19 +197,43 @@ const CustomItem = ({
         </div>
         <div
           className={
-            item.type === 'CONNECT_X' && userTwitter?.twitterUsername
-              ? 'space-y-1'
+            item.type === 'CONNECT_X'
+              ? userTwitter?.twitterUsername
+                ? 'space-y-1'
+                : 'space-y-1 xs:space-y-1.5'
               : `space-y-1.5 xs:space-y-2 2xs:space-y-2.5`
           }
         >
           <div className="text-white font-mona min-[355px]:text-[15px] xs:text-base 2xs:text-lg font-semibold !leading-[18px] min-[355px]:!leading-[20px] 2xs:!leading-[22px] [word-break:_break-word;] line-clamp-2">
             {title}
           </div>
-          {item.type === 'CONNECT_X' && userTwitter?.twitterUsername && (
-            <div className="font-mona font-semibold leading-[18px]">
-              {userTwitter?.twitterUsername}
+          {item.type === 'CONNECT_X' && item.status ? (
+            <div
+              className="font-mona font-semibold leading-[18px] flex items-center"
+              onClick={changeAccount}
+            >
+              {userTwitter?.twitterUsername ? (
+                <>
+                  @{userTwitter?.twitterUsername}
+                  {item.status === 'CLAIMED' && (
+                    <div className="flex items-center ml-2">
+                      <p className="text-gradient">Relink</p>
+                      <IconOpenLink className="size-5 text-yellow-500" />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {item.status === 'CLAIMED' ? (
+                    <div className="flex items-center ml-2">
+                      <p className="text-gradient">Relink</p>
+                      <IconOpenLink className="size-5 text-yellow-500" />
+                    </div>
+                  ) : null}
+                </>
+              )}
             </div>
-          )}
+          ) : null}
           {children}
         </div>
       </div>
