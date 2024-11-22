@@ -11,3 +11,11 @@ export const twitterCallback = () => {
 export const twitterInfo = () => {
   return https.get('/twitter/info')
 }
+
+export const twitterChangeAccount = () => {
+  return https.get('/twitter/change-account')
+}
+
+export const twitterChangeAccountUrl = () => {
+  return https.get('/twitter/url')
+}
