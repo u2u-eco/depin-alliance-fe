@@ -13,6 +13,7 @@ import ListRankingItem from './components/list-ranking'
 import { useAppSound } from '@/hooks/useAppSound'
 
 const RANKING_TYPE = {
+  AIRDROP: 'airdrop',
   PROFIT: 'profit',
   EARNED: 'earned'
 }
@@ -22,7 +23,7 @@ export default function RankingPage() {
   const [listRanking, setListRanking] = useState<any>({})
   const { tabSound } = useAppSound()
 
-  const [activeType, setActiveType] = useState(RANKING_TYPE.PROFIT)
+  const [activeType, setActiveType] = useState(RANKING_TYPE.AIRDROP)
   const { data: listRankingResponse, isLoading } = useQuery({
     queryKey: ['getRanking', activeType],
     queryFn: () => {
@@ -65,7 +66,7 @@ export default function RankingPage() {
     <CustomPage
       classNames={{
         wrapper:
-          "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
+          "before:content-[''] before:absolute before:top-[120px] before:left-[-180px] before:rounded-[50%] before:blur-[50px] before:opacity-20 xs:before:opacity-30 before:size-[250px] before:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] before:z-[-1] after:content-[''] after:absolute after:top-[120px] after:right-[-180px] after:rounded-[50%] after:blur-[50px] after:opacity-20 xs:after:opacity-30 after:size-[250px] after:bg-[linear-gradient(to_bottom,#00FF90,#F4FD36)] after:z-[-1]"
       }}
     >
       {isLoading && (
@@ -112,7 +113,7 @@ export default function RankingPage() {
               alt="Ranking Tab"
             />
             <div
-              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-base xs:text-lg 2xs:text-xl font-medium tracking-[1px] text-green-800 uppercase ${activeType === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
+              className={`absolute top-0 left-0 w-full h-full flex items-center justify-center font-airnt text-[15px] xs:text-base 2xs:text-lg font-medium tracking-[1px] text-green-800 uppercase ${activeType === item ? '!text-white [text-shadow:_0_0_8px_rgba(255,255,255,0.35)]' : ''}`}
             >
               {item}
             </div>
@@ -128,6 +129,9 @@ export default function RankingPage() {
           key={RANKING_TYPE.PROFIT}
           className="!will-change-auto"
         >
+          {activeType === RANKING_TYPE.AIRDROP && (
+            <p className="text-gradient text-center mb-5 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`"Ranking from 26 Nov to 09 Dec 2024"`}</p>
+          )}
           <ListRankingItem data={listRanking} isEarn={activeType === RANKING_TYPE.EARNED} />
         </motion.div>
       </div>
