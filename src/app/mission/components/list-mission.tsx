@@ -208,8 +208,16 @@ export default function ListMission({ listMission, refetch }: IListMission) {
     try {
       if (userInfo) {
         // userInfo.detectDevice === 'Unknown Device'
-        const folder = userInfo.devicePlatform === 'iOS' ? 'IOS' : 'Android'
-        const link = `${SHARE_URL}/${folder}/${folder.toLowerCase()}-${userInfo.pointBonus}.png`
+        const folder =
+          userInfo.devicePlatform?.length > 0
+            ? userInfo.devicePlatform === 'iOS'
+              ? 'IOS'
+              : 'Android'
+            : null
+        let link = `${SHARE_URL}/${userInfo.pointBonus}.png`
+        if (folder) {
+          link = `${SHARE_URL}/${folder}/${folder.toLowerCase()}-${userInfo.pointBonus}.png`
+        }
 
         const shareLink = `${TELE_URI}?startapp=${userInfo?.code}`
         const botName = TELE_URI?.replaceAll('https://', '')

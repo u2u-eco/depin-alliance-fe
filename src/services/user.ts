@@ -16,7 +16,7 @@ export const getUserConfig = () => {
 }
 
 export const detectDeviceInfo = () => {
-  return https.get('/users/detect-device-info')
+  return https.post('/users/detect-device-info', {})
 }
 
 export const claimRewardNewUser = () => {
