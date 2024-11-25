@@ -4,7 +4,7 @@
 import { redirect, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { claimRewardNewUser } from '../../services/user'
+import { claimRewardNewUser, detectDeviceInfo } from '../../services/user'
 import { CURRENT_STATUS } from '../../interfaces/i.user'
 import useCommonStore from '@/stores/commonStore'
 import ModalReward from '../components/ui/modal-reward'
@@ -27,19 +27,19 @@ const Onboarding = () => {
   const { currentStatus, token, getUserInfo, userInfo } = useCommonStore()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [type, setType] = useState(ONBOARDING_TYPE.DEVICE)
-  // const _getDeviceInfo = async () => {
-  //   try {
-  //     const res = await detectDeviceInfo()
-  //     if (res.status) {
-  //       // setDevice({ info: res.data })
-  //       setPointReward(res.data)
-  //       setType(ONBOARDING_TYPE.DEVICE)
-  //       setTimeout(() => onOpen(), 3000)
-  //     }
-  //   } catch (ex) {
-  //     setType(ONBOARDING_TYPE.SCHOLARSHIP)
-  //   }
-  // }
+  const _getDeviceInfo = async () => {
+    try {
+      const res = await detectDeviceInfo()
+      if (res.status) {
+        // setDevice({ info: res.data })
+        setPointReward(res.data)
+        setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        setTimeout(() => onOpen(), 3000)
+      }
+    } catch (ex) {
+      setType(ONBOARDING_TYPE.SCHOLARSHIP)
+    }
+  }
 
   const handleClaim = async () => {
     const res = await claimRewardNewUser()
@@ -71,9 +71,9 @@ const Onboarding = () => {
   const handleOnboarding = (type: any) => {
     switch (type) {
       case ONBOARDING_TYPE.START:
-        // _getDeviceInfo()
-        openLinkDevice()
-        setType(ONBOARDING_TYPE.SCHOLARSHIP)
+        _getDeviceInfo()
+        // openLinkDevice()
+        // setType(ONBOARDING_TYPE.SCHOLARSHIP)
         break
       // case ONBOARDING_TYPE.LOADING:
       //   checkStatusGetDevice()
