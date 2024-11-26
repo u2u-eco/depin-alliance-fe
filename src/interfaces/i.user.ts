@@ -69,6 +69,7 @@ export type IUserInfo = {
   isPremium: boolean
   currentTime: number
   pointEarned: number
+  pointEarned1: number
 }
 
 export enum CURRENT_STATUS {
