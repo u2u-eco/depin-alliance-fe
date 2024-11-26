@@ -51,6 +51,7 @@ export default function RankingPage() {
           ranking: [
             ...listRankingResponse?.data?.ranking,
             {
+              pointEarned1: userInfo?.pointEarned1,
               pointEarned: userInfo?.pointEarned,
               avatar: userInfo?.avatar,
               miningPower: userInfo?.miningPower,
