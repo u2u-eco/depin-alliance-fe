@@ -7,7 +7,13 @@ import { useRouter } from 'next/navigation'
 import CustomList from '../components/custom-list'
 import { ISkillItem } from '@/interfaces/i.user'
 import { useDisclosure } from '@nextui-org/react'
-import { getRanking, getSkillInfo, getSkills, updateSkill } from '@/services/user'
+import {
+  getCurrentRanking,
+  getRanking,
+  getSkillInfo,
+  getSkills,
+  updateSkill
+} from '@/services/user'
 import { toast } from 'sonner'
 import useCommonStore from '@/stores/commonStore'
 import CustomModal from '../components/custom-modal'
@@ -48,9 +54,9 @@ export default function ProfilePage() {
   }
 
   const _getRank = async () => {
-    const res = await getRanking()
+    const res = await getCurrentRanking()
     if (res.status) {
-      setRank(res.data.currentRank)
+      setRank(res.data)
     }
   }
 
