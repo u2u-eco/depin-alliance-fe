@@ -39,6 +39,10 @@ export const getRanking = () => {
   return https.get('/users/ranking-engineer')
 }
 
+export const getRankingAirdrop = () => {
+  return https.get('/users/ranking-airdrop')
+}
+
 export const getListAvatar = () => {
   return https.get('/users/avatar')
 }

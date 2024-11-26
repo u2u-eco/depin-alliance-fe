@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import CustomPage from '@/app/components/custom-page'
 import { useQuery } from '@tanstack/react-query'
-import { getListRankingEarned, getRanking } from '../../services/user'
+import { getListRankingEarned, getRanking, getRankingAirdrop } from '../../services/user'
 import dayjs from 'dayjs'
 import useCommonStore from '@/stores/commonStore'
 import Loader from '../components/ui/loader'
@@ -29,6 +29,8 @@ export default function RankingPage() {
     queryFn: () => {
       if (activeType === RANKING_TYPE.PROFIT) {
         return getRanking()
+      } else if (activeType === RANKING_TYPE.AIRDROP) {
+        return getRankingAirdrop()
       } else {
         return getListRankingEarned()
       }
@@ -132,7 +134,7 @@ export default function RankingPage() {
           {activeType === RANKING_TYPE.AIRDROP && (
             <p className="text-gradient text-center mb-5 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`"Ranking from 26 Nov to 09 Dec 2024"`}</p>
           )}
-          <ListRankingItem data={listRanking} isEarn={activeType === RANKING_TYPE.EARNED} />
+          <ListRankingItem data={listRanking} isEarn={activeType !== RANKING_TYPE.PROFIT} />
         </motion.div>
       </div>
     </CustomPage>
