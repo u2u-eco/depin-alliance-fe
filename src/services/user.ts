@@ -35,6 +35,10 @@ export const mining = () => {
   return https.get('/users/mining')
 }
 
+export const getCurrentRanking = () => {
+  return https.get('/users/current-ranking-engineer')
+}
+
 export const getRanking = () => {
   return https.get('/users/ranking-engineer')
 }

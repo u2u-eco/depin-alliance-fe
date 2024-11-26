@@ -90,7 +90,7 @@ const CustomRank = ({
               ) : (
                 <>
                   {isEarn
-                    ? `${formatNumber(item?.pointEarned || 0, 0, 0)}`
+                    ? `${formatNumber(item?.pointEarned || item?.pointEarned1 || 0, 0, 0)}`
                     : `${formatNumber(item?.miningPower || 0, 0, 2)}/h`}
                 </>
               )}
