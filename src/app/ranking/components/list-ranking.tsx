@@ -7,7 +7,8 @@ interface IListRankingItem {
     ranking: Array<IRankingItem>
   }
   isEarn: boolean
+  tab?: string
 }
-export default function ListRankingItem({ data, isEarn }: IListRankingItem) {
-  return <CustomRank data={data} isEarn={isEarn} type="ranking" />
+export default function ListRankingItem({ data, isEarn, tab }: IListRankingItem) {
+  return <CustomRank data={data} isEarn={isEarn} tab={tab} type="ranking" />
 }
