@@ -14,6 +14,7 @@ interface IListRankingItem {
   isEarn?: boolean
   admin?: any
   type: string
+  tab?: string
   maxPrecision?: number
   suffix?: string
   onClick?: (item: any) => void
@@ -30,6 +31,7 @@ const CustomRank = ({
   data,
   isEarn,
   type,
+  tab,
   maxPrecision,
   suffix,
   admin,
@@ -90,7 +92,7 @@ const CustomRank = ({
               ) : (
                 <>
                   {isEarn
-                    ? `${formatNumber(item?.pointEarned || item?.pointEarned1 || 0, 0, 0)}`
+                    ? `${formatNumber((tab === 'airdrop' ? item?.pointEarned1 : item?.pointEarned) || 0, 0, 0)}`
                     : `${formatNumber(item?.miningPower || 0, 0, 2)}/h`}
                 </>
               )}

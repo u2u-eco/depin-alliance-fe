@@ -134,7 +134,11 @@ export default function RankingPage() {
           {activeType === RANKING_TYPE.AIRDROP && (
             <p className="text-gradient text-center mb-5 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`"Ranking from 26 Nov to 09 Dec 2024"`}</p>
           )}
-          <ListRankingItem data={listRanking} isEarn={activeType !== RANKING_TYPE.PROFIT} />
+          <ListRankingItem
+            data={listRanking}
+            tab={activeType}
+            isEarn={activeType !== RANKING_TYPE.PROFIT}
+          />
         </motion.div>
       </div>
     </CustomPage>
