@@ -91,6 +91,12 @@ const CustomNavbar = () => {
                   </div>
                   <div className="btn-border"></div>
                 </div>
+              ) : item.id === 4 ? (
+                <img
+                  className="size-6 xs:size-7 2xs:size-8 mx-auto object-cover"
+                  src="/assets/images/map/world-map.gif"
+                  alt="Map"
+                />
               ) : (
                 <img
                   className="size-5 xs:size-6 2xs:size-7 mx-auto"
@@ -99,7 +105,7 @@ const CustomNavbar = () => {
                 />
               )}
               <p
-                className={`text-xs font-geist uppercase whitespace-nowrap tracking-[-1px] ${pathName.split('/')[1] === item.title || item.id === 3 ? 'text-navbar-gradient' : 'text-green-800/80'}`}
+                className={`text-xs font-geist uppercase whitespace-nowrap tracking-[-1px] ${pathName.split('/')[1] === item.title || item.id === 3 ? 'text-navbar-gradient' : item.id === 4 ? 'text-yellow-600 !mt-0' : 'text-green-800/80'}`}
               >
                 {item.title === 'map' ? 'World Map' : item.title}
               </p>
