@@ -41,7 +41,7 @@
     "rlayers": "^3.2.0",
     "sonner": "^1.5.0",
     "viem": "^2.21.24",
-    "wagmi": "^2.12.17",
+    "wagmi": "2.12.17",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
