@@ -35,7 +35,14 @@ interface IListMission {
   refetch?: () => void
 }
 const MESSAGE_SIGN = 'DepinAlliance User Signature'
-const TYPES_LOGIN_X = ['CONNECT_X', 'LIKE_TWITTER', 'RETWEETS', 'TWEET_REPLIES', 'FOLLOW_TWITTER']
+const TYPES_LOGIN_X = [
+  'CONNECT_X',
+  'LIKE_TWITTER',
+  'RETWEETS',
+  'TWEET_REPLIES',
+  'FOLLOW_TWITTER',
+  'TWEET_QUOTE'
+]
 const NAMES_LOGIN_X = ['follow u2u network x']
 export default function ListMission({ listMission, refetch }: IListMission) {
   const [isVerified, setVerified] = useState<boolean>(false)
