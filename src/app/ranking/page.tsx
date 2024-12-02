@@ -133,7 +133,11 @@ export default function RankingPage() {
           className="!will-change-auto"
         >
           {activeType === RANKING_TYPE.AIRDROP && (
-            <p className="text-gradient text-center mb-5 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`"Ranking from 26 Nov to 09 Dec 2024"`}</p>
+            <>
+              {' '}
+              <p className="text-gradient text-center mb-1 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`"Ranking from 26 Nov to 09 Dec 2024`}</p>
+              <p className="text-gradient text-center mb-5 font-semibold text-[13px] min-[355px]:text-sm xs:text-[15px] 2xs:text-base">{`for level 1 - 24 only"`}</p>
+            </>
           )}
           <ListRankingItem
             data={listRanking}
